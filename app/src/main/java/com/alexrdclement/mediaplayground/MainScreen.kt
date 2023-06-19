@@ -1,9 +1,15 @@
 package com.alexrdclement.mediaplayground
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.alexrdclement.mediaplayground.ui.components.PlayerControls
 
 @Composable
-fun MainScreen() {
-    Text("Hello")
+fun MainScreen(
+    isPlaying: Boolean,
+    onPlayPauseClicked: () -> Unit,
+) {
+    PlayerControls(
+        isPlaying = isPlaying,
+        onPlayPauseClicked = onPlayPauseClicked,
+    )
 }
