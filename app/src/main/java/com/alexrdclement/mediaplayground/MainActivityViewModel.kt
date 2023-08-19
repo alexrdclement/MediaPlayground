@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,6 +33,9 @@ class MainActivityViewModel @Inject constructor(
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying = _isPlaying.asStateFlow()
 
+    private val _bottomSheet = MutableStateFlow<MainBottomSheet?>(null)
+    val bottomSheet = _bottomSheet.asStateFlow()
+
     init {
         mediaControllerFuture
             .addListener(
@@ -46,6 +50,14 @@ class MainActivityViewModel @Inject constructor(
     override fun onCleared() {
         MediaController.releaseFuture(mediaControllerFuture)
         super.onCleared()
+    }
+
+    fun onPickMediaClick() {
+        _bottomSheet.update { MainBottomSheet.MediaTypeChooserBottomSheet }
+    }
+
+    fun onPickMediaBottomSheetDismiss() {
+        _bottomSheet.update { null }
     }
 
     fun onMediaItemSelected(uri: Uri?) {

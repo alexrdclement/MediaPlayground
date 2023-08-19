@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexrdclement.mediaplayground.ui.components.MediaTypePickerBottomSheet
 import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,13 +33,29 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()
+                    val bottomSheet by viewModel.bottomSheet.collectAsStateWithLifecycle()
                     MainScreen(
                         isPlaying = isPlaying,
-                        onPickMediaClick = {
-                            mediaPicker.launch("audio/*")
-                        },
+                        onPickMediaClick = viewModel::onPickMediaClick,
                         onPlayPauseClick = viewModel::onPlayPauseClick,
                     )
+
+                    when (bottomSheet) {
+                        MainBottomSheet.MediaTypeChooserBottomSheet -> {
+                            MediaTypePickerBottomSheet(
+                                onDismissRequest = viewModel::onPickMediaBottomSheetDismiss,
+                                onMediaTypePicked = {
+                                    // TODO: route event through view model
+                                    when (it) {
+                                        PickMediaType.Audio -> mediaPicker.launch("audio/*")
+                                        PickMediaType.Video -> mediaPicker.launch("video/*")
+                                    }
+                                    viewModel.onPickMediaBottomSheetDismiss()
+                                }
+                            )
+                        }
+                        null -> {}
+                    }
                 }
             }
         }
