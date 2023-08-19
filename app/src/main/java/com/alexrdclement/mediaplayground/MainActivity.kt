@@ -32,9 +32,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val player by viewModel.player.collectAsStateWithLifecycle()
                     val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()
                     val bottomSheet by viewModel.bottomSheet.collectAsStateWithLifecycle()
                     MainScreen(
+                        player = player,
                         isPlaying = isPlaying,
                         onPickMediaClick = viewModel::onPickMediaClick,
                         onPlayPauseClick = viewModel::onPlayPauseClick,

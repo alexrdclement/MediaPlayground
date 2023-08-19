@@ -12,7 +12,8 @@ fun PlayerControls(
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = onPlayPauseClicked
+        onClick = onPlayPauseClicked,
+        modifier = modifier,
     ) {
         Text(text = if (isPlaying) "Pause" else "Play")
     }

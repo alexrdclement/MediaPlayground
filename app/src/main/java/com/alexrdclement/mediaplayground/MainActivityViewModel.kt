@@ -14,6 +14,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
@@ -28,7 +29,8 @@ class MainActivityViewModel @Inject constructor(
     private val mediaControllerFuture: ListenableFuture<MediaController> =
         MediaController.Builder(context, sessionToken)
             .buildAsync()
-    private var mediaController: MediaController? = null
+    private var mediaController: MutableStateFlow<MediaController?> = MutableStateFlow(null)
+    val player: StateFlow<Player?> = mediaController
 
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying = _isPlaying.asStateFlow()
@@ -40,8 +42,13 @@ class MainActivityViewModel @Inject constructor(
         mediaControllerFuture
             .addListener(
                 {
-                    this.mediaController = mediaControllerFuture.get()
-                        .apply(::configureMediaController)
+                    this.mediaController.update {
+                        // TODO: proper release if already exists. add error logging.
+                        it?.release()
+
+                        mediaControllerFuture.get()
+                            .apply(::configureMediaController)
+                    }
                 },
                 MoreExecutors.directExecutor()
             )
@@ -63,19 +70,20 @@ class MainActivityViewModel @Inject constructor(
     fun onMediaItemSelected(uri: Uri?) {
         val mediaItem = uri?.let(MediaItem::fromUri)
         mediaItem?.let {
-            mediaController?.setMediaItem(mediaItem)
+            mediaController.value?.setMediaItem(mediaItem)
         }
     }
 
     fun onPlayPauseClick() {
         if (!isPlaying.value) {
-            mediaController?.play()
+            mediaController.value?.play()
         } else {
-            mediaController?.pause()
+            mediaController.value?.pause()
         }
     }
 
     internal fun configureMediaController(mediaController: MediaController) = with(mediaController) {
+        playWhenReady = true
         addListener(
             object : Player.Listener {
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
