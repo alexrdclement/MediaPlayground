@@ -1,5 +1,7 @@
 package com.alexrdclement.mediaplayground.media.service
 
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C.WAKE_MODE_LOCAL
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
@@ -13,7 +15,11 @@ class MediaSessionService @Inject constructor() : MediaSessionService() {
 
     override fun onCreate() {
         super.onCreate()
-        val player = ExoPlayer.Builder(this).build()
+        val player = ExoPlayer.Builder(this)
+            .setAudioAttributes(AudioAttributes.DEFAULT, /* handleAudioFocus= */ true)
+            .setHandleAudioBecomingNoisy(true)
+            .setWakeMode(WAKE_MODE_LOCAL)
+            .build()
         mediaSession = MediaSession.Builder(this, player).build()
     }
 
