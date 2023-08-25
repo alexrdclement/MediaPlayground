@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.ui.theme
+package com.alexrdclement.ui.theme
 
 import android.app.Activity
 import android.os.Build

@@ -20,3 +20,4 @@ plugins {
 
 rootProject.name = "MediaPlayground"
 include(":app")
+include(":ui")

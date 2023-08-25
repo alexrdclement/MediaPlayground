@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
-import com.alexrdclement.mediaplayground.ui.components.MediaPickerButton
-import com.alexrdclement.mediaplayground.ui.components.MediaPlayer
-import com.alexrdclement.mediaplayground.ui.components.PlayerControls
+import com.alexrdclement.ui.components.MediaPickerButton
+import com.alexrdclement.ui.components.MediaPlayer
+import com.alexrdclement.ui.components.PlayerControls
 
 @Composable
 fun MainScreen(

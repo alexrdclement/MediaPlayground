@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.util
+package com.alexrdclement.ui.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

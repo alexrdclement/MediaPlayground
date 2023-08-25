@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.ui.components
+package com.alexrdclement.ui.components
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

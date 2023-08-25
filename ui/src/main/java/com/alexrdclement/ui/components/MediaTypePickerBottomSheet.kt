@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.ui.components
+package com.alexrdclement.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.PickMediaType
+
+enum class PickMediaType {
+    Audio,
+    Video,
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

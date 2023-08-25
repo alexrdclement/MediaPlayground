@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.ui.components
+package com.alexrdclement.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.media3.common.Player
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
-import com.alexrdclement.mediaplayground.util.rememberLifecycleEvent
+import com.alexrdclement.ui.util.rememberLifecycleEvent
 
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
