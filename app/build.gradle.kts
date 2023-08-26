@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
     implementation(project(":ui"))
+    implementation(project(":ui-shared"))
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

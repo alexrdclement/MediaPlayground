@@ -1,4 +1,4 @@
-package com.alexrdclement.ui.util
+package com.alexrdclement.ui.shared.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

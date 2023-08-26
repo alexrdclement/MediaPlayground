@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.ui"
+    namespace = "com.alexrdclement.ui.tv"
     compileSdk = 34
 
     defaultConfig {
@@ -40,14 +40,12 @@ android {
 }
 
 dependencies {
+
     implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.runtime.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.material3)
-    implementation(libs.media3.exoplayer)
-    implementation(libs.media3.ui)
-    implementation(libs.media3.ui.leanback)
+    implementation(libs.tv.foundation)
+    implementation(libs.tv.material)
+    implementation(libs.tv.foundation)
+    implementation(libs.tv.material)
     implementation(project(":ui-shared"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

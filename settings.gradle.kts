@@ -22,3 +22,5 @@ rootProject.name = "MediaPlayground"
 include(":app")
 include(":mediaplaygroundtv")
 include(":ui")
+include(":ui-tv")
+include(":ui-shared")

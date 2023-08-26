@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.ui"
+    namespace = "com.alexrdclement.ui.shared"
     compileSdk = 34
 
     defaultConfig {
@@ -40,15 +40,14 @@ android {
 }
 
 dependencies {
+
     implementation(libs.core.ktx)
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
     implementation(platform(libs.compose.bom))
-    implementation(libs.material3)
-    implementation(libs.media3.exoplayer)
-    implementation(libs.media3.ui)
-    implementation(libs.media3.ui.leanback)
-    implementation(project(":ui-shared"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
