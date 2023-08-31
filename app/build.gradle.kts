@@ -16,11 +16,14 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+        
+        manifestPlaceholders["redirectSchemeName"] = "comalexrdclementmediaplayground"
+        manifestPlaceholders["redirectHostName"] = "callback"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -78,6 +81,7 @@ dependencies {
     implementation(libs.media3.decoder)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
+    implementation(project(":data:audio"))
     implementation(project(":ui"))
     implementation(project(":ui-shared"))
     kapt(libs.hilt.compiler)

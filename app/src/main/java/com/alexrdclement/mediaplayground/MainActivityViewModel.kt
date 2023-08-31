@@ -2,13 +2,16 @@ package com.alexrdclement.mediaplayground
 
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import com.alexrdclement.mediaplayground.data.audio.SpotifyAuthManager
 import com.alexrdclement.mediaplayground.media.service.MediaSessionService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,6 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     @ApplicationContext context: Context,
+    private val spotifyAuthManager: SpotifyAuthManager,
 ) : ViewModel() {
 
     private var mediaController: MutableStateFlow<MediaController?> = MutableStateFlow(null)
@@ -42,6 +46,18 @@ class MainActivityViewModel @Inject constructor(
                 .await()
                 .apply(::configureMediaController)
         }
+    }
+
+    fun requestSpotifyLogin(activity: ComponentActivity) {
+        spotifyAuthManager.requestLogin(activity)
+    }
+
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        spotifyAuthManager.onActivityResult(requestCode, resultCode, data)
+    }
+
+    fun onNewIntent(intent: Intent) {
+        spotifyAuthManager.onNewIntent(intent)
     }
 
     fun onPickMediaClick() {

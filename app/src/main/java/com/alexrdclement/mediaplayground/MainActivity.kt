@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         player = player,
                         isPlaying = isPlaying,
-                        onPickMediaClick = viewModel::onPickMediaClick,
+                        onPickMediaClick = { viewModel.requestSpotifyLogin(this) },
                         onPlayPauseClick = viewModel::onPlayPauseClick,
                     )
 
@@ -63,5 +64,15 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        viewModel.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { viewModel.onNewIntent(it) }
     }
 }

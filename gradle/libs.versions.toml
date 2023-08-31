@@ -16,6 +16,7 @@ hilt = "2.44"
 androidxHiltNavigationCompose = "1.0.0"
 media3 = "1.1.1"
 material3 = "1.1.1"
+spotify-auth = "2.1.0"
 tv-foundation = "1.0.0-alpha07"
 tv-material = "1.0.0-alpha07"
 appcompat = "1.6.1"
@@ -53,6 +54,7 @@ media3-transformer = { group = "androidx.media3", name = "media3-transformer", v
 media3-decoder = { group = "androidx.media3", name = "media3-decoder", version.ref = "media3" }
 media3-datasource = { group = "androidx.media3", name = "media3-datasource", version.ref = "media3" }
 media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+spotify-android-auth = { group = "com.spotify.android", name = "auth", version.ref = "spotify-auth"}
 tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tv-foundation" }
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tv-material" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }

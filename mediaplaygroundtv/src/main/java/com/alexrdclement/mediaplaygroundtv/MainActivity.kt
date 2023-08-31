@@ -1,47 +1,31 @@
 package com.alexrdclement.mediaplaygroundtv
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.tv.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.tv.material3.ExperimentalTvMaterial3Api
-import androidx.tv.material3.Surface
+import androidx.activity.viewModels
 import com.alexrdclement.ui.tv.theme.MediaPlaygroundTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalTvMaterial3Api::class)
+
+    private val viewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MediaPlaygroundTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    shape = RectangleShape
-                ) {
-                    Greeting("Android")
-                }
+                MainScreen(
+                    onLoginClick = { viewModel.onLoginClick(this) }
+                )
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MediaPlaygroundTheme {
-        Greeting("Android")
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { viewModel.onNewIntent(it) }
     }
 }

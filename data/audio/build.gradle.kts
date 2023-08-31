@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -34,8 +36,10 @@ android {
 }
 
 dependencies {
-
     implementation(libs.core.ktx)
+    implementation(libs.hilt.android)
+    implementation(libs.spotify.android.auth)
+    kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

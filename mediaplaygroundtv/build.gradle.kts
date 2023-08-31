@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -18,6 +20,8 @@ android {
             useSupportLibrary = true
         }
 
+        manifestPlaceholders["redirectSchemeName"] = "comalexrdclementmediaplayground"
+        manifestPlaceholders["redirectHostName"] = "callback"
     }
 
     buildTypes {
@@ -50,16 +54,21 @@ android {
 }
 
 dependencies {
-
     implementation(libs.core.ktx)
+    implementation(libs.activity.compose)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.runtime.compose)
     implementation(platform(libs.compose.bom))
+    implementation(libs.hilt.android)
     implementation(libs.ui.tooling.preview)
     implementation(libs.tv.foundation)
     implementation(libs.tv.material)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
+    implementation(project(":data:audio"))
     implementation(project(":ui-tv"))
     implementation(project(":ui-shared"))
+    kapt(libs.hilt.compiler)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
