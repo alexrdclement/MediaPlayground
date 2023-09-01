@@ -40,14 +40,18 @@ android {
 }
 
 dependencies {
-
     implementation(libs.core.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
     implementation(libs.tv.foundation)
     implementation(libs.tv.material)
-    implementation(libs.tv.foundation)
-    implementation(libs.tv.material)
+    implementation(project(":model:audio"))
     implementation(project(":ui-shared"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    debugImplementation(libs.ui.tooling)
 }

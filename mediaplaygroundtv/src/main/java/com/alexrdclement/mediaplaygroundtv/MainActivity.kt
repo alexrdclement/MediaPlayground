@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.ui.tv.theme.MediaPlaygroundTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,7 +18,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MediaPlaygroundTheme {
+                val savedTracks by viewModel.savedTracks.collectAsStateWithLifecycle()
                 MainScreen(
+                    savedTracks = savedTracks,
                     onLoginClick = viewModel::onLoginClick,
                     onLoadClick = viewModel::loadData
                 )

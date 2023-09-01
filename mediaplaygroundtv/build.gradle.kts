@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(project(":data:audio"))
+    implementation(project(":model:audio"))
     implementation(project(":ui-tv"))
     implementation(project(":ui-shared"))
     kapt(libs.hilt.compiler)
