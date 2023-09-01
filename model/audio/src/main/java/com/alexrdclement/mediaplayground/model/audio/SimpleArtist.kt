@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.data.audio.model
+package com.alexrdclement.mediaplayground.model.audio
 
 data class SimpleArtist(
     val id: String,

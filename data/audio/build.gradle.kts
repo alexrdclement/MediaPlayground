@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
+    implementation(project(":model:audio"))
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

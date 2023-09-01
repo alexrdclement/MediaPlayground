@@ -24,6 +24,7 @@ material = "1.9.0"
 org-jetbrains-kotlin-jvm = "1.9.0"
 spotify-api-kotlin-core = "4.0.2"
 uiTooling = "1.5.0"
+org-jetbrains-kotlin-jvm190 = "1.9.0"
 
 [libraries]
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
@@ -71,5 +72,6 @@ kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm190" }
 
 [bundles]

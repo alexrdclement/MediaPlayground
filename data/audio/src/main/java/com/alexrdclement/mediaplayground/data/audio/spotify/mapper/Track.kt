@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.data.audio.spotify.mapper
 
-import com.alexrdclement.mediaplayground.data.audio.model.Track
+import com.alexrdclement.mediaplayground.model.audio.Track
 import com.adamratzman.spotify.models.Track as SpotifyTrack
 
 fun SpotifyTrack.toTrack() = Track(

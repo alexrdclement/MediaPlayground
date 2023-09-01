@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.data.audio.spotify.mapper
 
-import com.alexrdclement.mediaplayground.data.audio.model.Album
+import com.alexrdclement.mediaplayground.model.audio.Album
 import com.adamratzman.spotify.models.Album as SpotifyAlbum
 
 fun SpotifyAlbum.toAlbum() = Album(

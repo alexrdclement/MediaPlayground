@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.data.audio
 
-import com.alexrdclement.mediaplayground.data.audio.model.Album
-import com.alexrdclement.mediaplayground.data.audio.model.Track
+import com.alexrdclement.mediaplayground.model.audio.Album
+import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.data.audio.model
+package com.alexrdclement.mediaplayground.model.audio
 
 data class Album(
     val id: String,

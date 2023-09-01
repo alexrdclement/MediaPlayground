@@ -2,10 +2,9 @@ package com.alexrdclement.mediaplayground.data.audio.spotify
 
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
-import com.alexrdclement.mediaplayground.data.audio.model.Album
-import com.alexrdclement.mediaplayground.data.audio.model.SimpleAlbum
+import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toTrack
-import com.alexrdclement.mediaplayground.data.audio.model.Track
+import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toAlbum
 import javax.inject.Inject
 

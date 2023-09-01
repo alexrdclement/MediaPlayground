@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.data.audio.spotify.mapper
 
-import com.alexrdclement.mediaplayground.data.audio.model.SimpleAlbum
+import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.adamratzman.spotify.models.SimpleAlbum as SpotifySimpleAlbum
 
 fun SpotifySimpleAlbum.toSimpleAlbum() = SimpleAlbum(
