@@ -1,6 +1,7 @@
 package com.alexrdclement.ui.tv.components
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +25,7 @@ fun TracksRow(
            TrackCard(
                track = track,
                onClick = { onTrackClick(track) },
-               modifier = Modifier.padding(16.dp)
+               modifier = Modifier.size(300.dp).padding(16.dp)
            )
        }
    }

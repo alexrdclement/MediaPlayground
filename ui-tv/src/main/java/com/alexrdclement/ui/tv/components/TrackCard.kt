@@ -4,11 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
@@ -19,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.CardLayoutDefaults
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.StandardCardLayout
-import androidx.tv.material3.Surface
 import androidx.tv.material3.Text
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.ui.shared.util.PreviewTrack1
@@ -39,25 +40,38 @@ fun TrackCard(
                 interactionSource = interactionSource
             ) {
                 Box(
-                    modifier = Modifier.size(300.dp)
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(16/9f),
                 ) {
                     Image(
                         imageVector = Icons.Default.PlayArrow,
                         contentDescription = "Play",
                         modifier = Modifier
-                            .size(48.dp)
+                            .fillMaxSize()
                             .align(Alignment.Center)
                     )
                 }
             }
         },
         title = {
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = track.name,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        },
+        subtitle = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text(text = track.name)
                 Text(text = track.artists.joinToString { it.name })
                 Text(text = track.simpleAlbum.name)
             }
@@ -73,7 +87,7 @@ private fun Preview() {
         TrackCard(
             track = PreviewTrack1,
             onClick = {},
-            modifier = Modifier.width(200.dp)
+            modifier = Modifier.size(300.dp)
         )
     }
 }
