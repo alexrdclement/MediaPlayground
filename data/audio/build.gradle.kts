@@ -11,7 +11,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -35,10 +35,19 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(8)
+}
+
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.hilt.android)
-    implementation(libs.spotify.android.auth)
+    implementation(libs.appcompat)
+    implementation(libs.spotify.api.kotlin.core)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

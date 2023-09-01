@@ -2,16 +2,14 @@ package com.alexrdclement.mediaplayground
 
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import com.alexrdclement.mediaplayground.data.audio.SpotifyAuthManager
+import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.media.service.MediaSessionService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val spotifyAuthManager: SpotifyAuthManager,
+    private val spotifyAudioRepository: SpotifyAudioRepository,
 ) : ViewModel() {
 
     private var mediaController: MutableStateFlow<MediaController?> = MutableStateFlow(null)
@@ -48,20 +46,8 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun requestSpotifyLogin(activity: ComponentActivity) {
-        spotifyAuthManager.requestLogin(activity)
-    }
-
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        spotifyAuthManager.onActivityResult(requestCode, resultCode, data)
-    }
-
-    fun onNewIntent(intent: Intent) {
-        spotifyAuthManager.onNewIntent(intent)
-    }
-
     fun onPickMediaClick() {
-        _bottomSheet.update { MainBottomSheet.MediaTypeChooserBottomSheet }
+        _bottomSheet.update { MainBottomSheet.MediaSourceChooserBottomSheet }
     }
 
     fun onPickMediaBottomSheetDismiss() {
@@ -72,6 +58,13 @@ class MainActivityViewModel @Inject constructor(
         val mediaItem = uri?.let(MediaItem::fromUri)
         mediaItem?.let {
             mediaController.value?.setMediaItem(mediaItem)
+        }
+    }
+
+    fun onSpotifyMediaSourceSelected() {
+        viewModelScope.launch {
+            val savedTracks = spotifyAudioRepository.getSavedTracks()
+            println("Got tracks: $savedTracks")
         }
     }
 

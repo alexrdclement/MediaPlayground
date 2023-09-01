@@ -23,9 +23,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        intent?.let { viewModel.onNewIntent(it) }
-    }
 }

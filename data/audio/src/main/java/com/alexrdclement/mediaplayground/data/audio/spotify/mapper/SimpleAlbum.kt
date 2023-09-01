@@ -1,0 +1,11 @@
+package com.alexrdclement.mediaplayground.data.audio.spotify.mapper
+
+import com.alexrdclement.mediaplayground.data.audio.model.SimpleAlbum
+import com.adamratzman.spotify.models.SimpleAlbum as SpotifySimpleAlbum
+
+fun SpotifySimpleAlbum.toSimpleAlbum() = SimpleAlbum(
+    id = this.id,
+    name = this.name,
+    artists = this.artists.map { it.toSimpleArtist() },
+    images = this.images.map { it.toImage() }
+)

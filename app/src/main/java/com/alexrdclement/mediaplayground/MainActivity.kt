@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.alexrdclement.mediaplayground
 
 import android.content.Intent
@@ -7,13 +9,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.ui.components.MediaTypePickerBottomSheet
-import com.alexrdclement.ui.components.PickMediaType
+import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyLoginActivity
+import com.alexrdclement.ui.components.MediaSourcePickerBottomSheet
+import com.alexrdclement.ui.components.MediaSource
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,19 +44,24 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         player = player,
                         isPlaying = isPlaying,
-                        onPickMediaClick = { viewModel.requestSpotifyLogin(this) },
+                        onLogInClick = {
+                            val intent = Intent(this, SpotifyLoginActivity::class.java)
+                            this.startActivity(intent)
+                        },
+                        onPickMediaClick = viewModel::onPickMediaClick,
                         onPlayPauseClick = viewModel::onPlayPauseClick,
                     )
 
                     when (bottomSheet) {
-                        MainBottomSheet.MediaTypeChooserBottomSheet -> {
-                            MediaTypePickerBottomSheet(
+                        MainBottomSheet.MediaSourceChooserBottomSheet -> {
+                            MediaSourcePickerBottomSheet(
                                 onDismissRequest = viewModel::onPickMediaBottomSheetDismiss,
-                                onMediaTypePicked = {
+                                onMediaSourcePicked = {
                                     // TODO: route event through view model
                                     when (it) {
-                                        PickMediaType.Audio -> mediaPicker.launch("audio/*")
-                                        PickMediaType.Video -> mediaPicker.launch("video/*")
+                                        MediaSource.DeviceAudio -> mediaPicker.launch("audio/*")
+                                        MediaSource.DeviceVideo -> mediaPicker.launch("video/*")
+                                        MediaSource.Spotify -> viewModel.onSpotifyMediaSourceSelected()
                                     }
                                     viewModel.onPickMediaBottomSheetDismiss()
                                 }
@@ -64,15 +73,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        viewModel.onActivityResult(requestCode, resultCode, data)
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        intent?.let { viewModel.onNewIntent(it) }
     }
 }
