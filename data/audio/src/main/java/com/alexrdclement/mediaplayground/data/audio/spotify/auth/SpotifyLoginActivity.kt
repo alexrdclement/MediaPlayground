@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.data.audio.spotify.auth
 
+import android.util.Log
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
@@ -10,6 +11,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SpotifyLoginActivity : AbstractSpotifyPkceLoginActivity() {
 
+    private val TAG = this::class.simpleName
+
     @Inject
     lateinit var credentialStore: SpotifyDefaultCredentialStore
 
@@ -19,6 +22,9 @@ class SpotifyLoginActivity : AbstractSpotifyPkceLoginActivity() {
 
     override fun onSuccess(api: SpotifyClientApi) {
         credentialStore.setSpotifyApi(api)
+
+        Log.d(TAG, "accessToken=${credentialStore.spotifyAccessToken}")
+        Log.d(TAG, "refreshToken=${credentialStore.spotifyRefreshToken}")
 
         finish()
     }

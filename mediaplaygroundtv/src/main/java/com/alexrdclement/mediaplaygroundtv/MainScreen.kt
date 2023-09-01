@@ -16,6 +16,7 @@ import androidx.tv.material3.Text
 @Composable
 fun MainScreen(
     onLoginClick: () -> Unit,
+    onLoadClick: () -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -30,6 +31,11 @@ fun MainScreen(
                 onClick = onLoginClick
             ) {
                 Text("Login")
+            }
+            Button(
+                onClick = onLoadClick
+            ) {
+                Text("Load")
             }
         }
     }
