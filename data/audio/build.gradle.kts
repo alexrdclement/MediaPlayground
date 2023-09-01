@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
 }
@@ -45,6 +46,7 @@ kapt {
 
 dependencies {
     implementation(libs.core.ktx)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
