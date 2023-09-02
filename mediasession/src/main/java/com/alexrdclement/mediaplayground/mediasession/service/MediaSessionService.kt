@@ -1,16 +1,14 @@
-package com.alexrdclement.mediaplayground.media.service
+package com.alexrdclement.mediaplayground.mediasession.service
 
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.app.PendingIntent.getActivity
-import android.content.Intent
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C.WAKE_MODE_LOCAL
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
-import com.alexrdclement.mediaplayground.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -21,7 +19,7 @@ class MediaSessionService @Inject constructor() : MediaSessionService() {
         get() = getActivity(
             this,
             /* requestCode */ 0,
-            Intent(this, MainActivity::class.java),
+            packageManager.getLaunchIntentForPackage(packageName),
             FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
         )
 

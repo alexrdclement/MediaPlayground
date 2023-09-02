@@ -2,14 +2,16 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
 }
 
 android {
-    namespace = "com.alexrdclement.ui"
+    namespace = "com.alexrdclement.mediaplayground.mediasession"
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -31,30 +33,26 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlin.compiler.extension.get()
-    }
 }
 
 dependencies {
     implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.runtime.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.guava)
+    implementation(libs.hilt.android)
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.ui)
     implementation(libs.media3.ui.leanback)
+    implementation(libs.media3.session)
+    implementation(libs.media3.cast)
+    implementation(libs.media3.transformer)
+    implementation(libs.media3.decoder)
+    implementation(libs.media3.datasource)
+    implementation(libs.media3.common)
+    implementation(project(":data:audio"))
     implementation(project(":model:audio"))
-    implementation(project(":ui-shared"))
+    kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    debugImplementation(libs.ui.tooling)
 }

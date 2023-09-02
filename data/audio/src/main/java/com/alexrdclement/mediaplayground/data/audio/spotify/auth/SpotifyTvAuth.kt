@@ -34,19 +34,8 @@ class SpotifyTvAuth @Inject constructor(
             load(assets.open(TokensFileName))
         }
 
-        val authCode = properties.getProperty("authorizationCode")
-
         credentialStore.currentSpotifyPkceCodeVerifier = pkceCodeVerifier
 
-//        val api = spotifyClientPkceApi(
-//            clientId = ClientId,
-//            redirectUri = RedirectUri,
-//            authorization = SpotifyUserAuthorization(
-//                authorizationCode = authCode,
-//                pkceCodeVerifier = credentialStore.currentSpotifyPkceCodeVerifier
-//            ),
-//            block = {}
-//        ).build()
         val api = SpotifyClientApi(
             clientId = ClientId,
             clientSecret = null,
