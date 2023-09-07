@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -40,10 +40,6 @@ kotlin {
     jvmToolchain(8)
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.kotlinx.serialization.json)
@@ -51,7 +47,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
     implementation(project(":model:audio"))
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
