@@ -16,3 +16,6 @@ val SimpleAlbum.thumbnailImageUrl: String?
         val image = images.getOrNull(1) ?: images.firstOrNull()
         return image?.url
     }
+
+val SimpleAlbum.largeImageUrl: String?
+    get() = images.firstOrNull()?.url
