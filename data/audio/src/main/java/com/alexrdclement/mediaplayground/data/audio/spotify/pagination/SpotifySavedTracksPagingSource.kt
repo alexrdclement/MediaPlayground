@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.data.audio.spotify
+package com.alexrdclement.mediaplayground.data.audio.spotify.pagination
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

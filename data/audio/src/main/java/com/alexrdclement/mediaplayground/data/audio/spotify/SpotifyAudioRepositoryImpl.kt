@@ -5,6 +5,7 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
 import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toAlbum
 import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toTrack
+import com.alexrdclement.mediaplayground.data.audio.spotify.pagination.SpotifySavedTracksPagingSource
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import javax.inject.Inject
