@@ -12,3 +12,6 @@ data class Track(
     val artists: List<SimpleArtist>,
     val simpleAlbum: SimpleAlbum,
 )
+
+val Track.thumbnailImageUrl: String?
+    get() = simpleAlbum.thumbnailImageUrl

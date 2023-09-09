@@ -9,3 +9,10 @@ data class SimpleAlbum(
     val artists: List<SimpleArtist>,
     val images: List<Image>,
 )
+
+val SimpleAlbum.thumbnailImageUrl: String?
+    get() {
+        // Third image is typically too low-res
+        val image = images.getOrNull(1) ?: images.firstOrNull()
+        return image?.url
+    }

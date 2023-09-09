@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.ui)
     implementation(libs.media3.ui.leanback)
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
     implementation(project(":model:audio"))
     implementation(project(":ui-shared"))
     testImplementation(libs.junit)
