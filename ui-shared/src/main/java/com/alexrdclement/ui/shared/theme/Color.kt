@@ -2,6 +2,8 @@ package com.alexrdclement.ui.shared.theme
 
 import androidx.compose.ui.graphics.Color
 
+const val DisabledAlpha = 0.35f
+
 internal val Purple80 = Color(0xFFD0BCFF)
 internal val PurpleGrey80 = Color(0xFFCCC2DC)
 internal val Pink80 = Color(0xFFEFB8C8)

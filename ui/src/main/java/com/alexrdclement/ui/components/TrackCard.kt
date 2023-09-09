@@ -2,7 +2,6 @@ package com.alexrdclement.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,13 +20,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewTrack1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 
@@ -47,6 +49,7 @@ fun TrackCard(
             Box(
                 contentAlignment = Alignment.Center,
             ) {
+                val isClickable = remember(track) { track.previewUrl != null }
                 Image(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = "Play",
@@ -55,11 +58,17 @@ fun TrackCard(
                         .size(64.dp)
                         .padding(8.dp)
                         .border(
-                            border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+                            border = BorderStroke(
+                                width = 2.dp,
+                                color = MaterialTheme.colorScheme.primary.copy(
+                                    alpha = if (isClickable) 1f else DisabledAlpha
+                                )
+                            ),
                             shape = CircleShape,
                         )
                         .clip(CircleShape)
-                        .clickable { onPlayClick() }
+                        .alpha(if (isClickable) 1f else DisabledAlpha)
+                        .clickable(enabled = isClickable) { onPlayClick() }
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
