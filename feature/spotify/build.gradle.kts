@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
+    implementation(libs.paging)
+    implementation(libs.paging.compose)
     implementation(project(":data:audio"))
     implementation(project(":mediasession"))
     implementation(project(":model:audio"))

@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
+    implementation(libs.paging)
     implementation(project(":model:audio"))
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
