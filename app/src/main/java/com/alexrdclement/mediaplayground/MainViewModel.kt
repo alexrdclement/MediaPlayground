@@ -16,21 +16,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mediaSessionManager: MediaSessionManager,
+    mediaSessionManager: MediaSessionManager,
 ) : ViewModel() {
 
-    val player: StateFlow<Player?> = mediaSessionManager.player
+    private val player: StateFlow<Player?> = mediaSessionManager.player
 
     val isPlaying = mediaSessionManager.isPlaying
 
     private val _bottomSheet = MutableStateFlow<MainBottomSheet?>(null)
     val bottomSheet = _bottomSheet.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            mediaSessionManager.createMediaSession()
-        }
-    }
 
     fun onPickMediaClick() {
         _bottomSheet.update { MainBottomSheet.MediaSourceChooserBottomSheet }

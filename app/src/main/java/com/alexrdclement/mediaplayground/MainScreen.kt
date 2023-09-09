@@ -20,12 +20,9 @@ import com.alexrdclement.ui.components.MediaPickerButton
 import com.alexrdclement.ui.components.MediaPlayer
 import com.alexrdclement.ui.components.PlayerControls
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    player: Player?,
     isPlaying: Boolean,
-    onLogInClick: () -> Unit,
     onPickMediaClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
 ) {
@@ -40,25 +37,6 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(vertical = 16.dp)
         ) {
-            TopAppBar(
-                title = {},
-                actions = {
-                    Button(
-                        onClick = onLogInClick,
-                    ) {
-                        Text("Log In")
-                    }
-                }
-            )
-            if (player != null) {
-                MediaPlayer(
-                    player = player,
-                    modifier = Modifier
-                        .padding(vertical = 16.dp)
-                        .weight(1f)
-                        .fillMaxWidth()
-                )
-            }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
