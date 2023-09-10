@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.feature.player"
+    namespace = "com.alexrdclement.mediaplayground.feature.album"
     compileSdk = 34
 
     defaultConfig {
@@ -39,15 +39,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlin.compiler.extension.get()
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-}
-
-kotlin {
-    jvmToolchain(8)
 }
 
 dependencies {
@@ -63,14 +54,11 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.media3.exoplayer)
-    implementation(libs.media3.ui)
-    implementation(libs.media3.session)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
     implementation(projects.data.audio)
-    implementation(projects.model.audio)
     implementation(projects.mediasession)
+    implementation(projects.model.audio)
     implementation(projects.ui)
     implementation(projects.uiShared)
     ksp(libs.hilt.compiler)

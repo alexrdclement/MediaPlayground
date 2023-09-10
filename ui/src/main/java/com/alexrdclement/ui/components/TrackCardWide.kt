@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,13 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
-import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewTrack1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 
@@ -49,17 +45,11 @@ fun TrackCardWide(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.size(64.dp)
             ) {
-                track.thumbnailImageUrl?.let {
-                    AsyncImage(
-                        model = it,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .alpha(if (isEnabled) 1f else DisabledAlpha)
-                            .fillMaxSize()
-                    )
-                }
-
+                MediaItemArtwork(
+                    imageUrl = track.thumbnailImageUrl,
+                    isEnabled = isEnabled,
+                    modifier = Modifier.fillMaxSize()
+                )
                 PlayPauseButton(
                     isEnabled = isEnabled,
                     onClick = onPlayClick

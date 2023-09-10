@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.player
+package com.alexrdclement.mediaplayground.feature.player
 
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.Player

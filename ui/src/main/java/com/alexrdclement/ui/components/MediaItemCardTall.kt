@@ -52,16 +52,11 @@ fun MediaItemCardTall(
                 modifier = Modifier
                     .aspectRatio(1f, matchHeightConstraintsFirst = false)
             ) {
-                mediaItem.thumbnailImageUrl?.let {
-                    AsyncImage(
-                        model = it,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .alpha(if (isEnabled) 1f else DisabledAlpha)
-                            .fillMaxSize()
-                    )
-                }
-
+                MediaItemArtwork(
+                    imageUrl = mediaItem.thumbnailImageUrl,
+                    isEnabled = isEnabled,
+                    modifier = Modifier.fillMaxSize()
+                )
                 PlayPauseButton(
                     isEnabled = isEnabled,
                     onClick = onPlayClick,

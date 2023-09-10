@@ -24,6 +24,7 @@ fun NavController.navigateToSpotifyLibrary(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.spotifyLibraryScreen(
     onPlayTrack: (Track) -> Unit,
+    onNavigateToAlbum: (Album) -> Unit,
 ) {
     composable(SpotifyLibraryRoute) {
         val viewModel: SpotifyLibraryViewModel = hiltViewModel()
@@ -37,7 +38,7 @@ fun NavGraphBuilder.spotifyLibraryScreen(
             savedAlbums = savedAlbums,
             onPlayMediaItem = { mediaItem ->
                 when (mediaItem) {
-                    is Album -> {}
+                    is Album -> { onNavigateToAlbum(mediaItem) }
                     is Track -> {
                         viewModel.onPlayTrack(mediaItem)
                         onPlayTrack(mediaItem)

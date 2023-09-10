@@ -15,4 +15,8 @@ class AudioRepositoryImpl @Inject constructor(
     override suspend fun getSavedAlbums(): List<Album> {
         return spotifyAudioRepository.getSavedAlbums()
     }
+
+    override suspend fun getAlbum(id: String): Album? {
+        return spotifyAudioRepository.getAlbum(id)
+    }
 }

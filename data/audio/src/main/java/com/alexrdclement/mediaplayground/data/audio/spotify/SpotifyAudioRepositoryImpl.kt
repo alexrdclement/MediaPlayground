@@ -38,4 +38,10 @@ class SpotifyAudioRepositoryImpl @Inject constructor(
     override fun getSavedAlbumsPagingSource(): PagingSource<Int, Album> {
         return SpotifySavedAlbumsPagingSource(credentialStore)
     }
+
+    override suspend fun getAlbum(id: String): Album? {
+        // TODO: error handling
+        val api = spotifyApi ?: return null
+        return api.albums.getAlbum(id)?.toAlbum()
+    }
 }

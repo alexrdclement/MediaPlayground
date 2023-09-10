@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
     implementation(projects.data.audio)
+    implementation(projects.feature.album)
     implementation(projects.feature.player)
     implementation(projects.feature.spotify)
     implementation(projects.mediasession)

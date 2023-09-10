@@ -16,10 +16,12 @@ import androidx.navigation.compose.rememberNavController
 import com.alexrdclement.mediaplayground.MainBottomSheet
 import com.alexrdclement.mediaplayground.MainScreen
 import com.alexrdclement.mediaplayground.MainViewModel
+import com.alexrdclement.mediaplayground.feature.album.navigation.albumScreen
+import com.alexrdclement.mediaplayground.feature.album.navigation.navigateToAlbum
 import com.alexrdclement.mediaplayground.feature.spotify.navigation.navigateToSpotifyLibrary
 import com.alexrdclement.mediaplayground.feature.spotify.navigation.spotifyLibraryScreen
-import com.alexrdclement.mediaplayground.player.navigation.navigateToPlayer
-import com.alexrdclement.mediaplayground.player.navigation.playerScreen
+import com.alexrdclement.mediaplayground.feature.player.navigation.navigateToPlayer
+import com.alexrdclement.mediaplayground.feature.player.navigation.playerScreen
 import com.alexrdclement.ui.components.MediaSource
 import com.alexrdclement.ui.components.MediaSourcePickerBottomSheet
 
@@ -38,8 +40,14 @@ fun MediaPlaygroundNavHost() {
         spotifyLibraryScreen(
             onPlayTrack = { track ->
                 navController.navigateToPlayer()
+            },
+            onNavigateToAlbum = { album ->
+                navController.navigateToAlbum(
+                    albumId = album.id,
+                )
             }
         )
+        albumScreen()
         playerScreen()
     }
 }

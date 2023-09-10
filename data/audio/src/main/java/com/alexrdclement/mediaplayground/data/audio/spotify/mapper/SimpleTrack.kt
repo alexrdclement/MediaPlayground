@@ -6,6 +6,7 @@ import com.adamratzman.spotify.models.SimpleTrack as SpotifySimpleTrack
 fun SpotifySimpleTrack.toSimpleTrack() = SimpleTrack(
     id = this.id,
     name = this.name,
+    artists = this.artists.map { it.toSimpleArtist() },
     durationMs = this.durationMs,
     trackNumber = this.trackNumber,
     previewUrl = this.previewUrl,
