@@ -18,8 +18,8 @@ fun Track.toMediaMetadata(): MediaMetadata {
         .setAlbumArtist(simpleAlbum.artists.joinToString { it.name })
         .setArtist(simpleAlbum.artists.joinToString { it.name })
         .setAlbumTitle(simpleAlbum.name)
-        .setDisplayTitle(name)
-        .setTitle(name)
+        .setDisplayTitle(title)
+        .setTitle(title)
         .apply {
             simpleAlbum.largeImageUrl?.let {
                 setArtworkUri(Uri.parse(it))

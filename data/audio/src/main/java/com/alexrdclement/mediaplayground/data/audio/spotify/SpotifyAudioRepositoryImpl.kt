@@ -5,6 +5,7 @@ import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
 import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toAlbum
 import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toTrack
+import com.alexrdclement.mediaplayground.data.audio.spotify.pagination.SpotifySavedAlbumsPagingSource
 import com.alexrdclement.mediaplayground.data.audio.spotify.pagination.SpotifySavedTracksPagingSource
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -32,5 +33,9 @@ class SpotifyAudioRepositoryImpl @Inject constructor(
         // TODO: error handling
         val api = spotifyApi ?: return listOf()
         return api.library.getSavedAlbums().mapNotNull { it?.album?.toAlbum() }
+    }
+
+    override fun getSavedAlbumsPagingSource(): PagingSource<Int, Album> {
+        return SpotifySavedAlbumsPagingSource(credentialStore)
     }
 }

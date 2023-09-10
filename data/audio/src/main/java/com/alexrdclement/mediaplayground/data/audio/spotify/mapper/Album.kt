@@ -5,7 +5,7 @@ import com.adamratzman.spotify.models.Album as SpotifyAlbum
 
 fun SpotifyAlbum.toAlbum() = Album(
     id = this.id,
-    name = this.name,
+    title = this.name,
     artists = this.artists.map { it.toSimpleArtist() },
     images = this.images.map { it.toImage() },
     tracks = this.tracks.mapNotNull { it?.toSimpleTrack() },

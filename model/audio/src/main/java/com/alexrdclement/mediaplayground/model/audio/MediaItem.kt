@@ -1,0 +1,16 @@
+package com.alexrdclement.mediaplayground.model.audio
+
+sealed interface MediaItem {
+    val id: String
+    val title: String
+    val artists: List<SimpleArtist>
+    val images: List<Image>
+    val isPlayable: Boolean
+}
+
+val MediaItem.thumbnailImageUrl: String?
+    get() {
+        // Third image is typically too low-res
+        val image = images.getOrNull(1) ?: images.firstOrNull()
+        return image?.url
+    }

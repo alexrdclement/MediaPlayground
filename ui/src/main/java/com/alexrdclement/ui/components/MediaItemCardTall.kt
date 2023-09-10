@@ -17,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -26,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewTrack1
@@ -34,11 +33,11 @@ import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun TrackCardTall(
-    track: Track,
+fun MediaItemCardTall(
+    mediaItem: MediaItem,
+    isEnabled: Boolean,
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isEnabled: Boolean = remember(track) { track.previewUrl != null }
 ) {
     OutlinedCard(
         enabled = isEnabled,
@@ -53,7 +52,7 @@ fun TrackCardTall(
                 modifier = Modifier
                     .aspectRatio(1f, matchHeightConstraintsFirst = false)
             ) {
-                track.thumbnailImageUrl?.let {
+                mediaItem.thumbnailImageUrl?.let {
                     AsyncImage(
                         model = it,
                         contentDescription = null,
@@ -77,7 +76,7 @@ fun TrackCardTall(
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = track.name,
+                    text = mediaItem.title,
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
@@ -85,7 +84,7 @@ fun TrackCardTall(
                         .basicMarquee()
                 )
                 Text(
-                    text = track.artists.joinToString { it.name },
+                    text = mediaItem.artists.joinToString { it.name },
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
@@ -101,10 +100,10 @@ fun TrackCardTall(
 @Composable
 private fun Preview() {
     MediaPlaygroundTheme {
-        TrackCardTall(
-            track = PreviewTrack1,
-            onPlayClick = {},
+        MediaItemCardTall(
+            mediaItem = PreviewTrack1,
             isEnabled = true,
+            onPlayClick = {},
             modifier = Modifier
                 .width(280.dp),
         )

@@ -8,4 +8,5 @@ interface SpotifyAudioRepository {
     suspend fun getSavedTracks(): List<Track>
     fun getSavedTracksPagingSource(): PagingSource<Int, Track>
     suspend fun getSavedAlbums(): List<Album>
+    fun getSavedAlbumsPagingSource(): PagingSource<Int, Album>
 }

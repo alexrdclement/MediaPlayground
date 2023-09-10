@@ -4,12 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,24 +16,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
-import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.ui.components.TrackCardWide
-import com.alexrdclement.ui.components.TrackRow
-import com.alexrdclement.ui.shared.util.PreviewTracks
+import com.alexrdclement.mediaplayground.model.audio.MediaItem
+import com.alexrdclement.ui.components.MediaItemRow
+import com.alexrdclement.ui.shared.util.PreviewAlbums1
+import com.alexrdclement.ui.shared.util.PreviewTracks1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
+
+private val MediaItemWidth = 200.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpotifyLibraryScreen(
     isLoggedIn: Boolean,
-    savedTracks: LazyPagingItems<Track>,
-    onPlayTrack: (Track) -> Unit,
+    savedTracks: LazyPagingItems<MediaItem>,
+    savedAlbums: LazyPagingItems<MediaItem>,
+    onPlayMediaItem: (MediaItem) -> Unit,
     onLogInClick: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {
@@ -77,12 +74,20 @@ fun SpotifyLibraryScreen(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                TrackRow(
-                    tracks = savedTracks,
-                    onPlayClick = onPlayTrack,
+                MediaItemRow(
+                    mediaItems = savedAlbums,
+                    onPlayClick = onPlayMediaItem,
+                    title = "Saved albums",
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    itemWidth = MediaItemWidth,
+                    modifier = Modifier
+                )
+                MediaItemRow(
+                    mediaItems = savedTracks,
+                    onPlayClick = onPlayMediaItem,
                     title = "Saved tracks",
                     contentPadding = PaddingValues(horizontal = 16.dp),
-                    itemWidth = 200.dp,
+                    itemWidth = MediaItemWidth,
                     modifier = Modifier
                 )
             }
@@ -110,11 +115,13 @@ fun LogInOutButton(
 @Composable
 private fun Preview() {
     MediaPlaygroundTheme {
-        val pagingData = flowOf(PagingData.from(PreviewTracks))
+        val savedTracks = flowOf(PagingData.from<MediaItem>(PreviewTracks1)).collectAsLazyPagingItems()
+        val savedAlbums = flowOf(PagingData.from<MediaItem>(PreviewAlbums1)).collectAsLazyPagingItems()
         SpotifyLibraryScreen(
             isLoggedIn = true,
-            savedTracks = pagingData.collectAsLazyPagingItems(),
-            onPlayTrack = {},
+            savedTracks = savedTracks,
+            savedAlbums = savedAlbums,
+            onPlayMediaItem = {},
             onLogInClick = {},
             onLogOutClick = {},
         )

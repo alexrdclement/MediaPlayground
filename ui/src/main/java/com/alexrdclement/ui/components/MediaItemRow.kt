@@ -3,7 +3,6 @@ package com.alexrdclement.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -22,15 +21,15 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.ui.shared.util.PreviewTracks
+import com.alexrdclement.mediaplayground.model.audio.MediaItem
+import com.alexrdclement.ui.shared.util.PreviewTracks1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
-fun TrackRow(
-    tracks: LazyPagingItems<Track>,
-    onPlayClick: (Track) -> Unit,
+fun MediaItemRow(
+    mediaItems: LazyPagingItems<MediaItem>,
+    onPlayClick: (MediaItem) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     itemWidth: Dp = 280.dp,
@@ -54,19 +53,20 @@ fun TrackRow(
             modifier = Modifier,
         ) {
             items(
-                count = tracks.itemCount,
-                key = tracks.itemKey { it.id }
+                count = mediaItems.itemCount,
+                key = mediaItems.itemKey { it.id }
             ) { index ->
-                val track = tracks[index] ?: return@items
-                TrackCardTall(
-                    track = track,
-                    onPlayClick = { onPlayClick(track) },
+                val mediaItem = mediaItems[index] ?: return@items
+                MediaItemCardTall(
+                    mediaItem = mediaItem,
+                    isEnabled = mediaItem.isPlayable,
+                    onPlayClick = { onPlayClick(mediaItem) },
                     modifier = Modifier
                         .width(itemWidth)
                 )
             }
 
-            if (tracks.loadState.append == LoadState.Loading) {
+            if (mediaItems.loadState.append == LoadState.Loading) {
                 item {
                     CircularProgressIndicator()
                 }
@@ -80,10 +80,10 @@ fun TrackRow(
 private fun Preview() {
     MediaPlaygroundTheme {
         Surface {
-            val tracks = flowOf(PagingData.from(PreviewTracks))
-            TrackRow(
+            val tracks = flowOf(PagingData.from<MediaItem>(PreviewTracks1))
+            MediaItemRow(
                 title = "Saved tracks",
-                tracks = tracks.collectAsLazyPagingItems(),
+                mediaItems = tracks.collectAsLazyPagingItems(),
                 onPlayClick = {},
                 modifier = Modifier
                     .height(360.dp)

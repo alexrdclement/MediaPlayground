@@ -4,14 +4,20 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Track(
-    val id: String,
-    val name: String,
+    override val id: String,
+    override val title: String,
+    override val artists: List<SimpleArtist>,
     val durationMs: Int,
     val trackNumber: Int,
     val previewUrl: String?,
-    val artists: List<SimpleArtist>,
     val simpleAlbum: SimpleAlbum,
-)
+) : MediaItem {
+    override val images: List<Image>
+        get() = simpleAlbum.images
+
+    override val isPlayable: Boolean
+        get() = previewUrl != null
+}
 
 val Track.thumbnailImageUrl: String?
     get() = simpleAlbum.thumbnailImageUrl

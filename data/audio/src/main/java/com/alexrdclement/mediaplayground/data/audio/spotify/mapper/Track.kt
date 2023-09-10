@@ -5,7 +5,7 @@ import com.adamratzman.spotify.models.Track as SpotifyTrack
 
 fun SpotifyTrack.toTrack() = Track(
     id = this.id,
-    name = this.name,
+    title = this.name,
     durationMs = this.durationMs,
     trackNumber = this.trackNumber,
     previewUrl = this.previewUrl,
