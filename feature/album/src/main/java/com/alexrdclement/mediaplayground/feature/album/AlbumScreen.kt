@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -27,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.ui.components.MediaItemArtwork
 import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewAlbum1
@@ -53,7 +52,7 @@ fun AlbumScreen(
                 return@Column
             }
             MediaItemArtwork(
-                imageUrl = album.thumbnailImageUrl,
+                imageUrl = album.largeImageUrl,
                 modifier = Modifier.fillMaxSize()
             )
             Column(
@@ -65,7 +64,7 @@ fun AlbumScreen(
                 Text(
                     text = album.title,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.headlineSmall,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
@@ -73,7 +72,7 @@ fun AlbumScreen(
                 Text(
                     text = album.artists.joinToString { it.name },
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()

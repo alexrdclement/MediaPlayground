@@ -14,3 +14,6 @@ val MediaItem.thumbnailImageUrl: String?
         val image = images.getOrNull(1) ?: images.firstOrNull()
         return image?.url
     }
+
+val MediaItem.largeImageUrl: String?
+    get() = images.firstOrNull()?.url

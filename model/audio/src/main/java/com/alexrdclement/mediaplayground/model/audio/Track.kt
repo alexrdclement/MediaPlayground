@@ -18,6 +18,3 @@ data class Track(
     override val isPlayable: Boolean
         get() = previewUrl != null
 }
-
-val Track.thumbnailImageUrl: String?
-    get() = simpleAlbum.thumbnailImageUrl
