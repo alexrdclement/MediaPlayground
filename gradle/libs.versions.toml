@@ -22,7 +22,6 @@ material3 = "1.1.1"
 tv-foundation = "1.0.0-alpha07"
 tv-material = "1.0.0-alpha07"
 appcompat = "1.6.1"
-material = "1.9.0"
 org-jetbrains-kotlin-jvm = "1.9.0"
 spotify-api-kotlin-core = "4.0.2"
 uiTooling = "1.5.0"
@@ -50,6 +49,7 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3"}
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
@@ -66,7 +66,6 @@ media3-common = { group = "androidx.media3", name = "media3-common", version.ref
 tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tv-foundation" }
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tv-material" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 spotify-api-kotlin-core = { group = "com.adamratzman", name = "spotify-api-kotlin-core", version.ref = "spotify-api-kotlin-core" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
