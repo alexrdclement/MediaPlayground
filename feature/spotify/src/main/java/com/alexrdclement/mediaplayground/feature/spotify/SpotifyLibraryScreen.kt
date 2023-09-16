@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,9 +34,7 @@ private val MediaItemWidth = 200.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpotifyLibraryScreen(
-    isLoggedIn: Boolean,
-    savedTracks: LazyPagingItems<MediaItem>,
-    savedAlbums: LazyPagingItems<MediaItem>,
+    uiState: SpotifyLibraryUiState,
     onPlayMediaItem: (MediaItem) -> Unit,
     onLogInClick: () -> Unit,
     onLogOutClick: () -> Unit,
@@ -61,6 +60,7 @@ fun SpotifyLibraryScreen(
                     )
                 },
                 actions = {
+                    val isLoggedIn = remember(uiState) { uiState is SpotifyLibraryUiState.LoggedIn }
                     LogInOutButton(
                         isLoggedIn = isLoggedIn,
                         onClick = {
@@ -73,34 +73,50 @@ fun SpotifyLibraryScreen(
                     )
                 }
             )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                MediaItemRow(
-                    mediaItems = savedAlbums,
-                    onPlayClick = onPlayMediaItem,
-                    title = "Saved albums",
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    itemWidth = MediaItemWidth,
-                    modifier = Modifier
-                )
-                MediaItemRow(
-                    mediaItems = savedTracks,
-                    onPlayClick = onPlayMediaItem,
-                    title = "Saved tracks",
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    itemWidth = MediaItemWidth,
-                    modifier = Modifier
-                )
+            when (uiState) {
+                SpotifyLibraryUiState.InitialState,
+                SpotifyLibraryUiState.NotLoggedIn -> {}
+                is SpotifyLibraryUiState.LoggedIn -> {
+                    LoggedInContent(uiState, onPlayMediaItem)
+                }
             }
         }
     }
 }
 
 @Composable
-fun LogInOutButton(
+private fun LoggedInContent(
+    uiState: SpotifyLibraryUiState.LoggedIn,
+    onPlayMediaItem: (MediaItem) -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        val savedAlbums = uiState.savedAlbums.collectAsLazyPagingItems()
+        val savedTracks = uiState.savedTracks.collectAsLazyPagingItems()
+        MediaItemRow(
+            mediaItems = savedAlbums,
+            onPlayClick = onPlayMediaItem,
+            title = "Saved albums",
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            itemWidth = MediaItemWidth,
+            modifier = Modifier
+        )
+        MediaItemRow(
+            mediaItems = savedTracks,
+            onPlayClick = onPlayMediaItem,
+            title = "Saved tracks",
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            itemWidth = MediaItemWidth,
+            modifier = Modifier
+        )
+    }
+}
+
+@Composable
+private fun LogInOutButton(
     isLoggedIn: Boolean,
     onClick: () -> Unit,
 ) {
@@ -119,12 +135,12 @@ fun LogInOutButton(
 @Composable
 private fun Preview() {
     MediaPlaygroundTheme {
-        val savedTracks = flowOf(PagingData.from<MediaItem>(PreviewTracks1)).collectAsLazyPagingItems()
-        val savedAlbums = flowOf(PagingData.from<MediaItem>(PreviewAlbums1)).collectAsLazyPagingItems()
+        val uiState = SpotifyLibraryUiState.LoggedIn(
+            savedTracks = flowOf(PagingData.from(PreviewTracks1)),
+            savedAlbums = flowOf(PagingData.from(PreviewAlbums1)),
+        )
         SpotifyLibraryScreen(
-            isLoggedIn = true,
-            savedTracks = savedTracks,
-            savedAlbums = savedAlbums,
+            uiState = uiState,
             onPlayMediaItem = {},
             onLogInClick = {},
             onLogOutClick = {},

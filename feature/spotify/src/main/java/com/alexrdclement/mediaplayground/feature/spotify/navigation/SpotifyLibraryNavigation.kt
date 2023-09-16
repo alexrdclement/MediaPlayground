@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyLoginActivity
 import com.alexrdclement.mediaplayground.feature.spotify.SpotifyLibraryScreen
+import com.alexrdclement.mediaplayground.feature.spotify.SpotifyLibraryUiState
 import com.alexrdclement.mediaplayground.feature.spotify.SpotifyLibraryViewModel
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -28,14 +29,10 @@ fun NavGraphBuilder.spotifyLibraryScreen(
 ) {
     composable(SpotifyLibraryRoute) {
         val viewModel: SpotifyLibraryViewModel = hiltViewModel()
-        val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
-        val savedTracks = viewModel.savedTracks.collectAsLazyPagingItems()
-        val savedAlbums = viewModel.savedAlbums.collectAsLazyPagingItems()
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle(initialValue = SpotifyLibraryUiState.InitialState)
         val context = LocalContext.current
         SpotifyLibraryScreen(
-            isLoggedIn = isLoggedIn,
-            savedTracks = savedTracks,
-            savedAlbums = savedAlbums,
+            uiState = uiState,
             onPlayMediaItem = { mediaItem ->
                 when (mediaItem) {
                     is Album -> { onNavigateToAlbum(mediaItem) }

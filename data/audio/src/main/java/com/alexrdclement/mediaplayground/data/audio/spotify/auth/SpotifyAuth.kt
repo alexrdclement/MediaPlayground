@@ -6,7 +6,9 @@ import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SpotifyAuth @Inject constructor(
     private val credentialStore: SpotifyDefaultCredentialStore,
 ) {

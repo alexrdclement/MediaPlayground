@@ -15,7 +15,11 @@ import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.cache
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,13 +33,11 @@ class SpotifyLibraryViewModel @Inject constructor(
         val pagingConfig = PagingConfig(pageSize = 10)
     }
 
-    val isLoggedIn = spotifyAuth.isLoggedIn
-
     private val savedTracksPager = Pager(
         config = pagingConfig,
         pagingSourceFactory = spotifyAudioRepository::getSavedTracksPagingSource,
     )
-    val savedTracks: Flow<PagingData<MediaItem>> = savedTracksPager.flow
+    private val savedTracks: Flow<PagingData<MediaItem>> = savedTracksPager.flow
         .map { pagingData ->
             pagingData.map { track -> track as MediaItem }
         }.cachedIn(viewModelScope)
@@ -44,10 +46,25 @@ class SpotifyLibraryViewModel @Inject constructor(
         config = pagingConfig,
         pagingSourceFactory = spotifyAudioRepository::getSavedAlbumsPagingSource,
     )
-    val savedAlbums = savedAlbumsPager.flow
+    private val savedAlbums = savedAlbumsPager.flow
         .map { pagingData ->
             pagingData.map { album -> album as MediaItem }
         }.cachedIn(viewModelScope)
+
+    val uiState: StateFlow<SpotifyLibraryUiState> = spotifyAuth.isLoggedIn.map { isLoggedIn ->
+        if (!isLoggedIn) {
+            return@map SpotifyLibraryUiState.NotLoggedIn
+        }
+
+        return@map SpotifyLibraryUiState.LoggedIn(
+            savedTracks = savedTracks,
+            savedAlbums = savedAlbums,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = SpotifyLibraryUiState.InitialState
+    )
 
     fun onLogOutClick() {
         spotifyAuth.logOut()
