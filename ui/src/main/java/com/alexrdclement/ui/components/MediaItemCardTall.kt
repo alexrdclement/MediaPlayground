@@ -34,12 +34,13 @@ fun MediaItemCardTall(
     mediaItem: MediaItem,
     isEnabled: Boolean,
     isPlaying: Boolean,
-    onPlayClick: () -> Unit,
+    onClick: () -> Unit,
+    onPlayPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OutlinedCard(
         enabled = isEnabled,
-        onClick = onPlayClick,
+        onClick = onClick,
         modifier = modifier
     ) {
         Column(
@@ -58,7 +59,7 @@ fun MediaItemCardTall(
                 PlayPauseButton(
                     isPlaying = isPlaying,
                     isEnabled = isEnabled,
-                    onClick = onPlayClick,
+                    onClick = onPlayPauseClick,
                     modifier = Modifier
                         .size(24.dp)
                         .align(BiasAlignment(.8f, .8f))
@@ -98,7 +99,8 @@ private fun Preview() {
             mediaItem = PreviewTrack1,
             isEnabled = true,
             isPlaying = false,
-            onPlayClick = {},
+            onClick = {},
+            onPlayPauseClick = {},
             modifier = Modifier
                 .width(280.dp),
         )

@@ -14,31 +14,65 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
+import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.ui.components.MediaItemRow
 import com.alexrdclement.ui.shared.model.MediaItemUi
-import com.alexrdclement.ui.shared.util.PreviewAlbums1
 import com.alexrdclement.ui.shared.util.PreviewAlbumsUi1
-import com.alexrdclement.ui.shared.util.PreviewTracks1
 import com.alexrdclement.ui.shared.util.PreviewTracksUi1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 private val MediaItemWidth = 200.dp
 
+@Composable
+fun SpotifyLibraryScreen(
+    onNavigateToLogIn: () -> Unit,
+    onNavigateToPlayer: (MediaItem) -> Unit,
+    onNavigateToAlbum: (Album) -> Unit,
+    viewModel: SpotifyLibraryViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle(
+        initialValue = SpotifyLibraryUiState.InitialState
+    )
+    SpotifyLibraryScreen(
+        uiState = uiState,
+        onItemClick = { mediaItemUi ->
+            viewModel.onItemClick(mediaItemUi)
+
+            when (val mediaItem = mediaItemUi.mediaItem) {
+                is Album -> {
+                    onNavigateToAlbum(mediaItem)
+                }
+
+                is Track -> {
+                    onNavigateToPlayer(mediaItem)
+                }
+            }
+        },
+        onItemPlayPauseClick = viewModel::onPlayPauseClick,
+        onLogInClick = onNavigateToLogIn,
+        onLogOutClick = viewModel::onLogOutClick,
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpotifyLibraryScreen(
     uiState: SpotifyLibraryUiState,
-    onPlayMediaItem: (MediaItemUi) -> Unit,
+    onItemClick: (MediaItemUi) -> Unit,
+    onItemPlayPauseClick: (MediaItemUi) -> Unit,
     onLogInClick: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {
@@ -80,7 +114,11 @@ fun SpotifyLibraryScreen(
                 SpotifyLibraryUiState.InitialState,
                 SpotifyLibraryUiState.NotLoggedIn -> {}
                 is SpotifyLibraryUiState.LoggedIn -> {
-                    LoggedInContent(uiState, onPlayMediaItem)
+                    LoggedInContent(
+                        uiState = uiState,
+                        onItemClick = onItemClick,
+                        onItemPlayPauseClick = onItemPlayPauseClick,
+                    )
                 }
             }
         }
@@ -90,7 +128,8 @@ fun SpotifyLibraryScreen(
 @Composable
 private fun LoggedInContent(
     uiState: SpotifyLibraryUiState.LoggedIn,
-    onPlayMediaItem: (MediaItemUi) -> Unit
+    onItemClick: (MediaItemUi) -> Unit,
+    onItemPlayPauseClick: (MediaItemUi) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -101,7 +140,8 @@ private fun LoggedInContent(
         val savedTracks = uiState.savedTracks.collectAsLazyPagingItems()
         MediaItemRow(
             mediaItems = savedAlbums,
-            onPlayClick = onPlayMediaItem,
+            onItemClick = onItemClick,
+            onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Saved albums",
             contentPadding = PaddingValues(horizontal = 16.dp),
             itemWidth = MediaItemWidth,
@@ -109,7 +149,8 @@ private fun LoggedInContent(
         )
         MediaItemRow(
             mediaItems = savedTracks,
-            onPlayClick = onPlayMediaItem,
+            onItemClick = onItemClick,
+            onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Saved tracks",
             contentPadding = PaddingValues(horizontal = 16.dp),
             itemWidth = MediaItemWidth,
@@ -144,7 +185,8 @@ private fun Preview() {
         )
         SpotifyLibraryScreen(
             uiState = uiState,
-            onPlayMediaItem = {},
+            onItemClick = {},
+            onItemPlayPauseClick = {},
             onLogInClick = {},
             onLogOutClick = {},
         )

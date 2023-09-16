@@ -38,7 +38,7 @@ fun MediaPlaygroundNavHost() {
             navigateToSpotifyLibrary = navController::navigateToSpotifyLibrary,
         )
         spotifyLibraryScreen(
-            onPlayTrack = { track ->
+            onNavigateToPlayer = { mediaItem ->
                 navController.navigateToPlayer()
             },
             onNavigateToAlbum = { album ->

@@ -39,15 +39,18 @@ class AlbumViewModel @Inject constructor(
     fun onPlayTrack(simpleTrack: SimpleTrack) {
         // TODO: error handling
         val album = album.value ?: return
-        val track = simpleTrack.toTrack(
-            artists = album.artists,
-            simpleAlbum = album.toSimpleAlbum(),
-        )
-        val mediaItem = track.toMediaItem()
-        val player = mediaSessionManager.player.value ?: return
-        with(player) {
-            setMediaItem(mediaItem)
-            play()
+
+        if (mediaSessionManager.loadedMediaItem.value?.id == albumId) {
+            val trackIndex = album.tracks.indexOf(simpleTrack)
+            mediaSessionManager.loadFromPlaylist(trackIndex)
+        } else {
+            val track = simpleTrack.toTrack(
+                artists = album.artists,
+                simpleAlbum = album.toSimpleAlbum(),
+            )
+            mediaSessionManager.load(track)
         }
+        
+        mediaSessionManager.play()
     }
 }

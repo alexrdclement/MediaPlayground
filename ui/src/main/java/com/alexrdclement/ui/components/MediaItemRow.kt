@@ -21,9 +21,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.ui.shared.model.MediaItemUi
-import com.alexrdclement.ui.shared.util.PreviewTracks1
 import com.alexrdclement.ui.shared.util.PreviewTracksUi1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
@@ -31,7 +29,8 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 fun MediaItemRow(
     mediaItems: LazyPagingItems<MediaItemUi>,
-    onPlayClick: (MediaItemUi) -> Unit,
+    onItemClick: (MediaItemUi) -> Unit,
+    onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     itemWidth: Dp = 280.dp,
@@ -63,7 +62,8 @@ fun MediaItemRow(
                     mediaItem = mediaItem.mediaItem,
                     isEnabled = mediaItem.mediaItem.isPlayable,
                     isPlaying = mediaItem.isPlaying,
-                    onPlayClick = { onPlayClick(mediaItem) },
+                    onClick = { onItemClick(mediaItem) },
+                    onPlayPauseClick = { onItemPlayPauseClick(mediaItem) },
                     modifier = Modifier
                         .width(itemWidth)
                 )
@@ -87,7 +87,8 @@ private fun Preview() {
             MediaItemRow(
                 title = "Saved tracks",
                 mediaItems = tracks.collectAsLazyPagingItems(),
-                onPlayClick = {},
+                onItemClick = {},
+                onItemPlayPauseClick = {},
                 modifier = Modifier
                     .height(360.dp)
                     .padding(16.dp)

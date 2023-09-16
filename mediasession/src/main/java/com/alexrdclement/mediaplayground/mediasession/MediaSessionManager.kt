@@ -7,8 +7,11 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.alexrdclement.mediaplayground.mediasession.mapper.toMediaItem
 import com.alexrdclement.mediaplayground.mediasession.service.MediaSessionService
+import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleAlbum
+import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,14 +45,28 @@ class MediaSessionManager @Inject constructor(
         }
     }
 
-    fun playTrack(track: Track) {
-        val mediaItem = track.toMediaItem()
-        val player = player.value ?: return
-        with(player) {
-            setMediaItem(mediaItem)
-            play()
+    fun load(mediaItem: MediaItem) {
+        when (mediaItem) {
+            is Album -> loadAlbum(mediaItem)
+            is Track -> loadTrack(mediaItem)
         }
-        _loadedMediaItem.value = track
+    }
+
+    fun loadFromPlaylist(index: Int) {
+        val player = player.value ?: return
+        if (index >= player.mediaItemCount) {
+            // TODO: log error
+            return
+        }
+        player.seekTo(index, 0)
+    }
+
+    fun play() {
+        player.value?.play()
+    }
+
+    fun pause() {
+        player.value?.pause()
     }
 
     private suspend fun createMediaSession() {
@@ -70,5 +87,27 @@ class MediaSessionManager @Inject constructor(
                 }
             }
         )
+    }
+
+    private fun loadTrack(track: Track) {
+        val player = player.value ?: return
+        player.setMediaItem(track.toMediaItem())
+        _loadedMediaItem.value = track
+    }
+
+    private fun loadAlbum(album: Album) {
+        val player = player.value ?: return
+        player.clearMediaItems()
+
+        val mediaItems = album.tracks.map { simpleTrack ->
+            val track = simpleTrack.toTrack(
+                artists = album.artists,
+                simpleAlbum = album.toSimpleAlbum()
+            )
+            track.toMediaItem()
+        }
+        player.addMediaItems(0, mediaItems)
+
+        _loadedMediaItem.value = album
     }
 }
