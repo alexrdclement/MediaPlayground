@@ -20,14 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
-import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewTrack1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 
@@ -36,6 +33,7 @@ import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 fun MediaItemCardTall(
     mediaItem: MediaItem,
     isEnabled: Boolean,
+    isPlaying: Boolean,
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -58,6 +56,7 @@ fun MediaItemCardTall(
                     modifier = Modifier.fillMaxSize()
                 )
                 PlayPauseButton(
+                    isPlaying = isPlaying,
                     isEnabled = isEnabled,
                     onClick = onPlayClick,
                     modifier = Modifier
@@ -98,6 +97,7 @@ private fun Preview() {
         MediaItemCardTall(
             mediaItem = PreviewTrack1,
             isEnabled = true,
+            isPlaying = false,
             onPlayClick = {},
             modifier = Modifier
                 .width(280.dp),

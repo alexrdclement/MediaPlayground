@@ -5,6 +5,7 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.mapper.toAlbum
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
+import com.alexrdclement.ui.shared.model.MediaItemUi
 
 
 val PreviewSimpleArtist1 = SimpleArtist(
@@ -61,6 +62,21 @@ val PreviewTrack3 = PreviewSimpleTrack3.toTrack(
     simpleAlbum = PreviewSimpleAlbum1,
 )
 
+val PreviewTrackUi1 = MediaItemUi(
+    mediaItem = PreviewTrack1,
+    isPlaying = false
+)
+
+val PreviewTrackUi2 = MediaItemUi(
+    mediaItem = PreviewTrack2,
+    isPlaying = false
+)
+
+val PreviewTrackUi3 = MediaItemUi(
+    mediaItem = PreviewTrack3,
+    isPlaying = false
+)
+
 val PreviewSimpleTracks1 = listOf(
     PreviewSimpleTrack1,
     PreviewSimpleTrack2,
@@ -73,12 +89,43 @@ val PreviewTracks1 = listOf(
     PreviewTrack3,
 )
 
-val PreviewAlbum1 = PreviewSimpleAlbum1.toAlbum(
-    tracks = PreviewSimpleTracks1
+val PreviewTracksUi1 = listOf(
+    PreviewTrackUi1,
+    PreviewTrackUi2,
+    PreviewTrackUi3,
 )
 
+val PreviewAlbum1 = PreviewSimpleAlbum1.toAlbum(
+    tracks = PreviewSimpleTracks1
+).copy(id = "1")
+
+val PreviewAlbum2 = PreviewAlbum1.copy(id = "2")
+
+val PreviewAlbum3 = PreviewAlbum1.copy(id = "3")
+
 val PreviewAlbums1 = listOf(
-    PreviewAlbum1.copy(id = "1"),
-    PreviewAlbum1.copy(id = "2"),
-    PreviewAlbum1.copy(id = "3"),
+    PreviewAlbum1,
+    PreviewAlbum2,
+    PreviewAlbum3,
+)
+
+val PreviewAlbumUi1 = MediaItemUi(
+    mediaItem = PreviewAlbum1,
+    isPlaying = false,
+)
+
+val PreviewAlbumUi2 = MediaItemUi(
+    mediaItem = PreviewAlbum2,
+    isPlaying = false,
+)
+
+val PreviewAlbumUi3 = MediaItemUi(
+    mediaItem = PreviewAlbum3,
+    isPlaying = false,
+)
+
+val PreviewAlbumsUi1 = listOf(
+    PreviewAlbumUi1,
+    PreviewAlbumUi2,
+    PreviewAlbumUi3,
 )

@@ -29,12 +29,14 @@ fun NavGraphBuilder.spotifyLibraryScreen(
 ) {
     composable(SpotifyLibraryRoute) {
         val viewModel: SpotifyLibraryViewModel = hiltViewModel()
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle(initialValue = SpotifyLibraryUiState.InitialState)
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle(
+            initialValue = SpotifyLibraryUiState.InitialState
+        )
         val context = LocalContext.current
         SpotifyLibraryScreen(
             uiState = uiState,
-            onPlayMediaItem = { mediaItem ->
-                when (mediaItem) {
+            onPlayMediaItem = { mediaItemUi ->
+                when (val mediaItem = mediaItemUi.mediaItem) {
                     is Album -> { onNavigateToAlbum(mediaItem) }
                     is Track -> {
                         viewModel.onPlayTrack(mediaItem)

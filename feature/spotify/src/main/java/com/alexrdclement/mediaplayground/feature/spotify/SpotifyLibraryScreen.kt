@@ -24,8 +24,11 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.ui.components.MediaItemRow
+import com.alexrdclement.ui.shared.model.MediaItemUi
 import com.alexrdclement.ui.shared.util.PreviewAlbums1
+import com.alexrdclement.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.ui.shared.util.PreviewTracks1
+import com.alexrdclement.ui.shared.util.PreviewTracksUi1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -35,7 +38,7 @@ private val MediaItemWidth = 200.dp
 @Composable
 fun SpotifyLibraryScreen(
     uiState: SpotifyLibraryUiState,
-    onPlayMediaItem: (MediaItem) -> Unit,
+    onPlayMediaItem: (MediaItemUi) -> Unit,
     onLogInClick: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {
@@ -87,7 +90,7 @@ fun SpotifyLibraryScreen(
 @Composable
 private fun LoggedInContent(
     uiState: SpotifyLibraryUiState.LoggedIn,
-    onPlayMediaItem: (MediaItem) -> Unit
+    onPlayMediaItem: (MediaItemUi) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -136,8 +139,8 @@ private fun LogInOutButton(
 private fun Preview() {
     MediaPlaygroundTheme {
         val uiState = SpotifyLibraryUiState.LoggedIn(
-            savedTracks = flowOf(PagingData.from(PreviewTracks1)),
-            savedAlbums = flowOf(PagingData.from(PreviewAlbums1)),
+            savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),
+            savedAlbums = flowOf(PagingData.from(PreviewAlbumsUi1)),
         )
         SpotifyLibraryScreen(
             uiState = uiState,

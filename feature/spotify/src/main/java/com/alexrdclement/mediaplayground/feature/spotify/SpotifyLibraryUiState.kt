@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.spotify
 
 import androidx.paging.PagingData
-import com.alexrdclement.mediaplayground.model.audio.MediaItem
+import com.alexrdclement.ui.shared.model.MediaItemUi
 import kotlinx.coroutines.flow.Flow
 
 sealed class SpotifyLibraryUiState {
@@ -10,7 +10,7 @@ sealed class SpotifyLibraryUiState {
     data object NotLoggedIn : SpotifyLibraryUiState()
 
     data class LoggedIn(
-        val savedTracks: Flow<PagingData<MediaItem>>,
-        val savedAlbums: Flow<PagingData<MediaItem>>
+        val savedTracks: Flow<PagingData<MediaItemUi>>,
+        val savedAlbums: Flow<PagingData<MediaItemUi>>
     ) : SpotifyLibraryUiState()
 }
