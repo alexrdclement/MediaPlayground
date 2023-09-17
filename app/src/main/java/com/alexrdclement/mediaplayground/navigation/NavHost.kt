@@ -2,7 +2,9 @@ package com.alexrdclement.mediaplayground.navigation
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,13 +28,17 @@ import com.alexrdclement.ui.components.MediaSource
 import com.alexrdclement.ui.components.MediaSourcePickerBottomSheet
 
 @Composable
-fun MediaPlaygroundNavHost() {
+fun MediaPlaygroundNavHost(
+    contentPadding: PaddingValues,
+) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = Destination.SpotifyLibrary.route,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(contentPadding)
     ) {
         mainScreen(
             navigateToSpotifyLibrary = navController::navigateToSpotifyLibrary,
