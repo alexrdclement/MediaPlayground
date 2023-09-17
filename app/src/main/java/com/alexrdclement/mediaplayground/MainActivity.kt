@@ -51,7 +51,6 @@ class MainActivity : ComponentActivity() {
                                         }
                                     },
                                     onPlayPauseClick = viewModel::onPlayPauseClick,
-                                    modifier = Modifier.navigationBarsPadding()
                                 )
                             }
                         }

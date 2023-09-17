@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -37,9 +38,10 @@ fun MediaControlBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
             .clickable { onClick() }
+            .fillMaxWidth()
+            .navigationBarsPadding()
+            .height(IntrinsicSize.Min)
     ) {
         MediaItemArtwork(
             mediaItem.thumbnailImageUrl,
