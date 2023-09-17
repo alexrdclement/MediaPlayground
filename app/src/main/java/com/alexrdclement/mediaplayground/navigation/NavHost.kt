@@ -2,9 +2,17 @@ package com.alexrdclement.mediaplayground.navigation
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +35,7 @@ import com.alexrdclement.mediaplayground.feature.player.navigation.playerScreen
 import com.alexrdclement.ui.components.MediaSource
 import com.alexrdclement.ui.components.MediaSourcePickerBottomSheet
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MediaPlaygroundNavHost(
     contentPadding: PaddingValues,
@@ -39,6 +48,7 @@ fun MediaPlaygroundNavHost(
         modifier = Modifier
             .fillMaxSize()
             .padding(contentPadding)
+            .consumeWindowInsets(contentPadding)
     ) {
         mainScreen(
             navigateToSpotifyLibrary = navController::navigateToSpotifyLibrary,

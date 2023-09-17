@@ -3,10 +3,15 @@ package com.alexrdclement.mediaplayground
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -14,7 +19,6 @@ import com.alexrdclement.mediaplayground.navigation.MediaPlaygroundNavHost
 import com.alexrdclement.ui.components.MediaControlBar
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -22,15 +26,19 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+
         setContent {
             MediaPlaygroundTheme {
                 val mediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
                 val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()
                 Scaffold(
+                    contentWindowInsets = WindowInsets(0, 0, 0, 0),
                     bottomBar = {
                         AnimatedVisibility(
-                            visible = mediaItem != null
+                            visible = mediaItem != null,
+                            modifier = Modifier
                         ) {
                             mediaItem?.let {
                                 MediaControlBar(
@@ -42,7 +50,8 @@ class MainActivity : ComponentActivity() {
                                             is Track -> {}
                                         }
                                     },
-                                    onPlayPauseClick = viewModel::onPlayPauseClick
+                                    onPlayPauseClick = viewModel::onPlayPauseClick,
+                                    modifier = Modifier.navigationBarsPadding()
                                 )
                             }
                         }

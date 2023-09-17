@@ -3,8 +3,14 @@ package com.alexrdclement.mediaplayground.feature.spotify
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -78,7 +84,9 @@ fun SpotifyLibraryScreen(
 ) {
     val verticalScrollState = rememberScrollState()
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .statusBarsPadding()
+            .fillMaxSize(),
         color = MaterialTheme.colorScheme.surface,
     ) {
         Column(
@@ -132,7 +140,6 @@ private fun LoggedInContent(
     onItemPlayPauseClick: (MediaItemUi) -> Unit
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -147,6 +154,7 @@ private fun LoggedInContent(
             itemWidth = MediaItemWidth,
             modifier = Modifier
         )
+        Spacer(modifier = Modifier.height(16.dp))
         MediaItemRow(
             mediaItems = savedTracks,
             onItemClick = onItemClick,
@@ -156,6 +164,7 @@ private fun LoggedInContent(
             itemWidth = MediaItemWidth,
             modifier = Modifier
         )
+        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
     }
 }
 

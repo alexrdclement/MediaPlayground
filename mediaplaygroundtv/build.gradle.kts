@@ -55,7 +55,7 @@ android {
 
 dependencies {
     implementation(libs.core.ktx)
-    implementation(libs.activity.compose)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
     implementation(platform(libs.compose.bom))
@@ -64,7 +64,6 @@ dependencies {
     implementation(libs.tv.foundation)
     implementation(libs.tv.material)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
     implementation(projects.data.audio)
     implementation(projects.model.audio)
     implementation(projects.uiTv)

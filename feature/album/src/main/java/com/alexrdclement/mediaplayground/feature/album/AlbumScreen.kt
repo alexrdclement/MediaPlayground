@@ -8,12 +8,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -56,23 +64,14 @@ fun AlbumScreen(
     onTrackClick: (TrackUi) -> Unit,
     onPlayPauseClick: (TrackUi) -> Unit,
 ) {
-    val verticalScrollState = rememberScrollState()
     Surface {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .verticalScroll(verticalScrollState)
-                .fillMaxSize()
-        ) {
-            when (uiState) {
-                AlbumUiState.Loading -> {}
-                is AlbumUiState.Loaded -> LoadedContent(
-                    state = uiState,
-                    onTrackClick = onTrackClick,
-                    onPlayPauseClick = onPlayPauseClick,
-                )
-            }
+        when (uiState) {
+            AlbumUiState.Loading -> {}
+            is AlbumUiState.Loaded -> LoadedContent(
+                state = uiState,
+                onTrackClick = onTrackClick,
+                onPlayPauseClick = onPlayPauseClick,
+            )
         }
     }
 }
@@ -84,40 +83,53 @@ private fun LoadedContent(
     onTrackClick: (TrackUi) -> Unit,
     onPlayPauseClick: (TrackUi) -> Unit,
 ) {
-    MediaItemArtwork(
-        imageUrl = state.imageUrl,
-        modifier = Modifier.fillMaxSize()
-    )
+    val verticalScrollState = rememberScrollState()
+
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .fillMaxWidth()
+            .statusBarsPadding()
+            .verticalScroll(verticalScrollState)
+            .fillMaxSize()
     ) {
-        Text(
-            text = state.title,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineSmall,
-            maxLines = 1,
-            modifier = Modifier
-                .basicMarquee()
+        MediaItemArtwork(
+            imageUrl = state.imageUrl,
+            modifier = Modifier.fillMaxSize()
         )
-        Text(
-            text = state.artists.joinToString { it.name },
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleMedium,
-            maxLines = 1,
+        Spacer(modifier = Modifier.height(20.dp))
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .basicMarquee()
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = state.title,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineSmall,
+                maxLines = 1,
+                modifier = Modifier
+                    .basicMarquee()
+            )
+            Text(
+                text = state.artists.joinToString { it.name },
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                modifier = Modifier
+                    .basicMarquee()
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        TrackList(
+            tracks = state.tracks,
+            onTrackClick = onTrackClick,
+            onPlayPauseClick = onPlayPauseClick,
+            modifier = Modifier
+                .padding(vertical = 8.dp)
         )
+        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
     }
-    TrackList(
-        tracks = state.tracks,
-        onTrackClick = onTrackClick,
-        onPlayPauseClick = onPlayPauseClick,
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-    )
 }
 
 @Composable

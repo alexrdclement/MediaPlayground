@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.player
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -13,7 +14,9 @@ fun PlayerScreen(
     player: Player?,
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .statusBarsPadding()
+            .fillMaxSize(),
         color = MaterialTheme.colorScheme.surface,
     ) {
         if (player != null) {
