@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,26 +20,41 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.model.audio.Album
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexrdclement.mediaplayground.feature.album.AlbumUiState.Loaded.TrackUi
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.ui.components.MediaItemArtwork
+import com.alexrdclement.ui.components.PlayPauseButton
 import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewAlbum1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlbumScreen(
-    album: Album?,
-    onPlayTrack: (SimpleTrack) -> Unit,
+    viewModel: AlbumViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
+    AlbumScreen(
+        uiState = uiState,
+        onTrackClick = viewModel::onTrackClick,
+        onPlayPauseClick = viewModel::onPlayPauseClick,
+    )
+}
+
+@Composable
+fun AlbumScreen(
+    uiState: AlbumUiState,
+    onTrackClick: (TrackUi) -> Unit,
+    onPlayPauseClick: (TrackUi) -> Unit,
 ) {
     val verticalScrollState = rememberScrollState()
     Surface {
@@ -48,61 +65,80 @@ fun AlbumScreen(
                 .verticalScroll(verticalScrollState)
                 .fillMaxSize()
         ) {
-            if (album == null) {
-                return@Column
-            }
-            MediaItemArtwork(
-                imageUrl = album.largeImageUrl,
-                modifier = Modifier.fillMaxSize()
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = album.title,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineSmall,
-                    maxLines = 1,
-                    modifier = Modifier
-                        .basicMarquee()
-                )
-                Text(
-                    text = album.artists.joinToString { it.name },
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    modifier = Modifier
-                        .basicMarquee()
+            when (uiState) {
+                AlbumUiState.Loading -> {}
+                is AlbumUiState.Loaded -> LoadedContent(
+                    state = uiState,
+                    onTrackClick = onTrackClick,
+                    onPlayPauseClick = onPlayPauseClick,
                 )
             }
-            TrackList(
-                tracks = album.tracks,
-                onPlayTrack = onPlayTrack,
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-            )
         }
     }
 }
 
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun LoadedContent(
+    state: AlbumUiState.Loaded,
+    onTrackClick: (TrackUi) -> Unit,
+    onPlayPauseClick: (TrackUi) -> Unit,
+) {
+    MediaItemArtwork(
+        imageUrl = state.imageUrl,
+        modifier = Modifier.fillMaxSize()
+    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = state.title,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.headlineSmall,
+            maxLines = 1,
+            modifier = Modifier
+                .basicMarquee()
+        )
+        Text(
+            text = state.artists.joinToString { it.name },
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 1,
+            modifier = Modifier
+                .basicMarquee()
+        )
+    }
+    TrackList(
+        tracks = state.tracks,
+        onTrackClick = onTrackClick,
+        onPlayPauseClick = onPlayPauseClick,
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+    )
+}
+
+@Composable
 private fun TrackList(
-    tracks: List<SimpleTrack>,
-    onPlayTrack: (SimpleTrack) -> Unit,
+    tracks: List<TrackUi>,
+    onTrackClick: (TrackUi) -> Unit,
+    onPlayPauseClick: (TrackUi) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
-        for (track in tracks) {
+        for (trackUi in tracks) {
             TrackListItem(
-                track = track,
-                isPlayable = track.previewUrl != null,
-                onPlayClick = { onPlayTrack(track) },
+                track = trackUi.track,
+                isLoaded = trackUi.isLoaded,
+                isPlayable = trackUi.isPlayable,
+                isPlaying = trackUi.isPlaying,
+                onClick = { onTrackClick(trackUi) },
+                onPlayPauseClick = { onPlayPauseClick(trackUi) },
             )
         }
     }
@@ -112,26 +148,47 @@ private fun TrackList(
 @Composable
 fun TrackListItem(
     track: SimpleTrack,
+    isLoaded: Boolean,
     isPlayable: Boolean,
-    onPlayClick: () -> Unit,
+    isPlaying: Boolean,
+    onClick: () -> Unit,
+    onPlayPauseClick: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(enabled = isPlayable) { onPlayClick() }
+            .height(IntrinsicSize.Min)
+            .clickable(enabled = isPlayable) { onClick() }
             .padding(vertical = 8.dp)
             .alpha(if (isPlayable) 1f else DisabledAlpha)
     ) {
-        Text(
-            text = track.trackNumber.toString(),
-            textAlign = TextAlign.Center,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .width(48.dp),
-        )
+                .size(52.dp)
+        ) {
+            if (isLoaded) {
+                PlayPauseButton(
+                    onClick = onPlayPauseClick,
+                    isPlaying = isPlaying,
+                    isEnabled = isPlayable,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(12.dp)
+                )
+            } else {
+                Text(
+                    text = track.trackNumber.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                )
+            }
+        }
+
         Column(
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .weight(1f)
                 .padding(horizontal = 8.dp)
@@ -170,9 +227,25 @@ fun TrackListItem(
 @Composable
 private fun Preview() {
     MediaPlaygroundTheme {
+        val album = PreviewAlbum1
+        val tracks = album.tracks.mapIndexed { index, track ->
+            TrackUi(
+                track = track,
+                isLoaded = index == 1,
+                isPlaying = index == 1,
+                isPlayable = true,
+            )
+        }
+        val uiState = AlbumUiState.Loaded(
+            imageUrl = null,
+            title = album.title,
+            artists = album.artists,
+            tracks = tracks,
+        )
         AlbumScreen(
-            album = PreviewAlbum1,
-            onPlayTrack = {}
+            uiState = uiState,
+            onTrackClick = {},
+            onPlayPauseClick = {},
         )
     }
 }

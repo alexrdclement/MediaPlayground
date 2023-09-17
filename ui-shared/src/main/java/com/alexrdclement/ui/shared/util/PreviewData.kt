@@ -48,17 +48,14 @@ val PreviewSimpleTrack3 = SimpleTrack(
 )
 
 val PreviewTrack1 = PreviewSimpleTrack1.toTrack(
-    artists = listOf(PreviewSimpleArtist1),
     simpleAlbum = PreviewSimpleAlbum1,
 )
 
 val PreviewTrack2 = PreviewSimpleTrack2.toTrack(
-    artists = listOf(PreviewSimpleArtist1),
     simpleAlbum = PreviewSimpleAlbum1,
 )
 
 val PreviewTrack3 = PreviewSimpleTrack3.toTrack(
-    artists = listOf(PreviewSimpleArtist1),
     simpleAlbum = PreviewSimpleAlbum1,
 )
 

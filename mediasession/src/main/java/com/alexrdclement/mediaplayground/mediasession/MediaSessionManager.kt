@@ -101,7 +101,6 @@ class MediaSessionManager @Inject constructor(
 
         val mediaItems = album.tracks.map { simpleTrack ->
             val track = simpleTrack.toTrack(
-                artists = album.artists,
                 simpleAlbum = album.toSimpleAlbum()
             )
             track.toMediaItem()

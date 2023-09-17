@@ -6,14 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumIdArgKey
 import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
-import com.alexrdclement.mediaplayground.mediasession.mapper.toMediaItem
 import com.alexrdclement.mediaplayground.model.audio.Album
-import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleAlbum
+import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,32 +23,63 @@ class AlbumViewModel @Inject constructor(
 ) : ViewModel() {
     private val albumId = savedStateHandle.get<String>(AlbumIdArgKey)
 
-    private val _album = MutableStateFlow<Album?>(null)
-    val album = _album.asStateFlow()
+    private val album = MutableStateFlow<Album?>(null)
+
+    val uiState = combine(
+        album,
+        mediaSessionManager.isPlaying,
+        mediaSessionManager.loadedMediaItem
+    ) { album, isPlaying, loadedMediaItem ->
+        if (album == null) {
+            return@combine AlbumUiState.Loading
+        }
+
+        val tracks = album.tracks.map { track ->
+            AlbumUiState.Loaded.TrackUi(
+                track = track,
+                isLoaded = track.id == loadedMediaItem?.id,
+                isPlayable = track.previewUrl != null,
+                isPlaying = isPlaying && track.id == loadedMediaItem?.id
+            )
+        }
+
+        return@combine AlbumUiState.Loaded(
+            imageUrl = album.largeImageUrl,
+            title = album.title,
+            artists = album.artists,
+            tracks = tracks,
+        )
+    }
 
     init {
         viewModelScope.launch {
             // TODO: error handling
             val albumId = albumId ?: return@launch
-            _album.value = audioRepository.getAlbum(albumId)
+            album.value = audioRepository.getAlbum(albumId)
         }
     }
 
-    fun onPlayTrack(simpleTrack: SimpleTrack) {
+    fun onTrackClick(trackUi: AlbumUiState.Loaded.TrackUi) {
         // TODO: error handling
         val album = album.value ?: return
+        val simpleTrack = trackUi.track
 
         if (mediaSessionManager.loadedMediaItem.value?.id == albumId) {
             val trackIndex = album.tracks.indexOf(simpleTrack)
             mediaSessionManager.loadFromPlaylist(trackIndex)
         } else {
-            val track = simpleTrack.toTrack(
-                artists = album.artists,
-                simpleAlbum = album.toSimpleAlbum(),
-            )
+            val track = simpleTrack.toTrack(album)
             mediaSessionManager.load(track)
         }
-        
+
         mediaSessionManager.play()
+    }
+
+    fun onPlayPauseClick(trackUi: AlbumUiState.Loaded.TrackUi) {
+        if (mediaSessionManager.isPlaying.value) {
+            mediaSessionManager.pause()
+        } else {
+            mediaSessionManager.play()
+        }
     }
 }
