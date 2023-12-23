@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
+import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
+import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.uiplayground.components.Artist
 import com.alexrdclement.uiplayground.components.MediaControlSheetState
 import kotlinx.coroutines.launch
@@ -49,6 +51,8 @@ fun MediaControlSheet(
             val artists by derivedStateOf { mediaItem.artists.map { Artist(name = it.name) } }
             val uiMediaItem by derivedStateOf {
                 UiMediaItem(
+                    artworkLargeUrl = mediaItem.largeImageUrl,
+                    artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
                     title = mediaItem.title,
                     artists = artists
                 )
