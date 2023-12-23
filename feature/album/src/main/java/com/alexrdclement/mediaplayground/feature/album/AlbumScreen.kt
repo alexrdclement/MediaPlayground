@@ -13,13 +13,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
@@ -37,10 +34,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.feature.album.AlbumUiState.Loaded.TrackUi
+import com.alexrdclement.mediaplayground.feature.album.AlbumUiState.Success.TrackUi
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.ui.components.MediaItemArtwork
 import com.alexrdclement.ui.components.PlayPauseButton
+import com.alexrdclement.ui.components.mediacontrolsheet.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewAlbum1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
@@ -67,7 +65,7 @@ fun AlbumScreen(
     Surface {
         when (uiState) {
             AlbumUiState.Loading -> {}
-            is AlbumUiState.Loaded -> LoadedContent(
+            is AlbumUiState.Success -> LoadedContent(
                 state = uiState,
                 onTrackClick = onTrackClick,
                 onPlayPauseClick = onPlayPauseClick,
@@ -79,7 +77,7 @@ fun AlbumScreen(
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun LoadedContent(
-    state: AlbumUiState.Loaded,
+    state: AlbumUiState.Success,
     onTrackClick: (TrackUi) -> Unit,
     onPlayPauseClick: (TrackUi) -> Unit,
 ) {
@@ -89,6 +87,13 @@ private fun LoadedContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .statusBarsPadding()
+            .then(
+                if (state.isMediaItemLoaded) {
+                    Modifier.padding(bottom = MediaControlSheetPartialExpandHeight)
+                } else {
+                    Modifier
+                }
+            )
             .verticalScroll(verticalScrollState)
             .fillMaxSize()
     ) {
@@ -248,11 +253,12 @@ private fun Preview() {
                 isPlayable = true,
             )
         }
-        val uiState = AlbumUiState.Loaded(
+        val uiState = AlbumUiState.Success(
             imageUrl = null,
             title = album.title,
             artists = album.artists,
             tracks = tracks,
+            isMediaItemLoaded = false,
         )
         AlbumScreen(
             uiState = uiState,

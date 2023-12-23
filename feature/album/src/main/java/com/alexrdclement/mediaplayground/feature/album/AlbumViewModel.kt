@@ -35,7 +35,7 @@ class AlbumViewModel @Inject constructor(
         }
 
         val tracks = album.tracks.map { track ->
-            AlbumUiState.Loaded.TrackUi(
+            AlbumUiState.Success.TrackUi(
                 track = track,
                 isLoaded = track.id == loadedMediaItem?.id,
                 isPlayable = track.previewUrl != null,
@@ -43,11 +43,12 @@ class AlbumViewModel @Inject constructor(
             )
         }
 
-        return@combine AlbumUiState.Loaded(
+        return@combine AlbumUiState.Success(
             imageUrl = album.largeImageUrl,
             title = album.title,
             artists = album.artists,
             tracks = tracks,
+            isMediaItemLoaded = loadedMediaItem != null,
         )
     }
 
@@ -59,7 +60,7 @@ class AlbumViewModel @Inject constructor(
         }
     }
 
-    fun onTrackClick(trackUi: AlbumUiState.Loaded.TrackUi) {
+    fun onTrackClick(trackUi: AlbumUiState.Success.TrackUi) {
         // TODO: error handling
         val album = album.value ?: return
         val simpleTrack = trackUi.track
@@ -75,7 +76,7 @@ class AlbumViewModel @Inject constructor(
         mediaSessionManager.play()
     }
 
-    fun onPlayPauseClick(trackUi: AlbumUiState.Loaded.TrackUi) {
+    fun onPlayPauseClick(trackUi: AlbumUiState.Success.TrackUi) {
         if (mediaSessionManager.isPlaying.value) {
             mediaSessionManager.pause()
         } else {
