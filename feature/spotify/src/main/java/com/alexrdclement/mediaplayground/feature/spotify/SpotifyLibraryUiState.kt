@@ -11,6 +11,7 @@ sealed class SpotifyLibraryUiState {
 
     data class LoggedIn(
         val savedTracks: Flow<PagingData<MediaItemUi>>,
-        val savedAlbums: Flow<PagingData<MediaItemUi>>
+        val savedAlbums: Flow<PagingData<MediaItemUi>>,
+        val isMediaItemLoaded: Boolean,
     ) : SpotifyLibraryUiState()
 }

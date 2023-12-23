@@ -67,14 +67,17 @@ class SpotifyLibraryViewModel @Inject constructor(
         }
     }.cachedIn(viewModelScope)
 
-    val uiState: StateFlow<SpotifyLibraryUiState> = spotifyAuth.isLoggedIn.map { isLoggedIn ->
+    val uiState: StateFlow<SpotifyLibraryUiState> = spotifyAuth.isLoggedIn.combine(
+        mediaSessionManager.loadedMediaItem
+    ) { isLoggedIn, loadedMediaItem ->
         if (!isLoggedIn) {
-            return@map SpotifyLibraryUiState.NotLoggedIn
+            return@combine SpotifyLibraryUiState.NotLoggedIn
         }
 
-        return@map SpotifyLibraryUiState.LoggedIn(
+        return@combine SpotifyLibraryUiState.LoggedIn(
             savedTracks = savedTracks,
             savedAlbums = savedAlbums,
+            isMediaItemLoaded = loadedMediaItem != null,
         )
     }.stateIn(
         scope = viewModelScope,

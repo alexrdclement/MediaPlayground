@@ -34,6 +34,7 @@ import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.ui.components.MediaItemRow
+import com.alexrdclement.ui.components.mediacontrolsheet.mediaControlSheetPadding
 import com.alexrdclement.ui.shared.model.MediaItemUi
 import com.alexrdclement.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.ui.shared.util.PreviewTracksUi1
@@ -142,6 +143,7 @@ private fun LoggedInContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
     ) {
         val savedAlbums = uiState.savedAlbums.collectAsLazyPagingItems()
         val savedTracks = uiState.savedTracks.collectAsLazyPagingItems()
@@ -191,6 +193,7 @@ private fun Preview() {
         val uiState = SpotifyLibraryUiState.LoggedIn(
             savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),
             savedAlbums = flowOf(PagingData.from(PreviewAlbumsUi1)),
+            isMediaItemLoaded = false,
         )
         SpotifyLibraryScreen(
             uiState = uiState,

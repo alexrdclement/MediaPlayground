@@ -38,7 +38,7 @@ import com.alexrdclement.mediaplayground.feature.album.AlbumUiState.Success.Trac
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.ui.components.MediaItemArtwork
 import com.alexrdclement.ui.components.PlayPauseButton
-import com.alexrdclement.ui.components.mediacontrolsheet.MediaControlSheetPartialExpandHeight
+import com.alexrdclement.ui.components.mediacontrolsheet.mediaControlSheetPadding
 import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewAlbum1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
@@ -87,13 +87,7 @@ private fun LoadedContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .statusBarsPadding()
-            .then(
-                if (state.isMediaItemLoaded) {
-                    Modifier.padding(bottom = MediaControlSheetPartialExpandHeight)
-                } else {
-                    Modifier
-                }
-            )
+            .mediaControlSheetPadding(isMediaItemLoaded = state.isMediaItemLoaded)
             .verticalScroll(verticalScrollState)
             .fillMaxSize()
     ) {

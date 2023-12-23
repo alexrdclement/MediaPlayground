@@ -3,6 +3,7 @@ package com.alexrdclement.ui.components.mediacontrolsheet
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -19,7 +20,15 @@ import kotlinx.coroutines.launch
 import com.alexrdclement.uiplayground.components.MediaControlSheet as MediaControlSheetComponent
 import com.alexrdclement.uiplayground.components.MediaItem as UiMediaItem
 
-val MediaControlSheetPartialExpandHeight = 64.dp
+private val MediaControlSheetPartialExpandHeight = 64.dp
+
+fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean) = this.then(
+    if (isMediaItemLoaded) {
+        Modifier.padding(bottom = MediaControlSheetPartialExpandHeight)
+    } else {
+        Modifier
+    }
+)
 
 @Composable
 fun MediaControlSheet(
