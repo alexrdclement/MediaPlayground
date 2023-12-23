@@ -10,8 +10,8 @@ import com.alexrdclement.ui.shared.theme.DisabledAlpha
 @Composable
 fun MediaItemArtwork(
     imageUrl: String?,
-    isEnabled: Boolean = true,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
 ) {
     if (imageUrl != null) {
         AsyncImage(
