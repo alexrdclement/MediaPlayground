@@ -32,3 +32,11 @@ include(":feature:spotify")
 include(":ui")
 include(":ui-shared")
 include(":ui-tv")
+
+if (file("../UiPlayground").exists()) {
+    includeBuild("../UiPlayground") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.uiplayground:components")).using(project(":components"))
+        }
+    }
+}

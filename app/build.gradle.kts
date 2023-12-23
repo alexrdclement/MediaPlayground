@@ -82,6 +82,8 @@ dependencies {
     implementation(libs.media3.decoder)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
+    implementation(libs.ui.playground.components)
+
     implementation(projects.data.audio)
     implementation(projects.feature.album)
     implementation(projects.feature.player)
@@ -90,13 +92,18 @@ dependencies {
     implementation(projects.model.audio)
     implementation(projects.ui)
     implementation(projects.uiShared)
+
     ksp(libs.hilt.compiler)
+
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
+
     kspAndroidTest(libs.hilt.compiler)
+
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 }
