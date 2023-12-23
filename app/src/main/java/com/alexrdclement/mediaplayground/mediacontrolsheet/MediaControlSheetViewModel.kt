@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground
+package com.alexrdclement.mediaplayground.mediacontrolsheet
 
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.Player
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(
+class MediaControlSheetViewModel @Inject constructor(
     mediaSessionManager: MediaSessionManager,
 ) : ViewModel() {
 
