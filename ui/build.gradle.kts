@@ -56,10 +56,15 @@ dependencies {
     implementation(libs.paging.compose)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.ui.playground.components)
+
     implementation(projects.model.audio)
     implementation(projects.uiShared)
+
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
     debugImplementation(libs.ui.tooling)
 }

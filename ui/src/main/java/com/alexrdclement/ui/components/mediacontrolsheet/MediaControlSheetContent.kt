@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.mediacontrolsheet
+package com.alexrdclement.ui.components.mediacontrolsheet
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
@@ -58,7 +58,6 @@ fun MediaControlSheetContent(
                 modifier = Modifier
                     .basicMarquee()
             )
-
         }
     }
 }
