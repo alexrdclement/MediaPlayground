@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -28,18 +27,17 @@ import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.ui.shared.util.PreviewTrack1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MediaItemCardTall(
     mediaItem: MediaItem,
-    isEnabled: Boolean,
     isPlaying: Boolean,
+    isPlaybackEnabled: Boolean,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OutlinedCard(
-        enabled = isEnabled,
         onClick = onClick,
         modifier = modifier
     ) {
@@ -53,12 +51,11 @@ fun MediaItemCardTall(
             ) {
                 MediaItemArtwork(
                     imageUrl = mediaItem.thumbnailImageUrl,
-                    isEnabled = isEnabled,
                     modifier = Modifier.fillMaxSize()
                 )
                 PlayPauseButton(
                     isPlaying = isPlaying,
-                    isEnabled = isEnabled,
+                    isEnabled = isPlaybackEnabled,
                     onClick = onPlayPauseClick,
                     modifier = Modifier
                         .size(24.dp)
@@ -97,7 +94,7 @@ private fun Preview() {
     MediaPlaygroundTheme {
         MediaItemCardTall(
             mediaItem = PreviewTrack1,
-            isEnabled = true,
+            isPlaybackEnabled = true,
             isPlaying = false,
             onClick = {},
             onPlayPauseClick = {},

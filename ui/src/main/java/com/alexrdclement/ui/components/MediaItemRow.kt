@@ -60,7 +60,7 @@ fun MediaItemRow(
                 val mediaItem = mediaItems[index] ?: return@items
                 MediaItemCardTall(
                     mediaItem = mediaItem.mediaItem,
-                    isEnabled = mediaItem.mediaItem.isPlayable,
+                    isPlaybackEnabled = mediaItem.mediaItem.isPlayable,
                     isPlaying = mediaItem.isPlaying,
                     onClick = { onItemClick(mediaItem) },
                     onPlayPauseClick = { onItemPlayPauseClick(mediaItem) },
