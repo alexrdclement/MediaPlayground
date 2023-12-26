@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.album
 
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
+import com.alexrdclement.ui.shared.model.TrackUi
 
 sealed class AlbumUiState {
     data object Loading : AlbumUiState()
@@ -14,12 +14,5 @@ sealed class AlbumUiState {
         val isAlbumPlayable: Boolean,
         val isAlbumPlaying: Boolean,
         val isMediaItemLoaded: Boolean,
-    ) : AlbumUiState() {
-        data class TrackUi(
-            val track: SimpleTrack,
-            val isLoaded: Boolean,
-            val isPlaying: Boolean,
-            val isPlayable: Boolean,
-        )
-    }
+    ) : AlbumUiState()
 }

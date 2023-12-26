@@ -12,6 +12,7 @@ import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
+import com.alexrdclement.ui.shared.model.TrackUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -38,7 +39,7 @@ class AlbumViewModel @Inject constructor(
         }
 
         val tracks = album.tracks.map { track ->
-            AlbumUiState.Success.TrackUi(
+            TrackUi(
                 track = track,
                 isLoaded = track.id == loadedMediaItem?.id,
                 isPlayable = track.previewUrl != null,
@@ -65,7 +66,7 @@ class AlbumViewModel @Inject constructor(
         }
     }
 
-    fun onTrackClick(trackUi: AlbumUiState.Success.TrackUi) {
+    fun onTrackClick(trackUi: TrackUi) {
         // TODO: error handling
         val album = album.value ?: return
         val simpleTrack = trackUi.track
@@ -89,7 +90,7 @@ class AlbumViewModel @Inject constructor(
         mediaSessionManager.playPause()
     }
 
-    fun onTrackPlayPauseClick(trackUi: AlbumUiState.Success.TrackUi) {
+    fun onTrackPlayPauseClick(trackUi: TrackUi) {
         mediaSessionManager.playPause()
     }
 }

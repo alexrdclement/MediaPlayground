@@ -1,4 +1,4 @@
-package com.alexrdclement.ui.components
+package com.alexrdclement.ui.components.track
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
+import com.alexrdclement.ui.components.MediaItemArtwork
 import com.alexrdclement.ui.shared.util.PreviewTrack1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import com.alexrdclement.uiplayground.components.PlayPauseButton
