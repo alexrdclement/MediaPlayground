@@ -1,7 +1,13 @@
 package com.alexrdclement.mediaplayground.model.audio
 
+import kotlinx.serialization.Serializable
+
+@JvmInline
+@Serializable
+value class AlbumId(override val value: String) : MediaItemId
+
 data class Album(
-    override val id: String,
+    override val id: AlbumId,
     override val title: String,
     override val artists: List<SimpleArtist>,
     override val images: List<Image>,

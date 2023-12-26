@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.data.audio
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import javax.inject.Inject
 
 class AudioRepositoryImpl @Inject constructor(
@@ -16,7 +17,7 @@ class AudioRepositoryImpl @Inject constructor(
         return spotifyAudioRepository.getSavedAlbums()
     }
 
-    override suspend fun getAlbum(id: String): Album? {
-        return spotifyAudioRepository.getAlbum(id)
+    override suspend fun getAlbum(id: AlbumId): Album? {
+        return spotifyAudioRepository.getAlbum(id.value)
     }
 }

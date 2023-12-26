@@ -20,7 +20,7 @@ fun TracksRow(
    TvLazyRow {
        items(
            items = tracks,
-           key = { it.id }
+           key = { it.id.value }
        ) { track ->
            TrackCard(
                track = track,

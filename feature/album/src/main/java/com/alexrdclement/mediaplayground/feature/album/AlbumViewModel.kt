@@ -7,6 +7,7 @@ import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumIdArgKey
 import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
 import com.alexrdclement.mediaplayground.model.audio.Album
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,7 @@ class AlbumViewModel @Inject constructor(
     audioRepository: AudioRepository,
     private val mediaSessionManager: MediaSessionManager,
 ) : ViewModel() {
-    private val albumId = savedStateHandle.get<String>(AlbumIdArgKey)
+    private val albumId: AlbumId? = savedStateHandle.get<String>(AlbumIdArgKey)?.let(::AlbumId)
 
     private val album = MutableStateFlow<Album?>(null)
 

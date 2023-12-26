@@ -1,7 +1,11 @@
 package com.alexrdclement.mediaplayground.model.audio
 
+sealed interface MediaItemId {
+    val value: String
+}
+
 sealed interface MediaItem {
-    val id: String
+    val id: MediaItemId
     val title: String
     val artists: List<SimpleArtist>
     val images: List<Image>

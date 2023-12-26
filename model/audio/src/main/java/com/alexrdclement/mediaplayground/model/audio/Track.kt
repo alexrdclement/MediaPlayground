@@ -2,9 +2,13 @@ package com.alexrdclement.mediaplayground.model.audio
 
 import kotlinx.serialization.Serializable
 
+@JvmInline
+@Serializable
+value class TrackId(override val value: String) : MediaItemId
+
 @Serializable
 data class Track(
-    override val id: String,
+    override val id: TrackId,
     override val title: String,
     override val artists: List<SimpleArtist>,
     val durationMs: Int,

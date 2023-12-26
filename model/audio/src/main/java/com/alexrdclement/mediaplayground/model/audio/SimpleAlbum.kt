@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SimpleAlbum(
-    val id: String,
+    val id: AlbumId,
     val name: String,
     val artists: List<SimpleArtist>,
     val images: List<Image>,
