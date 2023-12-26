@@ -8,17 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -85,6 +82,7 @@ private fun LoadedContent(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
             .statusBarsPadding()
             .mediaControlSheetPadding(isMediaItemLoaded = state.isMediaItemLoaded)
@@ -95,7 +93,6 @@ private fun LoadedContent(
             imageUrl = state.imageUrl,
             modifier = Modifier.fillMaxSize()
         )
-        Spacer(modifier = Modifier.height(20.dp))
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -119,15 +116,14 @@ private fun LoadedContent(
                     .basicMarquee()
             )
         }
-        Spacer(modifier = Modifier.height(20.dp))
         TrackList(
             tracks = state.tracks,
             onTrackClick = onTrackClick,
             onPlayPauseClick = onPlayPauseClick,
             modifier = Modifier
                 .padding(vertical = 8.dp)
+                .navigationBarsPadding()
         )
-        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
     }
 }
 
