@@ -64,7 +64,9 @@ fun SpotifyLibraryScreen(
                 }
 
                 is Track -> {
-                    onNavigateToPlayer(mediaItem)
+                    if (mediaItem.isPlayable) {
+                        onNavigateToPlayer(mediaItem)
+                    }
                 }
             }
         },

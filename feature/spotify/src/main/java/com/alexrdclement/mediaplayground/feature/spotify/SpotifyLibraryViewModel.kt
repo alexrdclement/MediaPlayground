@@ -91,9 +91,10 @@ class SpotifyLibraryViewModel @Inject constructor(
     }
 
     fun onItemClick(mediaItemUi: MediaItemUi) {
-        when (mediaItemUi.mediaItem) {
+        when (val mediaItem = mediaItemUi.mediaItem) {
             is Album -> {}
             is Track -> {
+                if (!mediaItem.isPlayable) return
                 mediaSessionManager.loadIfNecessary(mediaItemUi.mediaItem)
                 mediaSessionManager.play()
             }
