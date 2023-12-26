@@ -48,24 +48,27 @@ fun AlbumScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
     AlbumScreen(
         uiState = uiState,
+        onAlbumPlayPauseClick = viewModel::onAlbumPlayPauseClick,
         onTrackClick = viewModel::onTrackClick,
-        onPlayPauseClick = viewModel::onPlayPauseClick,
+        onTrackPlayPauseClick = viewModel::onTrackPlayPauseClick,
     )
 }
 
 @Composable
 fun AlbumScreen(
     uiState: AlbumUiState,
+    onAlbumPlayPauseClick: () -> Unit,
     onTrackClick: (TrackUi) -> Unit,
-    onPlayPauseClick: (TrackUi) -> Unit,
+    onTrackPlayPauseClick: (TrackUi) -> Unit,
 ) {
     Surface {
         when (uiState) {
             AlbumUiState.Loading -> {}
             is AlbumUiState.Success -> LoadedContent(
                 state = uiState,
+                onAlbumPlayPauseClick = onAlbumPlayPauseClick,
                 onTrackClick = onTrackClick,
-                onPlayPauseClick = onPlayPauseClick,
+                onTrackPlayPauseClick = onTrackPlayPauseClick,
             )
         }
     }
@@ -75,8 +78,9 @@ fun AlbumScreen(
 @OptIn(ExperimentalFoundationApi::class)
 private fun LoadedContent(
     state: AlbumUiState.Success,
+    onAlbumPlayPauseClick: () -> Unit,
     onTrackClick: (TrackUi) -> Unit,
-    onPlayPauseClick: (TrackUi) -> Unit,
+    onTrackPlayPauseClick: (TrackUi) -> Unit,
 ) {
     val verticalScrollState = rememberScrollState()
 
@@ -116,10 +120,17 @@ private fun LoadedContent(
                     .basicMarquee()
             )
         }
+        PlayPauseButton(
+            isPlaying = state.isAlbumPlaying,
+            isEnabled = state.isAlbumPlayable,
+            onClick = onAlbumPlayPauseClick,
+            modifier = Modifier
+                .size(72.dp)
+        )
         TrackList(
             tracks = state.tracks,
             onTrackClick = onTrackClick,
-            onPlayPauseClick = onPlayPauseClick,
+            onPlayPauseClick = onTrackPlayPauseClick,
             modifier = Modifier
                 .padding(vertical = 8.dp)
                 .navigationBarsPadding()
@@ -248,12 +259,15 @@ private fun Preview() {
             title = album.title,
             artists = album.artists,
             tracks = tracks,
+            isAlbumPlayable = true,
+            isAlbumPlaying = false,
             isMediaItemLoaded = false,
         )
         AlbumScreen(
             uiState = uiState,
+            onAlbumPlayPauseClick = {},
             onTrackClick = {},
-            onPlayPauseClick = {},
+            onTrackPlayPauseClick = {},
         )
     }
 }

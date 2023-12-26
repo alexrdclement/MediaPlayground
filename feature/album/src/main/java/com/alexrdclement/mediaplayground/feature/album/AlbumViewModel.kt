@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumIdArgKey
 import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
+import com.alexrdclement.mediaplayground.mediasession.loadIfNecessary
+import com.alexrdclement.mediaplayground.mediasession.playPause
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
@@ -49,6 +51,8 @@ class AlbumViewModel @Inject constructor(
             title = album.title,
             artists = album.artists,
             tracks = tracks,
+            isAlbumPlayable = album.isPlayable,
+            isAlbumPlaying = loadedMediaItem?.id == albumId && isPlaying,
             isMediaItemLoaded = loadedMediaItem != null,
         )
     }
@@ -77,11 +81,15 @@ class AlbumViewModel @Inject constructor(
         mediaSessionManager.play()
     }
 
-    fun onPlayPauseClick(trackUi: AlbumUiState.Success.TrackUi) {
-        if (mediaSessionManager.isPlaying.value) {
-            mediaSessionManager.pause()
-        } else {
-            mediaSessionManager.play()
-        }
+    fun onAlbumPlayPauseClick() {
+        val album = album.value ?: return
+        if (!album.isPlayable) return
+
+        mediaSessionManager.loadIfNecessary(album)
+        mediaSessionManager.playPause()
+    }
+
+    fun onTrackPlayPauseClick(trackUi: AlbumUiState.Success.TrackUi) {
+        mediaSessionManager.playPause()
     }
 }

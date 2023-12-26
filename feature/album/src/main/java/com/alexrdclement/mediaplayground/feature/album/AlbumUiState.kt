@@ -11,6 +11,8 @@ sealed class AlbumUiState {
         val title: String,
         val artists: List<SimpleArtist>,
         val tracks: List<TrackUi>,
+        val isAlbumPlayable: Boolean,
+        val isAlbumPlaying: Boolean,
         val isMediaItemLoaded: Boolean,
     ) : AlbumUiState() {
         data class TrackUi(

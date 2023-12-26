@@ -10,6 +10,8 @@ import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
+import com.alexrdclement.mediaplayground.mediasession.loadIfNecessary
+import com.alexrdclement.mediaplayground.mediasession.playPause
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.ui.shared.model.MediaItemUi
@@ -18,7 +20,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -93,21 +94,14 @@ class SpotifyLibraryViewModel @Inject constructor(
         when (mediaItemUi.mediaItem) {
             is Album -> {}
             is Track -> {
-                mediaSessionManager.load(mediaItemUi.mediaItem)
+                mediaSessionManager.loadIfNecessary(mediaItemUi.mediaItem)
                 mediaSessionManager.play()
             }
         }
     }
 
     fun onPlayPauseClick(mediaItemUi: MediaItemUi) {
-        if (mediaSessionManager.loadedMediaItem.value?.id != mediaItemUi.mediaItem.id) {
-            mediaSessionManager.load(mediaItemUi.mediaItem)
-        }
-
-        if (mediaSessionManager.isPlaying.value) {
-            mediaSessionManager.pause()
-        } else {
-            mediaSessionManager.play()
-        }
+        mediaSessionManager.loadIfNecessary(mediaItemUi.mediaItem)
+        mediaSessionManager.playPause()
     }
 }

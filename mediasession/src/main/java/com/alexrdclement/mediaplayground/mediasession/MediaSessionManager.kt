@@ -110,3 +110,17 @@ class MediaSessionManager @Inject constructor(
         _loadedMediaItem.value = album
     }
 }
+
+fun MediaSessionManager.playPause() {
+    if (isPlaying.value) {
+        pause()
+    } else {
+        play()
+    }
+}
+
+fun MediaSessionManager.loadIfNecessary(mediaItem: MediaItem) {
+    if (mediaItem.id != loadedMediaItem.value?.id) {
+        load(mediaItem)
+    }
+}
