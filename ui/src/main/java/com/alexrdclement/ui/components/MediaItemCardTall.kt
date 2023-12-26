@@ -26,6 +26,7 @@ import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.ui.shared.util.PreviewTrack1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.components.PlayPauseButton
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

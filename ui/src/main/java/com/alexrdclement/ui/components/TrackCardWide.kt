@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,8 +22,8 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.ui.shared.util.PreviewTrack1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.components.PlayPauseButton
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrackCardWide(
     track: Track,

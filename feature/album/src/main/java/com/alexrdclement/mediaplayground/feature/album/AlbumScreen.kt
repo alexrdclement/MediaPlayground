@@ -37,11 +37,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.feature.album.AlbumUiState.Success.TrackUi
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.ui.components.MediaItemArtwork
-import com.alexrdclement.ui.components.PlayPauseButton
 import com.alexrdclement.ui.components.mediacontrolsheet.mediaControlSheetPadding
 import com.alexrdclement.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.ui.shared.util.PreviewAlbum1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.components.PlayPauseButton
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
