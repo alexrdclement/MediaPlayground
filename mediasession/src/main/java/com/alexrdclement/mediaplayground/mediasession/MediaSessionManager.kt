@@ -5,16 +5,20 @@ import android.content.Context
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.mediasession.mapper.toMediaItem
 import com.alexrdclement.mediaplayground.mediasession.service.MediaSessionService
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
+import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,8 +31,10 @@ import javax.inject.Singleton
 @Singleton
 class MediaSessionManager @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val audioRepository: AudioRepository,
 ) {
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var mediaTransitionJob: Job? = null
 
     private var mediaController: MutableStateFlow<MediaController?> = MutableStateFlow(null)
     val player: StateFlow<Player?> = mediaController
@@ -84,6 +90,28 @@ class MediaSessionManager @Inject constructor(
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
                     super.onIsPlayingChanged(isPlaying)
                     _isPlaying.value = isPlaying
+                }
+
+                override fun onMediaItemTransition(
+                    mediaItem: androidx.media3.common.MediaItem?,
+                    reason: Int
+                ) {
+                    super.onMediaItemTransition(mediaItem, reason)
+
+                    if (mediaItem == null) {
+                        _loadedMediaItem.value = null
+                        return
+                    }
+
+                    mediaTransitionJob?.cancel()
+                    mediaTransitionJob = coroutineScope.launch {
+                        _loadedMediaItem.value = audioRepository
+                            .getTrack(id = TrackId(mediaItem.mediaId))
+                            .guardSuccess {
+                                // TODO: Error handling
+                                return@launch
+                            }
+                    }
                 }
             }
         )

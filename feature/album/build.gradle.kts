@@ -61,6 +61,7 @@ dependencies {
     implementation(projects.data.audio)
     implementation(projects.mediasession)
     implementation(projects.model.audio)
+    implementation(projects.model.result)
     implementation(projects.ui)
     implementation(projects.uiShared)
 

@@ -49,8 +49,11 @@ dependencies {
     implementation(libs.media3.decoder)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
+
     implementation(projects.data.audio)
     implementation(projects.model.audio)
+    implementation(projects.model.result)
+
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

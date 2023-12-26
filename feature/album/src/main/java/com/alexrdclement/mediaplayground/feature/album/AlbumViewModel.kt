@@ -12,6 +12,8 @@ import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
+import com.alexrdclement.mediaplayground.model.result.guardSuccess
+import com.alexrdclement.mediaplayground.model.result.successOrElse
 import com.alexrdclement.ui.shared.model.TrackUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,7 +64,7 @@ class AlbumViewModel @Inject constructor(
         viewModelScope.launch {
             // TODO: error handling
             val albumId = albumId ?: return@launch
-            album.value = audioRepository.getAlbum(albumId)
+            album.value = audioRepository.getAlbum(albumId).guardSuccess { return@launch }
         }
     }
 

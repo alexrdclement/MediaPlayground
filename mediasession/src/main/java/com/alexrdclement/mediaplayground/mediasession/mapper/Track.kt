@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 
 fun Track.toMediaItem(): MediaItem {
     return MediaItem.Builder()
+        .setMediaId(id.value)
         .setUri(previewUrl)
         .setMediaMetadata(this.toMediaMetadata())
         .build()
