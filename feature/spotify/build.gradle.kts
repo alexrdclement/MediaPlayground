@@ -58,11 +58,14 @@ dependencies {
     implementation(libs.media3.common)
     implementation(libs.paging)
     implementation(libs.paging.compose)
+    implementation(libs.ui.playground.components)
+
     implementation(projects.data.audio)
     implementation(projects.mediasession)
     implementation(projects.model.audio)
     implementation(projects.ui)
     implementation(projects.uiShared)
+
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
