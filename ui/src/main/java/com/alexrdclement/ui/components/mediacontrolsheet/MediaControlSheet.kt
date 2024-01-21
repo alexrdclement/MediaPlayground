@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
-import com.alexrdclement.uiplayground.components.Artist
 import com.alexrdclement.uiplayground.components.MediaControlSheetState
+import com.alexrdclement.uiplayground.components.model.Artist
 import kotlinx.coroutines.launch
 import com.alexrdclement.uiplayground.components.MediaControlSheet as MediaControlSheetComponent
-import com.alexrdclement.uiplayground.components.MediaItem as UiMediaItem
+import com.alexrdclement.uiplayground.components.model.MediaItem as UiMediaItem
 
 private val MediaControlSheetPartialExpandHeight = 64.dp
 
@@ -77,7 +77,7 @@ fun MediaControlSheet(
             ) {
                 Surface {
                     MediaControlSheetContent(
-                        mediaItem = uiMediaItem,
+                        loadedMediaItem = uiMediaItem,
                         isPlaying = isPlaying,
                         onPlayPauseClick = onPlayPauseClick,
                         modifier = Modifier.graphicsLayer {
