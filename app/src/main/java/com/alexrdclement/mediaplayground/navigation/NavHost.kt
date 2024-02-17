@@ -26,6 +26,7 @@ import com.alexrdclement.mediaplayground.feature.album.navigation.navigateToAlbu
 import com.alexrdclement.mediaplayground.feature.player.navigation.playerScreen
 import com.alexrdclement.mediaplayground.feature.spotify.navigation.navigateToSpotifyLibrary
 import com.alexrdclement.mediaplayground.feature.spotify.navigation.spotifyLibraryScreen
+import com.alexrdclement.mediaplayground.feature.audio.library.navigation.audioLibraryScreen
 import com.alexrdclement.mediaplayground.mediacontrolsheet.MediaControlSheet
 import com.alexrdclement.ui.components.MediaSource
 import com.alexrdclement.ui.components.MediaSourcePickerBottomSheet
@@ -48,7 +49,7 @@ fun MediaPlaygroundNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = Destination.SpotifyLibrary.route,
+        startDestination = Destination.AudioLibrary.route,
         modifier = Modifier
             .fillMaxSize()
             .padding(contentPadding)
@@ -56,6 +57,18 @@ fun MediaPlaygroundNavHost(
     ) {
         mainScreen(
             navigateToSpotifyLibrary = navController::navigateToSpotifyLibrary,
+        )
+        audioLibraryScreen(
+            onNavigateToPlayer = { mediaItem ->
+                coroutineScope.launch {
+                    mediaControlSheetState.expand()
+                }
+            },
+            onNavigateToAlbum = { album ->
+                navController.navigateToAlbum(
+                    albumId = album.id,
+                )
+            }
         )
         spotifyLibraryScreen(
             onNavigateToPlayer = { mediaItem ->

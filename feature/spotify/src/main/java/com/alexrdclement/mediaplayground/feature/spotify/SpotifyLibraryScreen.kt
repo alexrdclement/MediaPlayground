@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -34,14 +33,16 @@ import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.ui.components.MediaItemRow
+import com.alexrdclement.ui.components.MediaItemWidthCompact
 import com.alexrdclement.ui.components.mediacontrolsheet.mediaControlSheetPadding
+import com.alexrdclement.ui.components.spotify.SpotifyAuthButton
 import com.alexrdclement.ui.shared.model.MediaItemUi
 import com.alexrdclement.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.ui.shared.util.PreviewTracksUi1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
-private val MediaItemWidth = 200.dp
+private val MediaItemWidth = MediaItemWidthCompact
 
 @Composable
 fun SpotifyLibraryScreen(
@@ -88,7 +89,6 @@ fun SpotifyLibraryScreen(
     val verticalScrollState = rememberScrollState()
     Surface(
         modifier = Modifier
-            .statusBarsPadding()
             .fillMaxSize(),
         color = MaterialTheme.colorScheme.surface,
     ) {
@@ -98,6 +98,7 @@ fun SpotifyLibraryScreen(
             modifier = Modifier
                 .verticalScroll(verticalScrollState)
                 .fillMaxSize()
+                .statusBarsPadding()
                 .padding(vertical = 16.dp)
         ) {
             TopAppBar(
@@ -109,7 +110,7 @@ fun SpotifyLibraryScreen(
                 },
                 actions = {
                     val isLoggedIn = remember(uiState) { uiState is SpotifyLibraryUiState.LoggedIn }
-                    LogInOutButton(
+                    SpotifyAuthButton(
                         isLoggedIn = isLoggedIn,
                         onClick = {
                             if (isLoggedIn) {
@@ -169,22 +170,6 @@ private fun LoggedInContent(
             modifier = Modifier
         )
         Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
-    }
-}
-
-@Composable
-private fun LogInOutButton(
-    isLoggedIn: Boolean,
-    onClick: () -> Unit,
-) {
-    Button(
-        onClick = onClick,
-    ) {
-        if (!isLoggedIn) {
-            Text(text = "Log In")
-        } else {
-            Text(text = "Log Out")
-        }
     }
 }
 

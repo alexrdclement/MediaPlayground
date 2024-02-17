@@ -26,6 +26,9 @@ import com.alexrdclement.ui.shared.util.PreviewTracksUi1
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
+val MediaItemWidthDefault = 280.dp
+val MediaItemWidthCompact = 200.dp
+
 @Composable
 fun MediaItemRow(
     mediaItems: LazyPagingItems<MediaItemUi>,
@@ -33,7 +36,7 @@ fun MediaItemRow(
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
-    itemWidth: Dp = 280.dp,
+    itemWidth: Dp = MediaItemWidthDefault,
     title: String? = null,
 ) {
     Column(
@@ -43,7 +46,7 @@ fun MediaItemRow(
         if (title != null) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(contentPadding),
             )
         }
