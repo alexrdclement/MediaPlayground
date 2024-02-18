@@ -1,5 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.audio.library
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,10 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
+import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.LocalContentState
 import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.SpotifyContentState
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
@@ -34,8 +40,11 @@ import com.alexrdclement.ui.components.spotify.SpotifyAuthButtonStyle
 import com.alexrdclement.ui.shared.model.MediaItemUi
 import com.alexrdclement.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.ui.shared.util.PreviewTracksUi1
+import com.alexrdclement.ui.theme.ButtonSpace
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
+
+private const val MediaPickerAudioMimeType = "audio/*"
 
 @Composable
 fun AudioLibraryScreen(
@@ -45,8 +54,16 @@ fun AudioLibraryScreen(
     viewModel: AudioLibraryViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AudioLibraryUiState.InitialState)
+    val mediaPickerLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) {
+        viewModel.onMediaImportItemSelected(it)
+    }
     AudioLibraryScreen(
         uiState = uiState,
+        onImportClick = {
+            mediaPickerLauncher.launch(MediaPickerAudioMimeType)
+        },
         onItemClick = { mediaItemUi ->
             viewModel.onItemClick(mediaItemUi)
 
@@ -72,6 +89,7 @@ fun AudioLibraryScreen(
 @Composable
 fun AudioLibraryScreen(
     uiState: AudioLibraryUiState,
+    onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     onSpotifyLogInClick: () -> Unit,
@@ -100,6 +118,7 @@ fun AudioLibraryScreen(
                 AudioLibraryUiState.InitialState -> {}
                 is AudioLibraryUiState.ContentReady -> ContentReady(
                     uiState = uiState,
+                    onImportClick = onImportClick,
                     onItemClick = onItemClick,
                     onItemPlayPauseClick = onItemPlayPauseClick,
                     onLogInClick = onSpotifyLogInClick,
@@ -113,6 +132,7 @@ fun AudioLibraryScreen(
 @Composable
 fun ContentReady(
     uiState: AudioLibraryUiState.ContentReady,
+    onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     onLogInClick: () -> Unit,
@@ -121,7 +141,7 @@ fun ContentReady(
     val contentPadding = PaddingValues(horizontal = 16.dp)
     val scrollState = rememberScrollState()
     Column(
-        verticalArrangement = Arrangement.spacedBy(32.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding()
@@ -130,6 +150,7 @@ fun ContentReady(
     ) {
         AudioLibraryContent(
             headerText = "Spotify",
+            headerPadding = contentPadding,
             headerAction = {
                 when (uiState.spotifyContentState) {
                     is SpotifyContentState.LoggedIn -> {
@@ -142,7 +163,6 @@ fun ContentReady(
                     SpotifyContentState.NotLoggedIn -> {}
                 }
             },
-            headerPadding = contentPadding,
         ) {
             SpotifyContent(
                 spotifyContentState = uiState.spotifyContentState,
@@ -152,11 +172,29 @@ fun ContentReady(
             )
         }
         AudioLibraryContent(
-            headerText = "Local storage",
+            headerText = "Imported",
             headerPadding = contentPadding,
+            headerAction = {
+                when (uiState.localContentState) {
+                    LocalContentState.Empty -> {}
+                    is LocalContentState.Content -> OutlinedButton(
+                        onClick = onImportClick,
+                        contentPadding = ButtonSpace.ContentPaddingCompact,
+                        modifier = Modifier.wrapContentSize(),
+                    ) {
+                        Text(
+                            text = "Import",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+            }
         ) {
             LocalStorageContent(
-                onImportClick = {},
+                localContentState = uiState.localContentState,
+                onImportClick = onImportClick,
+                onItemClick = onItemClick,
+                onItemPlayPauseClick = onItemPlayPauseClick,
             )
         }
     }
@@ -180,6 +218,7 @@ private fun AudioLibraryContent(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
+                .sizeIn(minHeight = 40.dp) // Match min button height
                 .padding(headerPadding)
         ) {
             Text(
@@ -197,6 +236,9 @@ private fun AudioLibraryContent(
 internal fun PreviewLibraryScreen() {
     MediaPlaygroundTheme {
         val uiState = AudioLibraryUiState.ContentReady(
+            localContentState = LocalContentState.Content(
+                tracks = flowOf(PagingData.from(PreviewTracksUi1)),
+            ),
             spotifyContentState = SpotifyContentState.LoggedIn(
                 savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),
                 savedAlbums = flowOf(PagingData.from(PreviewAlbumsUi1)),
@@ -205,6 +247,7 @@ internal fun PreviewLibraryScreen() {
         )
         AudioLibraryScreen(
             uiState = uiState,
+            onImportClick = {},
             onItemClick = {},
             onItemPlayPauseClick = {},
             onSpotifyLogInClick = {},

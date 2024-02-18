@@ -24,6 +24,7 @@ rootProject.name = "MediaPlayground"
 include(":app")
 include(":data:audio")
 include(":mediaplaygroundtv")
+include(":media:import")
 include(":mediasession")
 include(":model:audio")
 include(":model:result")

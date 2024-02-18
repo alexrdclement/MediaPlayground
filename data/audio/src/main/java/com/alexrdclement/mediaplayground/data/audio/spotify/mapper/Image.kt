@@ -4,7 +4,7 @@ import com.adamratzman.spotify.models.SpotifyImage
 import com.alexrdclement.mediaplayground.model.audio.Image
 
 fun SpotifyImage.toImage() = Image(
-    url = this.url,
+    uri = this.url,
     heightPx = this.height,
     widthPx = this.width,
 )

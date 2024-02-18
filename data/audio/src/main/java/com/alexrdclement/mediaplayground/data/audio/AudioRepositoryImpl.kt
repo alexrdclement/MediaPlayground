@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.data.audio
 
+import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
@@ -10,6 +11,7 @@ import com.alexrdclement.mediaplayground.model.result.mapFailure
 import javax.inject.Inject
 
 class AudioRepositoryImpl @Inject constructor(
+    private val localAudioRepository: LocalAudioRepository,
     private val spotifyAudioRepository: SpotifyAudioRepository,
 ) : AudioRepository {
     override suspend fun getSavedTracks(): List<Track> {
@@ -26,8 +28,18 @@ class AudioRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getTrack(id: TrackId): Result<Track?, AudioRepository.Failure> {
-        return spotifyAudioRepository.getTrack(id.value)
-            .mapFailure(::mapSpotifyAudioRepositoryFailure)
+        // Check local first, fallback to Spotify
+        return when (val localTrackResult = localAudioRepository.getTrack(id)) {
+            is Result.Success -> Result.Success(localTrackResult.value)
+            is Result.Failure -> {
+                when (localTrackResult.failure) {
+                    LocalAudioRepository.Failure.TrackNotFound -> {
+                        spotifyAudioRepository.getTrack(id.value)
+                            .mapFailure(::mapSpotifyAudioRepositoryFailure)
+                    }
+                }
+            }
+        }
     }
 
     private fun mapSpotifyAudioRepositoryFailure(

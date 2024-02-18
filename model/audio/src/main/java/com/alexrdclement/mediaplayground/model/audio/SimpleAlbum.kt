@@ -14,8 +14,8 @@ val SimpleAlbum.thumbnailImageUrl: String?
     get() {
         // Third image is typically too low-res
         val image = images.getOrNull(1) ?: images.firstOrNull()
-        return image?.url
+        return image?.uri
     }
 
 val SimpleAlbum.largeImageUrl: String?
-    get() = images.firstOrNull()?.url
+    get() = images.firstOrNull()?.uri

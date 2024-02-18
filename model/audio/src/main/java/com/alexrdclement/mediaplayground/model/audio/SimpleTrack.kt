@@ -5,6 +5,6 @@ data class SimpleTrack(
     val name: String,
     val artists: List<SimpleArtist>,
     val durationMs: Int,
-    val trackNumber: Int,
+    val trackNumber: Int?,
     val previewUrl: String?,
 )

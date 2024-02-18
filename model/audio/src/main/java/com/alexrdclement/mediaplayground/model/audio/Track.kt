@@ -12,7 +12,7 @@ data class Track(
     override val title: String,
     override val artists: List<SimpleArtist>,
     val durationMs: Int,
-    val trackNumber: Int,
+    val trackNumber: Int?,
     val previewUrl: String?,
     val simpleAlbum: SimpleAlbum,
 ) : MediaItem {

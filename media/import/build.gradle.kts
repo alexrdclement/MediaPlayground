@@ -1,18 +1,16 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.data.audio"
+    namespace = "com.alexrdclement.mediaplayground.media.mediaimport"
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 23
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -36,26 +34,27 @@ android {
     }
 }
 
-kotlin {
-    jvmToolchain(8)
-}
-
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.hilt.android)
-    implementation(libs.appcompat)
-    implementation(libs.spotify.api.kotlin.core)
-    implementation(libs.paging)
+    ksp(libs.hilt.compiler)
 
-    implementation(projects.media.import)
+    implementation(libs.core.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.guava)
+    implementation(libs.hilt.android)
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
+    implementation(libs.media3.ui.leanback)
+    implementation(libs.media3.session)
+    implementation(libs.media3.cast)
+    implementation(libs.media3.transformer)
+    implementation(libs.media3.decoder)
+    implementation(libs.media3.datasource)
+    implementation(libs.media3.common)
+
     implementation(projects.model.audio)
     implementation(projects.model.result)
 
-    ksp(libs.hilt.compiler)
-
     testImplementation(libs.junit)
-
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

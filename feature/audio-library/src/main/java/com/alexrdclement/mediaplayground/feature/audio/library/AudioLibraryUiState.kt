@@ -9,6 +9,7 @@ sealed class AudioLibraryUiState {
 
     data class ContentReady(
         val spotifyContentState: SpotifyContentState,
+        val localContentState: LocalContentState,
         val isMediaItemLoaded: Boolean,
     ) : AudioLibraryUiState() {
 
@@ -18,6 +19,13 @@ sealed class AudioLibraryUiState {
                 val savedTracks: Flow<PagingData<MediaItemUi>>,
                 val savedAlbums: Flow<PagingData<MediaItemUi>>,
             ) : SpotifyContentState()
+        }
+
+        sealed class LocalContentState {
+            data object Empty : LocalContentState()
+            data class Content(
+                val tracks: Flow<PagingData<MediaItemUi>>,
+            ) : LocalContentState()
         }
     }
 }
