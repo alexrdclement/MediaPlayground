@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.feature.audio.library
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,7 @@ internal fun SpotifyContent(
     onLogInClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
 ) {
     when (spotifyContentState) {
         SpotifyContentState.NotLoggedIn -> SpotifyNotLoggedInContent(
@@ -38,6 +40,7 @@ internal fun SpotifyContent(
             spotifyContentState = spotifyContentState,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
+            contentPadding = contentPadding,
         )
     }
 }
@@ -47,6 +50,7 @@ private fun SpotifyLoggedInContent(
     spotifyContentState: SpotifyContentState.LoggedIn,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
+    contentPadding: PaddingValues,
 ) {
     Column(
         modifier = Modifier
@@ -60,6 +64,7 @@ private fun SpotifyLoggedInContent(
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Saved albums",
             itemWidth = MediaItemWidthCompact,
+            contentPadding = contentPadding,
             modifier = Modifier
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -69,6 +74,7 @@ private fun SpotifyLoggedInContent(
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Saved tracks",
             itemWidth = MediaItemWidthCompact,
+            contentPadding = contentPadding,
             modifier = Modifier
         )
     }

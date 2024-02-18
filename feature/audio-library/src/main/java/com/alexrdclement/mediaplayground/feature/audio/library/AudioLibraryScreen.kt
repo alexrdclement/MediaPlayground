@@ -2,12 +2,12 @@ package com.alexrdclement.mediaplayground.feature.audio.library
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -118,6 +118,7 @@ fun ContentReady(
     onLogInClick: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {
+    val contentPadding = PaddingValues(horizontal = 16.dp)
     val scrollState = rememberScrollState()
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
@@ -125,7 +126,6 @@ fun ContentReady(
             .fillMaxSize()
             .navigationBarsPadding()
             .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
-            .padding(horizontal = 16.dp)
             .verticalScroll(scrollState)
     ) {
         AudioLibraryContent(
@@ -141,7 +141,8 @@ fun ContentReady(
                     }
                     SpotifyContentState.NotLoggedIn -> {}
                 }
-            }
+            },
+            headerPadding = contentPadding,
         ) {
             SpotifyContent(
                 spotifyContentState = uiState.spotifyContentState,
@@ -152,6 +153,7 @@ fun ContentReady(
         }
         AudioLibraryContent(
             headerText = "Local storage",
+            headerPadding = contentPadding,
         ) {
             LocalStorageContent(
                 onImportClick = {},
@@ -163,11 +165,12 @@ fun ContentReady(
 @Composable
 private fun AudioLibraryContent(
     headerText: String,
+    headerPadding: PaddingValues = PaddingValues(0.dp),
     headerAction: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -175,7 +178,9 @@ private fun AudioLibraryContent(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(headerPadding)
         ) {
             Text(
                 text = headerText,
