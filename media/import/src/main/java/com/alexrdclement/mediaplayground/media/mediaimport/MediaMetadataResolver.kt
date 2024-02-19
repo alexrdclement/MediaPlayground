@@ -3,17 +3,23 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import androidx.core.net.toUri
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
 import javax.inject.Inject
 
 class MediaMetadataResolver @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
 
-    fun getMediaMetadata(contentUri: Uri): MediaMetadata {
+    suspend fun getMediaMetadata(
+        contentUri: Uri,
+        onEmbeddedPictureFound: suspend (ByteArray) -> File?,
+    ): MediaMetadata {
         return MediaMetadataRetriever().use { retriever ->
             retriever.setDataSource(context, contentUri)
+
             MediaMetadata(
                 title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE),
                 durationMs = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
@@ -22,6 +28,7 @@ class MediaMetadataResolver @Inject constructor(
                     ?.toIntOrNull(),
                 artistName = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST),
                 albumTitle = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM),
+                imageUri = retriever.embeddedPicture?.let { onEmbeddedPictureFound(it) }?.toUri(),
             )
         }
     }

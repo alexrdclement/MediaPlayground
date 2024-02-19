@@ -38,6 +38,7 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.core.ktx)
+    implementation(libs.androidx.documentfile)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.hilt.android)

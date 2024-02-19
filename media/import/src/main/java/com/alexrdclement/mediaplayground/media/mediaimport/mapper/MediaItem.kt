@@ -47,6 +47,6 @@ fun MediaMetadata.toSimpleAlbum(): SimpleAlbum {
 }
 
 fun MediaMetadata.toAlbumArtwork(): Image? {
-    // TODO
-    return null
+    val imageUri = imageUri ?: return null
+    return Image(imageUri.toString())
 }
