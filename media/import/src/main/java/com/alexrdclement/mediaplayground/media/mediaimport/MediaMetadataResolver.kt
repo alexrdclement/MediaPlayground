@@ -3,7 +3,6 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
-import android.provider.MediaStore
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

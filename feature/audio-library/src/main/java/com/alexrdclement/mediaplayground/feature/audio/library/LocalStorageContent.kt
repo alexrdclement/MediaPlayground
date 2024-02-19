@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,11 +76,18 @@ fun Content(
             .fillMaxSize()
     ) {
         val tracks = localContentState.tracks.collectAsLazyPagingItems()
+        val state = rememberLazyListState()
+
+        LaunchedEffect(tracks.itemCount) {
+            state.scrollToItem(0)
+        }
+
         MediaItemRow(
             mediaItems = tracks,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Imported tracks",
+            lazyListState = state,
             itemWidth = MediaItemWidthCompact,
             contentPadding = contentPadding,
             modifier = Modifier

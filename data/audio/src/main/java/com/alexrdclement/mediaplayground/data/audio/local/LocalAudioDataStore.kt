@@ -15,7 +15,7 @@ class LocalAudioDataStore @Inject constructor() {
     fun putTrack(track: Track) {
         tracks.update {
             it.toMutableList().apply {
-                add(track)
+                add(0, track)
             }
         }
     }

@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -35,6 +37,7 @@ fun MediaItemRow(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
+    lazyListState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(),
     itemWidth: Dp = MediaItemWidthDefault,
     title: String? = null,
@@ -52,6 +55,7 @@ fun MediaItemRow(
         }
 
         LazyRow(
+            state = lazyListState,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = contentPadding,
             modifier = Modifier,
