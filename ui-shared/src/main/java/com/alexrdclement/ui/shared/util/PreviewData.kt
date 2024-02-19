@@ -28,7 +28,7 @@ val PreviewSimpleTrack1 = SimpleTrack(
     artists = listOf(PreviewSimpleArtist1),
     durationMs = 217000,
     trackNumber = 1,
-    previewUrl = null,
+    uri = null,
 )
 
 val PreviewSimpleTrack2 = SimpleTrack(
@@ -37,7 +37,7 @@ val PreviewSimpleTrack2 = SimpleTrack(
     artists = listOf(PreviewSimpleArtist1),
     durationMs = 166000,
     trackNumber = 2,
-    previewUrl = null,
+    uri = null,
 )
 
 val PreviewSimpleTrack3 = SimpleTrack(
@@ -46,7 +46,7 @@ val PreviewSimpleTrack3 = SimpleTrack(
     artists = listOf(PreviewSimpleArtist1),
     durationMs = 155000,
     trackNumber = 3,
-    previewUrl = null,
+    uri = null,
 )
 
 val PreviewTrack1 = PreviewSimpleTrack1.toTrack(

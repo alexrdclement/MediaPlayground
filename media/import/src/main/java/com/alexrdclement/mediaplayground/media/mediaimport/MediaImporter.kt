@@ -18,7 +18,7 @@ class MediaImporter @Inject constructor(
         return try {
             val mediaItem = MediaItem.fromUri(uri)
             val mediaMetadata = mediaMetadataResolver.getMediaMetadata(contentUri = uri)
-            val track = mediaItem.toTrack(mediaMetadata = mediaMetadata)
+            val track = mediaItem.toTrack(contentUri = uri, mediaMetadata = mediaMetadata)
             Result.Success(track)
         } catch (e: Throwable) {
             Result.Failure(MediaImportFailure.Unknown(throwable = e))

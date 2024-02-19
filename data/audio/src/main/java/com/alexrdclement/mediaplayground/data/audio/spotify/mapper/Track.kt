@@ -9,7 +9,7 @@ fun SpotifyTrack.toTrack() = Track(
     title = this.name,
     durationMs = this.durationMs,
     trackNumber = this.trackNumber,
-    previewUrl = this.previewUrl,
+    uri = this.previewUrl,
     artists = this.artists.map { it.toSimpleArtist() },
     simpleAlbum = this.album.toSimpleAlbum(),
 )

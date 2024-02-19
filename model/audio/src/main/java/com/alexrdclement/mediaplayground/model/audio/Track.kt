@@ -13,12 +13,12 @@ data class Track(
     override val artists: List<SimpleArtist>,
     val durationMs: Int,
     val trackNumber: Int?,
-    val previewUrl: String?,
+    val uri: String?,
     val simpleAlbum: SimpleAlbum,
 ) : MediaItem {
     override val images: List<Image>
         get() = simpleAlbum.images
 
     override val isPlayable: Boolean
-        get() = previewUrl != null
+        get() = uri != null
 }

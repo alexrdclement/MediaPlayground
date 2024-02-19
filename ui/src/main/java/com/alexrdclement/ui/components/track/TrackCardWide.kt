@@ -30,7 +30,7 @@ fun TrackCardWide(
     track: Track,
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isEnabled: Boolean = remember(track) { track.previewUrl != null }
+    isEnabled: Boolean = remember(track) { track.uri != null }
 ) {
     OutlinedCard(
         enabled = isEnabled,
