@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
-import android.content.ContentResolver.MimeTypeInfo
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -8,7 +7,6 @@ import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.documentfile.provider.DocumentFile
 import androidx.media3.common.MediaItem
-import androidx.media3.common.MimeTypes
 import androidx.media3.common.util.UnstableApi
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportFailure
@@ -24,7 +22,7 @@ import javax.inject.Inject
 @OptIn(UnstableApi::class)
 class MediaImporter @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val mediaMetadataResolver: MediaMetadataResolver,
+    private val mediaMetadataRetriever: MediaMetadataRetriever,
 ) {
 
     private companion object {
@@ -42,7 +40,7 @@ class MediaImporter @Inject constructor(
     ): Result<Track, MediaImportFailure> = withContext(Dispatchers.IO) {
         try {
             val mediaItem = MediaItem.fromUri(uri)
-            val mediaMetadata = mediaMetadataResolver.getMediaMetadata(
+            val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(
                 contentUri = uri,
                 onEmbeddedPictureFound = { embeddedPicture ->
                     val file = File(fileWriteDir, getFileName(uri))
