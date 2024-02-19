@@ -7,7 +7,6 @@ import com.alexrdclement.mediaplayground.feature.audio.library.navigation.AudioL
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 
 sealed class Destination(val route: String) {
-    data object Main : Destination("main")
     data object AudioLibrary : Destination(AudioLibraryRoute)
     data object SpotifyLibrary : Destination(SpotifyLibraryRoute)
     data class Album(val id: AlbumId) : Destination(createAlbumRoute(id))
