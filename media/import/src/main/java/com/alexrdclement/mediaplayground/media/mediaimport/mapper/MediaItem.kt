@@ -21,7 +21,7 @@ fun MediaItem.toTrack(
         },
         title = mediaMetadata.title ?: "Unknown",
         artists = listOf(mediaMetadata.toSimpleArtist()),
-        durationMs = getDurationMs(),
+        durationMs = mediaMetadata.durationMs?.toInt() ?: 0,
         trackNumber = null,
         previewUrl = null,
         simpleAlbum = mediaMetadata.toSimpleAlbum(),
@@ -33,10 +33,6 @@ fun MediaMetadata.toSimpleArtist(): SimpleArtist {
         id = UUID.randomUUID().toString(),
         name = artistName ?: "Unknown artist",
     )
-}
-
-fun MediaItem.getDurationMs(): Int {
-    return (clippingConfiguration.endPositionMs - clippingConfiguration.startPositionMs).toInt()
 }
 
 fun MediaMetadata.toSimpleAlbum(): SimpleAlbum {
