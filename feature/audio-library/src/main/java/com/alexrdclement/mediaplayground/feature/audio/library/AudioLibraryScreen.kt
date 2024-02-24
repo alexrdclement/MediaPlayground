@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
-import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.LocalContentState
-import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.SpotifyContentState
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
+import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
 import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContent
+import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentState
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track

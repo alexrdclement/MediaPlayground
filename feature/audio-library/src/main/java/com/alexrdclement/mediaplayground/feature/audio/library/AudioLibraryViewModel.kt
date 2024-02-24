@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
-import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
-import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentState
+import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStateProvider
+import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentStateProvider
 import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
 import com.alexrdclement.mediaplayground.mediasession.loadIfNecessary
 import com.alexrdclement.mediaplayground.mediasession.playPause
@@ -23,8 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AudioLibraryViewModel @Inject constructor(
-    localContentState: LocalContentState,
-    spotifyContentState: SpotifyContentState,
+    localContentStateProvider: LocalContentStateProvider,
+    spotifyContentStateProvider: SpotifyContentStateProvider,
     private val spotifyAuth: SpotifyAuth,
     private val localAudioRepository: LocalAudioRepository,
     private val mediaSessionManager: MediaSessionManager,
@@ -35,8 +35,8 @@ class AudioLibraryViewModel @Inject constructor(
     }
 
     val uiState: StateFlow<AudioLibraryUiState> = combine(
-        localContentState.flow(viewModelScope, pagingConfig),
-        spotifyContentState.flow(viewModelScope, pagingConfig),
+        localContentStateProvider.flow(viewModelScope, pagingConfig),
+        spotifyContentStateProvider.flow(viewModelScope, pagingConfig),
         mediaSessionManager.loadedMediaItem
     ) { localContentState, spotifyContentState, loadedMediaItem ->
         AudioLibraryUiState.ContentReady(
