@@ -3,7 +3,6 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
@@ -66,16 +65,13 @@ class MediaImporter @Inject constructor(
             )
             when (fileWriteResult) {
                 is Result.Failure -> Result.Failure(fileWriteResult.failure.toMediaImportError())
-                is Result.Success -> {
-                    Result.Success(
-                        value = makeTrack(
-                            mediaId = mediaItemId,
-                            fileName = documentFileName,
-                            contentUri = fileWriteResult.value.toUri(),
-                            mediaMetadata = mediaMetadata,
-                        )
+                is Result.Success -> Result.Success(
+                    value = makeTrack(
+                        mediaId = mediaItemId,
+                        file = fileWriteResult.value,
+                        mediaMetadata = mediaMetadata,
                     )
-                }
+                )
             }
         } catch (e: Throwable) {
             Result.Failure(MediaImportError.Unknown(throwable = e))

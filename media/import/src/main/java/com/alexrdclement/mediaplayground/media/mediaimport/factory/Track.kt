@@ -1,23 +1,23 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
-import android.net.Uri
+import androidx.core.net.toUri
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toSimpleArtist
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
+import java.io.File
 
 internal fun makeTrack(
     mediaId: String,
-    fileName: String,
-    contentUri: Uri,
+    file: File,
     mediaMetadata: MediaMetadata,
 ) = Track(
     id = TrackId(mediaId),
-    title = mediaMetadata.title ?: fileName,
+    title = mediaMetadata.title ?: file.name,
     artists = listOf(mediaMetadata.toSimpleArtist()),
     durationMs = mediaMetadata.durationMs?.toInt() ?: 0,
     trackNumber = null,
-    uri = contentUri.toString(),
+    uri = file.toUri().toString(),
     simpleAlbum = mediaMetadata.toSimpleAlbum(),
 )
