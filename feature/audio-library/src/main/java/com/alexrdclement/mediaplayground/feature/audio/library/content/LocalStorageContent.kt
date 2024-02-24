@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.feature.audio.library
+package com.alexrdclement.mediaplayground.feature.audio.library.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +24,7 @@ import com.alexrdclement.ui.components.MediaItemRow
 import com.alexrdclement.ui.components.MediaItemWidthCompact
 import com.alexrdclement.ui.shared.model.MediaItemUi
 import com.alexrdclement.ui.shared.util.PreviewTracksUi1
+import com.alexrdclement.ui.theme.ButtonSpace
 import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -33,16 +36,36 @@ internal fun LocalStorageContent(
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
 ) {
-    when (localContentState) {
-        LocalContentState.Empty -> EmptyContent(
-            onImportClick = onImportClick,
-        )
-        is LocalContentState.Content -> Content(
-            localContentState = localContentState,
-            onItemClick = onItemClick,
-            onItemPlayPauseClick = onItemPlayPauseClick,
-            contentPadding = contentPadding,
-        )
+    AudioLibraryContent(
+        headerText = "Imported",
+        headerPadding = contentPadding,
+        headerAction = {
+            when (localContentState) {
+                LocalContentState.Empty -> {}
+                is LocalContentState.Content -> OutlinedButton(
+                    onClick = onImportClick,
+                    contentPadding = ButtonSpace.ContentPaddingCompact,
+                    modifier = Modifier.wrapContentSize(),
+                ) {
+                    Text(
+                        text = "Import",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+        }
+    ) {
+        when (localContentState) {
+            LocalContentState.Empty -> EmptyContent(
+                onImportClick = onImportClick,
+            )
+            is LocalContentState.Content -> Content(
+                localContentState = localContentState,
+                onItemClick = onItemClick,
+                onItemPlayPauseClick = onItemPlayPauseClick,
+                contentPadding = contentPadding,
+            )
+        }
     }
 }
 

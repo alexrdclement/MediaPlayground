@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.feature.audio.library
+package com.alexrdclement.mediaplayground.feature.audio.library.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,7 @@ import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiSta
 import com.alexrdclement.ui.components.MediaItemRow
 import com.alexrdclement.ui.components.MediaItemWidthCompact
 import com.alexrdclement.ui.components.spotify.SpotifyAuthButton
+import com.alexrdclement.ui.components.spotify.SpotifyAuthButtonStyle
 import com.alexrdclement.ui.shared.model.MediaItemUi
 import com.alexrdclement.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.ui.shared.util.PreviewTracksUi1
@@ -28,20 +29,38 @@ import kotlinx.coroutines.flow.flowOf
 internal fun SpotifyContent(
     spotifyContentState: SpotifyContentState,
     onLogInClick: () -> Unit,
+    onLogOutClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
 ) {
-    when (spotifyContentState) {
-        SpotifyContentState.NotLoggedIn -> SpotifyNotLoggedInContent(
-            onLogInClick = onLogInClick,
-        )
-        is SpotifyContentState.LoggedIn -> SpotifyLoggedInContent(
-            spotifyContentState = spotifyContentState,
-            onItemClick = onItemClick,
-            onItemPlayPauseClick = onItemPlayPauseClick,
-            contentPadding = contentPadding,
-        )
+    AudioLibraryContent(
+        headerText = "Spotify",
+        headerPadding = contentPadding,
+        headerAction = {
+            when (spotifyContentState) {
+                is SpotifyContentState.LoggedIn -> {
+                    SpotifyAuthButton(
+                        style = SpotifyAuthButtonStyle.Compact,
+                        isLoggedIn = true,
+                        onClick = onLogOutClick,
+                    )
+                }
+                SpotifyContentState.NotLoggedIn -> {}
+            }
+        },
+    ) {
+        when (spotifyContentState) {
+            SpotifyContentState.NotLoggedIn -> SpotifyNotLoggedInContent(
+                onLogInClick = onLogInClick,
+            )
+            is SpotifyContentState.LoggedIn -> SpotifyLoggedInContent(
+                spotifyContentState = spotifyContentState,
+                onItemClick = onItemClick,
+                onItemPlayPauseClick = onItemPlayPauseClick,
+                contentPadding = contentPadding,
+            )
+        }
     }
 }
 
@@ -106,6 +125,7 @@ private fun LoggedInPreview() {
         SpotifyContent(
             spotifyContentState = spotifyContentState,
             onLogInClick = {},
+            onLogOutClick = {},
             onItemClick = {},
             onItemPlayPauseClick = {},
         )
@@ -120,6 +140,7 @@ private fun LoggedOutPreview() {
         SpotifyContent(
             spotifyContentState = spotifyContentState,
             onLogInClick = {},
+            onLogOutClick = {},
             onItemClick = {},
             onItemPlayPauseClick = {},
         )
