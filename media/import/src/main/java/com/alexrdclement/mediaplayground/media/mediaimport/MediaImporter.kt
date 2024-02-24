@@ -5,8 +5,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
-import androidx.media3.common.MediaItem
-import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toTrack
+import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.result.Result
@@ -36,7 +35,8 @@ class MediaImporter @Inject constructor(
         fileWriteDir: File,
     ): Result<Track, MediaImportError> = withContext(Dispatchers.IO) {
         try {
-            val mediaItemFileWriteDir = File(fileWriteDir, UUID.randomUUID().toString())
+            val mediaItemId = UUID.randomUUID().toString()
+            val mediaItemFileWriteDir = File(fileWriteDir, mediaItemId)
             if (!mediaItemFileWriteDir.mkdir()) {
                 return@withContext Result.Failure(MediaImportError.MkdirError)
             }
@@ -67,11 +67,12 @@ class MediaImporter @Inject constructor(
             when (fileWriteResult) {
                 is Result.Failure -> Result.Failure(fileWriteResult.failure.toMediaImportError())
                 is Result.Success -> {
-                    val mediaItem = MediaItem.fromUri(uri)
                     Result.Success(
-                        value = mediaItem.toTrack(
+                        value = makeTrack(
+                            mediaId = mediaItemId,
+                            fileName = documentFileName,
                             contentUri = fileWriteResult.value.toUri(),
-                            mediaMetadata = mediaMetadata
+                            mediaMetadata = mediaMetadata,
                         )
                     )
                 }

@@ -1,34 +1,11 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.mapper
 
-import android.net.Uri
-import androidx.media3.common.MediaItem
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Image
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.mediaplayground.model.audio.TrackId
 import java.util.UUID
-
-fun MediaItem.toTrack(
-    contentUri: Uri,
-    mediaMetadata: MediaMetadata,
-): Track {
-    return Track(
-        id = if (mediaId.isNotEmpty()) {
-            TrackId(mediaId)
-        } else {
-            TrackId(UUID.randomUUID().toString())
-        },
-        title = mediaMetadata.title ?: "Unknown",
-        artists = listOf(mediaMetadata.toSimpleArtist()),
-        durationMs = mediaMetadata.durationMs?.toInt() ?: 0,
-        trackNumber = null,
-        uri = contentUri.toString(),
-        simpleAlbum = mediaMetadata.toSimpleAlbum(),
-    )
-}
 
 fun MediaMetadata.toSimpleArtist(): SimpleArtist {
     return SimpleArtist(
