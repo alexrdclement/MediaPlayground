@@ -13,19 +13,19 @@ sealed class AudioLibraryUiState {
         val isMediaItemLoaded: Boolean,
     ) : AudioLibraryUiState() {
 
+        sealed class LocalContentState {
+            data object Empty : LocalContentState()
+            data class Content(
+                val tracks: Flow<PagingData<MediaItemUi>>,
+            ) : LocalContentState()
+        }
+
         sealed class SpotifyContentState {
             data object NotLoggedIn : SpotifyContentState()
             data class LoggedIn(
                 val savedTracks: Flow<PagingData<MediaItemUi>>,
                 val savedAlbums: Flow<PagingData<MediaItemUi>>,
             ) : SpotifyContentState()
-        }
-
-        sealed class LocalContentState {
-            data object Empty : LocalContentState()
-            data class Content(
-                val tracks: Flow<PagingData<MediaItemUi>>,
-            ) : LocalContentState()
         }
     }
 }

@@ -141,17 +141,17 @@ fun ContentReady(
             .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
             .verticalScroll(scrollState)
     ) {
-        SpotifyContent(
-            spotifyContentState = uiState.spotifyContentState,
-            onLogInClick = onLogInClick,
-            onLogOutClick = onLogOutClick,
+        LocalStorageContent(
+            localContentState = uiState.localContentState,
+            onImportClick = onImportClick,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             contentPadding = contentPadding,
         )
-        LocalStorageContent(
-            localContentState = uiState.localContentState,
-            onImportClick = onImportClick,
+        SpotifyContent(
+            spotifyContentState = uiState.spotifyContentState,
+            onLogInClick = onLogInClick,
+            onLogOutClick = onLogOutClick,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             contentPadding = contentPadding,
