@@ -35,22 +35,7 @@ class LocalAudioRepositoryImpl @Inject constructor(
                 fileWriteDir = context.cacheDir,
             )
             when (result) {
-                is Result.Failure -> {
-                    when (val failure = result.failure) {
-                        is MediaImportError.Unknown -> {
-                            // TODO
-                            failure.throwable?.let { throw it }
-                        }
-                        is MediaImportError.FileWriteError.Unknown -> {
-                            // TODO
-                            failure.throwable?.let { throw it }
-                        }
-                        MediaImportError.FileWriteError.InputStreamError,
-                        MediaImportError.InputFileError -> {
-                            TODO("InputFileError")
-                        }
-                    }
-                }
+                is Result.Failure -> ::onMediaImportFailure
                 is Result.Success -> {
                     localAudioDataStore.putTrack(result.value)
                 }
@@ -72,6 +57,23 @@ class LocalAudioRepositoryImpl @Inject constructor(
             Result.Failure(LocalAudioRepository.Failure.TrackNotFound)
         } else {
             Result.Success(track)
+        }
+    }
+
+    private fun onMediaImportFailure(error: MediaImportError) = when (error) {
+        MediaImportError.MkdirError -> TODO("MkdirError")
+        MediaImportError.InputFileError -> {
+            TODO("InputFileError")
+        }
+        is MediaImportError.FileWriteError.InputFileNotFound -> TODO("InputFileNotFound")
+        MediaImportError.FileWriteError.InputStreamError -> TODO("InputStreamError")
+        is MediaImportError.FileWriteError.Unknown -> {
+            // TODO
+            error.throwable?.let { throw it }
+        }
+        is MediaImportError.Unknown -> {
+            // TODO
+            error.throwable?.let { throw it }
         }
     }
 }

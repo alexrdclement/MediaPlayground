@@ -22,14 +22,15 @@ class LocalContentStateProvider @Inject constructor(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ): Flow<LocalContentState> {
-        val localTracks = tracksFlow(coroutineScope, pagingConfig)
+        // TODO: test to verify instance not recreated
+        val tracksFlow = tracksFlow(coroutineScope, pagingConfig)
         return localAudioRepository.getTracks()
             .map { tracks ->
                 if (tracks.isEmpty()) {
                     LocalContentState.Empty
                 } else {
                     LocalContentState.Content(
-                        tracks = localTracks
+                        tracks = tracksFlow
                     )
                 }
             }

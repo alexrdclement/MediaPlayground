@@ -88,7 +88,7 @@ private fun EmptyContent(
 }
 
 @Composable
-fun Content(
+private fun Content(
     localContentState: LocalContentState.Content,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,

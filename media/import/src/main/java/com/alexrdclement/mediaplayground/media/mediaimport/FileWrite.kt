@@ -10,8 +10,10 @@ import okio.buffer
 import okio.sink
 import okio.source
 import java.io.File
+import java.io.FileNotFoundException
 
 sealed class FileWriteError {
+    data class InputFileNotFound(val throwable: Throwable) : FileWriteError()
     data object InputStreamError : FileWriteError()
     data class Unknown(val throwable: Throwable?) : FileWriteError()
 }
@@ -23,6 +25,8 @@ suspend fun Bitmap.writeToDisk(destination: File): Result<File, FileWriteError> 
                 this@writeToDisk.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             }
             Result.Success(destination)
+        } catch(e: FileNotFoundException) {
+            Result.Failure(FileWriteError.InputFileNotFound(e))
         } catch (e: Throwable) {
             Result.Failure(FileWriteError.Unknown(e))
         }
@@ -41,6 +45,8 @@ suspend fun DocumentFile.writeToDisk(
             }
         }
         Result.Success(destination)
+    } catch(e: FileNotFoundException) {
+        Result.Failure(FileWriteError.InputFileNotFound(e))
     } catch (e: Throwable) {
         Result.Failure(FileWriteError.Unknown(e))
     }

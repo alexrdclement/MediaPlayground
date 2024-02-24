@@ -3,11 +3,9 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.annotation.OptIn
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.media3.common.MediaItem
-import androidx.media3.common.util.UnstableApi
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -19,7 +17,6 @@ import java.io.File
 import java.util.UUID
 import javax.inject.Inject
 
-@OptIn(UnstableApi::class)
 class MediaImporter @Inject constructor(
     @ApplicationContext private val context: Context,
     private val mediaMetadataRetriever: MediaMetadataRetriever,
@@ -41,12 +38,13 @@ class MediaImporter @Inject constructor(
         try {
             val mediaItemFileWriteDir = File(fileWriteDir, UUID.randomUUID().toString())
             if (!mediaItemFileWriteDir.mkdir()) {
-                return@withContext Result.Failure(MediaImportError.Unknown())
+                return@withContext Result.Failure(MediaImportError.MkdirError)
             }
 
             val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(
                 contentUri = uri,
                 onEmbeddedPictureFound = { embeddedPicture ->
+                    // Fail silently for now
                     val file = File(mediaItemFileWriteDir, MediaThumbnailFileName)
                     val bitmap = BitmapFactory.decodeByteArray(embeddedPicture, 0, embeddedPicture.size) ?:
                         return@getMediaMetadata null
@@ -63,7 +61,7 @@ class MediaImporter @Inject constructor(
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
 
             val fileWriteResult = documentFile.writeToDisk(
-                destination = File(fileWriteDir, documentFileName),
+                destination = File(mediaItemFileWriteDir, documentFileName),
                 contentResolver = context.contentResolver,
             )
             when (fileWriteResult) {
@@ -84,6 +82,8 @@ class MediaImporter @Inject constructor(
     }
 
     private fun FileWriteError.toMediaImportError() = when (this) {
+        is FileWriteError.InputFileNotFound ->
+            MediaImportError.FileWriteError.InputFileNotFound(throwable = throwable)
         FileWriteError.InputStreamError -> MediaImportError.FileWriteError.InputStreamError
         is FileWriteError.Unknown -> MediaImportError.FileWriteError.Unknown(throwable = throwable)
     }

@@ -25,6 +25,7 @@ class SpotifyContentStateProvider @Inject constructor(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig
     ): Flow<SpotifyContentState> {
+        // TODO: tests to verify instances not recreated
         val savedTracks = savedTracksFlow(coroutineScope, pagingConfig)
         val savedAlbums = savedAlbumsFlow(coroutineScope, pagingConfig)
         return spotifyAuth.isLoggedIn
