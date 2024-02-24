@@ -25,19 +25,23 @@ class SpotifyContentState @Inject constructor(
     fun flow(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig
-    ): Flow<SpotifyContentState> = spotifyAuth.isLoggedIn
-        .map { isLoggedIn ->
-            if (!isLoggedIn) {
-                return@map SpotifyContentState.NotLoggedIn
+    ): Flow<SpotifyContentState> {
+        val savedTracks = savedTracksFlow(coroutineScope, pagingConfig)
+        val savedAlbums = savedAlbumsFlow(coroutineScope, pagingConfig)
+        return spotifyAuth.isLoggedIn
+            .map { isLoggedIn ->
+                if (!isLoggedIn) {
+                    return@map SpotifyContentState.NotLoggedIn
+                }
+
+                return@map SpotifyContentState.LoggedIn(
+                    savedTracks = savedTracks,
+                    savedAlbums = savedAlbums,
+                )
             }
+    }
 
-            return@map SpotifyContentState.LoggedIn(
-                savedTracks = savedTracks(coroutineScope, pagingConfig),
-                savedAlbums = savedAlbums(coroutineScope, pagingConfig),
-            )
-        }
-
-    private fun savedTracks(
+    private fun savedTracksFlow(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ): Flow<PagingData<MediaItemUi>> = combine(
@@ -53,7 +57,7 @@ class SpotifyContentState @Inject constructor(
         }
     }.cachedIn(coroutineScope)
 
-    private fun savedAlbums(
+    private fun savedAlbumsFlow(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ) = combine(
@@ -74,9 +78,7 @@ class SpotifyContentState @Inject constructor(
         pagingSourceFactory = spotifyAudioRepository::getSavedTracksPagingSource,
     )
 
-    private fun savedAlbumsPager(
-        pagingConfig: PagingConfig,
-    ) = Pager(
+    private fun savedAlbumsPager(pagingConfig: PagingConfig) = Pager(
         config = pagingConfig,
         pagingSourceFactory = spotifyAudioRepository::getSavedAlbumsPagingSource,
     )

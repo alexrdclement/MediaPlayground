@@ -22,22 +22,25 @@ class LocalContentState @Inject constructor(
     fun flow(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
-    ): Flow<LocalContentState> = localAudioRepository.getTracks()
-        .map { tracks ->
-            if (tracks.isEmpty()) {
-                LocalContentState.Empty
-            } else {
-                LocalContentState.Content(
-                    tracks = localTracks(coroutineScope, pagingConfig),
-                )
+    ): Flow<LocalContentState> {
+        val localTracks = tracksFlow(coroutineScope, pagingConfig)
+        return localAudioRepository.getTracks()
+            .map { tracks ->
+                if (tracks.isEmpty()) {
+                    LocalContentState.Empty
+                } else {
+                    LocalContentState.Content(
+                        tracks = localTracks
+                    )
+                }
             }
-        }
+    }
 
-    private fun localTracks(
+    private fun tracksFlow(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ) = combine(
-        localTracksPager(pagingConfig).flow.cachedIn(coroutineScope),
+        tracksPager(pagingConfig).flow.cachedIn(coroutineScope),
         mediaSessionManager.loadedMediaItem,
         mediaSessionManager.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
@@ -49,7 +52,7 @@ class LocalContentState @Inject constructor(
         }
     }.cachedIn(coroutineScope)
 
-    private fun localTracksPager(pagingConfig: PagingConfig) = Pager(
+    private fun tracksPager(pagingConfig: PagingConfig) = Pager(
         config = pagingConfig,
         pagingSourceFactory = localAudioRepository::getTrackPagingSource,
     )
