@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.feature.audio.library.content
+package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.LocalContentState
+import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
 import com.alexrdclement.ui.components.MediaItemRow
 import com.alexrdclement.ui.components.MediaItemWidthCompact
 import com.alexrdclement.ui.shared.model.MediaItemUi
@@ -29,7 +30,7 @@ import com.alexrdclement.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
-internal fun LocalStorageContent(
+internal fun LocalContent(
     localContentState: LocalContentState,
     onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
@@ -122,7 +123,7 @@ fun Content(
 @Composable
 private fun EmptyPreview() {
     MediaPlaygroundTheme {
-        LocalStorageContent(
+        LocalContent(
             localContentState = LocalContentState.Empty,
             onImportClick = {},
             onItemClick = {},
@@ -135,7 +136,7 @@ private fun EmptyPreview() {
 @Composable
 private fun ContentPreview() {
     MediaPlaygroundTheme {
-        LocalStorageContent(
+        LocalContent(
             localContentState = LocalContentState.Content(
                 tracks = flowOf(PagingData.from(PreviewTracksUi1)),
             ),

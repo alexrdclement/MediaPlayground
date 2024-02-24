@@ -25,8 +25,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.LocalContentState
 import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.SpotifyContentState
-import com.alexrdclement.mediaplayground.feature.audio.library.content.LocalStorageContent
-import com.alexrdclement.mediaplayground.feature.audio.library.content.SpotifyContent
+import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
+import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContent
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -141,7 +141,7 @@ fun ContentReady(
             .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
             .verticalScroll(scrollState)
     ) {
-        LocalStorageContent(
+        LocalContent(
             localContentState = uiState.localContentState,
             onImportClick = onImportClick,
             onItemClick = onItemClick,

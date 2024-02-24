@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.feature.audio.library.content
+package com.alexrdclement.mediaplayground.feature.audio.library.content.spotify
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.SpotifyContentState
+import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
 import com.alexrdclement.ui.components.MediaItemRow
 import com.alexrdclement.ui.components.MediaItemWidthCompact
 import com.alexrdclement.ui.components.spotify.SpotifyAuthButton

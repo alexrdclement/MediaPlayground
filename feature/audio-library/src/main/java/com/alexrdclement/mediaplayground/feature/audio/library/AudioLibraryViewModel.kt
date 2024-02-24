@@ -3,16 +3,11 @@ package com.alexrdclement.mediaplayground.feature.audio.library
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
-import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
-import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.LocalContentState
-import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryUiState.ContentReady.SpotifyContentState
+import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
+import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentState
 import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
 import com.alexrdclement.mediaplayground.mediasession.loadIfNecessary
 import com.alexrdclement.mediaplayground.mediasession.playPause
@@ -20,19 +15,18 @@ import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.ui.shared.model.MediaItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class AudioLibraryViewModel @Inject constructor(
-    private val localAudioRepository: LocalAudioRepository,
+    localContentState: LocalContentState,
+    spotifyContentState: SpotifyContentState,
     private val spotifyAuth: SpotifyAuth,
-    private val spotifyAudioRepository: SpotifyAudioRepository,
+    private val localAudioRepository: LocalAudioRepository,
     private val mediaSessionManager: MediaSessionManager,
 ): ViewModel() {
     
@@ -40,83 +34,9 @@ class AudioLibraryViewModel @Inject constructor(
         val pagingConfig = PagingConfig(pageSize = 10)
     }
 
-    private val localTracksPager = Pager(
-        config = pagingConfig,
-        pagingSourceFactory = localAudioRepository::getTrackPagingSource,
-    )
-    private val localTracks = combine(
-        localTracksPager.flow.cachedIn(viewModelScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
-    ) { pagingData, loadedMediaItem, isPlaying ->
-        pagingData.map { album ->
-            MediaItemUi(
-                mediaItem = album,
-                isPlaying = isPlaying && album.id == loadedMediaItem?.id
-            )
-        }
-    }.cachedIn(viewModelScope)
-
-    private val localContentState: Flow<LocalContentState> = localAudioRepository.getTracks()
-        .map { tracks ->
-            if (tracks.isEmpty()) {
-                LocalContentState.Empty
-            } else {
-                LocalContentState.Content(
-                    tracks = localTracks,
-                )
-            }
-        }
-
-    private val spotifySavedTracksPager = Pager(
-        config = pagingConfig,
-        pagingSourceFactory = spotifyAudioRepository::getSavedTracksPagingSource,
-    )
-    private val spotifySavedTracks: Flow<PagingData<MediaItemUi>> = combine(
-        spotifySavedTracksPager.flow.cachedIn(viewModelScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
-    ) { pagingData, loadedMediaItem, isPlaying ->
-        pagingData.map { track ->
-            MediaItemUi(
-                mediaItem = track,
-                isPlaying = isPlaying && track.id == loadedMediaItem?.id
-            )
-        }
-    }.cachedIn(viewModelScope)
-
-    private val spotifySavedAlbumsPager = Pager(
-        config = pagingConfig,
-        pagingSourceFactory = spotifyAudioRepository::getSavedAlbumsPagingSource,
-    )
-    private val spotifySavedAlbums = combine(
-        spotifySavedAlbumsPager.flow.cachedIn(viewModelScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
-    ) { pagingData, loadedMediaItem, isPlaying ->
-        pagingData.map { album ->
-            MediaItemUi(
-                mediaItem = album,
-                isPlaying = isPlaying && album.id == loadedMediaItem?.id
-            )
-        }
-    }.cachedIn(viewModelScope)
-
-    private val spotifyContentState: Flow<SpotifyContentState> = spotifyAuth.isLoggedIn
-        .map { isLoggedIn ->
-            if (!isLoggedIn) {
-                return@map SpotifyContentState.NotLoggedIn
-            }
-
-            return@map SpotifyContentState.LoggedIn(
-                savedTracks = spotifySavedTracks,
-                savedAlbums = spotifySavedAlbums,
-            )
-        }
-
     val uiState: StateFlow<AudioLibraryUiState> = combine(
-        localContentState,
-        spotifyContentState,
+        localContentState.flow(viewModelScope, pagingConfig),
+        spotifyContentState.flow(viewModelScope, pagingConfig),
         mediaSessionManager.loadedMediaItem
     ) { localContentState, spotifyContentState, loadedMediaItem ->
         AudioLibraryUiState.ContentReady(
