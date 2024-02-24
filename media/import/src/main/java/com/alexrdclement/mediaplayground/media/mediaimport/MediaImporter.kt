@@ -1,15 +1,15 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.annotation.OptIn
+import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toTrack
-import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportFailure
+import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.result.Result
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,7 +26,7 @@ class MediaImporter @Inject constructor(
 ) {
 
     private companion object {
-        const val PNG_EXTENSION = "png"
+        const val MediaThumbnailFileName = "thumbnail.png"
     }
 
     /**
@@ -37,42 +37,54 @@ class MediaImporter @Inject constructor(
     suspend fun importTrackFromDisk(
         uri: Uri,
         fileWriteDir: File,
-    ): Result<Track, MediaImportFailure> = withContext(Dispatchers.IO) {
+    ): Result<Track, MediaImportError> = withContext(Dispatchers.IO) {
         try {
-            val mediaItem = MediaItem.fromUri(uri)
+            val mediaItemFileWriteDir = File(fileWriteDir, UUID.randomUUID().toString())
+            if (!mediaItemFileWriteDir.mkdir()) {
+                return@withContext Result.Failure(MediaImportError.Unknown())
+            }
+
             val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(
                 contentUri = uri,
                 onEmbeddedPictureFound = { embeddedPicture ->
-                    val file = File(fileWriteDir, getFileName(uri))
-                    val bitmap = BitmapFactory.decodeByteArray(embeddedPicture, 0, embeddedPicture.size)
-                    if (bitmap?.writeToDisk(file) != true) {
-                        null
-                    } else {
-                        file
+                    val file = File(mediaItemFileWriteDir, MediaThumbnailFileName)
+                    val bitmap = BitmapFactory.decodeByteArray(embeddedPicture, 0, embeddedPicture.size) ?:
+                        return@getMediaMetadata null
+                    when (bitmap.writeToDisk(file)) {
+                        is Result.Failure -> null
+                        is Result.Success -> file
                     }
                 },
             )
-            Result.Success(
-                value = mediaItem.toTrack(
-                    contentUri = uri,
-                    mediaMetadata = mediaMetadata
-                )
+
+            val documentFile = DocumentFile.fromSingleUri(context, uri)
+                ?: return@withContext Result.Failure(MediaImportError.InputFileError)
+            val documentFileName = documentFile.name
+                ?: return@withContext Result.Failure(MediaImportError.InputFileError)
+
+            val fileWriteResult = documentFile.writeToDisk(
+                destination = File(fileWriteDir, documentFileName),
+                contentResolver = context.contentResolver,
             )
+            when (fileWriteResult) {
+                is Result.Failure -> Result.Failure(fileWriteResult.failure.toMediaImportError())
+                is Result.Success -> {
+                    val mediaItem = MediaItem.fromUri(uri)
+                    Result.Success(
+                        value = mediaItem.toTrack(
+                            contentUri = fileWriteResult.value.toUri(),
+                            mediaMetadata = mediaMetadata
+                        )
+                    )
+                }
+            }
         } catch (e: Throwable) {
-            Result.Failure(MediaImportFailure.Unknown(throwable = e))
+            Result.Failure(MediaImportError.Unknown(throwable = e))
         }
     }
 
-    private fun getFileName(uri: Uri): String {
-        val documentFileName = DocumentFile.fromSingleUri(context, uri)?.name
-        val fileName = documentFileName?.let(::File)?.nameWithoutExtension
-            ?: UUID.randomUUID().toString()
-        return "$fileName.$PNG_EXTENSION"
-    }
-
-    private suspend fun Bitmap.writeToDisk(file: File) = withContext(Dispatchers.IO) {
-        file.outputStream().use {
-            this@writeToDisk.compress(Bitmap.CompressFormat.PNG, 100, it)
-        }
+    private fun FileWriteError.toMediaImportError() = when (this) {
+        FileWriteError.InputStreamError -> MediaImportError.FileWriteError.InputStreamError
+        is FileWriteError.Unknown -> MediaImportError.FileWriteError.Unknown(throwable = throwable)
     }
 }

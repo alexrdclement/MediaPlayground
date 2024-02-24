@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.paging.PagingSource
 import com.alexrdclement.mediaplayground.data.audio.local.pagination.LocalTrackPagingSource
-import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportFailure
+import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
@@ -37,9 +37,17 @@ class LocalAudioRepositoryImpl @Inject constructor(
             when (result) {
                 is Result.Failure -> {
                     when (val failure = result.failure) {
-                        is MediaImportFailure.Unknown -> {
+                        is MediaImportError.Unknown -> {
                             // TODO
                             failure.throwable?.let { throw it }
+                        }
+                        is MediaImportError.FileWriteError.Unknown -> {
+                            // TODO
+                            failure.throwable?.let { throw it }
+                        }
+                        MediaImportError.FileWriteError.InputStreamError,
+                        MediaImportError.InputFileError -> {
+                            TODO("InputFileError")
                         }
                     }
                 }

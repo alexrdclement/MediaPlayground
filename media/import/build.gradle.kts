@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.media3.decoder)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
+    implementation(libs.okio)
 
     implementation(projects.model.audio)
     implementation(projects.model.result)

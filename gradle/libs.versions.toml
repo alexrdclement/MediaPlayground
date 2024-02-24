@@ -20,6 +20,7 @@ hilt = "2.48"
 androidxHiltNavigationCompose = "1.1.0"
 media3 = "1.2.1"
 material3 = "1.2.0"
+okio = "3.8.0"
 tv-foundation = "1.0.0-alpha10"
 tv-material = "1.0.0-alpha10"
 appcompat = "1.6.1"
@@ -65,6 +66,7 @@ media3-transformer = { group = "androidx.media3", name = "media3-transformer", v
 media3-decoder = { group = "androidx.media3", name = "media3-decoder", version.ref = "media3" }
 media3-datasource = { group = "androidx.media3", name = "media3-datasource", version.ref = "media3" }
 media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tv-foundation" }
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tv-material" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
