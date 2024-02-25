@@ -30,7 +30,7 @@ import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.S
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.mediaplayground.ui.components.mediacontrolsheet.mediaControlSheetPadding
+import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1

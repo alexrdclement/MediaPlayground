@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.ui.components.mediacontrolsheet
+package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee

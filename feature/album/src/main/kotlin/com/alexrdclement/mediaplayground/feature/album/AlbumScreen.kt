@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
-import com.alexrdclement.mediaplayground.ui.components.mediacontrolsheet.mediaControlSheetPadding
+import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.components.track.TrackList
 import com.alexrdclement.mediaplayground.ui.shared.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbum1

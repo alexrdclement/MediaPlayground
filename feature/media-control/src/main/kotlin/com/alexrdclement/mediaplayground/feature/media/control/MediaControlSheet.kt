@@ -1,9 +1,8 @@
-package com.alexrdclement.mediaplayground.ui.components.mediacontrolsheet
+package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -12,25 +11,32 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.uiplayground.components.MediaControlSheetState
 import com.alexrdclement.uiplayground.components.model.Artist
 import kotlinx.coroutines.launch
 import com.alexrdclement.uiplayground.components.MediaControlSheet as MediaControlSheetComponent
-import com.alexrdclement.uiplayground.components.model.MediaItem as UiMediaItem
 
-private val MediaControlSheetPartialExpandHeight = 64.dp
+@Composable
+fun MediaControlSheet(
+    mediaControlSheetState: MediaControlSheetState
+) {
+    val viewModel = hiltViewModel<MediaControlSheetViewModel>()
+    val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
+    val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()
 
-fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean) = this.then(
-    if (isMediaItemLoaded) {
-        Modifier.padding(bottom = MediaControlSheetPartialExpandHeight)
-    } else {
-        Modifier
-    }
-)
+    MediaControlSheet(
+        mediaControlSheetState = mediaControlSheetState,
+        loadedMediaItem = loadedMediaItem,
+        isPlaying = isPlaying,
+        onPlayPauseClick = viewModel::onPlayPauseClick,
+    )
+}
 
 @Composable
 fun MediaControlSheet(
@@ -50,7 +56,7 @@ fun MediaControlSheet(
             // TODO: temp
             val artists by derivedStateOf { mediaItem.artists.map { Artist(name = it.name) } }
             val uiMediaItem by derivedStateOf {
-                UiMediaItem(
+                com.alexrdclement.uiplayground.components.model.MediaItem(
                     artworkLargeUrl = mediaItem.largeImageUrl,
                     artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
                     title = mediaItem.title,

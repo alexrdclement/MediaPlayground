@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.mediacontrolsheet
+package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.lifecycle.ViewModel
 import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
