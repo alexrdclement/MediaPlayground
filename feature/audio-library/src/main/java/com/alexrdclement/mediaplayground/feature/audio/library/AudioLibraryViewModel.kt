@@ -8,12 +8,12 @@ import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStateProvider
 import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentStateProvider
-import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
-import com.alexrdclement.mediaplayground.mediasession.loadIfNecessary
-import com.alexrdclement.mediaplayground.mediasession.playPause
+import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
+import com.alexrdclement.mediaplayground.media.session.loadIfNecessary
+import com.alexrdclement.mediaplayground.media.session.playPause
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.ui.shared.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

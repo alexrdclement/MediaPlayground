@@ -21,11 +21,11 @@ plugins {
 }
 
 rootProject.name = "MediaPlayground"
-include(":app")
+include(":androidApp")
+include(":androidTvApp")
 include(":data:audio")
-include(":mediaplaygroundtv")
 include(":media:import")
-include(":mediasession")
+include(":media:session")
 include(":model:audio")
 include(":model:result")
 include(":feature:album")
@@ -33,8 +33,8 @@ include(":feature:audio-library")
 include(":feature:player")
 include(":feature:spotify")
 include(":ui")
-include(":ui-shared")
-include(":ui-tv")
+include(":ui:shared")
+include(":ui:tv")
 
 if (file("../UiPlayground").exists()) {
     includeBuild("../UiPlayground") {

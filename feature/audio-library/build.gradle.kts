@@ -62,10 +62,9 @@ dependencies {
     implementation(libs.ui.playground.components)
 
     implementation(projects.data.audio)
-    implementation(projects.mediasession)
+    implementation(projects.media.session)
     implementation(projects.model.audio)
     implementation(projects.ui)
-    implementation(projects.uiShared)
 
     testImplementation(libs.junit)
 

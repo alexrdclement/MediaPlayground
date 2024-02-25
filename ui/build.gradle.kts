@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.ui"
+    namespace = "com.alexrdclement.mediaplayground.ui"
     compileSdk = 34
 
     defaultConfig {
@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    api(projects.ui.shared)
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
@@ -59,7 +61,6 @@ dependencies {
     implementation(libs.ui.playground.components)
 
     implementation(projects.model.audio)
-    implementation(projects.uiShared)
 
     testImplementation(libs.junit)
 

@@ -1,8 +1,0 @@
-package com.alexrdclement.ui.theme
-
-import androidx.compose.material3.Typography
-import com.alexrdclement.ui.shared.theme.bodyLarge
-
-val Typography = Typography(
-    bodyLarge = bodyLarge,
-)

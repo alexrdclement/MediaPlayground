@@ -59,11 +59,10 @@ dependencies {
     implementation(libs.ui.playground.components)
 
     implementation(projects.data.audio)
-    implementation(projects.mediasession)
+    implementation(projects.media.session)
     implementation(projects.model.audio)
     implementation(projects.model.result)
     implementation(projects.ui)
-    implementation(projects.uiShared)
 
     ksp(libs.hilt.compiler)
 
