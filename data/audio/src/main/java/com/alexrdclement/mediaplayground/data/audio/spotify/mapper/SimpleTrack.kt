@@ -10,5 +10,5 @@ fun SpotifySimpleTrack.toSimpleTrack() = SimpleTrack(
     artists = this.artists.map { it.toSimpleArtist() },
     durationMs = this.durationMs,
     trackNumber = this.trackNumber,
-    previewUrl = this.previewUrl,
+    uri = this.previewUrl,
 )

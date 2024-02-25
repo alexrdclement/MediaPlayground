@@ -14,5 +14,5 @@ data class Album(
     val tracks: List<SimpleTrack>,
 ) : MediaItem {
     override val isPlayable: Boolean
-        get() = tracks.any { it.previewUrl != null }
+        get() = tracks.any { it.uri != null }
 }

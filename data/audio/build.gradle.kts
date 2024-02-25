@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.spotify.api.kotlin.core)
     implementation(libs.paging)
 
+    implementation(projects.media.import)
     implementation(projects.model.audio)
     implementation(projects.model.result)
 

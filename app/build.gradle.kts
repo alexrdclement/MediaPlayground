@@ -86,6 +86,7 @@ dependencies {
 
     implementation(projects.data.audio)
     implementation(projects.feature.album)
+    implementation(projects.feature.audioLibrary)
     implementation(projects.feature.player)
     implementation(projects.feature.spotify)
     implementation(projects.mediasession)
