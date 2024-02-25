@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumIdArgKey
-import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
-import com.alexrdclement.mediaplayground.mediasession.loadIfNecessary
-import com.alexrdclement.mediaplayground.mediasession.playPause
+import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
+import com.alexrdclement.mediaplayground.media.session.loadIfNecessary
+import com.alexrdclement.mediaplayground.media.session.playPause
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl

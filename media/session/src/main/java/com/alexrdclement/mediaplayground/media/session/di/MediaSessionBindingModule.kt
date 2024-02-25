@@ -1,7 +1,7 @@
-package com.alexrdclement.mediaplayground.mediasession.di
+package com.alexrdclement.mediaplayground.media.session.di
 
-import com.alexrdclement.mediaplayground.mediasession.MediaSessionManager
-import com.alexrdclement.mediaplayground.mediasession.MediaSessionManagerImpl
+import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
+import com.alexrdclement.mediaplayground.media.session.MediaSessionManagerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

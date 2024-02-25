@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.mediasession
+package com.alexrdclement.mediaplayground.media.session
 
 import androidx.media3.common.Player
 import com.alexrdclement.mediaplayground.model.audio.MediaItem

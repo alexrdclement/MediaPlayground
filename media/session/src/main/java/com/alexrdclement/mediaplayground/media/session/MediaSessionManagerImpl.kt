@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.mediasession
+package com.alexrdclement.mediaplayground.media.session
 
 import android.content.ComponentName
 import android.content.Context
@@ -6,8 +6,8 @@ import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
-import com.alexrdclement.mediaplayground.mediasession.mapper.toMediaItem
-import com.alexrdclement.mediaplayground.mediasession.service.MediaSessionService
+import com.alexrdclement.mediaplayground.media.session.mapper.toMediaItem
+import com.alexrdclement.mediaplayground.media.session.service.MediaSessionService
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track

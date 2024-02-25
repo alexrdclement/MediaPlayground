@@ -70,7 +70,7 @@ dependencies {
     implementation(libs.media3.common)
     implementation(projects.data.audio)
     implementation(projects.model.audio)
-    implementation(projects.mediasession)
+    implementation(projects.media.session)
     implementation(projects.ui)
     implementation(projects.uiShared)
     ksp(libs.hilt.compiler)

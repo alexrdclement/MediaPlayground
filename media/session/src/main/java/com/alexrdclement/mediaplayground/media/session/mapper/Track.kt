@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.mediasession.mapper
+package com.alexrdclement.mediaplayground.media.session.mapper
 
 import android.net.Uri
 import androidx.media3.common.MediaItem

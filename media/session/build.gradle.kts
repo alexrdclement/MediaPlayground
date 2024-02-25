@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.mediasession"
+    namespace = "com.alexrdclement.mediaplayground.media.session"
     compileSdk = 34
 
     defaultConfig {

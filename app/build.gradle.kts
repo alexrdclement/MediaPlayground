@@ -89,7 +89,7 @@ dependencies {
     implementation(projects.feature.audioLibrary)
     implementation(projects.feature.player)
     implementation(projects.feature.spotify)
-    implementation(projects.mediasession)
+    implementation(projects.media.session)
     implementation(projects.model.audio)
     implementation(projects.ui)
     implementation(projects.uiShared)

@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.mediasession.service
+package com.alexrdclement.mediaplayground.media.session.service
 
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
