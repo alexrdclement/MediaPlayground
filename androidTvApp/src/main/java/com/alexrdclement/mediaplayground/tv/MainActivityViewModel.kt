@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplaygroundtv
+package com.alexrdclement.mediaplayground.tv
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

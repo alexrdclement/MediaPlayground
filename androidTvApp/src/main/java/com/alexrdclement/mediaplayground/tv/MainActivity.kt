@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplaygroundtv
+package com.alexrdclement.mediaplayground.tv
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

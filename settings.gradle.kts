@@ -21,9 +21,9 @@ plugins {
 }
 
 rootProject.name = "MediaPlayground"
-include(":app")
+include(":androidApp")
+include(":androidTvApp")
 include(":data:audio")
-include(":mediaplaygroundtv")
 include(":media:import")
 include(":media:session")
 include(":model:audio")

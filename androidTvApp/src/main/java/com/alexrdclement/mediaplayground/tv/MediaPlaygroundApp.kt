@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplaygroundtv
+package com.alexrdclement.mediaplayground.tv
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

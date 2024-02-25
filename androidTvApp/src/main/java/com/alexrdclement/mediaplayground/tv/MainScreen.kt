@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplaygroundtv
+package com.alexrdclement.mediaplayground.tv
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

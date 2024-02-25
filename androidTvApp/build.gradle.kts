@@ -7,23 +7,21 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground"
+    namespace = "com.alexrdclement.mediaplayground.tv"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.alexrdclement.mediaplayground"
-        minSdk = 24
+        applicationId = "com.alexrdclement.mediaplayground.tv"
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
         }
-        
-        manifestPlaceholders["redirectSchemeName"] = "comalexrdclementmediaplayground"
-        manifestPlaceholders["redirectHostName"] = "callback"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["redirectSchemeName"] = "comalexrdclementmediaplaygroundtv"
+        manifestPlaceholders["redirectHostName"] = "callback"
     }
 
     buildTypes {
@@ -55,54 +53,25 @@ android {
     }
 }
 
-kotlin {
-    jvmToolchain(8)
-}
-
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
-    implementation(libs.hilt.android)
-    implementation(libs.navigation.compose)
-    implementation(libs.hilt.navigation.compose)
-    implementation(libs.media3.exoplayer)
-    implementation(libs.media3.ui)
-    implementation(libs.media3.ui.leanback)
-    implementation(libs.media3.session)
-    implementation(libs.media3.cast)
-    implementation(libs.media3.transformer)
-    implementation(libs.media3.decoder)
-    implementation(libs.media3.datasource)
-    implementation(libs.media3.common)
-    implementation(libs.ui.playground.components)
-
-    implementation(projects.data.audio)
-    implementation(projects.feature.album)
-    implementation(projects.feature.audioLibrary)
-    implementation(projects.feature.player)
-    implementation(projects.feature.spotify)
-    implementation(projects.media.session)
-    implementation(projects.model.audio)
-    implementation(projects.ui)
-
     ksp(libs.hilt.compiler)
 
-    testImplementation(libs.junit)
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.hilt.android)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.tv.foundation)
+    implementation(libs.tv.material)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(projects.data.audio)
+    implementation(projects.model.audio)
+    implementation(projects.ui.tv)
 
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
-
-    kspAndroidTest(libs.hilt.compiler)
 
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
