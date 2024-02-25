@@ -72,7 +72,6 @@ dependencies {
     implementation(projects.model.audio)
     implementation(projects.media.session)
     implementation(projects.ui)
-    implementation(projects.uiShared)
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

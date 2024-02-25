@@ -13,7 +13,7 @@ import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.Surface
 import androidx.tv.material3.Text
 import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.ui.tv.components.TracksRow
+import com.alexrdclement.mediaplayground.ui.tv.components.TracksRow
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable

@@ -32,14 +32,14 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.ui.components.MediaItemRow
-import com.alexrdclement.ui.components.MediaItemWidthCompact
-import com.alexrdclement.ui.components.mediacontrolsheet.mediaControlSheetPadding
-import com.alexrdclement.ui.components.spotify.SpotifyAuthButton
-import com.alexrdclement.ui.shared.model.MediaItemUi
-import com.alexrdclement.ui.shared.util.PreviewAlbumsUi1
-import com.alexrdclement.ui.shared.util.PreviewTracksUi1
-import com.alexrdclement.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
+import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
+import com.alexrdclement.mediaplayground.ui.components.mediacontrolsheet.mediaControlSheetPadding
+import com.alexrdclement.mediaplayground.ui.components.spotify.SpotifyAuthButton
+import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbumsUi1
+import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
+import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 private val MediaItemWidth = MediaItemWidthCompact

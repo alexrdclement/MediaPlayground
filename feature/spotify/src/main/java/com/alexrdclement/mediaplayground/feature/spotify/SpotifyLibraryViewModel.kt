@@ -14,7 +14,7 @@ import com.alexrdclement.mediaplayground.media.session.loadIfNecessary
 import com.alexrdclement.mediaplayground.media.session.playPause
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.ui.shared.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted

@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.ui.tv.theme.MediaPlaygroundTheme
+import com.alexrdclement.mediaplayground.ui.tv.theme.MediaPlaygroundTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

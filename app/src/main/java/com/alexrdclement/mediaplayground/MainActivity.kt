@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.Scaffold
 import com.alexrdclement.mediaplayground.navigation.MediaPlaygroundNavHost
-import com.alexrdclement.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

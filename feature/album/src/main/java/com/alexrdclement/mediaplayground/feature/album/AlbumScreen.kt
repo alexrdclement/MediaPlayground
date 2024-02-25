@@ -24,12 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.ui.components.MediaItemArtwork
-import com.alexrdclement.ui.components.mediacontrolsheet.mediaControlSheetPadding
-import com.alexrdclement.ui.components.track.TrackList
-import com.alexrdclement.ui.shared.model.TrackUi
-import com.alexrdclement.ui.shared.util.PreviewAlbum1
-import com.alexrdclement.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
+import com.alexrdclement.mediaplayground.ui.components.mediacontrolsheet.mediaControlSheetPadding
+import com.alexrdclement.mediaplayground.ui.components.track.TrackList
+import com.alexrdclement.mediaplayground.ui.shared.model.TrackUi
+import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbum1
+import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import com.alexrdclement.uiplayground.components.PlayPauseButton
 
 @Composable

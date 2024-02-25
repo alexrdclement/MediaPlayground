@@ -13,7 +13,7 @@ import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import com.alexrdclement.mediaplayground.model.result.guardSuccess
-import com.alexrdclement.ui.shared.model.TrackUi
+import com.alexrdclement.mediaplayground.ui.shared.model.TrackUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine

@@ -63,7 +63,6 @@ dependencies {
     implementation(projects.model.audio)
     implementation(projects.model.result)
     implementation(projects.ui)
-    implementation(projects.uiShared)
 
     ksp(libs.hilt.compiler)
 

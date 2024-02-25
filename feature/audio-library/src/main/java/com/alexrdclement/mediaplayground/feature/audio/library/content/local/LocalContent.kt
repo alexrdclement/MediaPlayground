@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
-import com.alexrdclement.ui.components.MediaItemRow
-import com.alexrdclement.ui.components.MediaItemWidthCompact
-import com.alexrdclement.ui.shared.model.MediaItemUi
-import com.alexrdclement.ui.shared.util.PreviewTracksUi1
-import com.alexrdclement.ui.theme.ButtonSpace
-import com.alexrdclement.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
+import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
+import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
+import com.alexrdclement.mediaplayground.ui.theme.ButtonSpace
+import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 @Composable

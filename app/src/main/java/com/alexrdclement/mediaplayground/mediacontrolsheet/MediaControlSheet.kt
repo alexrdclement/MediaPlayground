@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.ui.components.mediacontrolsheet.MediaControlSheet
+import com.alexrdclement.mediaplayground.ui.components.mediacontrolsheet.MediaControlSheet
 import com.alexrdclement.uiplayground.components.MediaControlSheetState
 
 @Composable

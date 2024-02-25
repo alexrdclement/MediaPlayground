@@ -33,8 +33,8 @@ include(":feature:audio-library")
 include(":feature:player")
 include(":feature:spotify")
 include(":ui")
-include(":ui-shared")
-include(":ui-tv")
+include(":ui:shared")
+include(":ui:tv")
 
 if (file("../UiPlayground").exists()) {
     includeBuild("../UiPlayground") {

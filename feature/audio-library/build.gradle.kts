@@ -65,7 +65,6 @@ dependencies {
     implementation(projects.media.session)
     implementation(projects.model.audio)
     implementation(projects.ui)
-    implementation(projects.uiShared)
 
     testImplementation(libs.junit)
 
