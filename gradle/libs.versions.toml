@@ -1,5 +1,7 @@
 [versions]
-agp = "8.3.0-beta02"
+android-desugar-jdk-libs = "2.0.4"
+android-gradle-plugin = "8.3.0-beta02"
+android-tools = "31.2.0"
 compose-bom = "2024.02.00"
 compose-compiler = "1.5.9"
 kotlin = "1.9.22"
@@ -32,6 +34,7 @@ coil = "2.4.0"
 ui-playground-components = "0.0.1"
 
 [libraries]
+android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
 kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
@@ -78,13 +81,28 @@ coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 ui-playground-components = { group = "com.alexrdclement.uiplayground", name = "components", version.ref = "ui-playground-components" }
 
+# Dependencies of the included build-logic
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+
+mediaplayground-android-application = { id = "mediaplayground.android.application", version = "unspecified" }
+mediaplayground-android-application-compose = { id = "mediaplayground.android.application.compose", version = "unspecified" }
+mediaplayground-android-feature = { id = "mediaplayground.android.feature", version = "unspecified" }
+mediaplayground-android-hilt = { id = "mediaplayground.android.hilt", version = "unspecified" }
+mediaplayground-android-library = { id = "mediaplayground.android.library", version = "unspecified" }
+mediaplayground-android-library-compose = { id = "mediaplayground.android.library.compose", version = "unspecified" }
+mediaplayground-android-test = { id = "mediaplayground.android.test", version = "unspecified" }
+mediaplayground-jvm-library = { id = "mediaplayground.jvm.library", version = "unspecified" }
 
 [bundles]
