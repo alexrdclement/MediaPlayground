@@ -1,14 +1,10 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
-import android.content.Context
-import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.documentfile.provider.DocumentFile
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.result.Result
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -16,8 +12,8 @@ import java.util.UUID
 import javax.inject.Inject
 
 class MediaImporter @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val mediaMetadataRetriever: MediaMetadataRetriever,
+    private val fileWriter: FileWriter,
 ) {
 
     private companion object {
@@ -43,25 +39,17 @@ class MediaImporter @Inject constructor(
             val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(
                 contentUri = uri,
                 onEmbeddedPictureFound = { embeddedPicture ->
-                    // Fail silently for now
                     val file = File(mediaItemFileWriteDir, MediaThumbnailFileName)
-                    val bitmap = BitmapFactory.decodeByteArray(embeddedPicture, 0, embeddedPicture.size) ?:
-                        return@getMediaMetadata null
-                    when (bitmap.writeToDisk(file)) {
-                        is Result.Failure -> null
+                    when (fileWriter.writeBitmapToDisk(embeddedPicture, file)) {
+                        is Result.Failure -> null // Fail silently for now
                         is Result.Success -> file
                     }
                 },
             )
 
-            val documentFile = DocumentFile.fromSingleUri(context, uri)
-                ?: return@withContext Result.Failure(MediaImportError.InputFileError)
-            val documentFileName = documentFile.name
-                ?: return@withContext Result.Failure(MediaImportError.InputFileError)
-
-            val fileWriteResult = documentFile.writeToDisk(
-                destination = File(mediaItemFileWriteDir, documentFileName),
-                contentResolver = context.contentResolver,
+            val fileWriteResult = fileWriter.writeToDisk(
+                contentUri = uri,
+                destinationDir = mediaItemFileWriteDir,
             )
             when (fileWriteResult) {
                 is Result.Failure -> Result.Failure(fileWriteResult.failure.toMediaImportError())
@@ -79,6 +67,7 @@ class MediaImporter @Inject constructor(
     }
 
     private fun FileWriteError.toMediaImportError() = when (this) {
+        FileWriteError.UnknownInputFileError -> MediaImportError.InputFileError
         is FileWriteError.InputFileNotFound ->
             MediaImportError.FileWriteError.InputFileNotFound(throwable = throwable)
         FileWriteError.InputStreamError -> MediaImportError.FileWriteError.InputStreamError
