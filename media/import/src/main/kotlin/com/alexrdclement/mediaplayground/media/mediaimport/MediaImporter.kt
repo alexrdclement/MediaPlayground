@@ -7,7 +7,9 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
+import kotlinx.io.IOException
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
 import java.util.UUID
 import javax.inject.Inject
 
@@ -27,22 +29,24 @@ class MediaImporter @Inject constructor(
      */
     suspend fun importTrackFromDisk(
         uri: Uri,
-        fileWriteDir: File,
+        fileWriteDir: Path,
     ): Result<Track, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val mediaItemId = UUID.randomUUID().toString()
-            val mediaItemFileWriteDir = File(fileWriteDir, mediaItemId)
-            if (!mediaItemFileWriteDir.mkdir()) {
+            val mediaItemFileWriteDir = Path(fileWriteDir, mediaItemId)
+            try {
+                SystemFileSystem.createDirectories(mediaItemFileWriteDir)
+            } catch (e: IOException) {
                 return@withContext Result.Failure(MediaImportError.MkdirError)
             }
 
             val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(
                 contentUri = uri,
                 onEmbeddedPictureFound = { embeddedPicture ->
-                    val file = File(mediaItemFileWriteDir, MediaThumbnailFileName)
-                    when (fileWriter.writeBitmapToDisk(embeddedPicture, file)) {
-                        is Result.Failure -> null // Fail silently for now
-                        is Result.Success -> file
+                    val path = Path(mediaItemFileWriteDir, MediaThumbnailFileName)
+                    when (fileWriter.writeBitmapToDisk(embeddedPicture, path)) {
+                        is Result.Failure -> null// Fail silently for now
+                        is Result.Success -> path
                     }
                 },
             )
@@ -56,7 +60,7 @@ class MediaImporter @Inject constructor(
                 is Result.Success -> Result.Success(
                     value = makeTrack(
                         mediaId = mediaItemId,
-                        file = fileWriteResult.value,
+                        path = fileWriteResult.value,
                         mediaMetadata = mediaMetadata,
                     )
                 )

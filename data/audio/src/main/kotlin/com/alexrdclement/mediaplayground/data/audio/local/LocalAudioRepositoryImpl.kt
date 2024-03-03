@@ -16,6 +16,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.io.files.Path
 import javax.inject.Inject
 
 class LocalAudioRepositoryImpl @Inject constructor(
@@ -32,7 +33,7 @@ class LocalAudioRepositoryImpl @Inject constructor(
         importJob = coroutineScope.launch {
             val result = mediaImporter.importTrackFromDisk(
                 uri = uri,
-                fileWriteDir = context.cacheDir,
+                fileWriteDir = Path(context.cacheDir.absolutePath),
             )
             when (result) {
                 is Result.Failure -> ::onMediaImportFailure

@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.model
 
-import android.net.Uri
+import kotlinx.io.files.Path
 
 data class MediaMetadata(
     val title: String?,
@@ -8,5 +8,5 @@ data class MediaMetadata(
     val trackNumber: Int?,
     val artistName: String?,
     val albumTitle: String?,
-    val imageUri: Uri?,
+    val imagePath: Path?,
 )

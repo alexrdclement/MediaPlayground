@@ -8,6 +8,7 @@ kotlin = "1.9.22"
 ksp = "1.9.10-1.0.13"
 kotlinx-coroutines = "1.7.2"
 kotlinx-coroutines-android = "1.7.3"
+kotlinx-io = "0.3.1"
 kotlinx-serialization-json = "1.6.0"
 core-ktx = "1.12.0"
 junit = "4.13.2"
@@ -22,7 +23,6 @@ hilt = "2.48"
 androidxHiltNavigationCompose = "1.1.0"
 media3 = "1.2.1"
 material3 = "1.2.0"
-okio = "3.8.0"
 tv-foundation = "1.0.0-alpha10"
 tv-material = "1.0.0-alpha10"
 appcompat = "1.6.1"
@@ -37,6 +37,7 @@ ui-playground-components = "0.0.1"
 android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
 kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "kotlinx-coroutines" }
+kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version.ref = "kotlinx-io" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
@@ -69,7 +70,6 @@ media3-transformer = { group = "androidx.media3", name = "media3-transformer", v
 media3-decoder = { group = "androidx.media3", name = "media3-decoder", version.ref = "media3" }
 media3-datasource = { group = "androidx.media3", name = "media3-datasource", version.ref = "media3" }
 media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
-okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tv-foundation" }
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tv-material" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }

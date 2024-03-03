@@ -2,19 +2,18 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 
 import android.content.ContentResolver
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import com.alexrdclement.mediaplayground.model.result.Result
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okio.buffer
-import okio.sink
-import okio.source
-import java.io.File
-import java.io.FileNotFoundException
+import kotlinx.io.IOException
+import kotlinx.io.asSource
+import kotlinx.io.buffered
+import kotlinx.io.files.FileNotFoundException
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
 import javax.inject.Inject
 
 sealed class FileWriteError {
@@ -30,58 +29,60 @@ class FileWriter @Inject constructor(
 
     suspend fun writeBitmapToDisk(
         byteArray: ByteArray,
-        destination: File,
-    ): Result<File, FileWriteError> {
-        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            ?: return Result.Failure(FileWriteError.InputStreamError)
-        return bitmap.writeToDisk(destination)
+        destination: Path,
+    ): Result<Path, FileWriteError> {
+        return byteArray.writeToDisk(destination)
     }
 
     suspend fun writeToDisk(
         contentUri: Uri,
-        destinationDir: File
-    ): Result<File, FileWriteError> {
+        destinationDir: Path
+    ): Result<Path, FileWriteError> {
         val documentFile = DocumentFile.fromSingleUri(context, contentUri)
             ?: return Result.Failure(FileWriteError.UnknownInputFileError)
         val documentFileName = documentFile.name
             ?: return Result.Failure(FileWriteError.UnknownInputFileError)
 
         return documentFile.writeToDisk(
-            destination = File(destinationDir, documentFileName),
+            destination = Path(destinationDir, documentFileName),
             contentResolver = context.contentResolver,
         )
     }
 }
 
-suspend fun Bitmap.writeToDisk(destination: File): Result<File, FileWriteError> =
+suspend fun ByteArray.writeToDisk(destination: Path): Result<Path, FileWriteError> =
     withContext(Dispatchers.IO) {
         try {
-            destination.outputStream().use { outputStream ->
-                this@writeToDisk.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            SystemFileSystem.sink(destination).buffered().use { sink ->
+                sink.write(this@writeToDisk)
             }
             Result.Success(destination)
         } catch(e: FileNotFoundException) {
             Result.Failure(FileWriteError.InputFileNotFound(e))
+        } catch(e: IOException) {
+            Result.Failure(FileWriteError.Unknown(e))
         } catch (e: Throwable) {
             Result.Failure(FileWriteError.Unknown(e))
         }
     }
 
 suspend fun DocumentFile.writeToDisk(
-    destination: File,
+    destination: Path,
     contentResolver: ContentResolver,
-): Result<File, FileWriteError> = withContext(Dispatchers.IO) {
+): Result<Path, FileWriteError> = withContext(Dispatchers.IO) {
     try {
-        val inputStream = contentResolver.openInputStream(uri)
+        val inputStream = contentResolver.openInputStream(this@writeToDisk.uri)
             ?: return@withContext Result.Failure(FileWriteError.InputStreamError)
-        inputStream.source().use { source ->
-            destination.sink().buffer().use {
-                it.writeAll(source)
+        inputStream.asSource().buffered().use { source ->
+            SystemFileSystem.sink(destination).buffered().use { sink ->
+                source.transferTo(sink)
             }
         }
         Result.Success(destination)
     } catch(e: FileNotFoundException) {
         Result.Failure(FileWriteError.InputFileNotFound(e))
+    } catch(e: IOException) {
+        Result.Failure(FileWriteError.Unknown(e))
     } catch (e: Throwable) {
         Result.Failure(FileWriteError.Unknown(e))
     }
