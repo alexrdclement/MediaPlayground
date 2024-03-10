@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object SpotifyAuthModule {
+object SpotifyCredentialStoreModule {
     @Provides
     fun provideSpotifyDefaultCredentialStore(
         @ApplicationContext context: Context,
