@@ -2,11 +2,9 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.spotify
 
 import androidx.paging.PagingConfig
 import app.cash.turbine.test
-import com.alexrdclement.data.audio.test.fixtures.spotify.FakeSpotifyRemoteDataStore
+import com.alexrdclement.data.audio.test.fixtures.spotify.SpotifyAudioRepositoryFixture
 import com.alexrdclement.data.audio.test.fixtures.spotify.auth.FakeSpotifyAuth
 import com.alexrdclement.media.session.test.fixtures.FakeMediaSessionManager
-import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
-import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -17,23 +15,21 @@ import kotlin.test.assertTrue
 class SpotifyContentStateProviderTest {
 
     private lateinit var spotifyAuth: FakeSpotifyAuth
-    private lateinit var spotifyRemoteDataStore: FakeSpotifyRemoteDataStore
-    private lateinit var spotifyAudioRepository: SpotifyAudioRepository
+    private lateinit var spotifyAudioRepositoryFixture: SpotifyAudioRepositoryFixture
     private lateinit var mediaSessionManager: FakeMediaSessionManager
 
     private lateinit var spotifyContentStateProvider: SpotifyContentStateProvider
 
+    private val pagingConfig = PagingConfig(pageSize = 10)
+
     @BeforeTest
     fun setup() {
         spotifyAuth = FakeSpotifyAuth()
-        spotifyRemoteDataStore = FakeSpotifyRemoteDataStore()
-        spotifyAudioRepository = SpotifyAudioRepositoryImpl(
-            spotifyRemoteDataStore = spotifyRemoteDataStore,
-        )
+        spotifyAudioRepositoryFixture = SpotifyAudioRepositoryFixture()
         mediaSessionManager = FakeMediaSessionManager()
         spotifyContentStateProvider = SpotifyContentStateProvider(
             spotifyAuth = spotifyAuth,
-            spotifyAudioRepository = spotifyAudioRepository,
+            spotifyAudioRepository = spotifyAudioRepositoryFixture.spotifyAudioRepository,
             mediaSessionManager = mediaSessionManager,
         )
     }
@@ -44,7 +40,7 @@ class SpotifyContentStateProviderTest {
 
         spotifyContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
-            pagingConfig = PagingConfig(pageSize = 10)
+            pagingConfig = pagingConfig,
         ).test {
             assertEquals(SpotifyContentState.NotLoggedIn, awaitItem())
             cancelAndIgnoreRemainingEvents()
@@ -57,7 +53,7 @@ class SpotifyContentStateProviderTest {
 
         spotifyContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
-            pagingConfig = PagingConfig(pageSize = 10)
+            pagingConfig = pagingConfig,
         ).test {
             assertTrue(awaitItem() is SpotifyContentState.LoggedIn)
             cancelAndIgnoreRemainingEvents()
@@ -70,7 +66,7 @@ class SpotifyContentStateProviderTest {
 
         spotifyContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
-            pagingConfig = PagingConfig(pageSize = 10)
+            pagingConfig = pagingConfig,
         ).test {
             val firstItem = awaitItem()
             assertTrue(firstItem is SpotifyContentState.LoggedIn)

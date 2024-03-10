@@ -14,6 +14,10 @@ class LocalAudioDataStore @Inject constructor() {
     // Temp until DB impl
     private val tracks = MutableStateFlow<List<Track>>(emptyList())
 
+    fun clearTracks() {
+        tracks.update { emptyList() }
+    }
+
     fun putTrack(track: Track) {
         tracks.update {
             it.toMutableList().apply {

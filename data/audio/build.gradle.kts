@@ -13,6 +13,8 @@ dependencies {
     api(projects.model.audio)
     api(projects.model.result)
 
+    api(libs.kotlinx.io.core)
+
     implementation(libs.androidx.activity)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.appcompat)

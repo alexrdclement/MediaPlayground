@@ -23,31 +23,17 @@ sealed class FileWriteError {
     data class Unknown(val throwable: Throwable?) : FileWriteError()
 }
 
-class FileWriter @Inject constructor(
-    @ApplicationContext private val context: Context,
-) {
+interface FileWriter {
 
     suspend fun writeBitmapToDisk(
         byteArray: ByteArray,
         destination: Path,
-    ): Result<Path, FileWriteError> {
-        return byteArray.writeToDisk(destination)
-    }
+    ): Result<Path, FileWriteError>
 
     suspend fun writeToDisk(
         contentUri: Uri,
         destinationDir: Path
-    ): Result<Path, FileWriteError> {
-        val documentFile = DocumentFile.fromSingleUri(context, contentUri)
-            ?: return Result.Failure(FileWriteError.UnknownInputFileError)
-        val documentFileName = documentFile.name
-            ?: return Result.Failure(FileWriteError.UnknownInputFileError)
-
-        return documentFile.writeToDisk(
-            destination = Path(destinationDir, documentFileName),
-            contentResolver = context.contentResolver,
-        )
-    }
+    ): Result<Path, FileWriteError>
 }
 
 suspend fun ByteArray.writeToDisk(destination: Path): Result<Path, FileWriteError> =
