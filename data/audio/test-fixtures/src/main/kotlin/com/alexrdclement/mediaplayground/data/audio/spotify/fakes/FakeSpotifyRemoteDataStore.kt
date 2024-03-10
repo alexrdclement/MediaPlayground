@@ -1,4 +1,4 @@
-package com.alexrdclement.data.audio.test.fixtures.spotify
+package com.alexrdclement.mediaplayground.data.audio.spotify.fakes
 
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyRemoteDataStore
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyRemoteDataStore.Failure

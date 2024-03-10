@@ -1,5 +1,7 @@
-package com.alexrdclement.media.mediaimport.test.fixtures
+package com.alexrdclement.media.mediaimport.fixtures
 
+import com.alexrdclement.media.mediaimport.fakes.FakeFileWriter
+import com.alexrdclement.media.mediaimport.fakes.FakeMediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 
 class MediaImporterFixture {

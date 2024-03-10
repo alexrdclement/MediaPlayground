@@ -2,9 +2,9 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.spotify
 
 import androidx.paging.PagingConfig
 import app.cash.turbine.test
-import com.alexrdclement.data.audio.test.fixtures.spotify.SpotifyAudioRepositoryFixture
-import com.alexrdclement.data.audio.test.fixtures.spotify.auth.FakeSpotifyAuth
-import com.alexrdclement.media.session.test.fixtures.FakeMediaSessionManager
+import com.alexrdclement.mediaplayground.data.audio.spotify.fixtures.SpotifyAudioRepositoryFixture
+import com.alexrdclement.mediaplayground.data.audio.spotify.auth.FakeSpotifyAuth
+import com.alexrdclement.media.session.fakes.FakeMediaSessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest

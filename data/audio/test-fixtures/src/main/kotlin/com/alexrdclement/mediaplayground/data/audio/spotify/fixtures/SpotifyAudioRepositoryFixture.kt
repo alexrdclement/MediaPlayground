@@ -1,5 +1,6 @@
-package com.alexrdclement.data.audio.test.fixtures.spotify
+package com.alexrdclement.mediaplayground.data.audio.spotify.fixtures
 
+import com.alexrdclement.mediaplayground.data.audio.spotify.fakes.FakeSpotifyRemoteDataStore
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepositoryImpl
 
 class SpotifyAudioRepositoryFixture {

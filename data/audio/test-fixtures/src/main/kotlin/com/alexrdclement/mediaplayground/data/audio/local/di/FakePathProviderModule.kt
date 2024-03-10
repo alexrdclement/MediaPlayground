@@ -1,8 +1,7 @@
-package com.alexrdclement.data.audio.test.fixtures.local.di
+package com.alexrdclement.mediaplayground.data.audio.local.di
 
-import com.alexrdclement.data.audio.test.fixtures.local.FakePathProvider
+import com.alexrdclement.mediaplayground.data.audio.local.fakes.FakePathProvider
 import com.alexrdclement.mediaplayground.data.audio.local.PathProvider
-import com.alexrdclement.mediaplayground.data.audio.local.PathProviderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

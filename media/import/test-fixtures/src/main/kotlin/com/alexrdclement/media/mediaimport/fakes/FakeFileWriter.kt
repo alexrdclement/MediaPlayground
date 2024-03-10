@@ -1,4 +1,4 @@
-package com.alexrdclement.media.mediaimport.test.fixtures
+package com.alexrdclement.media.mediaimport.fakes
 
 import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.FileWriteError

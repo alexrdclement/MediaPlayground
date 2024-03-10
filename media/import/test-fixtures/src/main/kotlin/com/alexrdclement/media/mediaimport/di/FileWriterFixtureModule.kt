@@ -1,6 +1,6 @@
-package com.alexrdclement.media.mediaimport.test.fixtures.di
+package com.alexrdclement.media.mediaimport.di
 
-import com.alexrdclement.media.mediaimport.test.fixtures.FakeFileWriter
+import com.alexrdclement.media.mediaimport.fakes.FakeFileWriter
 import com.alexrdclement.mediaplayground.media.mediaimport.FileWriter
 import dagger.Binds
 import dagger.Module

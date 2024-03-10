@@ -1,6 +1,6 @@
-package com.alexrdclement.data.audio.test.fixtures.spotify.di
+package com.alexrdclement.mediaplayground.data.audio.spotify.di
 
-import com.alexrdclement.data.audio.test.fixtures.spotify.FakeSpotifyRemoteDataStore
+import com.alexrdclement.mediaplayground.data.audio.spotify.fakes.FakeSpotifyRemoteDataStore
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyRemoteDataStore
 import com.alexrdclement.mediaplayground.data.audio.spotify.di.SpotifyDataStoreModule
 import dagger.Binds

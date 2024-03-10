@@ -1,4 +1,4 @@
-package com.alexrdclement.data.audio.test.fixtures.spotify.auth
+package com.alexrdclement.mediaplayground.data.audio.spotify.auth
 
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import kotlinx.coroutines.flow.MutableStateFlow

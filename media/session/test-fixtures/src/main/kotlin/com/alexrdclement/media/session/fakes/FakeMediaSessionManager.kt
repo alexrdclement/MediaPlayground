@@ -1,4 +1,4 @@
-package com.alexrdclement.media.session.test.fixtures
+package com.alexrdclement.media.session.fakes
 
 import androidx.media3.common.Player
 import com.alexrdclement.mediaplayground.media.session.MediaSessionManager

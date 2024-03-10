@@ -1,6 +1,6 @@
-package com.alexrdclement.media.mediaimport.test.fixtures.di
+package com.alexrdclement.media.mediaimport.di
 
-import com.alexrdclement.media.mediaimport.test.fixtures.FakeMediaMetadataRetriever
+import com.alexrdclement.media.mediaimport.fakes.FakeMediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaMetadataRetriever
 import dagger.Binds
 import dagger.Module

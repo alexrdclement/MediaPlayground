@@ -2,8 +2,8 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 
 import androidx.paging.PagingConfig
 import app.cash.turbine.test
-import com.alexrdclement.data.audio.test.fixtures.local.LocalAudioRepositoryFixture
-import com.alexrdclement.media.session.test.fixtures.FakeMediaSessionManager
+import com.alexrdclement.mediaplayground.data.audio.local.fixtures.LocalAudioRepositoryFixture
+import com.alexrdclement.media.session.fakes.FakeMediaSessionManager
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracks1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest

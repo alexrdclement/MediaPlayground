@@ -1,4 +1,4 @@
-package com.alexrdclement.data.audio.test.fixtures.local
+package com.alexrdclement.mediaplayground.data.audio.local.fakes
 
 import com.alexrdclement.mediaplayground.data.audio.local.PathProvider
 import kotlinx.io.files.Path

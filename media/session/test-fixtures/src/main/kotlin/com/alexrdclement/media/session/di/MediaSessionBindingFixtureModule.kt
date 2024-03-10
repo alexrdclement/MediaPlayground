@@ -1,6 +1,6 @@
-package com.alexrdclement.media.session.test.fixtures.di
+package com.alexrdclement.media.session.di
 
-import com.alexrdclement.media.session.test.fixtures.FakeMediaSessionManager
+import com.alexrdclement.media.session.fakes.FakeMediaSessionManager
 import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
 import com.alexrdclement.mediaplayground.media.session.di.MediaSessionBindingModule
 import dagger.Binds

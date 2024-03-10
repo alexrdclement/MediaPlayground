@@ -1,6 +1,6 @@
-package com.alexrdclement.data.audio.test.fixtures.spotify.di
+package com.alexrdclement.mediaplayground.data.audio.spotify.di
 
-import com.alexrdclement.data.audio.test.fixtures.spotify.auth.FakeSpotifyAuth
+import com.alexrdclement.mediaplayground.data.audio.spotify.auth.FakeSpotifyAuth
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import com.alexrdclement.mediaplayground.data.audio.spotify.di.SpotifyAuthModule
 import dagger.Binds
