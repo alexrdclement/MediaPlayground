@@ -8,7 +8,9 @@ import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyRemoteDataSto
 import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toAlbum
 import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toTrack
 import com.alexrdclement.mediaplayground.model.audio.Album
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.successOrDefault
 import javax.inject.Inject
@@ -52,15 +54,15 @@ class SpotifyRemoteDataStoreImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAlbum(id: String): Result<Album?, Failure> {
+    override suspend fun getAlbum(id: AlbumId): Result<Album?, Failure> {
         return execute { api ->
-            api.albums.getAlbum(id)?.toAlbum()
+            api.albums.getAlbum(id.value)?.toAlbum()
         }
     }
 
-    override suspend fun getTrack(id: String): Result<Track?, Failure> {
+    override suspend fun getTrack(id: TrackId): Result<Track?, Failure> {
         return execute { api ->
-            api.tracks.getTrack(id)?.toTrack()
+            api.tracks.getTrack(id.value)?.toTrack()
         }
     }
 

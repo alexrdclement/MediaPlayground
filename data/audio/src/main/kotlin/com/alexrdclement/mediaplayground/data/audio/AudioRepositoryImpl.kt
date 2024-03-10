@@ -55,7 +55,7 @@ class AudioRepositoryImpl @Inject constructor(
 
     override suspend fun getAlbum(id: AlbumId): Result<Album?, Failure> {
         // TODO: Integrate local
-        return spotifyAudioRepository.getAlbum(id.value)
+        return spotifyAudioRepository.getAlbum(id)
             .mapFailure(::mapSpotifyAudioRepositoryFailure)
     }
 
@@ -66,7 +66,7 @@ class AudioRepositoryImpl @Inject constructor(
             is Result.Failure -> {
                 when (localTrackResult.failure) {
                     LocalAudioRepository.Failure.TrackNotFound -> {
-                        spotifyAudioRepository.getTrack(id.value)
+                        spotifyAudioRepository.getTrack(id)
                             .mapFailure(::mapSpotifyAudioRepositoryFailure)
                     }
                 }

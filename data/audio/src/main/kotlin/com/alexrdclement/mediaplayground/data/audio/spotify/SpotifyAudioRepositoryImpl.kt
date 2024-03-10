@@ -7,7 +7,9 @@ import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toTrack
 import com.alexrdclement.mediaplayground.data.audio.spotify.pagination.SpotifySavedAlbumsPagingSource
 import com.alexrdclement.mediaplayground.data.audio.spotify.pagination.SpotifySavedTracksPagingSource
 import com.alexrdclement.mediaplayground.model.audio.Album
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.map
 import com.alexrdclement.mediaplayground.model.result.successOrDefault
@@ -59,11 +61,11 @@ class SpotifyAudioRepositoryImpl @Inject constructor(
         return SpotifySavedAlbumsPagingSource(spotifyRemoteDataStore)
     }
 
-    override suspend fun getAlbum(id: String): Result<Album?, Failure> {
+    override suspend fun getAlbum(id: AlbumId): Result<Album?, Failure> {
         return spotifyRemoteDataStore.getAlbum(id = id).mapRemoteFailure()
     }
 
-    override suspend fun getTrack(id: String): Result<Track?, Failure> {
+    override suspend fun getTrack(id: TrackId): Result<Track?, Failure> {
         return spotifyRemoteDataStore.getTrack(id = id).mapRemoteFailure()
     }
 

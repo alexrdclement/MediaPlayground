@@ -2,7 +2,9 @@ package com.alexrdclement.mediaplayground.data.audio.spotify
 
 import androidx.paging.PagingSource
 import com.alexrdclement.mediaplayground.model.audio.Album
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
 
 const val SpotifyAudioRepositoryDefaultFetchLimit: Int = 50
@@ -32,7 +34,7 @@ interface SpotifyAudioRepository {
 
     fun getSavedAlbumsPagingSource(): PagingSource<Int, Album>
 
-    suspend fun getAlbum(id: String): Result<Album?, Failure>
+    suspend fun getAlbum(id: AlbumId): Result<Album?, Failure>
 
-    suspend fun getTrack(id: String): Result<Track?, Failure>
+    suspend fun getTrack(id: TrackId): Result<Track?, Failure>
 }
