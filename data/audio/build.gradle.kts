@@ -13,6 +13,7 @@ dependencies {
     api(projects.model.audio)
     api(projects.model.result)
 
+    implementation(libs.androidx.activity)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
