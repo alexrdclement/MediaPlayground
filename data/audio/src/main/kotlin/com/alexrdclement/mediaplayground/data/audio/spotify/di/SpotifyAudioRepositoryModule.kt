@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class SpotifyAudioBindingModule {
+abstract class SpotifyAudioRepositoryModule {
     @Binds
     abstract fun bindSpotifyAudioRepository(
         spotifyAudioRepositoryImpl: SpotifyAudioRepositoryImpl
