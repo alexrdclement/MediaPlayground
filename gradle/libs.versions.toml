@@ -100,8 +100,10 @@ mediaplayground-android-application = { id = "mediaplayground.android.applicatio
 mediaplayground-android-application-compose = { id = "mediaplayground.android.application.compose", version = "unspecified" }
 mediaplayground-android-feature = { id = "mediaplayground.android.feature", version = "unspecified" }
 mediaplayground-android-hilt = { id = "mediaplayground.android.hilt", version = "unspecified" }
+mediaplayground-android-hilt-test-fixtures = { id = "mediaplayground.android.hilt.test.fixtures", version = "unspecified" }
 mediaplayground-android-library = { id = "mediaplayground.android.library", version = "unspecified" }
 mediaplayground-android-library-compose = { id = "mediaplayground.android.library.compose", version = "unspecified" }
+mediaplayground-android-library-test-fixtures = { id = "mediaplayground.android.library.test.fixtures", version = "unspecified" }
 mediaplayground-android-test = { id = "mediaplayground.android.test", version = "unspecified" }
 mediaplayground-jvm-library = { id = "mediaplayground.jvm.library", version = "unspecified" }
 

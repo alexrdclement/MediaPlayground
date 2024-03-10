@@ -1,6 +1,7 @@
 plugins {
-    alias(libs.plugins.mediaplayground.android.library)
-    alias(libs.plugins.mediaplayground.android.hilt)
+    // See https://github.com/gradle/gradle/issues/17968
+    id(libs.plugins.mediaplayground.android.library.asProvider().get().pluginId)
+    id(libs.plugins.mediaplayground.android.hilt.asProvider().get().pluginId)
 }
 
 android {
@@ -8,6 +9,9 @@ android {
 }
 
 dependencies {
+    api(libs.media3.common)
+    api(projects.model.audio)
+
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.media3.exoplayer)
@@ -18,9 +22,7 @@ dependencies {
     implementation(libs.media3.transformer)
     implementation(libs.media3.decoder)
     implementation(libs.media3.datasource)
-    implementation(libs.media3.common)
 
     implementation(projects.data.audio)
-    implementation(projects.model.audio)
     implementation(projects.model.result)
 }
