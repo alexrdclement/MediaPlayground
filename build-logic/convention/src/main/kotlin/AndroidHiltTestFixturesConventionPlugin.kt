@@ -12,9 +12,9 @@ class AndroidHiltTestFixturesConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "implementation"(libs.findLibrary("hilt.android").get())
-                "implementation"(libs.findLibrary("hilt.android.testing").get())
-                "ksp"(libs.findLibrary("hilt.compiler").get())
+                add("implementation", libs.findLibrary("hilt.android").get())
+                add("implementation", libs.findLibrary("hilt.android.testing").get())
+                add("ksp", libs.findLibrary("hilt.compiler").get())
             }
         }
     }

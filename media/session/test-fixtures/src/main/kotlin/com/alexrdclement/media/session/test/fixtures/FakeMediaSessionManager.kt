@@ -33,4 +33,12 @@ class FakeMediaSessionManager @Inject constructor() : MediaSessionManager {
     override fun pause() {
         mutableIsPlaying.update { false }
     }
+
+    fun stubIsPlaying(isPlaying: Boolean) {
+        mutableIsPlaying.update { isPlaying }
+    }
+
+    fun stubLoadedMediaItem(mediaItem: MediaItem?) {
+        mutableLoadedMediaItem.update { mediaItem }
+    }
 }
