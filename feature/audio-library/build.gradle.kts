@@ -24,7 +24,6 @@ dependencies {
     implementation(projects.media.session)
     implementation(projects.model.audio)
 
-    testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
 
