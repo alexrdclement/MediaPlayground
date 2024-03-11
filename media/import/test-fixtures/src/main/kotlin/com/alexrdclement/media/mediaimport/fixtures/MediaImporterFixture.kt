@@ -4,9 +4,10 @@ import com.alexrdclement.media.mediaimport.fakes.FakeFileWriter
 import com.alexrdclement.media.mediaimport.fakes.FakeMediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 
-class MediaImporterFixture {
-    val mediaMetadataRetriever = FakeMediaMetadataRetriever()
-    val fileWriter = FakeFileWriter()
+class MediaImporterFixture(
+    val mediaMetadataRetriever: FakeMediaMetadataRetriever = FakeMediaMetadataRetriever(),
+    val fileWriter: FakeFileWriter = FakeFileWriter()
+) {
 
     val mediaImporter = MediaImporter(
         mediaMetadataRetriever = mediaMetadataRetriever,
