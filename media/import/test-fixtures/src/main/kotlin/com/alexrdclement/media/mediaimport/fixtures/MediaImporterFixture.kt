@@ -8,7 +8,6 @@ class MediaImporterFixture(
     val mediaMetadataRetriever: FakeMediaMetadataRetriever = FakeMediaMetadataRetriever(),
     val fileWriter: FakeFileWriter = FakeFileWriter()
 ) {
-
     val mediaImporter = MediaImporter(
         mediaMetadataRetriever = mediaMetadataRetriever,
         fileWriter = fileWriter,

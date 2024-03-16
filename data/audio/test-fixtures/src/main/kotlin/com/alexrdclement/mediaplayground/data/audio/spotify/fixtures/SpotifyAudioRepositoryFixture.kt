@@ -6,7 +6,6 @@ import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioReposito
 class SpotifyAudioRepositoryFixture(
     val spotifyRemoteDataStore: FakeSpotifyRemoteDataStore = FakeSpotifyRemoteDataStore()
 ) {
-
     val spotifyAudioRepository = SpotifyAudioRepositoryImpl(
         spotifyRemoteDataStore = spotifyRemoteDataStore,
     )

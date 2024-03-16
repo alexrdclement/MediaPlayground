@@ -11,7 +11,6 @@ class LocalAudioRepositoryFixture(
     val mediaImporterFixture: MediaImporterFixture = MediaImporterFixture(),
     val localAudioDataStore: LocalAudioDataStore = LocalAudioDataStore(),
 ) {
-
     val localAudioRepository = LocalAudioRepositoryImpl(
         pathProvider = pathProvider,
         mediaImporter = mediaImporterFixture.mediaImporter,

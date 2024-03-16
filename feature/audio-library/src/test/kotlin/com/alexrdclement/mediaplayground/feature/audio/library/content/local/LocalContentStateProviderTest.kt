@@ -41,7 +41,7 @@ class LocalContentStateProviderTest {
     }
 
     @Test
-    fun oneTracks_returnsContent() = runTest {
+    fun nonEmptyTracks_returnsContent() = runTest {
         localAudioRepositoryFixture.stubTracks(PreviewTracks1)
 
         localContentStateProvider.flow(

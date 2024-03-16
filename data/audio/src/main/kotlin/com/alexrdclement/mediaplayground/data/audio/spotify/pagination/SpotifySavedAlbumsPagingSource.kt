@@ -30,10 +30,11 @@ class SpotifySavedAlbumsPagingSource(
             when (result) {
                 is Result.Failure -> LoadResult.Error(Throwable(result.toString()))
                 is Result.Success -> {
+                    val albums = result.value.items
                     LoadResult.Page(
-                        data = result.value.items,
+                        data = albums,
                         prevKey = null, // Only paging forward.
-                        nextKey = if (offset + result.value.items.size < result.value.numTotalItems) {
+                        nextKey = if (offset + albums.size < result.value.numTotalItems) {
                             nextPageNumber + 1
                         } else {
                             null
