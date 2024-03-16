@@ -29,15 +29,18 @@ class SpotifySavedTracksPagingSource(
             )
             return when (result) {
                 is Result.Failure -> LoadResult.Error(Exception(result.toString()))
-                is Result.Success -> LoadResult.Page(
-                    data = result.value.items,
-                    prevKey = null, // Only paging forward.
-                    nextKey = if (offset + result.value.items.size < result.value.numTotalItems) {
-                        nextPageNumber + 1
-                    } else {
-                        null
-                    }
-                )
+                is Result.Success -> {
+                    val savedTracks = result.value.items
+                    LoadResult.Page(
+                        data = savedTracks,
+                        prevKey = null, // Only paging forward.
+                        nextKey = if (offset + savedTracks.size < result.value.numTotalItems) {
+                            nextPageNumber + 1
+                        } else {
+                            null
+                        }
+                    )
+                }
             }
         } catch (e: Exception) {
             return LoadResult.Error(e)

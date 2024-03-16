@@ -27,7 +27,7 @@ class AudioRepositoryImpl @Inject constructor(
         return spotifyAudioRepository.getSavedTracks(
             limit = limit,
             offset = offset,
-        ).mapSpotifyRepositoryFailure()
+        ).mapFailure(::mapSpotifyAudioRepositoryFailure)
             .map {
                 ListFetchSuccess(
                     items = it.items,
@@ -44,7 +44,7 @@ class AudioRepositoryImpl @Inject constructor(
         return spotifyAudioRepository.getSavedAlbums(
             limit = limit,
             offset = offset,
-        ).mapSpotifyRepositoryFailure()
+        ).mapFailure(::mapSpotifyAudioRepositoryFailure)
             .map {
                 ListFetchSuccess(
                     items = it.items,
@@ -80,19 +80,6 @@ class AudioRepositoryImpl @Inject constructor(
         return when (failure) {
             SpotifyAudioRepository.Failure.Timeout -> Failure.Timeout
             is SpotifyAudioRepository.Failure.Unexpected -> Failure.Unexpected(failure.t)
-        }
-    }
-
-    private fun <T> Result<T, SpotifyAudioRepository.Failure>.mapSpotifyRepositoryFailure(): Result<T, Failure> {
-        return when (this) {
-            is Result.Failure -> {
-                val failure = when (val failure = this.failure) {
-                    SpotifyAudioRepository.Failure.Timeout -> Failure.Timeout
-                    is SpotifyAudioRepository.Failure.Unexpected -> Failure.Unexpected(failure.t)
-                }
-                Result.Failure(failure)
-            }
-            is Result.Success -> Result.Success(this.value)
         }
     }
 }

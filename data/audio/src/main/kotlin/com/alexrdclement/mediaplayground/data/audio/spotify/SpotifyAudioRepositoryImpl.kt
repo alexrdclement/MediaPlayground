@@ -12,6 +12,7 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.map
+import com.alexrdclement.mediaplayground.model.result.mapFailure
 import com.alexrdclement.mediaplayground.model.result.successOrDefault
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class SpotifyAudioRepositoryImpl @Inject constructor(
             limit = limit,
             offset = offset,
         )
-            .mapRemoteFailure()
+            .mapFailure(::mapDataStoreFailure)
             .map {
                 ListFetchSuccess(
                     items = it.items,
@@ -48,7 +49,7 @@ class SpotifyAudioRepositoryImpl @Inject constructor(
             limit = limit,
             offset = offset,
         )
-            .mapRemoteFailure()
+            .mapFailure(::mapDataStoreFailure)
             .map {
                 ListFetchSuccess(
                     items = it.items,
@@ -62,23 +63,17 @@ class SpotifyAudioRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAlbum(id: AlbumId): Result<Album?, Failure> {
-        return spotifyRemoteDataStore.getAlbum(id = id).mapRemoteFailure()
+        return spotifyRemoteDataStore.getAlbum(id = id).mapFailure(::mapDataStoreFailure)
     }
 
     override suspend fun getTrack(id: TrackId): Result<Track?, Failure> {
-        return spotifyRemoteDataStore.getTrack(id = id).mapRemoteFailure()
+        return spotifyRemoteDataStore.getTrack(id = id).mapFailure(::mapDataStoreFailure)
     }
 
-    private fun <T> Result<T, SpotifyRemoteDataStore.Failure>.mapRemoteFailure(): Result<T, Failure> {
-        return when (this) {
-            is Result.Failure -> {
-                val failure = when (val failure = this.failure) {
-                    SpotifyRemoteDataStore.Failure.Timeout -> Failure.Timeout
-                    is SpotifyRemoteDataStore.Failure.Unexpected -> Failure.Unexpected(failure.t)
-                }
-                Result.Failure(failure)
-            }
-            is Result.Success -> Result.Success(this.value)
-        }
+    private fun mapDataStoreFailure(
+        failure: SpotifyRemoteDataStore.Failure
+    ) = when (failure) {
+        SpotifyRemoteDataStore.Failure.Timeout -> Failure.Timeout
+        is SpotifyRemoteDataStore.Failure.Unexpected -> Failure.Unexpected(failure.t)
     }
 }
