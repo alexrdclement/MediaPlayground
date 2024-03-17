@@ -10,7 +10,7 @@ import javax.inject.Inject
 class SpotifyLoginActivity : AbstractSpotifyPkceLoginActivity() {
 
     @Inject
-    lateinit var spotifyAuth: SpotifyAuth
+    lateinit var spotifyAuth: SpotifyAuthImpl
 
     override val clientId = ClientId
     override val redirectUri = RedirectUri

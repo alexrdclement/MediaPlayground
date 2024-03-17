@@ -22,7 +22,6 @@ class LocalContentStateProvider @Inject constructor(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ): Flow<LocalContentState> {
-        // TODO: test to verify instance not recreated
         val tracksFlow = tracksFlow(coroutineScope, pagingConfig)
         return localAudioRepository.getTracks()
             .map { tracks ->

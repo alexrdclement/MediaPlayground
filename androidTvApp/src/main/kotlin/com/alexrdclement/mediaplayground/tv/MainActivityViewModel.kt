@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyTvAuth
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.result.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +29,14 @@ class MainActivityViewModel @Inject constructor(
 
     fun loadData() {
         viewModelScope.launch {
-            _savedTracks.value = audioRepository.getSavedTracks()
+            when (val result = audioRepository.getSavedTracks()) {
+                is Result.Failure -> {
+                    // TODO
+                }
+                is Result.Success -> {
+                    _savedTracks.value = result.value.items
+                }
+            }
         }
     }
 }

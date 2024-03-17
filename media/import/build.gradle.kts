@@ -9,7 +9,10 @@ android {
 
 dependencies {
     api(libs.kotlinx.io.core)
-    
+
+    api(projects.model.audio)
+    api(projects.model.result)
+
     implementation(libs.androidx.documentfile)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.guava)
@@ -22,7 +25,4 @@ dependencies {
     implementation(libs.media3.decoder)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
-
-    implementation(projects.model.audio)
-    implementation(projects.model.result)
 }

@@ -2,18 +2,13 @@ package com.alexrdclement.mediaplayground.data.audio.spotify.pagination
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
-import com.alexrdclement.mediaplayground.data.audio.spotify.mapper.toTrack
+import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyRemoteDataStore
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.result.Result
 
 class SpotifySavedTracksPagingSource(
-    private val credentialStore: SpotifyDefaultCredentialStore,
+    private val spotifyRemoteDataStore: SpotifyRemoteDataStore,
 ) : PagingSource<Int, Track>() {
-
-    // TODO: write suspending version of getter
-    private val spotifyApi: SpotifyClientApi?
-        get() = credentialStore.getSpotifyClientPkceApi()
 
     override fun getRefreshKey(state: PagingState<Int, Track>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -24,25 +19,29 @@ class SpotifySavedTracksPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Track> {
         try {
-            val spotifyApi = spotifyApi ?: return LoadResult.Invalid()
-
             val previousPage = params.key?.minus(1) ?: 0
             val nextPageNumber = params.key ?: 1
             val pageSize = params.loadSize
             val offset = previousPage * pageSize
-            val response = spotifyApi.library.getSavedTracks(
+            val result = spotifyRemoteDataStore.getSavedTracks(
                 limit = pageSize,
                 offset = offset,
             )
-            return LoadResult.Page(
-                data = response.items.map { it.track.toTrack() },
-                prevKey = null, // Only paging forward.
-                nextKey = if (offset + response.items.size < response.total) {
-                    nextPageNumber + 1
-                } else {
-                    null
+            return when (result) {
+                is Result.Failure -> LoadResult.Error(Exception(result.toString()))
+                is Result.Success -> {
+                    val savedTracks = result.value.items
+                    LoadResult.Page(
+                        data = savedTracks,
+                        prevKey = null, // Only paging forward.
+                        nextKey = if (offset + savedTracks.size < result.value.numTotalItems) {
+                            nextPageNumber + 1
+                        } else {
+                            null
+                        }
+                    )
                 }
-            )
+            }
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }

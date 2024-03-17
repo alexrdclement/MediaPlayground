@@ -1,6 +1,7 @@
 plugins {
-    alias(libs.plugins.mediaplayground.android.library)
-    alias(libs.plugins.mediaplayground.android.hilt)
+    // See https://github.com/gradle/gradle/issues/17968
+    id(libs.plugins.mediaplayground.android.library.asProvider().get().pluginId)
+    id(libs.plugins.mediaplayground.android.hilt.asProvider().get().pluginId)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -9,12 +10,16 @@ android {
 }
 
 dependencies {
+    api(projects.model.audio)
+    api(projects.model.result)
+
+    api(libs.kotlinx.io.core)
+
+    implementation(libs.androidx.activity)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
     implementation(libs.paging)
 
     implementation(projects.media.import)
-    implementation(projects.model.audio)
-    implementation(projects.model.result)
 }

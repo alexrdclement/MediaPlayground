@@ -48,6 +48,10 @@ gradlePlugin {
             id = "mediaplayground.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidLibraryTestFixtures") {
+            id = "mediaplayground.android.library.test.fixtures"
+            implementationClass = "AndroidLibraryTestFixturesConventionPlugin"
+        }
         register("androidFeature") {
             id = "mediaplayground.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
@@ -59,6 +63,10 @@ gradlePlugin {
         register("androidHilt") {
             id = "mediaplayground.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
+        }
+        register("androidHiltTestFixtures") {
+            id = "mediaplayground.android.hilt.test.fixtures"
+            implementationClass = "AndroidHiltTestFixturesConventionPlugin"
         }
         register("jvmLibrary") {
             id = "mediaplayground.jvm.library"
