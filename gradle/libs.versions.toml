@@ -85,7 +85,7 @@ paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "pa
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-ui-playground-components = { group = "com.alexrdclement.uiplayground", name = "components", version.ref = "ui-playground-components" }
+ui-playground-components = { group = "com.alexrdclement.uiplayground", name = "ui-playground-components", version.ref = "ui-playground-components" }
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
