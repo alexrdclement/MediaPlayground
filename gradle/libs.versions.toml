@@ -1,6 +1,6 @@
 [versions]
 android-desugar-jdk-libs = "2.0.4"
-android-gradle-plugin = "8.3.0-beta02"
+android-gradle-plugin = "8.3.2"
 android-tools = "31.2.0"
 compose-bom = "2024.02.00"
 compose-compiler = "1.5.9"
