@@ -18,9 +18,6 @@ import javax.inject.Inject
 class SpotifyRemoteDataStoreImpl @Inject constructor(
     private val credentialStore: SpotifyDefaultCredentialStore,
 ) : SpotifyRemoteDataStore {
-    // TODO: write suspending version of getter
-    private val spotifyApi: SpotifyClientApi?
-        get() = credentialStore.getSpotifyClientPkceApi()
 
     override suspend fun getSavedTracks(
         limit: Int,
@@ -69,7 +66,7 @@ class SpotifyRemoteDataStoreImpl @Inject constructor(
     private suspend fun <T> execute(
         block: suspend (SpotifyClientApi) -> T,
     ): Result<T, Failure> {
-        val spotifyApi = spotifyApi ?: return Result.Failure(Failure.Unexpected())
+        val spotifyApi = credentialStore.getSpotifyClientPkceApi() ?: return Result.Failure(Failure.Unexpected())
         return try {
             val result = block(spotifyApi)
             Result.Success(result)

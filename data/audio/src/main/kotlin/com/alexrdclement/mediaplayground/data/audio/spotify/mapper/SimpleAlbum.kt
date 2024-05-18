@@ -8,5 +8,5 @@ fun SpotifySimpleAlbum.toSimpleAlbum() = SimpleAlbum(
     id = AlbumId(this.id),
     name = this.name,
     artists = this.artists.map { it.toSimpleArtist() },
-    images = this.images.map { it.toImage() }
+    images = this.images?.map { it.toImage() } ?: emptyList()
 )

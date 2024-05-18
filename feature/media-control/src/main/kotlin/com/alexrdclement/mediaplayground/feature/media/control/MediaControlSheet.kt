@@ -11,11 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.ui.R
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.uiplayground.components.MediaControlSheetState
 import com.alexrdclement.uiplayground.components.model.Artist
@@ -54,7 +56,8 @@ fun MediaControlSheet(
     ) {
         loadedMediaItem?.let { mediaItem ->
             // TODO: temp
-            val artists by derivedStateOf { mediaItem.artists.map { Artist(name = it.name) } }
+            val fallbackArtistName = stringResource(id = R.string.artist_name_fallback)
+            val artists by derivedStateOf { mediaItem.artists.map { Artist(name = it.name ?: fallbackArtistName) } }
             val uiMediaItem by derivedStateOf {
                 com.alexrdclement.uiplayground.components.model.MediaItem(
                     artworkLargeUrl = mediaItem.largeImageUrl,

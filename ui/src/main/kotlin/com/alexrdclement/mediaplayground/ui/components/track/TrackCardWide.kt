@@ -23,6 +23,7 @@ import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.mediaplayground.ui.utils.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.PlayPauseButton
 
 @Composable
@@ -61,7 +62,7 @@ fun TrackCardWide(
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(text = track.title)
-                Text(text = track.artists.joinToString { it.name })
+                Text(text = artistNamesOrDefault(track.artists))
                 Text(text = track.simpleAlbum.name)
             }
         }

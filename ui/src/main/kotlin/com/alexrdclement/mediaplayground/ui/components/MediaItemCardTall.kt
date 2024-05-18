@@ -26,6 +26,7 @@ import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.mediaplayground.ui.utils.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.PlayPauseButton
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -77,7 +78,7 @@ fun MediaItemCardTall(
                         .basicMarquee()
                 )
                 Text(
-                    text = mediaItem.artists.joinToString { it.name },
+                    text = artistNamesOrDefault(mediaItem.artists),
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,

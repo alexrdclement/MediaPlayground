@@ -16,8 +16,8 @@ fun Track.toMediaItem(): MediaItem {
 
 fun Track.toMediaMetadata(): MediaMetadata {
     return MediaMetadata.Builder()
-        .setAlbumArtist(simpleAlbum.artists.joinToString { it.name })
-        .setArtist(simpleAlbum.artists.joinToString { it.name })
+        .setAlbumArtist(simpleAlbum.artists.joinToString { it.name ?: "Unknown artist" })
+        .setArtist(simpleAlbum.artists.joinToString { it.name ?: "Unknown artist" })
         .setAlbumTitle(simpleAlbum.name)
         .setDisplayTitle(title)
         .setTitle(title)

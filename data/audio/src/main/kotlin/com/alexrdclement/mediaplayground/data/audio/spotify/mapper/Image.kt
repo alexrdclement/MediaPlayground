@@ -5,6 +5,6 @@ import com.alexrdclement.mediaplayground.model.audio.Image
 
 fun SpotifyImage.toImage() = Image(
     uri = this.url,
-    heightPx = this.height,
-    widthPx = this.width,
+    heightPx = this.height?.toInt(),
+    widthPx = this.width?.toInt(),
 )

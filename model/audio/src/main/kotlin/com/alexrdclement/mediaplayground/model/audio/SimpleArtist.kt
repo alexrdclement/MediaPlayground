@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SimpleArtist(
     val id: String,
-    val name: String,
+    val name: String?,
 )
