@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.ui.shared.theme.DisabledAlpha
-import com.alexrdclement.mediaplayground.ui.utils.artistNamesOrDefault
+import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.PlayPauseButton
 import kotlin.time.Duration.Companion.milliseconds
 

@@ -22,6 +22,7 @@ import androidx.tv.material3.StandardCardLayout
 import androidx.tv.material3.Text
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTrack1
+import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.tv.theme.MediaPlaygroundTheme
 
 @OptIn(ExperimentalTvMaterial3Api::class)
@@ -70,7 +71,7 @@ fun TrackCard(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text(text = track.artists.joinToString { it.name })
+                Text(text = artistNamesOrDefault(track.artists))
                 Text(text = track.simpleAlbum.name)
             }
         },
