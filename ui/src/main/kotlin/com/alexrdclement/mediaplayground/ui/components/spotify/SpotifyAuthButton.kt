@@ -33,8 +33,8 @@ fun SpotifyAuthButton(
         Text(
             text = if (!isLoggedIn) "Log In" else "Log Out",
             style = when (style) {
-                SpotifyAuthButtonStyle.Compact -> MaterialTheme.typography.bodySmall
-                SpotifyAuthButtonStyle.Default -> MaterialTheme.typography.bodyMedium
+                SpotifyAuthButtonStyle.Compact -> MaterialTheme.typography.labelMedium
+                SpotifyAuthButtonStyle.Default -> MaterialTheme.typography.labelLarge
             }
         )
     }
