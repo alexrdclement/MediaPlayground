@@ -16,25 +16,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.CardLayoutDefaults
-import androidx.tv.material3.ExperimentalTvMaterial3Api
-import androidx.tv.material3.StandardCardLayout
+import androidx.tv.material3.Card
+import androidx.tv.material3.StandardCardContainer
 import androidx.tv.material3.Text
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.tv.theme.MediaPlaygroundTheme
 
-@OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun TrackCard(
     track: Track,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    StandardCardLayout(
+    StandardCardContainer(
         imageCard = { interactionSource ->
-            CardLayoutDefaults.ImageCard(
+            Card(
                 onClick = onClick,
                 interactionSource = interactionSource
             ) {
