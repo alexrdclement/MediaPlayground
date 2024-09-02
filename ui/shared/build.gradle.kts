@@ -10,7 +10,6 @@ android {
 dependencies {
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
     implementation(libs.lifecycle.runtime.ktx)
 
     implementation(projects.model.audio)

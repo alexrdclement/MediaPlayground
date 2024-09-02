@@ -13,7 +13,6 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
     implementation(libs.ui.playground.components)
 
     implementation(projects.media.session)

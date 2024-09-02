@@ -11,7 +11,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)

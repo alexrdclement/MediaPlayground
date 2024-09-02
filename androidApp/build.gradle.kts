@@ -55,7 +55,6 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.hilt.android)
     implementation(libs.navigation.compose)
