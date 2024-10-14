@@ -13,7 +13,8 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation(libs.ui.playground.components)
+    implementation(libs.uiPlayground.components)
+    implementation(libs.uiPlayground.theme)
 
     implementation(projects.media.session)
     implementation(projects.model.audio)
