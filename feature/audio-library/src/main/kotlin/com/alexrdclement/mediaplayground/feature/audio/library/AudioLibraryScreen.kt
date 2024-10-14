@@ -142,9 +142,9 @@ fun ContentReady(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsPadding()
             .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
             .verticalScroll(scrollState)
+            .navigationBarsPadding()
     ) {
         LocalContent(
             localContentState = uiState.localContentState,
