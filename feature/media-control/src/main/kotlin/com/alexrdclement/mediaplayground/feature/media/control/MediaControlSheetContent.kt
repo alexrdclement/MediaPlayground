@@ -1,26 +1,23 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import com.alexrdclement.uiplayground.components.PlayPauseButton
+import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.components.model.Artist
 import com.alexrdclement.uiplayground.components.model.MediaItem
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MediaControlSheetContent(
     loadedMediaItem: MediaItem,
@@ -47,16 +44,14 @@ fun MediaControlSheetContent(
         ) {
             Text(
                 text = loadedMediaItem.title,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
+                style = PlaygroundTheme.typography.titleLarge.copy(textAlign = TextAlign.Center),
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
             )
             Text(
                 text = loadedMediaItem.artists.joinToString { it.name },
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge,
+                style = PlaygroundTheme.typography.bodyLarge.copy(textAlign = TextAlign.Center),
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
@@ -68,7 +63,7 @@ fun MediaControlSheetContent(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         MediaControlSheetContent(
             loadedMediaItem = MediaItem(
                 artworkThumbnailUrl = null,

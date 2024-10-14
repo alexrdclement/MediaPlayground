@@ -1,7 +1,8 @@
 package com.alexrdclement.mediaplayground.ui.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,24 +13,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTrack1
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.PlayPauseButton
+import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MediaItemCardTall(
     mediaItem: MediaItem,
@@ -39,9 +37,10 @@ fun MediaItemCardTall(
     onPlayPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OutlinedCard(
+    Surface(
         onClick = onClick,
-        modifier = modifier
+        border = BorderStroke(1.dp, PlaygroundTheme.colorScheme.outline),
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -71,16 +70,14 @@ fun MediaItemCardTall(
             ) {
                 Text(
                     text = mediaItem.title,
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = PlaygroundTheme.typography.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
                 )
                 Text(
                     text = artistNamesOrDefault(mediaItem.artists),
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = PlaygroundTheme.typography.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
@@ -93,7 +90,7 @@ fun MediaItemCardTall(
 @Preview
 @Composable
 private fun Preview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         MediaItemCardTall(
             mediaItem = PreviewTrack1,
             isPlaybackEnabled = true,

@@ -10,7 +10,7 @@ import androidx.tv.foundation.lazy.list.TvLazyRow
 import androidx.tv.foundation.lazy.list.items
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracks1
-import com.alexrdclement.mediaplayground.ui.tv.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun TracksRow(
@@ -34,7 +34,7 @@ fun TracksRow(
 @Preview
 @Composable
 private fun Preview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         TracksRow(
             tracks = PreviewTracks1,
             onTrackClick = {}

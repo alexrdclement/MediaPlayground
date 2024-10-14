@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.Scaffold
 import com.alexrdclement.mediaplayground.navigation.MediaPlaygroundNavHost
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MediaPlaygroundTheme {
+            PlaygroundTheme {
                 Scaffold(
                     contentWindowInsets = WindowInsets(0, 0, 0, 0),
                 ) { contentPadding ->

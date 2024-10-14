@@ -1,15 +1,13 @@
 package com.alexrdclement.mediaplayground.ui.components.spotify
 
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.mediaplayground.ui.theme.ButtonSpace
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.components.Button
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 enum class SpotifyAuthButtonStyle {
     Compact,
@@ -22,7 +20,7 @@ fun SpotifyAuthButton(
     onClick: () -> Unit,
     style: SpotifyAuthButtonStyle = SpotifyAuthButtonStyle.Default,
 ) {
-    OutlinedButton(
+    Button(
         onClick = onClick,
         contentPadding = when (style) {
             SpotifyAuthButtonStyle.Compact -> ButtonSpace.ContentPaddingCompact
@@ -33,17 +31,17 @@ fun SpotifyAuthButton(
         Text(
             text = if (!isLoggedIn) "Log In" else "Log Out",
             style = when (style) {
-                SpotifyAuthButtonStyle.Compact -> MaterialTheme.typography.labelMedium
-                SpotifyAuthButtonStyle.Default -> MaterialTheme.typography.labelLarge
+                SpotifyAuthButtonStyle.Compact -> PlaygroundTheme.typography.labelMedium
+                SpotifyAuthButtonStyle.Default -> PlaygroundTheme.typography.labelLarge
             }
         )
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         SpotifyAuthButton(
             isLoggedIn = false,
             onClick = { /*TODO*/ },
@@ -52,10 +50,10 @@ private fun DefaultPreview() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun CompactPreview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         SpotifyAuthButton(
             isLoggedIn = false,
             onClick = { /*TODO*/ },

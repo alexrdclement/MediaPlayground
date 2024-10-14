@@ -10,9 +10,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +22,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 val MediaItemWidthDefault = 280.dp
@@ -49,7 +48,7 @@ fun MediaItemRow(
         if (title != null) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium,
+                style = PlaygroundTheme.typography.titleMedium,
                 modifier = Modifier.padding(contentPadding),
             )
         }
@@ -88,7 +87,7 @@ fun MediaItemRow(
 @Preview
 @Composable
 private fun Preview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         Surface {
             val tracks = flowOf(PagingData.from(PreviewTracksUi1))
             MediaItemRow(

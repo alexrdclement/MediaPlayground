@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.ui.components.track
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,9 +23,10 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.PlayPauseButton
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackListItem(
     track: SimpleTrack,
@@ -45,7 +43,7 @@ fun TrackListItem(
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clickable(enabled = isPlayable) { onClick() }
-            .padding(vertical = 8.dp)
+            .padding(vertical = PlaygroundTheme.spacing.small)
             .alpha(if (isPlayable) 1f else DisabledAlpha)
     ) {
         Box(
@@ -65,7 +63,7 @@ fun TrackListItem(
             } else {
                 Text(
                     text = track.trackNumber.toString(),
-                    textAlign = TextAlign.Center,
+                    style = PlaygroundTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
                     modifier = Modifier
                 )
             }
@@ -75,20 +73,18 @@ fun TrackListItem(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = PlaygroundTheme.spacing.small)
         ) {
             Text(
                 text = track.name,
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.titleMedium,
+                style = PlaygroundTheme.typography.titleMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
             )
             Text(
                 text = artistNamesOrDefault(track.artists),
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.bodyMedium,
+                style = PlaygroundTheme.typography.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
@@ -99,7 +95,7 @@ fun TrackListItem(
         val seconds = (milliseconds.inWholeSeconds % 60).toString()
         Text(
             text = "${milliseconds.inWholeMinutes}:${seconds.padStart(2, '0')}",
-            textAlign = TextAlign.Center,
+            style = PlaygroundTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
             modifier = Modifier
                 .height(IntrinsicSize.Max)
                 .width(64.dp),

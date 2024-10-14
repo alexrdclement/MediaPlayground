@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.tv.foundation)
     implementation(libs.tv.material)
+    implementation(libs.uiPlayground.theme)
 
     implementation(projects.model.audio)
 }

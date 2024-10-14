@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,7 +36,9 @@ import com.alexrdclement.mediaplayground.ui.components.spotify.SpotifyAuthButton
 import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 private val MediaItemWidth = MediaItemWidthCompact
@@ -90,7 +89,7 @@ fun SpotifyLibraryScreen(
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        color = MaterialTheme.colorScheme.surface,
+        color = PlaygroundTheme.colorScheme.surface,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -105,7 +104,7 @@ fun SpotifyLibraryScreen(
                 title = {
                     Text(
                         text = "Spotify Library",
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = PlaygroundTheme.typography.headline,
                     )
                 },
                 actions = {
@@ -176,7 +175,7 @@ private fun LoggedInContent(
 @Preview
 @Composable
 private fun Preview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         val uiState = SpotifyLibraryUiState.LoggedIn(
             savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),
             savedAlbums = flowOf(PagingData.from(PreviewAlbumsUi1)),

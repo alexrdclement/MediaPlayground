@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,9 +26,11 @@ import com.alexrdclement.mediaplayground.ui.components.track.TrackList
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.shared.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbum1
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.PlayPauseButton
+import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun AlbumScreen(
@@ -67,7 +66,6 @@ fun AlbumScreen(
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun LoadedContent(
     state: AlbumUiState.Success,
     onAlbumPlayPauseClick: () -> Unit,
@@ -97,16 +95,14 @@ private fun LoadedContent(
         ) {
             Text(
                 text = state.title,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall,
+                style = PlaygroundTheme.typography.titleLarge.copy(textAlign = TextAlign.Center),
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
             )
             Text(
                 text = artistNamesOrDefault(artists = state.artists),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium,
+                style = PlaygroundTheme.typography.titleMedium.copy(textAlign = TextAlign.Center),
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
@@ -133,7 +129,7 @@ private fun LoadedContent(
 @Preview
 @Composable
 private fun Preview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         val album = PreviewAlbum1
         val tracks = album.tracks.mapIndexed { index, track ->
             TrackUi(

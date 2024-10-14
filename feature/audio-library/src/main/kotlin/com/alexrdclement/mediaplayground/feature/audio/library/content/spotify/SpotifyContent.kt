@@ -20,7 +20,7 @@ import com.alexrdclement.mediaplayground.ui.components.spotify.SpotifyAuthButton
 import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -115,7 +115,7 @@ private fun SpotifyNotLoggedInContent(
 @Preview
 @Composable
 private fun LoggedInPreview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         val spotifyContentState = SpotifyContentState.LoggedIn(
             savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),
             savedAlbums = flowOf(PagingData.from(PreviewAlbumsUi1)),
@@ -133,7 +133,7 @@ private fun LoggedInPreview() {
 @Preview
 @Composable
 private fun LoggedOutPreview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         val spotifyContentState = SpotifyContentState.NotLoggedIn
         SpotifyContent(
             spotifyContentState = spotifyContentState,

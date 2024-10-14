@@ -3,8 +3,8 @@ package com.alexrdclement.mediaplayground.feature.media.control
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -20,6 +20,7 @@ import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.shared.R
 import com.alexrdclement.uiplayground.components.MediaControlSheetState
+import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.components.model.Artist
 import kotlinx.coroutines.launch
 import com.alexrdclement.uiplayground.components.MediaControlSheet as MediaControlSheetComponent
@@ -88,7 +89,7 @@ fun MediaControlSheet(
                     }
                 },
                 minHeight = MediaControlSheetPartialExpandHeight,
-                modifier = Modifier.systemBarsPadding()
+                modifier = Modifier.navigationBarsPadding()
             ) {
                 Surface {
                     MediaControlSheetContent(

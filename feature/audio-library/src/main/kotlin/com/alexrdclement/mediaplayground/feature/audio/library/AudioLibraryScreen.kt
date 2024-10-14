@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,7 +32,9 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 private const val MediaPickerAudioMimeType = "audio/*"
@@ -78,7 +78,6 @@ fun AudioLibraryScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AudioLibraryScreen(
     uiState: AudioLibraryUiState,
@@ -91,7 +90,7 @@ fun AudioLibraryScreen(
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        color = MaterialTheme.colorScheme.surface,
+        color = PlaygroundTheme.colorScheme.surface,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -99,14 +98,20 @@ fun AudioLibraryScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Audio Library",
-                        style = MaterialTheme.typography.headlineMedium,
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(
+                        horizontal = PlaygroundTheme.spacing.medium,
+                        vertical = PlaygroundTheme.spacing.small,
                     )
-                },
-            )
+            ) {
+                Text(
+                    text = "Audio Library",
+                    style = PlaygroundTheme.typography.headline,
+                )
+            }
             when (uiState) {
                 AudioLibraryUiState.InitialState -> {}
                 is AudioLibraryUiState.ContentReady -> ContentReady(
@@ -137,9 +142,9 @@ fun ContentReady(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
             .navigationBarsPadding()
             .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
+            .verticalScroll(scrollState)
     ) {
         LocalContent(
             localContentState = uiState.localContentState,
@@ -162,7 +167,7 @@ fun ContentReady(
 @Preview
 @Composable
 internal fun PreviewLibraryScreen() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         val uiState = AudioLibraryUiState.ContentReady(
             localContentState = LocalContentState.Content(
                 tracks = flowOf(PagingData.from(PreviewTracksUi1)),

@@ -40,7 +40,8 @@ include(":ui:tv")
 if (file("../UiPlayground").exists()) {
     includeBuild("../UiPlayground") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.uiplayground:components")).using(project(":components"))
+            substitute(module("com.alexrdclement.uiplayground:ui-playground-components")).using(project(":components"))
+            substitute(module("com.alexrdclement.uiplayground:ui-playground-theme")).using(project(":theme"))
         }
     }
 }

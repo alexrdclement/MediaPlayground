@@ -21,7 +21,8 @@ dependencies {
     implementation(libs.paging.compose)
     implementation(libs.coil)
     implementation(libs.coil.compose)
-    implementation(libs.ui.playground.components)
+    implementation(libs.uiPlayground.components)
+    implementation(libs.uiPlayground.theme)
 
     implementation(projects.model.audio)
 }

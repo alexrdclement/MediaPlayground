@@ -15,7 +15,8 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
-    implementation(libs.ui.playground.components)
+    implementation(libs.uiPlayground.components)
+    implementation(libs.uiPlayground.theme)
 
     implementation(projects.data.audio)
     implementation(projects.media.session)

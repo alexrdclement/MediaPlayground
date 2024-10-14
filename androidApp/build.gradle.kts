@@ -68,7 +68,8 @@ dependencies {
     implementation(libs.media3.decoder)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
-    implementation(libs.ui.playground.components)
+    implementation(libs.uiPlayground.components)
+    implementation(libs.uiPlayground.theme)
 
     implementation(projects.data.audio)
     implementation(projects.feature.album)

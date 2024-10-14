@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -25,7 +22,9 @@ import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
 import com.alexrdclement.mediaplayground.ui.theme.ButtonSpace
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
+import com.alexrdclement.uiplayground.components.Button
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -42,14 +41,14 @@ internal fun LocalContent(
         headerAction = {
             when (localContentState) {
                 LocalContentState.Empty -> {}
-                is LocalContentState.Content -> OutlinedButton(
+                is LocalContentState.Content -> Button(
                     onClick = onImportClick,
                     contentPadding = ButtonSpace.ContentPaddingCompact,
                     modifier = Modifier.wrapContentSize(),
                 ) {
                     Text(
                         text = "Import",
-                        style = MaterialTheme.typography.bodySmall
+                        style = PlaygroundTheme.typography.bodySmall
                     )
                 }
             }
@@ -79,7 +78,7 @@ private fun EmptyContent(
             .fillMaxWidth()
             .padding(vertical = 8.dp),
     ) {
-        OutlinedButton(
+        Button(
             onClick = onImportClick,
         ) {
             Text("Import local audio")
@@ -121,7 +120,7 @@ private fun Content(
 @Preview
 @Composable
 private fun EmptyPreview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         LocalContent(
             localContentState = LocalContentState.Empty,
             onImportClick = {},
@@ -134,7 +133,7 @@ private fun EmptyPreview() {
 @Preview
 @Composable
 private fun ContentPreview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         LocalContent(
             localContentState = LocalContentState.Content(
                 tracks = flowOf(PagingData.from(PreviewTracksUi1)),

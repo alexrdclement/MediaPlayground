@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,9 +20,11 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTrack1
-import com.alexrdclement.mediaplayground.ui.theme.MediaPlaygroundTheme
 import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.PlayPauseButton
+import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun TrackCardWide(
@@ -33,10 +33,10 @@ fun TrackCardWide(
     modifier: Modifier = Modifier,
     isEnabled: Boolean = remember(track) { track.uri != null }
 ) {
-    OutlinedCard(
+    Surface(
+        modifier = modifier,
         enabled = isEnabled,
         onClick = onPlayClick,
-        modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -72,7 +72,7 @@ fun TrackCardWide(
 @Preview
 @Composable
 private fun Preview() {
-    MediaPlaygroundTheme {
+    PlaygroundTheme {
         TrackCardWide(
             track = PreviewTrack1,
             onPlayClick = {},
