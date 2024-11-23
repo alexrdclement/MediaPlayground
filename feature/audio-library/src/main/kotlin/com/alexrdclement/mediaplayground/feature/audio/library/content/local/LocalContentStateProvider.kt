@@ -43,10 +43,10 @@ class LocalContentStateProvider @Inject constructor(
         mediaSessionManager.loadedMediaItem,
         mediaSessionManager.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
-        pagingData.map { album ->
+        pagingData.map { track ->
             MediaItemUi(
-                mediaItem = album,
-                isPlaying = isPlaying && album.id == loadedMediaItem?.id
+                mediaItem = track,
+                isPlaying = isPlaying && track.id == loadedMediaItem?.id
             )
         }
     }.cachedIn(coroutineScope)
