@@ -33,7 +33,7 @@ class LocalAudioRepositoryImpl @Inject constructor(
                 fileWriteDir = pathProvider.trackImportFileWriteDir,
             )
             when (result) {
-                is Result.Failure -> ::onMediaImportFailure
+                is Result.Failure -> onMediaImportFailure(result.failure)
                 is Result.Success -> {
                     localAudioDataStore.putTrack(result.value)
                 }
