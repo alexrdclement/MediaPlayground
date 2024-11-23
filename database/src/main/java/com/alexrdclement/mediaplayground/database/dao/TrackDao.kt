@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrackDao {
-    @Query("SELECT * FROM track")
+    @Query("SELECT * FROM track ORDER BY modifiedDate DESC")
     suspend fun getTracks(): List<Track>
 
-    @Query("SELECT * FROM track")
+    @Query("SELECT * FROM track ORDER BY modifiedDate DESC")
     fun getTracksFlow(): Flow<List<Track>>
 
     @Query("SELECT * FROM track WHERE id = :id")

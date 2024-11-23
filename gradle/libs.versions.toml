@@ -7,6 +7,7 @@ kotlin = "2.0.0"
 ksp = "2.0.0-1.0.23"
 kotlinx-coroutines = "1.9.0"
 kotlinx-coroutines-android = "1.9.0"
+kotlinx-datetime = "0.6.1"
 kotlinx-io = "0.5.4"
 kotlinx-serialization-json = "1.7.3"
 core-ktx = "1.15.0"
@@ -42,6 +43,7 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version.ref = "kotlinx-io" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx-activity" }

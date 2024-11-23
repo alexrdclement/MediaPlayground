@@ -16,6 +16,7 @@ dependencies {
     api(libs.kotlinx.io.core)
 
     implementation(libs.androidx.activity)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)

@@ -4,6 +4,7 @@ import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
+import kotlinx.datetime.Clock
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
 
 fun Track.toTrackEntity(): TrackEntity {
@@ -13,6 +14,7 @@ fun Track.toTrackEntity(): TrackEntity {
         durationMs = durationMs,
         trackNumber = trackNumber,
         uri = uri,
+        modifiedDate = Clock.System.now(),
     )
 }
 

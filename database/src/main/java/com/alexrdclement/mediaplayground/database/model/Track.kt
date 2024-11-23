@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.datetime.Instant
 
 @Entity(
     tableName = "track",
@@ -13,4 +14,5 @@ data class Track(
     val durationMs: Int,
     val trackNumber: Int?,
     val uri: String?,
+    val modifiedDate: Instant,
 )
