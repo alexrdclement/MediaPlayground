@@ -22,6 +22,7 @@ dependencies {
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.gradle.plugin)
     compileOnly(libs.ksp.gradle.plugin)
+    compileOnly(libs.room.gradle.plugin)
 }
 
 tasks {
@@ -68,6 +69,10 @@ gradlePlugin {
         register("androidHiltTestFixtures") {
             id = "mediaplayground.android.hilt.test.fixtures"
             implementationClass = "AndroidHiltTestFixturesConventionPlugin"
+        }
+        register("androidRoom") {
+            id = "mediaplayground.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
         }
         register("jvmLibrary") {
             id = "mediaplayground.jvm.library"
