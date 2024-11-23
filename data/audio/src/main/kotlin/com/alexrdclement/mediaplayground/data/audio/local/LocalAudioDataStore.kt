@@ -1,40 +1,38 @@
 package com.alexrdclement.mediaplayground.data.audio.local
 
+import com.alexrdclement.mediaplayground.data.audio.local.mapper.toTrack
+import com.alexrdclement.mediaplayground.data.audio.local.mapper.toTrackEntity
+import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalAudioDataStore @Inject constructor() {
-
-    // Temp until DB impl
-    private val tracks = MutableStateFlow<List<Track>>(emptyList())
-
+class LocalAudioDataStore @Inject constructor(
+    private val trackDao: TrackDao,
+) {
     fun clearTracks() {
-        tracks.update { emptyList() }
+        // TODO
     }
 
-    fun putTrack(track: Track) {
-        tracks.update {
-            it.toMutableList().apply {
-                add(0, track)
-            }
-        }
+    suspend fun putTrack(track: Track) {
+        trackDao.insert(track.toTrackEntity())
     }
 
-    fun getTracks(): List<Track> {
-        return tracks.value
+    suspend fun getTracks(): List<Track> {
+        return trackDao.getTracks().map { it.toTrack() }
     }
 
     fun getTracksFlow(): Flow<List<Track>> {
-        return tracks
+        return trackDao.getTracksFlow().map { trackEntities -> trackEntities.map { it.toTrack() } }
     }
 
-    fun getTrack(trackId: TrackId): Track? {
-        return tracks.value.firstOrNull { it.id == trackId }
+    suspend fun getTrack(trackId: TrackId): Track? {
+        return trackDao.getTrack(trackId.value)?.toTrack()
     }
 }

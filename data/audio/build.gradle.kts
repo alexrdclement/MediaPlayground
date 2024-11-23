@@ -21,5 +21,6 @@ dependencies {
     implementation(libs.spotify.api.kotlin.core)
     implementation(libs.paging)
 
+    implementation(projects.database)
     implementation(projects.media.import)
 }

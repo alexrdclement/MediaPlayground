@@ -4,12 +4,19 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.alexrdclement.mediaplayground.database.model.Track
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrackDao {
     @Query("SELECT * FROM track")
-    fun getTracks(): List<Track>
+    suspend fun getTracks(): List<Track>
+
+    @Query("SELECT * FROM track")
+    fun getTracksFlow(): Flow<List<Track>>
+
+    @Query("SELECT * FROM track WHERE id = :id")
+    suspend fun getTrack(id: String): Track?
 
     @Insert
-    fun insert(track: Track)
+    suspend fun insert(track: Track)
 }
