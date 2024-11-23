@@ -20,6 +20,6 @@ internal object DatabaseModule {
     ): MediaPlaygroundDatabase = Room.databaseBuilder(
         context,
         MediaPlaygroundDatabase::class.java,
-        "media-playground-database",
+        "mediaplayground-database",
     ).build()
 }
