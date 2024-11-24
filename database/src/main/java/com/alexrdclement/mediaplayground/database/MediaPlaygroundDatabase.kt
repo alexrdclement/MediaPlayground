@@ -7,6 +7,7 @@ import com.alexrdclement.mediaplayground.database.converter.InstantConverter
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
+import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.Album
 import com.alexrdclement.mediaplayground.database.model.Artist
@@ -32,6 +33,7 @@ import com.alexrdclement.mediaplayground.database.model.Track
 internal abstract class MediaPlaygroundDatabase : RoomDatabase() {
     abstract fun trackDao(): TrackDao
     abstract fun albumDao(): AlbumDao
+    abstract fun imageDao(): ImageDao
     abstract fun artistDao(): ArtistDao
     abstract fun completeTrackDao(): CompleteTrackDao
 }

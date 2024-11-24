@@ -24,7 +24,7 @@ fun Track.toTrackEntity(): TrackEntity {
 
 fun CompleteTrackEntity.toTrack(): Track {
     val simpleArtist = SimpleArtist(id = artistId, name = artistName)
-    val images = emptyList<Image>()
+    val images = listOf(Image(uri = imageUri))
     val simpleAlbum = SimpleAlbum(
         id = AlbumId(albumId),
         name = albumTitle,

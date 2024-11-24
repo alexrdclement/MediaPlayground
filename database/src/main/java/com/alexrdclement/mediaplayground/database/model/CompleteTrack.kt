@@ -13,10 +13,13 @@ import androidx.room.DatabaseView
         albums.id AS albumId,
         albums.title AS albumTitle,
         artists.id AS artistId,
-        artists.name AS artistName
+        artists.name AS artistName,
+        images.id AS imageId,
+        images.uri as imageUri
     FROM tracks
     INNER JOIN albums ON tracks.albumId = albums.id
     INNER JOIN artists ON albums.artistId = artists.id
+    INNER JOIN images ON albums.id = images.albumId
     ORDER BY tracks.modifiedDate DESC
 """)
 data class CompleteTrack(
@@ -30,4 +33,6 @@ data class CompleteTrack(
     val albumTitle: String,
     val artistId: String,
     val artistName: String,
+    val imageId: String,
+    val imageUri: String,
 )

@@ -4,6 +4,7 @@ import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
+import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import dagger.Module
 import dagger.Provides
@@ -18,6 +19,9 @@ internal class DaoModule {
 
     @Provides
     fun provideAlbumDao(database: MediaPlaygroundDatabase): AlbumDao = database.albumDao()
+
+    @Provides
+    fun provideImageDao(database: MediaPlaygroundDatabase): ImageDao = database.imageDao()
 
     @Provides
     fun provideArtistDao(database: MediaPlaygroundDatabase): ArtistDao = database.artistDao()
