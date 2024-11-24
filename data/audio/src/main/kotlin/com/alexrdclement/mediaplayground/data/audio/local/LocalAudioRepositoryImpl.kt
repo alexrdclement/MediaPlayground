@@ -31,6 +31,15 @@ class LocalAudioRepositoryImpl @Inject constructor(
             val result = mediaImporter.importTrackFromDisk(
                 uri = uri,
                 fileWriteDir = pathProvider.trackImportFileWriteDir,
+                getArtistByName = { artistName ->
+                    localAudioDataStore.getArtistByName(artistName)
+                },
+                getAlbumByTitleAndArtistId = { albumTitle, artistId ->
+                    localAudioDataStore.getAlbumByTitleAndArtistId(
+                        albumTitle = albumTitle,
+                        artistId = artistId,
+                    )
+                },
             )
             when (result) {
                 is Result.Failure -> onMediaImportFailure(result.failure)

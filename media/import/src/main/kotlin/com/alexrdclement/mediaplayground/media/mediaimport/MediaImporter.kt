@@ -3,6 +3,8 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
+import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
+import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +32,8 @@ class MediaImporter @Inject constructor(
     suspend fun importTrackFromDisk(
         uri: Uri,
         fileWriteDir: Path,
+        getArtistByName: suspend (String) -> SimpleArtist?,
+        getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
     ): Result<Track, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val mediaItemId = UUID.randomUUID().toString()
@@ -62,6 +66,8 @@ class MediaImporter @Inject constructor(
                         mediaId = mediaItemId,
                         path = fileWriteResult.value,
                         mediaMetadata = mediaMetadata,
+                        getArtistByName = getArtistByName,
+                        getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
                     )
                 )
             }

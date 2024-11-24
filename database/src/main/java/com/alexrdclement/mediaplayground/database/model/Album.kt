@@ -6,22 +6,19 @@ import androidx.room.PrimaryKey
 import kotlinx.datetime.Instant
 
 @Entity(
-    tableName = "tracks",
+    tableName = "albums",
     foreignKeys = [
         ForeignKey(
-            entity = Album::class,
+            entity = Artist::class,
             parentColumns = ["id"],
-            childColumns = ["albumId"],
+            childColumns = ["artistId"],
         ),
     ]
 )
-data class Track(
+data class Album(
     @PrimaryKey
     val id: String,
     val title: String,
-    val albumId: String,
-    val durationMs: Int,
-    val trackNumber: Int?,
-    val uri: String?,
+    val artistId: String,
     val modifiedDate: Instant,
 )

@@ -14,16 +14,19 @@ fun MediaMetadata.toSimpleArtist(): SimpleArtist {
     )
 }
 
-fun MediaMetadata.toSimpleAlbum(): SimpleAlbum {
+fun MediaMetadata.toSimpleAlbum(
+    artists: List<SimpleArtist>,
+    images: List<Image>,
+): SimpleAlbum {
     return SimpleAlbum(
         id = AlbumId(UUID.randomUUID().toString()),
         name = albumTitle ?: "Unknown album",
-        artists = listOf(this.toSimpleArtist()),
-        images = this.toAlbumArtwork()?.let { listOf(it) } ?: emptyList()
+        artists = artists,
+        images = images,
     )
 }
 
-fun MediaMetadata.toAlbumArtwork(): Image? {
+fun MediaMetadata.toImage(): Image? {
     val imageUri = imagePath ?: return null
     return Image(imageUri.toString())
 }
