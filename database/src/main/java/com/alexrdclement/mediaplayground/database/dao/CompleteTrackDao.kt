@@ -12,14 +12,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CompleteTrackDao {
     @Transaction
-    @Query("SELECT * FROM tracks ORDER BY modifiedDate DESC")
+    @Query("SELECT * FROM CompleteTrack ORDER BY modifiedDate DESC")
     suspend fun getTracks(): List<CompleteTrack>
 
     @Transaction
-    @Query("SELECT * FROM tracks ORDER BY modifiedDate DESC")
+    @Query("SELECT * FROM CompleteTrack ORDER BY modifiedDate DESC")
     fun getTracksFlow(): Flow<List<CompleteTrack>>
 
     @Transaction
-    @Query("SELECT * FROM tracks WHERE id = :id")
+    @Query("SELECT * FROM CompleteTrack WHERE id = :id")
     suspend fun getTrack(id: String): CompleteTrack?
 }

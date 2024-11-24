@@ -1,6 +1,8 @@
 package com.alexrdclement.mediaplayground.data.audio.local.mapper
 
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Image
+import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
@@ -21,15 +23,21 @@ fun Track.toTrackEntity(): TrackEntity {
 }
 
 fun CompleteTrackEntity.toTrack(): Track {
-    val simpleArtists = emptyList<SimpleArtist>()// album.map { it.toSimpleArtist() }
+    val simpleArtist = SimpleArtist(id = artistId, name = artistName)
     val images = emptyList<Image>()
+    val simpleAlbum = SimpleAlbum(
+        id = AlbumId(albumId),
+        name = albumTitle,
+        artists = listOf(simpleArtist),
+        images = images,
+    )
     return Track(
-        id = TrackId(track.id),
-        title = track.title,
-        artists = simpleArtists,
-        durationMs = track.durationMs,
-        trackNumber = track.trackNumber,
-        uri = track.uri,
-        simpleAlbum = album.toSimpleAlbum(artists = simpleArtists, images = images),
+        id = TrackId(id),
+        title = title,
+        artists = listOf(simpleArtist),
+        durationMs = durationMs,
+        trackNumber = trackNumber,
+        uri = uri,
+        simpleAlbum = simpleAlbum,
     )
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fc1417f1550c544aec4883ad033a246d",
+    "identityHash": "a9c599946df1de8443ed6b07a8aaac63",
     "entities": [
       {
         "tableName": "tracks",
@@ -175,10 +175,15 @@
         "foreignKeys": []
       }
     ],
-    "views": [],
+    "views": [
+      {
+        "viewName": "CompleteTrack",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT \n        tracks.id,\n        tracks.title,\n        tracks.durationMs,\n        tracks.trackNumber,\n        tracks.uri,\n        tracks.modifiedDate,\n        albums.id AS albumId,\n        albums.title AS albumTitle,\n        artists.id AS artistId,\n        artists.name AS artistName\n    FROM tracks\n    INNER JOIN albums ON tracks.albumId = albums.id\n    INNER JOIN artists ON albums.artistId = artists.id\n    ORDER BY tracks.modifiedDate DESC"
+      }
+    ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fc1417f1550c544aec4883ad033a246d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a9c599946df1de8443ed6b07a8aaac63')"
     ]
   }
 }

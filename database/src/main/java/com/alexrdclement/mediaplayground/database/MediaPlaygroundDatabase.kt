@@ -10,6 +10,7 @@ import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.Album
 import com.alexrdclement.mediaplayground.database.model.Artist
+import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 import com.alexrdclement.mediaplayground.database.model.Image
 import com.alexrdclement.mediaplayground.database.model.Track
 
@@ -19,6 +20,9 @@ import com.alexrdclement.mediaplayground.database.model.Track
         Album::class,
         Artist::class,
         Image::class,
+    ],
+    views = [
+        CompleteTrack::class,
     ],
     version = 1,
 )
