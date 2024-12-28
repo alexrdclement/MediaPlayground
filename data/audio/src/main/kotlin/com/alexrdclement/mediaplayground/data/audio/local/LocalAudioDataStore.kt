@@ -36,6 +36,7 @@ class LocalAudioDataStore @Inject constructor(
     }
 
     suspend fun putTrack(track: Track) {
+        // TODO: Use transaction
         track.artists.forEach {
             artistDao.insert(it.toArtistEntity())
         }
