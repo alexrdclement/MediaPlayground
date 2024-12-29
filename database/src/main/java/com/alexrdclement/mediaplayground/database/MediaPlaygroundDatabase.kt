@@ -30,7 +30,7 @@ import com.alexrdclement.mediaplayground.database.model.Track
 @TypeConverters(
     InstantConverter::class,
 )
-internal abstract class MediaPlaygroundDatabase : RoomDatabase() {
+abstract class MediaPlaygroundDatabase : RoomDatabase() {
     abstract fun trackDao(): TrackDao
     abstract fun albumDao(): AlbumDao
     abstract fun imageDao(): ImageDao

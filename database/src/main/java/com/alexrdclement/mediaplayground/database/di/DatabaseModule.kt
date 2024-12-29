@@ -3,6 +3,8 @@ package com.alexrdclement.mediaplayground.database.di
 import android.content.Context
 import androidx.room.Room
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
+import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
+import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunnerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +24,9 @@ internal object DatabaseModule {
         MediaPlaygroundDatabase::class.java,
         "mediaplayground-database",
     ).build()
+
+    @Provides
+    fun provideDatabaseTransactionRunner(
+        database: MediaPlaygroundDatabase,
+    ): DatabaseTransactionRunner = DatabaseTransactionRunnerImpl(database)
 }

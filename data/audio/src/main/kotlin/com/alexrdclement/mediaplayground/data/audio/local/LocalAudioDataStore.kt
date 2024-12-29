@@ -15,6 +15,7 @@ import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
+import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
@@ -30,6 +31,7 @@ import com.alexrdclement.mediaplayground.database.model.Album as AlbumEntity
 
 @Singleton
 class LocalAudioDataStore @Inject constructor(
+    private val transactionRunner: DatabaseTransactionRunner,
     private val artistDao: ArtistDao,
     private val albumDao: AlbumDao,
     private val imageDao: ImageDao,
@@ -41,14 +43,15 @@ class LocalAudioDataStore @Inject constructor(
     }
 
     suspend fun putTrack(track: Track) {
-        // TODO: Use transaction
-        track.artists.forEach {
-            artistDao.insert(it.toArtistEntity())
+        transactionRunner.run {
+            track.artists.forEach {
+                artistDao.insert(it.toArtistEntity())
+            }
+            albumDao.insert(track.simpleAlbum.toAlbumEntity())
+            val images = track.simpleAlbum.images.map { it.toImageEntity(albumId = track.simpleAlbum.id) }
+            imageDao.insert(*images.toTypedArray())
+            trackDao.insert(track.toTrackEntity())
         }
-        albumDao.insert(track.simpleAlbum.toAlbumEntity())
-        val images = track.simpleAlbum.images.map { it.toImageEntity(albumId = track.simpleAlbum.id) }
-        imageDao.insert(*images.toTypedArray())
-        trackDao.insert(track.toTrackEntity())
     }
 
     suspend fun getArtistByName(name: String): SimpleArtist? {
