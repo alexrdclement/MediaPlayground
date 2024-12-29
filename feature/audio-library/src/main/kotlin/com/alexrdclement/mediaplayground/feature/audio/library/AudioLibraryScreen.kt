@@ -48,7 +48,7 @@ fun AudioLibraryScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AudioLibraryUiState.InitialState)
     val mediaPickerLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetContent()
+        ActivityResultContracts.GetMultipleContents()
     ) {
         viewModel.onMediaImportItemSelected(it)
     }

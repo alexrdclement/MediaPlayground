@@ -28,27 +28,11 @@ class LocalAudioRepositoryImpl @Inject constructor(
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var importJob: Job? = null
 
-    override fun importTrackFromDisk(uri: Uri) {
+    override fun importTracksFromDisk(uris: List<Uri>) {
         importJob?.cancel()
         importJob = coroutineScope.launch {
-            val result = mediaImporter.importTrackFromDisk(
-                uri = uri,
-                fileWriteDir = pathProvider.trackImportFileWriteDir,
-                getArtistByName = { artistName ->
-                    localAudioDataStore.getArtistByName(artistName)
-                },
-                getAlbumByTitleAndArtistId = { albumTitle, artistId ->
-                    localAudioDataStore.getAlbumByTitleAndArtistId(
-                        albumTitle = albumTitle,
-                        artistId = artistId,
-                    )
-                },
-            )
-            when (result) {
-                is Result.Failure -> onMediaImportFailure(result.failure)
-                is Result.Success -> {
-                    localAudioDataStore.putTrack(result.value)
-                }
+            uris.forEach { uri ->
+                importTrackFromDisk(uri)
             }
         }
     }
@@ -84,6 +68,28 @@ class LocalAudioRepositoryImpl @Inject constructor(
             Result.Failure(LocalAudioRepository.Failure.AlbumNotFound)
         } else {
             Result.Success(album)
+        }
+    }
+
+    private suspend fun importTrackFromDisk(uri: Uri) {
+        val result = mediaImporter.importTrackFromDisk(
+            uri = uri,
+            fileWriteDir = pathProvider.trackImportFileWriteDir,
+            getArtistByName = { artistName ->
+                localAudioDataStore.getArtistByName(artistName)
+            },
+            getAlbumByTitleAndArtistId = { albumTitle, artistId ->
+                localAudioDataStore.getAlbumByTitleAndArtistId(
+                    albumTitle = albumTitle,
+                    artistId = artistId,
+                )
+            },
+        )
+        when (result) {
+            is Result.Failure -> onMediaImportFailure(result.failure)
+            is Result.Success -> {
+                localAudioDataStore.putTrack(result.value)
+            }
         }
     }
 
