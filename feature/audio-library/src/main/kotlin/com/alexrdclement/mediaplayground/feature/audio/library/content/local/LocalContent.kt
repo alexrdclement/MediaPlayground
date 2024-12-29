@@ -106,7 +106,7 @@ private fun Content(
         LaunchedEffect(albums.itemCount) {
             albumsLazyListState.scrollToItem(0)
         }
-        LaunchedEffect(albums.itemCount, tracks.itemCount) {
+        LaunchedEffect(tracks.itemCount) {
             tracksLazyListState.scrollToItem(0)
         }
 
