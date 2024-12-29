@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 import javax.inject.Singleton
+import com.alexrdclement.mediaplayground.database.model.Album as AlbumEntity
 
 @Singleton
 class LocalAudioDataStore @Inject constructor(
@@ -75,35 +76,27 @@ class LocalAudioDataStore @Inject constructor(
 
     suspend  fun getAlbums(): List<Album> {
         return albumDao.getAlbums().mapNotNull { album ->
-            val images = imageDao.getImagesForAlbum(albumId = album.id).map { it.toImage() }
-            val simpleArtist = artistDao.getArtist(album.artistId)?.toSimpleArtist() ?: return@mapNotNull null
-            val simpleTracks = trackDao.getTracks(albumId = album.id).map { it.toSimpleTrack(simpleArtist = simpleArtist) }
-            album.toAlbum(artists = listOf(simpleArtist), images = images, simpleTracks = simpleTracks)
+            getAlbum(album)
         }
     }
 
     fun getAlbumsFlow(): Flow<List<Album>> {
         return albumDao.getAlbumsFlow().mapNotNull { albumEntities ->
-            albumEntities.map { album ->
-                val images = imageDao.getImagesForAlbum(albumId = album.id).map { it.toImage() }
-                val simpleArtist =
-                    artistDao.getArtist(album.artistId)?.toSimpleArtist() ?: return@mapNotNull null
-                val simpleTracks = trackDao.getTracks(albumId = album.id)
-                    .map { it.toSimpleTrack(simpleArtist = simpleArtist) }
-                album.toAlbum(
-                    artists = listOf(simpleArtist),
-                    images = images,
-                    simpleTracks = simpleTracks
-                )
+            albumEntities.mapNotNull { album ->
+                getAlbum(album)
             }
         }
     }
 
     suspend fun getAlbum(albumId: AlbumId): Album? {
         val album = albumDao.getAlbum(albumId.value) ?: return null
-        val images = imageDao.getImagesForAlbum(albumId = album.id).map { it.toImage() }
-        val simpleArtist = artistDao.getArtist(album.artistId)?.toSimpleArtist() ?: return null
-        val simpleTracks = trackDao.getTracks(albumId = album.id).map { it.toSimpleTrack(simpleArtist = simpleArtist) }
-        return album.toAlbum(artists = listOf(simpleArtist), images = images, simpleTracks = simpleTracks)
+        return getAlbum(album)
+    }
+
+    private suspend fun getAlbum(albumEntity: AlbumEntity): Album? {
+        val images = imageDao.getImagesForAlbum(albumId = albumEntity.id).map { it.toImage() }
+        val simpleArtist = artistDao.getArtist(albumEntity.artistId)?.toSimpleArtist() ?: return null
+        val simpleTracks = trackDao.getTracks(albumId = albumEntity.id).map { it.toSimpleTrack(simpleArtist = simpleArtist) }
+        return albumEntity.toAlbum(artists = listOf(simpleArtist), images = images, simpleTracks = simpleTracks)
     }
 }
