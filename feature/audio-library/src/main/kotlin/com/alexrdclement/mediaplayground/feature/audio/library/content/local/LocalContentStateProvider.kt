@@ -10,7 +10,6 @@ import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class LocalContentStateProvider @Inject constructor(
@@ -23,16 +22,20 @@ class LocalContentStateProvider @Inject constructor(
         pagingConfig: PagingConfig,
     ): Flow<LocalContentState> {
         val tracksFlow = tracksFlow(coroutineScope, pagingConfig)
-        return localAudioRepository.getTracks()
-            .map { tracks ->
-                if (tracks.isEmpty()) {
-                    LocalContentState.Empty
-                } else {
-                    LocalContentState.Content(
-                        tracks = tracksFlow
-                    )
-                }
+        val albumsFlow = albumsFlow(coroutineScope, pagingConfig)
+        return combine(
+            localAudioRepository.getTracksFlow(),
+            localAudioRepository.getAlbumsFlow(),
+        ) { tracks, albums ->
+            if (tracks.isEmpty() && albums.isEmpty()) {
+                LocalContentState.Empty
+            } else {
+                LocalContentState.Content(
+                    tracks = tracksFlow,
+                    albums = albumsFlow,
+                )
             }
+        }
     }
 
     private fun tracksFlow(
@@ -54,5 +57,26 @@ class LocalContentStateProvider @Inject constructor(
     private fun tracksPager(pagingConfig: PagingConfig) = Pager(
         config = pagingConfig,
         pagingSourceFactory = localAudioRepository::getTrackPagingSource,
+    )
+
+    private fun albumsFlow(
+        coroutineScope: CoroutineScope,
+        pagingConfig: PagingConfig,
+    ) = combine(
+        albumsPager(pagingConfig).flow.cachedIn(coroutineScope),
+        mediaSessionManager.loadedMediaItem,
+        mediaSessionManager.isPlaying,
+    ) { pagingData, loadedMediaItem, isPlaying ->
+        pagingData.map { album ->
+            MediaItemUi(
+                mediaItem = album,
+                isPlaying = isPlaying && album.id == loadedMediaItem?.id
+            )
+        }
+    }.cachedIn(coroutineScope)
+
+    private fun albumsPager(pagingConfig: PagingConfig) = Pager(
+        config = pagingConfig,
+        pagingSourceFactory = localAudioRepository::getAlbumPagingSource,
     )
 }

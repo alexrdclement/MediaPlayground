@@ -171,6 +171,7 @@ internal fun PreviewLibraryScreen() {
         val uiState = AudioLibraryUiState.ContentReady(
             localContentState = LocalContentState.Content(
                 tracks = flowOf(PagingData.from(PreviewTracksUi1)),
+                albums = flowOf(PagingData.from(PreviewAlbumsUi1)),
             ),
             spotifyContentState = SpotifyContentState.LoggedIn(
                 savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),

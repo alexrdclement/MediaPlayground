@@ -4,6 +4,7 @@ import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Image
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.datetime.Clock
@@ -19,6 +20,19 @@ fun Track.toTrackEntity(): TrackEntity {
         trackNumber = trackNumber,
         uri = uri,
         modifiedDate = Clock.System.now(),
+    )
+}
+
+fun TrackEntity.toSimpleTrack(
+    simpleArtist: SimpleArtist,
+): SimpleTrack {
+    return SimpleTrack(
+        id = TrackId(id),
+        name = title,
+        artists = listOf(simpleArtist),
+        durationMs = durationMs,
+        trackNumber = trackNumber,
+        uri = uri,
     )
 }
 

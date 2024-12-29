@@ -69,6 +69,8 @@ class AudioRepositoryImpl @Inject constructor(
                         spotifyAudioRepository.getTrack(id)
                             .mapFailure(::mapSpotifyAudioRepositoryFailure)
                     }
+
+                    else -> Result.Failure(Failure.Unexpected())
                 }
             }
         }

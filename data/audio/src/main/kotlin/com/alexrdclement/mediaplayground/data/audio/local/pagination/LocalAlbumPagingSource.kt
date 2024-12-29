@@ -3,21 +3,21 @@ package com.alexrdclement.mediaplayground.data.audio.local.pagination
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioDataStore
-import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.audio.Album
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 
-class LocalTrackPagingSource(
+class LocalAlbumPagingSource(
     private val localAudioDataStore: LocalAudioDataStore,
-) : PagingSource<Int, Track>() {
+) : PagingSource<Int, Album>() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     init {
         coroutineScope.launch {
-            localAudioDataStore.getTracksFlow()
+            localAudioDataStore.getAlbumsFlow()
                 .drop(1)
                 .collect {
                     invalidate()
@@ -25,16 +25,16 @@ class LocalTrackPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Track>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Album>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Track> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Album> {
         return LoadResult.Page(
-            data = localAudioDataStore.getTracks(),
+            data = localAudioDataStore.getAlbums(),
             prevKey = null, // Only paging forward.
             nextKey = null,
         )

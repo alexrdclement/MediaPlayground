@@ -2,9 +2,12 @@ package com.alexrdclement.mediaplayground.data.audio.local
 
 import android.net.Uri
 import androidx.paging.PagingSource
+import com.alexrdclement.mediaplayground.data.audio.local.pagination.LocalAlbumPagingSource
 import com.alexrdclement.mediaplayground.data.audio.local.pagination.LocalTrackPagingSource
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
+import com.alexrdclement.mediaplayground.model.audio.Album
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
@@ -50,7 +53,7 @@ class LocalAudioRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTracks(): Flow<List<Track>> {
+    override fun getTracksFlow(): Flow<List<Track>> {
         return localAudioDataStore.getTracksFlow()
     }
 
@@ -64,6 +67,23 @@ class LocalAudioRepositoryImpl @Inject constructor(
             Result.Failure(LocalAudioRepository.Failure.TrackNotFound)
         } else {
             Result.Success(track)
+        }
+    }
+
+    override fun getAlbumsFlow(): Flow<List<Album>> {
+        return localAudioDataStore.getAlbumsFlow()
+    }
+
+    override fun getAlbumPagingSource(): PagingSource<Int, Album> {
+        return LocalAlbumPagingSource(localAudioDataStore)
+    }
+
+    override suspend fun getAlbum(id: AlbumId): Result<Album?, LocalAudioRepository.Failure> {
+        val album = localAudioDataStore.getAlbum(id)
+        return if (album == null) {
+            Result.Failure(LocalAudioRepository.Failure.AlbumNotFound)
+        } else {
+            Result.Success(album)
         }
     }
 
