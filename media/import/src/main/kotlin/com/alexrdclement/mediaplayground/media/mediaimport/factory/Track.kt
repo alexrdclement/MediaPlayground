@@ -29,7 +29,7 @@ internal suspend fun makeTrack(
         title = mediaMetadata.title ?: path.name,
         artists = listOf(simpleArtist),
         durationMs = mediaMetadata.durationMs?.toInt() ?: 0,
-        trackNumber = null,
+        trackNumber = mediaMetadata.trackNumber,
         uri = path.toString(),
         simpleAlbum = simpleAlbum,
     )

@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.feature.album
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -88,7 +87,7 @@ private fun LoadedContent(
             modifier = Modifier.fillMaxSize()
         )
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
@@ -120,7 +119,7 @@ private fun LoadedContent(
             onTrackClick = onTrackClick,
             onPlayPauseClick = onTrackPlayPauseClick,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(vertical = PlaygroundTheme.spacing.small)
                 .navigationBarsPadding()
         )
     }

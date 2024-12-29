@@ -4,7 +4,6 @@ import com.alexrdclement.mediaplayground.data.audio.AudioRepository.Failure
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository.ListFetchSuccess
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
-import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyRemoteDataStore
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -54,9 +53,20 @@ class AudioRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAlbum(id: AlbumId): Result<Album?, Failure> {
-        // TODO: Integrate local
-        return spotifyAudioRepository.getAlbum(id)
-            .mapFailure(::mapSpotifyAudioRepositoryFailure)
+        // Check local first, fallback to Spotify
+        return when (val localAlbumResult = localAudioRepository.getAlbum(id)) {
+            is Result.Success -> Result.Success(localAlbumResult.value)
+            is Result.Failure -> {
+                when (localAlbumResult.failure) {
+                    LocalAudioRepository.Failure.AlbumNotFound -> {
+                        spotifyAudioRepository.getAlbum(id)
+                            .mapFailure(::mapSpotifyAudioRepositoryFailure)
+                    }
+
+                    else -> Result.Failure(Failure.Unexpected())
+                }
+            }
+        }
     }
 
     override suspend fun getTrack(id: TrackId): Result<Track?, Failure> {
