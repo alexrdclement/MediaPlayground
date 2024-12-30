@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.database.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.datetime.Instant
 
@@ -13,7 +14,10 @@ import kotlinx.datetime.Instant
             parentColumns = ["id"],
             childColumns = ["albumId"],
         ),
-    ]
+    ],
+    indices = [
+        Index(value = ["albumId"]),
+    ],
 )
 data class Track(
     @PrimaryKey

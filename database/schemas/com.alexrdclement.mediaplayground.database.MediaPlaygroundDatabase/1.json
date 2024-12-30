@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "04a3e6a19b4478d735e53f16e0512390",
+    "identityHash": "018b3588808a732ef8ee82a372e70ea1",
     "entities": [
       {
         "tableName": "tracks",
@@ -57,7 +57,17 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_tracks_albumId",
+            "unique": false,
+            "columnNames": [
+              "albumId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tracks_albumId` ON `${TABLE_NAME}` (`albumId`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "albums",
@@ -159,7 +169,17 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_images_albumId",
+            "unique": false,
+            "columnNames": [
+              "albumId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_images_albumId` ON `${TABLE_NAME}` (`albumId`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "albums",
@@ -247,7 +267,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '04a3e6a19b4478d735e53f16e0512390')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '018b3588808a732ef8ee82a372e70ea1')"
     ]
   }
 }

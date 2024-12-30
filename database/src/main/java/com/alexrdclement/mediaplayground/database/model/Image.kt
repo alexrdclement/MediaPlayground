@@ -2,8 +2,8 @@ package com.alexrdclement.mediaplayground.database.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
-import kotlinx.datetime.Instant
 
 @Entity(
     tableName = "images",
@@ -13,7 +13,10 @@ import kotlinx.datetime.Instant
             parentColumns = ["id"],
             childColumns = ["albumId"],
         ),
-    ]
+    ],
+    indices = [
+        Index(value = ["albumId"]),
+    ],
 )
 data class Image(
     @PrimaryKey

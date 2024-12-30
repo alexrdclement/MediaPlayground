@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Transaction
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.AlbumWithArtists
@@ -18,6 +19,7 @@ interface AlbumArtistDao {
         WHERE albums.title = :title AND albumArtists.artistId = :artistId
         """,
     )
+    @RewriteQueriesToDropUnusedColumns
     suspend fun getAlbumByTitleAndArtistId(title: String, artistId: String): AlbumWithArtists?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
