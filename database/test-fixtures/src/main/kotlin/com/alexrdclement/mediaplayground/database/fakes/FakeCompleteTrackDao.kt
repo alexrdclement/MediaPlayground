@@ -48,8 +48,11 @@ class FakeCompleteTrackDao(
 
     override suspend fun delete(id: String) {
         val existingTrack = completeTracks.firstOrNull()?.find { it.track.id == id } ?: return
+
+        // Delete album if it only contains this track
         val album = albumDao.getAlbum(existingTrack.album.id)
         if (album != null && trackDao.getTracks(album.id).size == 1) {
+            // Delete artist if this is their only album
             for (artist in existingTrack.artists) {
                 albumArtistDao.delete(AlbumArtistCrossRef(existingTrack.album.id, artist.id))
                 albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
@@ -60,9 +63,11 @@ class FakeCompleteTrackDao(
             }
             albumDao.delete(album.id)
         }
+
         for (image in existingTrack.images) {
             imageDao.delete(image.id)
         }
+
         trackDao.delete(id)
     }
 }

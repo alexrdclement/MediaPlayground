@@ -53,6 +53,8 @@ class FakeCompleteAlbumDao(
         for (track in existingAlbum.tracks) {
             trackDao.delete(track.id)
         }
+
+        // Delete artist if this is their only album
         for (artist in existingAlbum.simpleAlbum.artists) {
             albumArtistDao.delete(AlbumArtistCrossRef(existingAlbum.simpleAlbum.album.id, artist.id))
             albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
@@ -61,6 +63,7 @@ class FakeCompleteAlbumDao(
                 }
             }
         }
+
         for (image in existingAlbum.simpleAlbum.images) {
             imageDao.delete(image.id)
         }
