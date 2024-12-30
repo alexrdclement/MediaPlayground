@@ -7,14 +7,16 @@ import com.alexrdclement.mediaplayground.data.audio.local.mapper.toImage
 import com.alexrdclement.mediaplayground.data.audio.local.mapper.toImageEntity
 import com.alexrdclement.mediaplayground.data.audio.local.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.data.audio.local.mapper.toSimpleArtist
-import com.alexrdclement.mediaplayground.data.audio.local.mapper.toSimpleTrack
 import com.alexrdclement.mediaplayground.data.audio.local.mapper.toTrack
 import com.alexrdclement.mediaplayground.data.audio.local.mapper.toTrackEntity
+import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
+import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
+import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
@@ -24,10 +26,8 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 import javax.inject.Singleton
-import com.alexrdclement.mediaplayground.database.model.Album as AlbumEntity
 
 @Singleton
 class LocalAudioDataStore @Inject constructor(
@@ -36,7 +36,9 @@ class LocalAudioDataStore @Inject constructor(
     private val albumDao: AlbumDao,
     private val imageDao: ImageDao,
     private val trackDao: TrackDao,
+    private val albumArtistDao: AlbumArtistDao,
     private val completeTrackDao: CompleteTrackDao,
+    private val completeAlbumDao: CompleteAlbumDao,
 ) {
     fun clearTracks() {
         // TODO
@@ -47,9 +49,18 @@ class LocalAudioDataStore @Inject constructor(
             track.artists.forEach {
                 artistDao.insert(it.toArtistEntity())
             }
+
             albumDao.insert(track.simpleAlbum.toAlbumEntity())
-            val images = track.simpleAlbum.images.map { it.toImageEntity(albumId = track.simpleAlbum.id) }
+
+            val albumArtistCrossRef = track.artists.map { artist ->
+                AlbumArtistCrossRef(albumId = track.simpleAlbum.id.value, artistId = artist.id)
+            }
+            albumArtistDao.insert(*albumArtistCrossRef.toTypedArray())
+
+            val images = track.simpleAlbum.images
+                .map { it.toImageEntity(albumId = track.simpleAlbum.id) }
             imageDao.insert(*images.toTypedArray())
+
             trackDao.insert(track.toTrackEntity())
         }
     }
@@ -59,10 +70,11 @@ class LocalAudioDataStore @Inject constructor(
     }
 
     suspend fun getAlbumByTitleAndArtistId(albumTitle: String, artistId: String): SimpleAlbum? {
-        val artist = artistDao.getArtist(artistId)?.toSimpleArtist() ?: return null
-        val album = albumDao.getAlbumByTitleAndArtistId(albumTitle, artistId) ?: return null
+        val albumWithArtists = albumArtistDao.getAlbumByTitleAndArtistId(albumTitle, artistId) ?: return null
+        val album = albumWithArtists.album
         val images = imageDao.getImagesForAlbum(albumId = album.id).map { it.toImage() }
-        return album.toSimpleAlbum(artists = listOf(artist), images = images)
+        val simpleArtists = albumWithArtists.artists.map { it.toSimpleArtist() }
+        return album.toSimpleAlbum(artists = simpleArtists, images = images)
     }
 
     suspend fun getTracks(): List<Track> {
@@ -70,36 +82,25 @@ class LocalAudioDataStore @Inject constructor(
     }
 
     fun getTracksFlow(): Flow<List<Track>> {
-        return completeTrackDao.getTracksFlow().map { trackEntities -> trackEntities.map { it.toTrack() } }
+        return completeTrackDao.getTracksFlow()
+            .map { trackEntities -> trackEntities.map { it.toTrack() } }
     }
 
     suspend fun getTrack(trackId: TrackId): Track? {
         return completeTrackDao.getTrack(trackId.value)?.toTrack()
     }
 
-    suspend  fun getAlbums(): List<Album> {
-        return albumDao.getAlbums().mapNotNull { album ->
-            getAlbum(album)
-        }
+    suspend fun getAlbums(): List<Album> {
+        return completeAlbumDao.getAlbums().map { it.toAlbum() }
     }
 
     fun getAlbumsFlow(): Flow<List<Album>> {
-        return albumDao.getAlbumsFlow().mapNotNull { albumEntities ->
-            albumEntities.mapNotNull { album ->
-                getAlbum(album)
-            }
+        return completeAlbumDao.getAlbumsFlow().map {
+            albumFlows -> albumFlows.map { it.toAlbum() }
         }
     }
 
     suspend fun getAlbum(albumId: AlbumId): Album? {
-        val album = albumDao.getAlbum(albumId.value) ?: return null
-        return getAlbum(album)
-    }
-
-    private suspend fun getAlbum(albumEntity: AlbumEntity): Album? {
-        val images = imageDao.getImagesForAlbum(albumId = albumEntity.id).map { it.toImage() }
-        val simpleArtist = artistDao.getArtist(albumEntity.artistId)?.toSimpleArtist() ?: return null
-        val simpleTracks = trackDao.getTracks(albumId = albumEntity.id).map { it.toSimpleTrack(simpleArtist = simpleArtist) }
-        return albumEntity.toAlbum(artists = listOf(simpleArtist), images = images, simpleTracks = simpleTracks)
+        return completeAlbumDao.getAlbum(albumId.value)?.toAlbum()
     }
 }

@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.data.audio.local.mapper
 
+import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Image
@@ -13,7 +14,6 @@ fun SimpleAlbum.toAlbumEntity(): AlbumEntity {
     return AlbumEntity(
         id = id.value,
         title = name,
-        artistId = artists.first().id,
         modifiedDate = Clock.System.now(),
     )
 }
@@ -41,5 +41,14 @@ fun AlbumEntity.toAlbum(
         artists = artists,
         images = images,
         tracks = simpleTracks,
+    )
+}
+
+fun CompleteAlbum.toAlbum(): Album {
+    val simpleArtists = albumWithArtists.artists.map { it.toSimpleArtist() }
+    return albumWithArtists.album.toAlbum(
+        artists = simpleArtists,
+        images = images.map { it.toImage() },
+        simpleTracks = tracks.map { it.toSimpleTrack(simpleArtists) },
     )
 }

@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.alexrdclement.mediaplayground.database.model.Image
-import com.alexrdclement.mediaplayground.database.model.Track
 
 @Dao
 interface ImageDao {

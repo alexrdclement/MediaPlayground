@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.alexrdclement.mediaplayground.database.model.Album
 import kotlinx.coroutines.flow.Flow
@@ -17,9 +18,6 @@ interface AlbumDao {
     @Query("SELECT * FROM albums WHERE id = :id")
     suspend fun getAlbum(id: String): Album?
 
-    @Query("SELECT * FROM albums WHERE title = :title AND artistId = :artistId")
-    suspend fun getAlbumByTitleAndArtistId(title: String, artistId: String): Album?
-
-    @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(album: Album)
 }

@@ -4,16 +4,11 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 
-data class CompleteTrack(
+data class AlbumWithArtists(
     @Embedded
-    val track: Track,
-    @Relation(
-        parentColumn = "albumId",
-        entityColumn = "id"
-    )
     val album: Album,
     @Relation(
-        parentColumn = "albumId",
+        parentColumn = "id",
         entityColumn = "id",
         associateBy = Junction(
             value = AlbumArtistCrossRef::class,
@@ -22,9 +17,4 @@ data class CompleteTrack(
         ),
     )
     val artists: List<Artist>,
-    @Relation(
-        parentColumn = "albumId",
-        entityColumn = "albumId"
-    )
-    val images: List<Image>,
 )

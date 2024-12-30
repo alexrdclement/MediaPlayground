@@ -24,12 +24,12 @@ fun Track.toTrackEntity(): TrackEntity {
 }
 
 fun TrackEntity.toSimpleTrack(
-    simpleArtist: SimpleArtist,
+    simpleArtists: List<SimpleArtist>,
 ): SimpleTrack {
     return SimpleTrack(
         id = TrackId(id),
         name = title,
-        artists = listOf(simpleArtist),
+        artists = simpleArtists,
         durationMs = durationMs,
         trackNumber = trackNumber,
         uri = uri,
@@ -37,21 +37,19 @@ fun TrackEntity.toSimpleTrack(
 }
 
 fun CompleteTrackEntity.toTrack(): Track {
-    val simpleArtist = SimpleArtist(id = artistId, name = artistName)
-    val images = listOf(Image(uri = imageUri))
-    val simpleAlbum = SimpleAlbum(
-        id = AlbumId(albumId),
-        name = albumTitle,
-        artists = listOf(simpleArtist),
-        images = images,
-    )
+    val simpleArtists = artists.map { it.toSimpleArtist() }
     return Track(
-        id = TrackId(id),
-        title = title,
-        artists = listOf(simpleArtist),
-        durationMs = durationMs,
-        trackNumber = trackNumber,
-        uri = uri,
-        simpleAlbum = simpleAlbum,
+        id = TrackId(track.id),
+        title = track.title,
+        artists = simpleArtists,
+        durationMs = track.durationMs,
+        trackNumber = track.trackNumber,
+        uri = track.uri,
+        simpleAlbum = SimpleAlbum(
+            id = AlbumId(album.id),
+            name = album.title,
+            artists = simpleArtists,
+            images = images.map { it.toImage() },
+        ),
     )
 }

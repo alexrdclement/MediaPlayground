@@ -1,8 +1,10 @@
 package com.alexrdclement.mediaplayground.database.di
 
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
+import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
+import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
@@ -30,4 +32,14 @@ internal class DaoModule {
     fun provideCompleteTrackDao(
         database: MediaPlaygroundDatabase,
     ): CompleteTrackDao = database.completeTrackDao()
+
+    @Provides
+    fun provideCompleteAlbumDao(
+        database: MediaPlaygroundDatabase,
+    ): CompleteAlbumDao = database.completeAlbumDao()
+
+    @Provides
+    fun provideAlbumArtistDao(
+        database: MediaPlaygroundDatabase,
+    ): AlbumArtistDao = database.albumArtistDao()
 }
