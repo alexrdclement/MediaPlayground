@@ -15,6 +15,7 @@ import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ImageDao
+import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
@@ -39,6 +40,7 @@ class LocalAudioDataStore @Inject constructor(
     private val albumArtistDao: AlbumArtistDao,
     private val completeTrackDao: CompleteTrackDao,
     private val completeAlbumDao: CompleteAlbumDao,
+    private val simpleAlbumDao: SimpleAlbumDao,
 ) {
     fun clearTracks() {
         // TODO
@@ -70,11 +72,12 @@ class LocalAudioDataStore @Inject constructor(
     }
 
     suspend fun getAlbumByTitleAndArtistId(albumTitle: String, artistId: String): SimpleAlbum? {
-        val albumWithArtists = albumArtistDao.getAlbumByTitleAndArtistId(albumTitle, artistId) ?: return null
-        val album = albumWithArtists.album
-        val images = imageDao.getImagesForAlbum(albumId = album.id).map { it.toImage() }
-        val simpleArtists = albumWithArtists.artists.map { it.toSimpleArtist() }
-        return album.toSimpleAlbum(artists = simpleArtists, images = images)
+        val simpleAlbumEntity =
+            simpleAlbumDao.getAlbumByTitleAndArtistId(albumTitle, artistId) ?: return null
+        return simpleAlbumEntity.album.toSimpleAlbum(
+            artists = simpleAlbumEntity.artists.map { it.toSimpleArtist() },
+            images = simpleAlbumEntity.images.map { it.toImage() },
+        )
     }
 
     suspend fun getTracks(): List<Track> {

@@ -5,12 +5,7 @@ import androidx.room.Relation
 
 data class CompleteAlbum(
     @Embedded
-    val albumWithArtists: AlbumWithArtists,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "albumId"
-    )
-    val images: List<Image>,
+    val simpleAlbum: SimpleAlbum,
     @Relation(
         parentColumn = "id",
         entityColumn = "albumId"

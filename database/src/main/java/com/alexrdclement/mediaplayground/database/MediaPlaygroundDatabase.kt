@@ -10,11 +10,13 @@ import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ImageDao
+import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.Album
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.Artist
 import com.alexrdclement.mediaplayground.database.model.Image
+import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.database.model.Track
 
 @Database(
@@ -38,4 +40,5 @@ abstract class MediaPlaygroundDatabase : RoomDatabase() {
     abstract fun completeTrackDao(): CompleteTrackDao
     abstract fun completeAlbumDao(): CompleteAlbumDao
     abstract fun albumArtistDao(): AlbumArtistDao
+    abstract fun simpleAlbumDao(): SimpleAlbumDao
 }

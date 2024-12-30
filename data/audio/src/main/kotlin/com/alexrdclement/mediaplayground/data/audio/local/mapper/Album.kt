@@ -45,10 +45,10 @@ fun AlbumEntity.toAlbum(
 }
 
 fun CompleteAlbum.toAlbum(): Album {
-    val simpleArtists = albumWithArtists.artists.map { it.toSimpleArtist() }
-    return albumWithArtists.album.toAlbum(
+    val simpleArtists = simpleAlbum.artists.map { it.toSimpleArtist() }
+    return simpleAlbum.album.toAlbum(
         artists = simpleArtists,
-        images = images.map { it.toImage() },
+        images = simpleAlbum.images.map { it.toImage() },
         simpleTracks = tracks.map { it.toSimpleTrack(simpleArtists) },
     )
 }
