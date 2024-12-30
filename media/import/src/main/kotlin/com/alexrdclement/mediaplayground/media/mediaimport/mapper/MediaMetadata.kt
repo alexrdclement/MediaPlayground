@@ -7,20 +7,23 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import java.util.UUID
 
-fun MediaMetadata.toSimpleArtist(): SimpleArtist {
+fun MediaMetadata.toSimpleArtist(
+    name: String,
+): SimpleArtist {
     return SimpleArtist(
         id = UUID.randomUUID().toString(),
-        name = artistName ?: "Unknown artist",
+        name = name,
     )
 }
 
 fun MediaMetadata.toSimpleAlbum(
+    title: String,
     artists: List<SimpleArtist>,
     images: List<Image>,
 ): SimpleAlbum {
     return SimpleAlbum(
         id = AlbumId(UUID.randomUUID().toString()),
-        name = albumTitle ?: "Unknown album",
+        name = title,
         artists = artists,
         images = images,
     )

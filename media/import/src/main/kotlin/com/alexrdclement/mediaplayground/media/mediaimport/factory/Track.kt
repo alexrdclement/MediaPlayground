@@ -10,6 +10,9 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.io.files.Path
 
+private const val UnknownArtistName = "Unknown artist"
+private const val UnknownAlbumName = "Unknown album"
+
 internal suspend fun makeTrack(
     mediaId: String,
     path: Path,
@@ -17,13 +20,15 @@ internal suspend fun makeTrack(
     getArtistByName: suspend (String) -> SimpleArtist?,
     getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
 ): Track {
-    val simpleArtist = mediaMetadata.artistName?.let { getArtistByName(it) } ?: mediaMetadata.toSimpleArtist()
-    val simpleAlbum = mediaMetadata.albumTitle?.let {
-        getAlbumByTitleAndArtistId(mediaMetadata.albumTitle, simpleArtist.id)
-    } ?: mediaMetadata.toSimpleAlbum(
-        artists = listOf(simpleArtist),
-        images = mediaMetadata.toImage()?.let(::listOf) ?: emptyList(),
-    )
+    val artistName = mediaMetadata.artistName ?: UnknownArtistName
+    val albumName = mediaMetadata.albumTitle ?: UnknownAlbumName
+    val simpleArtist = getArtistByName(artistName) ?: mediaMetadata.toSimpleArtist(artistName)
+    val simpleAlbum =
+        getAlbumByTitleAndArtistId(albumName, simpleArtist.id) ?: mediaMetadata.toSimpleAlbum(
+            title = albumName,
+            artists = listOf(simpleArtist),
+            images = mediaMetadata.toImage()?.let(::listOf) ?: emptyList(),
+        )
     return Track(
         id = TrackId(mediaId),
         title = mediaMetadata.title ?: path.name,
