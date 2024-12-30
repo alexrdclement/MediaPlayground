@@ -10,6 +10,7 @@ import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 class LocalContentStateProvider @Inject constructor(
@@ -35,7 +36,7 @@ class LocalContentStateProvider @Inject constructor(
                     albums = albumsFlow,
                 )
             }
-        }
+        }.distinctUntilChanged()
     }
 
     private fun tracksFlow(

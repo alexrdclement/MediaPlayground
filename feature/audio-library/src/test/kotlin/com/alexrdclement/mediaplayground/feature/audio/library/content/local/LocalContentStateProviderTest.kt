@@ -2,8 +2,8 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 
 import androidx.paging.PagingConfig
 import app.cash.turbine.test
-import com.alexrdclement.mediaplayground.data.audio.local.fixtures.LocalAudioRepositoryFixture
 import com.alexrdclement.media.session.fakes.FakeMediaSessionManager
+import com.alexrdclement.mediaplayground.data.audio.local.fixtures.LocalAudioRepositoryFixture
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracks1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
@@ -30,7 +30,7 @@ class LocalContentStateProviderTest {
     }
 
     @Test
-    fun noTracks_returnsEmpty() = runTest {
+    fun noTracksOrAlbums_returnsEmpty() = runTest {
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
             pagingConfig = PagingConfig(pageSize = 10)
@@ -41,7 +41,8 @@ class LocalContentStateProviderTest {
     }
 
     @Test
-    fun nonEmptyTracks_returnsContent() = runTest {
+    fun nonEmptyTracksAndAlbums_returnsContent() = runTest {
+        // Stubbing tracks also stubs albums
         localAudioRepositoryFixture.stubTracks(PreviewTracks1)
 
         localContentStateProvider.flow(
@@ -55,6 +56,7 @@ class LocalContentStateProviderTest {
 
     @Test
     fun doesNotRecreatePagingDataFlowsOnStateChange() = runTest {
+        // Stubbing tracks also stubs albums
         localAudioRepositoryFixture.stubTracks(PreviewTracks1)
 
         localContentStateProvider.flow(
@@ -73,6 +75,7 @@ class LocalContentStateProviderTest {
             assertTrue(lastItem is LocalContentState.Content)
 
             assertEquals(firstItem.tracks, lastItem.tracks)
+            assertEquals(firstItem.albums, lastItem.albums)
 
             cancelAndIgnoreRemainingEvents()
         }

@@ -20,4 +20,7 @@ interface TrackDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(track: Track)
+
+    @Query("DELETE FROM tracks WHERE id = :id")
+    suspend fun delete(id: String)
 }

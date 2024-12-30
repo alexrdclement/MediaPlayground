@@ -1,0 +1,68 @@
+package com.alexrdclement.mediaplayground.database.fakes
+
+import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
+import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
+import com.alexrdclement.mediaplayground.database.model.CompleteTrack
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
+
+class FakeCompleteTrackDao(
+    val albumDao: FakeAlbumDao,
+    val artistDao: FakeArtistDao,
+    val albumArtistDao: FakeAlbumArtistDao,
+    val imageDao: FakeImageDao,
+    val trackDao: FakeTrackDao,
+) : CompleteTrackDao {
+
+    val completeTracks = combine(
+        albumDao.albums,
+        artistDao.artists,
+        trackDao.tracks,
+    ) { albums, artists, tracks ->
+        val albumArtists = albumArtistDao.albumArtists
+        tracks.mapNotNull {
+            val album = albums.find { album -> album.id == it.albumId } ?: return@mapNotNull null
+            CompleteTrack(
+                track = it,
+                album = album,
+                artists = artists.filter { artist ->
+                    albumArtists.contains(AlbumArtistCrossRef(it.albumId, artist.id))
+                },
+                images = imageDao.images.filter { image -> image.albumId == it.albumId },
+            )
+        }
+    }
+
+    override suspend fun getTracks(): List<CompleteTrack> {
+        return completeTracks.firstOrNull() ?: emptyList()
+    }
+
+    override fun getTracksFlow(): Flow<List<CompleteTrack>> {
+        return completeTracks
+    }
+
+    override suspend fun getTrack(id: String): CompleteTrack? {
+        return completeTracks.firstOrNull()?.find { it.track.id == id }
+    }
+
+    override suspend fun delete(id: String) {
+        val existingTrack = completeTracks.firstOrNull()?.find { it.track.id == id } ?: return
+        val album = albumDao.getAlbum(existingTrack.album.id)
+        if (album != null && trackDao.getTracks(album.id).size == 1) {
+            for (artist in existingTrack.artists) {
+                albumArtistDao.delete(AlbumArtistCrossRef(existingTrack.album.id, artist.id))
+                albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
+                    if (artistAlbums.isEmpty()) {
+                        artistDao.delete(artist.id)
+                    }
+                }
+            }
+            albumDao.delete(album.id)
+        }
+        for (image in existingTrack.images) {
+            imageDao.delete(image.id)
+        }
+        trackDao.delete(id)
+    }
+}

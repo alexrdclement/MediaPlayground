@@ -42,10 +42,6 @@ class LocalAudioDataStore @Inject constructor(
     private val completeAlbumDao: CompleteAlbumDao,
     private val simpleAlbumDao: SimpleAlbumDao,
 ) {
-    fun clearTracks() {
-        // TODO
-    }
-
     suspend fun putTrack(track: Track) {
         transactionRunner.run {
             track.artists.forEach {
@@ -93,6 +89,12 @@ class LocalAudioDataStore @Inject constructor(
         return completeTrackDao.getTrack(trackId.value)?.toTrack()
     }
 
+    suspend fun deleteTrack(trackId: TrackId) {
+        transactionRunner.run {
+            completeTrackDao.delete(trackId.value)
+        }
+    }
+
     suspend fun getAlbums(): List<Album> {
         return completeAlbumDao.getAlbums().map { it.toAlbum() }
     }
@@ -105,5 +107,11 @@ class LocalAudioDataStore @Inject constructor(
 
     suspend fun getAlbum(albumId: AlbumId): Album? {
         return completeAlbumDao.getAlbum(albumId.value)?.toAlbum()
+    }
+
+    suspend fun deleteAlbum(albumId: AlbumId) {
+        transactionRunner.run {
+            completeAlbumDao.delete(albumId.value)
+        }
     }
 }

@@ -5,11 +5,9 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.data.audio.test.fixtures"
+    namespace = "com.alexrdclement.mediaplayground.database.test.fixtures"
 }
 
 dependencies {
-    api(projects.data.audio)
-    api(projects.database.testFixtures)
-    api(projects.media.import.testFixtures)
+    api(projects.database)
 }

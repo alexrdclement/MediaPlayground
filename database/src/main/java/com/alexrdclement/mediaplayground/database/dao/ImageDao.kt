@@ -16,4 +16,7 @@ interface ImageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg image: Image)
+
+    @Query("DELETE FROM images WHERE id = :id")
+    suspend fun delete(id: String)
 }
