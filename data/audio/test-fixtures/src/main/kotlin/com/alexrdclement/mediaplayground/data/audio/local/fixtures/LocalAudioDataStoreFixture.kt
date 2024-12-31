@@ -13,8 +13,11 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeTrackDao
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class LocalAudioDataStoreFixture(
+    val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
     val transactionRunner: FakeDatabaseTransactionRunner = FakeDatabaseTransactionRunner(),
     val artistDao: FakeArtistDao = FakeArtistDao(),
     val albumDao: FakeAlbumDao = FakeAlbumDao(),
@@ -22,6 +25,7 @@ class LocalAudioDataStoreFixture(
     val trackDao: FakeTrackDao = FakeTrackDao(),
     val albumArtistDao: FakeAlbumArtistDao = FakeAlbumArtistDao(),
     val completeTrackDao: FakeCompleteTrackDao = FakeCompleteTrackDao(
+        coroutineScope = coroutineScope,
         albumDao = albumDao,
         artistDao = artistDao,
         albumArtistDao = albumArtistDao,
@@ -29,6 +33,7 @@ class LocalAudioDataStoreFixture(
         trackDao = trackDao,
     ),
     val completeAlbumDao: FakeCompleteAlbumDao = FakeCompleteAlbumDao(
+        coroutineScope = coroutineScope,
         albumDao = albumDao,
         artistDao = artistDao,
         albumArtistDao = albumArtistDao,

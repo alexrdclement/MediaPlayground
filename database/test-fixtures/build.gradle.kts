@@ -10,4 +10,6 @@ android {
 
 dependencies {
     api(projects.database)
+    implementation(libs.paging)
+    implementation(libs.paging.testing)
 }

@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 
-import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -43,7 +42,7 @@ class LocalContentStateProvider @Inject constructor(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ) = combine(
-        tracksPager(pagingConfig).flow.cachedIn(coroutineScope),
+        localAudioRepository.getTrackPagingData(pagingConfig).cachedIn(coroutineScope),
         mediaSessionManager.loadedMediaItem,
         mediaSessionManager.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
@@ -55,16 +54,11 @@ class LocalContentStateProvider @Inject constructor(
         }
     }.cachedIn(coroutineScope)
 
-    private fun tracksPager(pagingConfig: PagingConfig) = Pager(
-        config = pagingConfig,
-        pagingSourceFactory = localAudioRepository::getTrackPagingSource,
-    )
-
     private fun albumsFlow(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ) = combine(
-        albumsPager(pagingConfig).flow.cachedIn(coroutineScope),
+        localAudioRepository.getAlbumPagingData(pagingConfig).cachedIn(coroutineScope),
         mediaSessionManager.loadedMediaItem,
         mediaSessionManager.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
@@ -75,9 +69,4 @@ class LocalContentStateProvider @Inject constructor(
             )
         }
     }.cachedIn(coroutineScope)
-
-    private fun albumsPager(pagingConfig: PagingConfig) = Pager(
-        config = pagingConfig,
-        pagingSourceFactory = localAudioRepository::getAlbumPagingSource,
-    )
 }

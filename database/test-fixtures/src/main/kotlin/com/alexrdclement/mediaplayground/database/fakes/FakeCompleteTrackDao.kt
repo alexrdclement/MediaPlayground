@@ -1,13 +1,18 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
+import android.annotation.SuppressLint
+import androidx.paging.PagingSource
+import androidx.paging.testing.asPagingSourceFactory
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 
 class FakeCompleteTrackDao(
+    val coroutineScope: CoroutineScope,
     val albumDao: FakeAlbumDao,
     val artistDao: FakeArtistDao,
     val albumArtistDao: FakeAlbumArtistDao,
@@ -40,6 +45,11 @@ class FakeCompleteTrackDao(
 
     override fun getTracksFlow(): Flow<List<CompleteTrack>> {
         return completeTracks
+    }
+
+    @SuppressLint("VisibleForTests")
+    override fun getTracksPagingSource(): PagingSource<Int, CompleteTrack> {
+        return completeTracks.asPagingSourceFactory(coroutineScope).invoke()
     }
 
     override suspend fun getTrack(id: String): CompleteTrack? {

@@ -1,5 +1,9 @@
 package com.alexrdclement.mediaplayground.data.audio.local
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.local.mapper.toAlbum
 import com.alexrdclement.mediaplayground.data.audio.local.mapper.toAlbumEntity
 import com.alexrdclement.mediaplayground.data.audio.local.mapper.toArtistEntity
@@ -85,6 +89,12 @@ class LocalAudioDataStore @Inject constructor(
             .map { trackEntities -> trackEntities.map { it.toTrack() } }
     }
 
+    fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> {
+        return Pager(config = config) {
+            completeTrackDao.getTracksPagingSource()
+        }.flow.map { pagingData -> pagingData.map { it.toTrack() } }
+    }
+
     suspend fun getTrack(trackId: TrackId): Track? {
         return completeTrackDao.getTrack(trackId.value)?.toTrack()
     }
@@ -103,6 +113,12 @@ class LocalAudioDataStore @Inject constructor(
         return completeAlbumDao.getAlbumsFlow().map {
             albumFlows -> albumFlows.map { it.toAlbum() }
         }
+    }
+
+    fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>> {
+        return Pager(config = config) {
+            completeAlbumDao.getAlbumsPagingSource()
+        }.flow.map { pagingData -> pagingData.map { it.toAlbum() } }
     }
 
     suspend fun getAlbum(albumId: AlbumId): Album? {

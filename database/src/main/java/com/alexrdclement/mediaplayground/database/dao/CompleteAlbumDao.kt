@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.database.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -15,6 +16,10 @@ interface CompleteAlbumDao {
     @Transaction
     @Query("SELECT * FROM albums ORDER BY modifiedDate DESC")
     fun getAlbumsFlow(): Flow<List<CompleteAlbum>>
+
+    @Transaction
+    @Query("SELECT * FROM albums ORDER BY modifiedDate DESC")
+    fun getAlbumsPagingSource(): PagingSource<Int, CompleteAlbum>
 
     @Transaction
     @Query("SELECT * FROM albums WHERE id = :id")

@@ -1,9 +1,8 @@
 package com.alexrdclement.mediaplayground.data.audio.local
 
 import android.net.Uri
-import androidx.paging.PagingSource
-import com.alexrdclement.mediaplayground.data.audio.local.pagination.LocalAlbumPagingSource
-import com.alexrdclement.mediaplayground.data.audio.local.pagination.LocalTrackPagingSource
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.model.audio.Album
@@ -41,8 +40,8 @@ class LocalAudioRepositoryImpl @Inject constructor(
         return localAudioDataStore.getTracksFlow()
     }
 
-    override fun getTrackPagingSource(): PagingSource<Int, Track> {
-        return LocalTrackPagingSource(localAudioDataStore)
+    override fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> {
+        return localAudioDataStore.getTrackPagingData(config)
     }
 
     override suspend fun getTrack(id: TrackId): Result<Track?, LocalAudioRepository.Failure> {
@@ -58,8 +57,8 @@ class LocalAudioRepositoryImpl @Inject constructor(
         return localAudioDataStore.getAlbumsFlow()
     }
 
-    override fun getAlbumPagingSource(): PagingSource<Int, Album> {
-        return LocalAlbumPagingSource(localAudioDataStore)
+    override fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>> {
+        return localAudioDataStore.getAlbumPagingData(config)
     }
 
     override suspend fun getAlbum(id: AlbumId): Result<Album?, LocalAudioRepository.Failure> {

@@ -1,7 +1,8 @@
 package com.alexrdclement.mediaplayground.data.audio.local
 
 import android.net.Uri
-import androidx.paging.PagingSource
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -17,9 +18,9 @@ interface LocalAudioRepository {
 
     fun importTracksFromDisk(uris: List<Uri>)
     fun getTracksFlow(): Flow<List<Track>>
-    fun getTrackPagingSource(): PagingSource<Int, Track>
+    fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>>
     suspend fun getTrack(id: TrackId): Result<Track?, Failure>
     fun getAlbumsFlow(): Flow<List<Album>>
-    fun getAlbumPagingSource(): PagingSource<Int, Album>
+    fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>>
     suspend fun getAlbum(id: AlbumId): Result<Album?, Failure>
 }
