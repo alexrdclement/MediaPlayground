@@ -99,9 +99,7 @@ class LocalAudioDataStore @Inject constructor(
     }
 
     suspend fun deleteTrack(trackId: TrackId) {
-        transactionRunner.run {
-            completeTrackDao.delete(trackId.value)
-        }
+        completeTrackDao.delete(trackId.value)
     }
 
     fun getAlbumCountFlow(): Flow<Int> {
