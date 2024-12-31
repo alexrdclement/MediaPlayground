@@ -8,10 +8,6 @@ class FakeArtistDao : ArtistDao {
 
     val artists = MutableStateFlow(emptySet<Artist>())
 
-    override suspend fun getArtists(): List<Artist> {
-        return artists.value.toList()
-    }
-
     override suspend fun getArtist(id: String): Artist? {
         return artists.value.find { it.id == id }
     }

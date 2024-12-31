@@ -10,12 +10,8 @@ class FakeAlbumDao : AlbumDao {
 
     val albums = MutableStateFlow(emptySet<Album>())
 
-    override suspend fun getAlbums(): List<Album> {
-        return albums.value.toList()
-    }
-
-    override fun getAlbumsFlow(): Flow<List<Album>> {
-        return albums.map { it.toList() }
+    override fun getAlbumCountFlow(): Flow<Int> {
+        return albums.map { it.size }
     }
 
     override suspend fun getAlbum(id: String): Album? {

@@ -10,12 +10,12 @@ class FakeTrackDao : TrackDao {
 
     val tracks = MutableStateFlow(emptySet<Track>())
 
-    override suspend fun getTracks(albumId: String): List<Track> {
-        return tracks.value.filter { it.albumId == albumId }
+    override fun getTrackCountFlow(): Flow<Int> {
+        return tracks.map { it.size }
     }
 
-    override fun getTracksFlow(albumId: String): Flow<List<Track>> {
-        return tracks.map { it.filter { it.albumId == albumId } }
+    override suspend fun getTracks(albumId: String): List<Track> {
+        return tracks.value.filter { it.albumId == albumId }
     }
 
     override suspend fun getTrack(id: String): Track? {

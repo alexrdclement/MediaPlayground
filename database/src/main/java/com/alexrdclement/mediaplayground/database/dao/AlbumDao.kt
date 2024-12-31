@@ -9,11 +9,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AlbumDao {
-    @Query("SELECT * FROM albums ORDER BY modifiedDate DESC")
-    suspend fun getAlbums(): List<Album>
-
-    @Query("SELECT * FROM albums ORDER BY modifiedDate DESC")
-    fun getAlbumsFlow(): Flow<List<Album>>
+    @Query("SELECT COUNT(*) FROM albums")
+    fun getAlbumCountFlow(): Flow<Int>
 
     @Query("SELECT * FROM albums WHERE id = :id")
     suspend fun getAlbum(id: String): Album?

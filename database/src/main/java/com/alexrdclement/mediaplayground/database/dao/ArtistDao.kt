@@ -8,9 +8,6 @@ import com.alexrdclement.mediaplayground.database.model.Artist
 
 @Dao
 interface ArtistDao {
-    @Query("SELECT * FROM artists")
-    suspend fun getArtists(): List<Artist>
-
     @Query("SELECT * FROM artists WHERE id = :id")
     suspend fun getArtist(id: String): Artist?
 

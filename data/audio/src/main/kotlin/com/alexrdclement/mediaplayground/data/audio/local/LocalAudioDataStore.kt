@@ -80,13 +80,8 @@ class LocalAudioDataStore @Inject constructor(
         )
     }
 
-    suspend fun getTracks(): List<Track> {
-        return completeTrackDao.getTracks().map { it.toTrack() }
-    }
-
-    fun getTracksFlow(): Flow<List<Track>> {
-        return completeTrackDao.getTracksFlow()
-            .map { trackEntities -> trackEntities.map { it.toTrack() } }
+    fun getTrackCountFlow(): Flow<Int> {
+        return trackDao.getTrackCountFlow()
     }
 
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> {
@@ -99,20 +94,18 @@ class LocalAudioDataStore @Inject constructor(
         return completeTrackDao.getTrack(trackId.value)?.toTrack()
     }
 
+    suspend fun deleteAllTracks() {
+        completeTrackDao.deleteAll()
+    }
+
     suspend fun deleteTrack(trackId: TrackId) {
         transactionRunner.run {
             completeTrackDao.delete(trackId.value)
         }
     }
 
-    suspend fun getAlbums(): List<Album> {
-        return completeAlbumDao.getAlbums().map { it.toAlbum() }
-    }
-
-    fun getAlbumsFlow(): Flow<List<Album>> {
-        return completeAlbumDao.getAlbumsFlow().map {
-            albumFlows -> albumFlows.map { it.toAlbum() }
-        }
+    fun getAlbumCountFlow(): Flow<Int> {
+        return albumDao.getAlbumCountFlow()
     }
 
     fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>> {
@@ -125,9 +118,11 @@ class LocalAudioDataStore @Inject constructor(
         return completeAlbumDao.getAlbum(albumId.value)?.toAlbum()
     }
 
+    suspend fun deleteAllAlbums() {
+        completeAlbumDao.deleteAll()
+    }
+
     suspend fun deleteAlbum(albumId: AlbumId) {
-        transactionRunner.run {
-            completeAlbumDao.delete(albumId.value)
-        }
+        completeAlbumDao.delete(albumId.value)
     }
 }

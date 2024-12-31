@@ -24,10 +24,10 @@ class LocalContentStateProvider @Inject constructor(
         val tracksFlow = tracksFlow(coroutineScope, pagingConfig)
         val albumsFlow = albumsFlow(coroutineScope, pagingConfig)
         return combine(
-            localAudioRepository.getTracksFlow(),
-            localAudioRepository.getAlbumsFlow(),
-        ) { tracks, albums ->
-            if (tracks.isEmpty() && albums.isEmpty()) {
+            localAudioRepository.getTrackCountFlow(),
+            localAudioRepository.getAlbumCountFlow(),
+        ) { trackCount, albumCount ->
+            if (trackCount == 0 && albumCount == 0) {
                 LocalContentState.Empty
             } else {
                 LocalContentState.Content(

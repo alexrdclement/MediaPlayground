@@ -60,18 +60,14 @@ class LocalAudioDataStoreFixture(
     )
 
     suspend fun stubTracks(tracks: List<Track>) {
-        localAudioDataStore.getTracks().forEach {
-            localAudioDataStore.deleteTrack(it.id)
-        }
+        localAudioDataStore.deleteAllTracks()
         for (track in tracks) {
             localAudioDataStore.putTrack(track = track)
         }
     }
 
     suspend fun stubAlbums(albums: List<Album>) {
-        localAudioDataStore.getAlbums().forEach {
-            localAudioDataStore.deleteAlbum(it.id)
-        }
+        localAudioDataStore.deleteAllAlbums()
         for (album in albums) {
             for (simpleTrack in album.tracks) {
                 val track = simpleTrack.toTrack(album)

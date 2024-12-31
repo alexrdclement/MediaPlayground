@@ -17,10 +17,10 @@ interface LocalAudioRepository {
     }
 
     fun importTracksFromDisk(uris: List<Uri>)
-    fun getTracksFlow(): Flow<List<Track>>
+    fun getTrackCountFlow(): Flow<Int>
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>>
     suspend fun getTrack(id: TrackId): Result<Track?, Failure>
-    fun getAlbumsFlow(): Flow<List<Album>>
+    fun getAlbumCountFlow(): Flow<Int>
     fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>>
     suspend fun getAlbum(id: AlbumId): Result<Album?, Failure>
 }

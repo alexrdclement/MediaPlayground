@@ -36,8 +36,8 @@ class LocalAudioRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTracksFlow(): Flow<List<Track>> {
-        return localAudioDataStore.getTracksFlow()
+    override fun getTrackCountFlow(): Flow<Int> {
+        return localAudioDataStore.getTrackCountFlow()
     }
 
     override fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> {
@@ -53,8 +53,8 @@ class LocalAudioRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getAlbumsFlow(): Flow<List<Album>> {
-        return localAudioDataStore.getAlbumsFlow()
+    override fun getAlbumCountFlow(): Flow<Int> {
+        return localAudioDataStore.getAlbumCountFlow()
     }
 
     override fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>> {

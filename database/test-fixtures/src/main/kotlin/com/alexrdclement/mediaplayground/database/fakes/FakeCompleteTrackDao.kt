@@ -7,7 +7,6 @@ import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -39,14 +38,6 @@ class FakeCompleteTrackDao(
         }
     }
 
-    override suspend fun getTracks(): List<CompleteTrack> {
-        return completeTracks.firstOrNull() ?: emptyList()
-    }
-
-    override fun getTracksFlow(): Flow<List<CompleteTrack>> {
-        return completeTracks
-    }
-
     @SuppressLint("VisibleForTests")
     override fun getTracksPagingSource(): PagingSource<Int, CompleteTrack> {
         return completeTracks.asPagingSourceFactory(coroutineScope).invoke()
@@ -54,6 +45,12 @@ class FakeCompleteTrackDao(
 
     override suspend fun getTrack(id: String): CompleteTrack? {
         return completeTracks.firstOrNull()?.find { it.track.id == id }
+    }
+
+    override suspend fun deleteAll() {
+        for (track in completeTracks.firstOrNull() ?: emptyList()) {
+            delete(track.track.id)
+        }
     }
 
     override suspend fun delete(id: String) {

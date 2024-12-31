@@ -41,14 +41,6 @@ class FakeCompleteAlbumDao(
         }
     }
 
-    override suspend fun getAlbums(): List<CompleteAlbum> {
-        return completeAlbums.firstOrNull() ?: emptyList()
-    }
-
-    override fun getAlbumsFlow(): Flow<List<CompleteAlbum>> {
-        return completeAlbums
-    }
-
     @SuppressLint("VisibleForTests")
     override fun getAlbumsPagingSource(): PagingSource<Int, CompleteAlbum> {
         return completeAlbums.asPagingSourceFactory(coroutineScope).invoke()
@@ -56,6 +48,12 @@ class FakeCompleteAlbumDao(
 
     override suspend fun getAlbum(id: String): CompleteAlbum? {
         return completeAlbums.firstOrNull()?.find { it.simpleAlbum.album.id == id }
+    }
+
+    override suspend fun deleteAll() {
+        for (album in completeAlbums.firstOrNull() ?: emptyList()) {
+            delete(album.simpleAlbum.album.id)
+        }
     }
 
     override suspend fun delete(id: String) {
