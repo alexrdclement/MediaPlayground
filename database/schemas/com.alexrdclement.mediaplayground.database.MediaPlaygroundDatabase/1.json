@@ -2,17 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fe9f33789ce88b938228ac4fd0eda9eb",
+    "identityHash": "64d3401bd01b2b0b5aac2de1421e7502",
     "entities": [
       {
         "tableName": "tracks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `albumId` TEXT NOT NULL, `durationMs` INTEGER NOT NULL, `trackNumber` INTEGER, `uri` TEXT, `modifiedDate` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`albumId`) REFERENCES `albums`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `fileName` TEXT, `title` TEXT NOT NULL, `albumId` TEXT NOT NULL, `durationMs` INTEGER NOT NULL, `trackNumber` INTEGER, `modifiedDate` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`albumId`) REFERENCES `albums`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "fileName",
+            "columnName": "fileName",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "title",
@@ -36,12 +42,6 @@
             "fieldPath": "trackNumber",
             "columnName": "trackNumber",
             "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "uri",
-            "columnName": "uri",
-            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -142,7 +142,7 @@
       },
       {
         "tableName": "images",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `uri` TEXT NOT NULL, `albumId` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`albumId`) REFERENCES `albums`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `fileName` TEXT NOT NULL, `albumId` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`albumId`) REFERENCES `albums`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -151,8 +151,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "uri",
-            "columnName": "uri",
+            "fieldPath": "fileName",
+            "columnName": "fileName",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -267,7 +267,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fe9f33789ce88b938228ac4fd0eda9eb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64d3401bd01b2b0b5aac2de1421e7502')"
     ]
   }
 }

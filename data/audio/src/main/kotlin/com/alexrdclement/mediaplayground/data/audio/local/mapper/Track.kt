@@ -7,35 +7,39 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.datetime.Clock
+import kotlinx.io.files.Path
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack as CompleteTrackEntity
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
 
 fun Track.toTrackEntity(): TrackEntity {
     return TrackEntity(
         id = id.value,
+        fileName = fileNameFromUri(uri),
         title = title,
         albumId = simpleAlbum.id.value,
         durationMs = durationMs,
         trackNumber = trackNumber,
-        uri = uri,
         modifiedDate = Clock.System.now(),
     )
 }
 
 fun TrackEntity.toSimpleTrack(
+    mediaItemDir: Path,
     simpleArtists: List<SimpleArtist>,
 ): SimpleTrack {
     return SimpleTrack(
         id = TrackId(id),
+        uri = uriFromFileName(mediaItemDir, fileName),
         name = title,
         artists = simpleArtists,
         durationMs = durationMs,
         trackNumber = trackNumber,
-        uri = uri,
     )
 }
 
-fun CompleteTrackEntity.toTrack(): Track {
+fun CompleteTrackEntity.toTrack(
+    albumDir: Path,
+): Track {
     val simpleArtists = artists.map { it.toSimpleArtist() }
     return Track(
         id = TrackId(track.id),
@@ -43,12 +47,12 @@ fun CompleteTrackEntity.toTrack(): Track {
         artists = simpleArtists,
         durationMs = track.durationMs,
         trackNumber = track.trackNumber,
-        uri = track.uri,
+        uri = uriFromFileName(albumDir, track.fileName),
         simpleAlbum = SimpleAlbum(
             id = AlbumId(album.id),
             name = album.title,
             artists = simpleArtists,
-            images = images.map { it.toImage() },
+            images = images.map { it.toImage(albumDir = albumDir) },
         ),
     )
 }

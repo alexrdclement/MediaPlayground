@@ -22,10 +22,10 @@ import kotlinx.datetime.Instant
 data class Track(
     @PrimaryKey
     val id: String,
+    val fileName: String?,
     val title: String,
     val albumId: String,
     val durationMs: Int,
     val trackNumber: Int?,
-    val uri: String?,
     val modifiedDate: Instant,
 )

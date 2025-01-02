@@ -3,7 +3,6 @@ package com.alexrdclement.media.mediaimport.fakes
 import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
-import kotlinx.io.files.Path
 import javax.inject.Inject
 
 class FakeMediaMetadataRetriever @Inject constructor() : MediaMetadataRetriever {
@@ -14,13 +13,10 @@ class FakeMediaMetadataRetriever @Inject constructor() : MediaMetadataRetriever 
         trackNumber = null,
         artistName = null,
         albumTitle = null,
-        imagePath = null,
+        embeddedPicture = null,
     )
 
-    override suspend fun getMediaMetadata(
-        contentUri: Uri,
-        onEmbeddedPictureFound: suspend (ByteArray) -> Path?
-    ): MediaMetadata {
+    override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata {
         return mediaMetadata
     }
 }

@@ -73,7 +73,7 @@ class LocalAudioRepositoryImpl @Inject constructor(
     private suspend fun importTrackFromDisk(uri: Uri) {
         val result = mediaImporter.importTrackFromDisk(
             uri = uri,
-            fileWriteDir = pathProvider.trackImportFileWriteDir,
+            getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
             getArtistByName = { artistName ->
                 localAudioDataStore.getArtistByName(artistName)
             },

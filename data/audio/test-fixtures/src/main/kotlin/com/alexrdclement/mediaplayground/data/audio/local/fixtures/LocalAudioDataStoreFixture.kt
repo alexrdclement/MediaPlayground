@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.data.audio.local.fixtures
 
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioDataStore
+import com.alexrdclement.mediaplayground.data.audio.local.PathProvider
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumArtistDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeArtistDao
@@ -49,6 +50,7 @@ class LocalAudioDataStoreFixture(
         imageDao = imageDao,
         albumArtistDao = albumArtistDao,
     ),
+    val pathProvider: PathProvider,
 ) {
     val localAudioDataStore = LocalAudioDataStore(
         transactionRunner = transactionRunner,
@@ -60,6 +62,7 @@ class LocalAudioDataStoreFixture(
         completeTrackDao = completeTrackDao,
         completeAlbumDao = completeAlbumDao,
         simpleAlbumDao = simpleAlbumDao,
+        pathProvider = pathProvider,
     )
 
     suspend fun putTrack(track: Track) {

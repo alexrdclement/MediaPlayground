@@ -9,7 +9,7 @@ import javax.inject.Inject
 class PathProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : PathProvider {
-    override val trackImportFileWriteDir: Path
+    private val audioImportDir: Path
         get() {
             val defaultPath = Path(context.filesDir.absolutePath)
 
@@ -24,4 +24,8 @@ class PathProviderImpl @Inject constructor(
 
             return defaultPath
         }
+
+    override fun getAlbumDir(albumId: String): Path {
+        return Path(audioImportDir, albumId)
+    }
 }

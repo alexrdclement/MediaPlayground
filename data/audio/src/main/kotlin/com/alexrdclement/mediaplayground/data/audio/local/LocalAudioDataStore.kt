@@ -22,12 +22,12 @@ import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
+import com.alexrdclement.mediaplayground.database.model.id
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.coroutines.flow.Flow
@@ -46,6 +46,7 @@ class LocalAudioDataStore @Inject constructor(
     private val completeTrackDao: CompleteTrackDao,
     private val completeAlbumDao: CompleteAlbumDao,
     private val simpleAlbumDao: SimpleAlbumDao,
+    private val pathProvider: PathProvider,
 ) {
     suspend fun putTrack(track: Track) {
         transactionRunner.run {
@@ -77,7 +78,9 @@ class LocalAudioDataStore @Inject constructor(
             simpleAlbumDao.getAlbumByTitleAndArtistId(albumTitle, artistId) ?: return null
         return simpleAlbumEntity.album.toSimpleAlbum(
             artists = simpleAlbumEntity.artists.map { it.toSimpleArtist() },
-            images = simpleAlbumEntity.images.map { it.toImage() },
+            images = simpleAlbumEntity.images.map {
+                it.toImage(albumDir = pathProvider.getAlbumDir(simpleAlbumEntity.album.id))
+            },
         )
     }
 
@@ -88,11 +91,18 @@ class LocalAudioDataStore @Inject constructor(
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> {
         return Pager(config = config) {
             completeTrackDao.getTracksPagingSource()
-        }.flow.map { pagingData -> pagingData.map { it.toTrack() } }
+        }.flow.map { pagingData ->
+            pagingData.map {
+                it.toTrack(albumDir = pathProvider.getAlbumDir(it.album.id))
+            }
+        }
     }
 
     suspend fun getTrack(trackId: TrackId): Track? {
-        return completeTrackDao.getTrack(trackId.value)?.toTrack()
+        val completeTrack = completeTrackDao.getTrack(trackId.value)
+        return completeTrack?.toTrack(
+            albumDir = pathProvider.getAlbumDir(completeTrack.album.id),
+        )
     }
 
     suspend fun deleteTrack(track: Track) {
@@ -133,10 +143,15 @@ class LocalAudioDataStore @Inject constructor(
     fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>> {
         return Pager(config = config) {
             completeAlbumDao.getAlbumsPagingSource()
-        }.flow.map { pagingData -> pagingData.map { it.toAlbum() } }
+        }.flow.map {
+            pagingData -> pagingData.map {
+                it.toAlbum(mediaItemDir = pathProvider.getAlbumDir(it.id))
+            }
+        }
     }
 
     suspend fun getAlbum(albumId: AlbumId): Album? {
-        return completeAlbumDao.getAlbum(albumId.value)?.toAlbum()
+        return completeAlbumDao.getAlbum(albumId.value)
+            ?.toAlbum(mediaItemDir = pathProvider.getAlbumDir(albumId.value))
     }
 }

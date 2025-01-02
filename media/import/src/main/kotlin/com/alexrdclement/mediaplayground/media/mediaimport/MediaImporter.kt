@@ -1,8 +1,11 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
 import android.net.Uri
+import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeSimpleAlbum
+import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeSimpleArtist
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -27,47 +30,53 @@ class MediaImporter @Inject constructor(
     /**
      * Import audio file as a track from disk.
      * @param uri: URI of the file as given by the document provider (not MediaStore).
-     * @param fileWriteDir: Where to write files associated with this media.
      */
     suspend fun importTrackFromDisk(
         uri: Uri,
-        fileWriteDir: Path,
+        getImportDir: (AlbumId) -> Path,
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
     ): Result<Track, MediaImportError> = withContext(Dispatchers.IO) {
         try {
-            val mediaItemId = UUID.randomUUID().toString()
-            val mediaItemFileWriteDir = Path(fileWriteDir, mediaItemId)
+            val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri)
+            val simpleArtist = makeSimpleArtist(mediaMetadata, getArtistByName)
+            val simpleAlbum = makeSimpleAlbum(
+                mediaMetadata = mediaMetadata,
+                simpleArtist = simpleArtist,
+                getImageFilePath = { albumId ->
+                    Path(getImportDir(albumId), MediaThumbnailFileName)
+                },
+                getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
+            )
+
+            val importDir = getImportDir(simpleAlbum.id)
             try {
-                SystemFileSystem.createDirectories(mediaItemFileWriteDir)
+                SystemFileSystem.createDirectories(importDir)
             } catch (e: IOException) {
                 return@withContext Result.Failure(MediaImportError.MkdirError)
             }
 
-            val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(
-                contentUri = uri,
-                onEmbeddedPictureFound = { embeddedPicture ->
-                    val path = Path(mediaItemFileWriteDir, MediaThumbnailFileName)
-                    when (fileWriter.writeBitmapToDisk(embeddedPicture, path)) {
-                        is Result.Failure -> null// Fail silently for now
-                        is Result.Success -> path
-                    }
-                },
-            )
+            if (mediaMetadata.embeddedPicture != null) {
+                val path = Path(importDir, MediaThumbnailFileName)
+                when (fileWriter.writeBitmapToDisk(mediaMetadata.embeddedPicture, path)) {
+                    is Result.Failure -> Unit // Fail silently for now
+                    is Result.Success -> Unit
+                }
+            }
 
             val fileWriteResult = fileWriter.writeToDisk(
                 contentUri = uri,
-                destinationDir = mediaItemFileWriteDir,
+                destinationDir = importDir,
             )
             when (fileWriteResult) {
                 is Result.Failure -> Result.Failure(fileWriteResult.failure.toMediaImportError())
                 is Result.Success -> Result.Success(
                     value = makeTrack(
-                        mediaId = mediaItemId,
-                        path = fileWriteResult.value,
+                        id = UUID.randomUUID(),
+                        filePath = fileWriteResult.value,
                         mediaMetadata = mediaMetadata,
-                        getArtistByName = getArtistByName,
-                        getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
+                        simpleArtist = simpleArtist,
+                        simpleAlbum = simpleAlbum,
                     )
                 )
             }

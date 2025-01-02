@@ -21,6 +21,6 @@ import androidx.room.PrimaryKey
 data class Image(
     @PrimaryKey
     val id: String,
-    val uri: String,
+    val fileName: String,
     val albumId: String,
 )

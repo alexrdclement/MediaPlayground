@@ -28,7 +28,7 @@ internal fun assertTrackEquals(expected: Track, actual: Track?) {
     assertEquals(expected.title, actual.title)
     assertEquals(expected.durationMs, actual.durationMs)
     assertEquals(expected.trackNumber, actual.trackNumber)
-    assertEquals(expected.uri, actual.uri)
+    assertEquals(expected.fileName, actual.fileName)
     assertEquals(expected.modifiedDate.epochSeconds, actual.modifiedDate.epochSeconds)
 }
 

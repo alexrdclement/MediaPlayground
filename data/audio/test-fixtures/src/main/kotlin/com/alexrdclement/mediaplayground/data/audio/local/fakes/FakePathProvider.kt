@@ -5,5 +5,8 @@ import kotlinx.io.files.Path
 import javax.inject.Inject
 
 class FakePathProvider @Inject constructor(): PathProvider {
-    override val trackImportFileWriteDir: Path = Path("file://")
+    private val importDir: Path = Path("file://")
+    override fun getAlbumDir(albumId: String): Path {
+        return Path(importDir, albumId)
+    }
 }
