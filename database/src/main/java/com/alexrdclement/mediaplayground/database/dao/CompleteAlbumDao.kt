@@ -15,12 +15,4 @@ interface CompleteAlbumDao {
     @Transaction
     @Query("SELECT * FROM albums WHERE id = :id")
     suspend fun getAlbum(id: String): CompleteAlbum?
-
-    @Transaction
-    @Query("DELETE FROM albums")
-    suspend fun deleteAll()
-
-    @Transaction
-    @Query("DELETE FROM albums WHERE id = :id")
-    suspend fun delete(id: String)
 }

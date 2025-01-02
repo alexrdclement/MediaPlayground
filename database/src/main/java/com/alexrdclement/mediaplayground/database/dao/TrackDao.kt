@@ -13,13 +13,13 @@ interface TrackDao {
     fun getTrackCountFlow(): Flow<Int>
 
     @Query("SELECT * FROM tracks WHERE albumId = :albumId ORDER BY trackNumber")
-    suspend fun getTracks(albumId: String): List<Track>
+    suspend fun getTracksForAlbum(albumId: String): List<Track>
 
     @Query("SELECT * FROM tracks WHERE id = :id")
     suspend fun getTrack(id: String): Track?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(track: Track)
+    suspend fun insert(vararg track: Track)
 
     @Query("DELETE FROM tracks WHERE id = :id")
     suspend fun delete(id: String)

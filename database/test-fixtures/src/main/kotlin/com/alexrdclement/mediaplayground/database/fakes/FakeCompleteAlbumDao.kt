@@ -48,32 +48,4 @@ class FakeCompleteAlbumDao(
     override suspend fun getAlbum(id: String): CompleteAlbum? {
         return completeAlbums.firstOrNull()?.find { it.simpleAlbum.album.id == id }
     }
-
-    override suspend fun deleteAll() {
-        for (album in completeAlbums.firstOrNull() ?: emptyList()) {
-            delete(album.simpleAlbum.album.id)
-        }
-    }
-
-    override suspend fun delete(id: String) {
-        val existingAlbum = completeAlbums.firstOrNull()?.find { it.simpleAlbum.album.id == id } ?: return
-        for (track in existingAlbum.tracks) {
-            trackDao.delete(track.id)
-        }
-
-        for (artist in existingAlbum.simpleAlbum.artists) {
-            albumArtistDao.delete(AlbumArtistCrossRef(existingAlbum.simpleAlbum.album.id, artist.id))
-            // Delete artist if this is their only album
-            albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
-                if (artistAlbums.isEmpty()) {
-                    artistDao.delete(artist.id)
-                }
-            }
-        }
-
-        for (image in existingAlbum.simpleAlbum.images) {
-            imageDao.delete(image.id)
-        }
-        albumDao.delete(id)
-    }
 }

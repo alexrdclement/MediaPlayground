@@ -22,4 +22,8 @@ class FakeImageDao : ImageDao {
     override suspend fun delete(id: String) {
         images.removeIf { it.id == id }
     }
+
+    override suspend fun deleteImagesForAlbum(albumId: String) {
+        images.removeIf { it.albumId == albumId }
+    }
 }

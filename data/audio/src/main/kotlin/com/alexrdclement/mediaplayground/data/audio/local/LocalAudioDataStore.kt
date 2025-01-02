@@ -27,6 +27,7 @@ import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.coroutines.flow.Flow
@@ -94,12 +95,35 @@ class LocalAudioDataStore @Inject constructor(
         return completeTrackDao.getTrack(trackId.value)?.toTrack()
     }
 
-    suspend fun deleteAllTracks() {
-        completeTrackDao.deleteAll()
-    }
+    suspend fun deleteTrack(track: Track) {
+        transactionRunner.run {
+            val album = albumDao.getAlbum(track.simpleAlbum.id.value)
+            if (album == null || trackDao.getTracksForAlbum(album.id).size > 1) {
+                // If album is null or has other tracks, just delete the track
+                trackDao.delete(track.id.value)
+                return@run
+            }
 
-    suspend fun deleteTrack(trackId: TrackId) {
-        completeTrackDao.delete(trackId.value)
+            // Delete album if it only contains this track
+
+            for (artist in track.artists) {
+                albumArtistDao.delete(AlbumArtistCrossRef(album.id, artist.id))
+                // Delete artist if this is their only album
+                albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
+                    if (artistAlbums.isEmpty()) {
+                        artistDao.delete(artist.id)
+                    }
+                }
+            }
+
+            for (image in track.images) {
+                imageDao.deleteImagesForAlbum(track.simpleAlbum.id.value)
+            }
+
+            albumDao.delete(album.id)
+
+            trackDao.delete(track.id.value)
+        }
     }
 
     fun getAlbumCountFlow(): Flow<Int> {
@@ -114,13 +138,5 @@ class LocalAudioDataStore @Inject constructor(
 
     suspend fun getAlbum(albumId: AlbumId): Album? {
         return completeAlbumDao.getAlbum(albumId.value)?.toAlbum()
-    }
-
-    suspend fun deleteAllAlbums() {
-        completeAlbumDao.deleteAll()
-    }
-
-    suspend fun deleteAlbum(albumId: AlbumId) {
-        completeAlbumDao.delete(albumId.value)
     }
 }

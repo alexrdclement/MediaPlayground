@@ -19,4 +19,7 @@ interface ImageDao {
 
     @Query("DELETE FROM images WHERE id = :id")
     suspend fun delete(id: String)
+
+    @Query("DELETE FROM images WHERE albumId = :albumId")
+    suspend fun deleteImagesForAlbum(albumId: String)
 }

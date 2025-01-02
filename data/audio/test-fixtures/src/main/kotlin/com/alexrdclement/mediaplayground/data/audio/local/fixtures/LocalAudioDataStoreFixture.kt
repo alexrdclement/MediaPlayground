@@ -11,7 +11,10 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeSimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrackDao
 import com.alexrdclement.mediaplayground.model.audio.Album
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,20 +62,19 @@ class LocalAudioDataStoreFixture(
         simpleAlbumDao = simpleAlbumDao,
     )
 
-    suspend fun stubTracks(tracks: List<Track>) {
-        localAudioDataStore.deleteAllTracks()
-        for (track in tracks) {
-            localAudioDataStore.putTrack(track = track)
-        }
+    suspend fun putTrack(track: Track) {
+        localAudioDataStore.putTrack(track)
     }
 
-    suspend fun stubAlbums(albums: List<Album>) {
-        localAudioDataStore.deleteAllAlbums()
-        for (album in albums) {
-            for (simpleTrack in album.tracks) {
-                val track = simpleTrack.toTrack(album)
-                localAudioDataStore.putTrack(track = track)
-            }
-        }
+    suspend fun putTracks(tracks: List<Track>) {
+        tracks.forEach { putTrack(it) }
+    }
+
+    suspend fun deleteTrack(track: Track) {
+        localAudioDataStore.deleteTrack(track)
+    }
+
+    suspend fun deleteTracks(tracks: List<Track>) {
+        tracks.forEach { deleteTrack(it) }
     }
 }

@@ -15,7 +15,7 @@ interface ArtistDao {
     suspend fun getArtistByName(name: String): Artist?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(artist: Artist)
+    suspend fun insert(vararg artist: Artist)
 
     @Query("DELETE FROM artists WHERE id = :id")
     suspend fun delete(id: String)

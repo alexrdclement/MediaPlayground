@@ -14,7 +14,7 @@ class FakeTrackDao : TrackDao {
         return tracks.map { it.size }
     }
 
-    override suspend fun getTracks(albumId: String): List<Track> {
+    override suspend fun getTracksForAlbum(albumId: String): List<Track> {
         return tracks.value.filter { it.albumId == albumId }
     }
 
@@ -22,13 +22,14 @@ class FakeTrackDao : TrackDao {
         return tracks.value.find { it.id == id }
     }
 
-    override suspend fun insert(track: Track) {
-        val existingTrack = tracks.value.find { it.id == track.id }
-        val newTracks = tracks.value.toMutableSet()
-        if (existingTrack != null) {
-            newTracks -= existingTrack
+    override suspend fun insert(vararg track: Track) {
+        for (newTrack in track) {
+            val existingTrack = tracks.value.find { it.id == newTrack.id }
+            if (existingTrack != null) {
+                tracks.value -= existingTrack
+            }
+            tracks.value += newTrack
         }
-        tracks.value = newTracks + track
     }
 
     override suspend fun delete(id: String) {

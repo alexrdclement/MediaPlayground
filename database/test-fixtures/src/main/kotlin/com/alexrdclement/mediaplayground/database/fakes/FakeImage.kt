@@ -13,3 +13,9 @@ val FakeImage2 = FakeImage1.copy(
     uri = "content://media/external/images/media/2",
     albumId = "2",
 )
+
+val FakeImage3 = FakeImage1.copy(
+    id = "3",
+    uri = "content://media/external/images/media/3",
+    albumId = "1",
+)

@@ -43,7 +43,7 @@ class LocalContentStateProviderTest {
     @Test
     fun nonEmptyTracksAndAlbums_returnsContent() = runTest {
         // Stubbing tracks also stubs albums
-        localAudioRepositoryFixture.stubTracks(PreviewTracks1)
+        localAudioRepositoryFixture.putTracks(PreviewTracks1)
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
@@ -56,8 +56,10 @@ class LocalContentStateProviderTest {
 
     @Test
     fun doesNotRecreatePagingDataFlowsOnStateChange() = runTest {
+        val tracks = PreviewTracks1
+
         // Stubbing tracks also stubs albums
-        localAudioRepositoryFixture.stubTracks(PreviewTracks1)
+        localAudioRepositoryFixture.putTracks(tracks)
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
@@ -66,10 +68,10 @@ class LocalContentStateProviderTest {
             val firstItem = awaitItem()
             assertTrue(firstItem is LocalContentState.Content)
 
-            localAudioRepositoryFixture.stubTracks(listOf())
+            localAudioRepositoryFixture.deleteTracks(tracks)
             assertTrue(awaitItem() is LocalContentState.Empty)
 
-            localAudioRepositoryFixture.stubTracks(PreviewTracks1)
+            localAudioRepositoryFixture.putTracks(tracks)
 
             val lastItem = awaitItem()
             assertTrue(lastItem is LocalContentState.Content)

@@ -15,12 +15,4 @@ interface CompleteTrackDao {
     @Transaction
     @Query("SELECT * FROM tracks WHERE id = :id")
     suspend fun getTrack(id: String): CompleteTrack?
-
-    @Transaction
-    @Query("DELETE FROM tracks")
-    suspend fun deleteAll()
-
-    @Transaction
-    @Query("DELETE FROM tracks WHERE id = :id")
-    suspend fun delete(id: String)
 }
