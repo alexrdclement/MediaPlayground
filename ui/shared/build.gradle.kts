@@ -13,4 +13,5 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
 
     implementation(projects.model.audio)
+    implementation(projects.model.audio.testFixtures) // Preview data
 }
