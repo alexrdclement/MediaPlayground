@@ -12,7 +12,7 @@ interface TrackDao {
     @Query("SELECT COUNT(*) FROM tracks")
     fun getTrackCountFlow(): Flow<Int>
 
-    @Query("SELECT * FROM tracks WHERE albumId = :albumId ORDER BY trackNumber")
+    @Query("SELECT * FROM tracks WHERE album_id = :albumId ORDER BY track_number")
     suspend fun getTracksForAlbum(albumId: String): List<Track>
 
     @Query("SELECT * FROM tracks WHERE id = :id")

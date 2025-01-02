@@ -9,7 +9,7 @@ import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
 @Dao
 interface CompleteAlbumDao {
     @Transaction
-    @Query("SELECT * FROM albums ORDER BY modifiedDate DESC")
+    @Query("SELECT * FROM albums ORDER BY modified_date DESC")
     fun getAlbumsPagingSource(): PagingSource<Int, CompleteAlbum>
 
     @Transaction

@@ -8,23 +8,23 @@ data class CompleteTrack(
     @Embedded
     val track: Track,
     @Relation(
-        parentColumn = "albumId",
+        parentColumn = "album_id",
         entityColumn = "id"
     )
     val album: Album,
     @Relation(
-        parentColumn = "albumId",
+        parentColumn = "album_id",
         entityColumn = "id",
         associateBy = Junction(
             value = AlbumArtistCrossRef::class,
-            parentColumn = "albumId",
-            entityColumn = "artistId",
+            parentColumn = "album_id",
+            entityColumn = "artist_id",
         ),
     )
     val artists: List<Artist>,
     @Relation(
-        parentColumn = "albumId",
-        entityColumn = "albumId"
+        parentColumn = "album_id",
+        entityColumn = "album_id"
     )
     val images: List<Image>,
 )

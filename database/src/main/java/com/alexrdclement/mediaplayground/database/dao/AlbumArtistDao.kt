@@ -12,10 +12,10 @@ interface AlbumArtistDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg albumArist: AlbumArtistCrossRef)
 
-    @Query("SELECT * FROM albumArtists WHERE albumId = :albumId")
+    @Query("SELECT * FROM album_artists WHERE album_id = :albumId")
     suspend fun getAlbumArtists(albumId: String): List<AlbumArtistCrossRef>
 
-    @Query("SELECT * FROM albumArtists WHERE artistId = :artistId")
+    @Query("SELECT * FROM album_artists WHERE artist_id = :artistId")
     suspend fun getArtistAlbums(artistId: String): List<AlbumArtistCrossRef>
 
     @Delete

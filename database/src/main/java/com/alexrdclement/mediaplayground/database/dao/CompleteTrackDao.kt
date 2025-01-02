@@ -9,7 +9,7 @@ import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 @Dao
 interface CompleteTrackDao {
     @Transaction
-    @Query("SELECT * FROM tracks ORDER BY modifiedDate DESC")
+    @Query("SELECT * FROM tracks ORDER BY modified_date DESC")
     fun getTracksPagingSource(): PagingSource<Int, CompleteTrack>
 
     @Transaction

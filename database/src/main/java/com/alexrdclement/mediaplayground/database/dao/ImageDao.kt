@@ -11,7 +11,7 @@ interface ImageDao {
     @Query("SELECT * FROM images WHERE id = :id")
     suspend fun getImage(id: String): Image?
 
-    @Query("SELECT * FROM images WHERE albumId = :albumId")
+    @Query("SELECT * FROM images WHERE album_id = :albumId")
     suspend fun getImagesForAlbum(albumId: String): List<Image>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -20,6 +20,6 @@ interface ImageDao {
     @Query("DELETE FROM images WHERE id = :id")
     suspend fun delete(id: String)
 
-    @Query("DELETE FROM images WHERE albumId = :albumId")
+    @Query("DELETE FROM images WHERE album_id = :albumId")
     suspend fun deleteImagesForAlbum(albumId: String)
 }

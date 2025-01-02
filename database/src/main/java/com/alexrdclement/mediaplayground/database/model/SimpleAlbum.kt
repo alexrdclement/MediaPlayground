@@ -12,14 +12,14 @@ data class SimpleAlbum(
         entityColumn = "id",
         associateBy = Junction(
             value = AlbumArtistCrossRef::class,
-            parentColumn = "albumId",
-            entityColumn = "artistId",
+            parentColumn = "album_id",
+            entityColumn = "artist_id",
         ),
     )
     val artists: List<Artist>,
     @Relation(
         parentColumn = "id",
-        entityColumn = "albumId",
+        entityColumn = "album_id",
     )
     val images: List<Image>,
 )

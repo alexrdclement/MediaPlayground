@@ -8,7 +8,7 @@ data class CompleteAlbum(
     val simpleAlbum: SimpleAlbum,
     @Relation(
         parentColumn = "id",
-        entityColumn = "albumId"
+        entityColumn = "album_id"
     )
     val tracks: List<Track>,
 )

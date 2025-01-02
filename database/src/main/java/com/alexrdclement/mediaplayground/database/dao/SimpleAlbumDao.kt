@@ -12,8 +12,8 @@ interface SimpleAlbumDao {
     @Query(
         """
         SELECT * FROM albums
-        JOIN albumArtists ON albums.id = albumArtists.albumId
-        WHERE albums.title = :title AND albumArtists.artistId = :artistId
+        JOIN album_artists ON albums.id = album_artists.album_id
+        WHERE albums.title = :title AND album_artists.artist_id = :artistId
         """,
     )
     @RewriteQueriesToDropUnusedColumns
