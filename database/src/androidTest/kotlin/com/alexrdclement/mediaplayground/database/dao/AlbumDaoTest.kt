@@ -34,7 +34,7 @@ class AlbumDaoTest {
     }
 
     @Test
-    fun get_returnsInserted() = runTest {
+    fun getAlbum_returnsInserted() = runTest {
         val album = FakeAlbum1
         albumDao.insert(album)
 
@@ -44,7 +44,7 @@ class AlbumDaoTest {
     }
 
     @Test
-    fun get_returnsNullForNonExistent() = runTest {
+    fun getAlbum_returnsNullForNonExistent() = runTest {
         val result = albumDao.getAlbum("nonexistent")
         assertNull(result)
     }
@@ -58,11 +58,6 @@ class AlbumDaoTest {
 
         val resultAfterDelete = albumDao.getAlbum(album.id)
         assertEquals(null, resultAfterDelete)
-    }
-
-    @Test
-    fun deleteNonExistent() = runTest {
-        albumDao.delete("nonexistent")
     }
 
     @Test

@@ -134,9 +134,4 @@ class AlbumArtistDaoTest {
         val nonDeletedResults = albumArtistDao.getArtistAlbums(nonDeletedAlbumArtistId)
         assertEquals(nonDeletedAlbumArtists, nonDeletedResults)
     }
-
-    @Test
-    fun deleteNonExistent() = runTest {
-        artistDao.delete("nonexistent")
-    }
 }

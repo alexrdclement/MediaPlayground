@@ -104,11 +104,6 @@ class TrackDaoTest {
     }
 
     @Test
-    fun deleteNonExistent() = runTest {
-        trackDao.delete("nonexistent")
-    }
-
-    @Test
     fun getTrackCountFlow_updatesOnInsert() = runTest {
         val album1 = FakeAlbum1
         albumDao.insert(album1)

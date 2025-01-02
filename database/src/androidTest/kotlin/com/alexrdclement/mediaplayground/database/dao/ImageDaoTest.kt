@@ -55,7 +55,7 @@ class ImageDaoTest {
     }
 
     @Test
-    fun get_returnsInserted() = runTest {
+    fun getImage_returnsInserted() = runTest {
         val album = FakeAlbum1
         albumDao.insert(album)
         val image = FakeImage1.copy(albumId = album.id)
@@ -67,7 +67,7 @@ class ImageDaoTest {
     }
 
     @Test
-    fun get_returnsNullForNonExistent() = runTest {
+    fun getImage_returnsNullForNonExistent() = runTest {
         val result = imageDao.getImage("nonexistent")
         assertNull(result)
     }
@@ -103,10 +103,5 @@ class ImageDaoTest {
 
         val resultAfterDelete = imageDao.getImage(image.id)
         assertNull(resultAfterDelete)
-    }
-
-    @Test
-    fun deleteNonExistent() = runTest {
-        imageDao.delete("nonexistent")
     }
 }

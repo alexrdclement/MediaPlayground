@@ -17,5 +17,5 @@ val FakeImage2 = FakeImage1.copy(
 val FakeImage3 = FakeImage1.copy(
     id = "3",
     fileName = "3.jpg",
-    albumId = "1",
+    albumId = "3",
 )

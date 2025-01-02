@@ -71,9 +71,6 @@ class AudioLibraryViewModel @Inject constructor(
     }
 
     fun onMediaImportItemSelected(uris: List<Uri>) {
-        if (uris.isEmpty()) {
-            return
-        }
         localAudioRepository.importTracksFromDisk(uris)
     }
 }

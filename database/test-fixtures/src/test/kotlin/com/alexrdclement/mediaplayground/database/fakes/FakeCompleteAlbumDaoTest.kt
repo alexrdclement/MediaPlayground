@@ -17,10 +17,6 @@ class FakeCompleteAlbumDaoTest {
     private val imageDao =  FakeImageDao()
     private val trackDao =  FakeTrackDao()
 
-    // Two albums by different artists, first with two tracks, second with one.
-    private val fakeCompleteAlbum1 = FakeCompleteAlbum1
-    private val fakeCompleteAlbum2 = FakeCompleteAlbum2
-
     private fun makeCompleteAlbumDao(coroutineScope: CoroutineScope): FakeCompleteAlbumDao {
         return FakeCompleteAlbumDao(
             coroutineScope = coroutineScope,
@@ -48,13 +44,15 @@ class FakeCompleteAlbumDaoTest {
 
     @Test
     fun getAlbum_returnsCorrectAlbum() = runTest {
-        stubCompleteAlbum(fakeCompleteAlbum1)
-        stubCompleteAlbum(fakeCompleteAlbum2)
+        val completeAlbum1 = FakeCompleteAlbum1
+        val completeAlbum2 = FakeCompleteAlbum2
+        stubCompleteAlbum(completeAlbum1)
+        stubCompleteAlbum(completeAlbum2)
 
         val completeAlbumDao = makeCompleteAlbumDao(coroutineScope = this)
-        val actual = completeAlbumDao.getAlbum(fakeCompleteAlbum1.id)
+        val actual = completeAlbumDao.getAlbum(completeAlbum1.id)
 
         assertNotNull(actual)
-        assertEquals(fakeCompleteAlbum1, actual)
+        assertEquals(completeAlbum1, actual)
     }
 }

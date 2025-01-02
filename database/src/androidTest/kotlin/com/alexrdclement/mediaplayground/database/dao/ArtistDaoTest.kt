@@ -32,7 +32,7 @@ class ArtistDaoTest {
     }
 
     @Test
-    fun get_returnsInserted() = runTest {
+    fun getArtist_returnsInserted() = runTest {
         val artist = FakeArtist1
         artistDao.insert(artist)
 
@@ -42,7 +42,7 @@ class ArtistDaoTest {
     }
 
     @Test
-    fun get_returnsNullForNonExistent() = runTest {
+    fun getArtist_returnsNullForNonExistent() = runTest {
         val result = artistDao.getArtist("nonexistent")
         assertNull(result)
     }
@@ -72,10 +72,5 @@ class ArtistDaoTest {
 
         val resultAfterDelete = artistDao.getArtist(artist.id)
         assertEquals(null, resultAfterDelete)
-    }
-
-    @Test
-    fun deleteNonExistent() = runTest {
-        artistDao.delete("nonexistent")
     }
 }

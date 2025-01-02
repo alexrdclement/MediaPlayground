@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
+import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
@@ -22,7 +23,7 @@ class FakeSimpleAlbumDao(
                 album = album,
                 artists = artists.filter { artist ->
                     albumArtists.contains(
-                        com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef(album.id, artist.id)
+                        AlbumArtistCrossRef(album.id, artist.id)
                     )
                 },
                 images = imageDao.images.filter { it.albumId == album.id },
@@ -31,6 +32,8 @@ class FakeSimpleAlbumDao(
     }
 
     override suspend fun getAlbumByTitleAndArtistId(title: String, artistId: String): SimpleAlbum? {
-        return albums.firstOrNull()?.find { it.album.title == title && it.artists.any { it.id == artistId } }
+        return albums.firstOrNull()?.find {
+            it.album.title == title && it.artists.any { it.id == artistId }
+        }
     }
 }

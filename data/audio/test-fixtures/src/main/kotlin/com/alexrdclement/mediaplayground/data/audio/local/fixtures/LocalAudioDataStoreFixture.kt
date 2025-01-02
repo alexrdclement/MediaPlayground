@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.data.audio.local.fixtures
 
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioDataStore
 import com.alexrdclement.mediaplayground.data.audio.local.PathProvider
+import com.alexrdclement.mediaplayground.data.audio.local.fakes.FakePathProvider
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumArtistDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeArtistDao
@@ -11,12 +12,7 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionR
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeSimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrackDao
-import com.alexrdclement.mediaplayground.model.audio.Album
-import com.alexrdclement.mediaplayground.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.mediaplayground.model.audio.TrackId
-import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
@@ -50,7 +46,7 @@ class LocalAudioDataStoreFixture(
         imageDao = imageDao,
         albumArtistDao = albumArtistDao,
     ),
-    val pathProvider: PathProvider,
+    val pathProvider: PathProvider = FakePathProvider(),
 ) {
     val localAudioDataStore = LocalAudioDataStore(
         transactionRunner = transactionRunner,
