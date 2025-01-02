@@ -12,3 +12,6 @@ data class CompleteAlbum(
     )
     val tracks: List<Track>,
 )
+
+val CompleteAlbum.id: String
+    get() = simpleAlbum.album.id

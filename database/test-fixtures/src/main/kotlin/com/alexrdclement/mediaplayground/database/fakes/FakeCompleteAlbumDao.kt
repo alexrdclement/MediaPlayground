@@ -8,7 +8,6 @@ import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -62,9 +61,9 @@ class FakeCompleteAlbumDao(
             trackDao.delete(track.id)
         }
 
-        // Delete artist if this is their only album
         for (artist in existingAlbum.simpleAlbum.artists) {
             albumArtistDao.delete(AlbumArtistCrossRef(existingAlbum.simpleAlbum.album.id, artist.id))
+            // Delete artist if this is their only album
             albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
                 if (artistAlbums.isEmpty()) {
                     artistDao.delete(artist.id)

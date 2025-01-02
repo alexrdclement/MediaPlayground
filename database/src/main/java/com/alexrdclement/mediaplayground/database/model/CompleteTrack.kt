@@ -28,3 +28,6 @@ data class CompleteTrack(
     )
     val images: List<Image>,
 )
+
+val CompleteTrack.id: String
+    get() = track.id

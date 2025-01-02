@@ -59,20 +59,21 @@ class FakeCompleteTrackDao(
         // Delete album if it only contains this track
         val album = albumDao.getAlbum(existingTrack.album.id)
         if (album != null && trackDao.getTracks(album.id).size == 1) {
-            // Delete artist if this is their only album
             for (artist in existingTrack.artists) {
                 albumArtistDao.delete(AlbumArtistCrossRef(existingTrack.album.id, artist.id))
+                // Delete artist if this is their only album
                 albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
                     if (artistAlbums.isEmpty()) {
                         artistDao.delete(artist.id)
                     }
                 }
             }
-            albumDao.delete(album.id)
-        }
 
-        for (image in existingTrack.images) {
-            imageDao.delete(image.id)
+            for (image in existingTrack.images) {
+                imageDao.delete(image.id)
+            }
+
+            albumDao.delete(album.id)
         }
 
         trackDao.delete(id)
