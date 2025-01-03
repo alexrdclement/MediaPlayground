@@ -8,5 +8,6 @@ sealed class LocalContentState {
     data object Empty : LocalContentState()
     data class Content(
         val tracks: Flow<PagingData<MediaItemUi>>,
+        val albums: Flow<PagingData<MediaItemUi>>,
     ) : LocalContentState()
 }

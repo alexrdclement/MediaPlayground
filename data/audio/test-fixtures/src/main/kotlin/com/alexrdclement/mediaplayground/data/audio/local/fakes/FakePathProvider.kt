@@ -5,5 +5,8 @@ import kotlinx.io.files.Path
 import javax.inject.Inject
 
 class FakePathProvider @Inject constructor(): PathProvider {
-    override val trackImportFileWriteDir: Path = Path("file://")
+    override fun getAlbumDir(albumId: String): Path {
+        // Path de-dupes slashes, even in the scheme
+        return Path("file:/", albumId)
+    }
 }

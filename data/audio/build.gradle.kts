@@ -16,10 +16,18 @@ dependencies {
     api(libs.kotlinx.io.core)
 
     implementation(libs.androidx.activity)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
     implementation(libs.paging)
 
+    implementation(projects.database)
     implementation(projects.media.import)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(projects.data.audio.testFixtures)
+    testImplementation(projects.database.testFixtures)
+    testImplementation(projects.model.audio.testFixtures)
 }

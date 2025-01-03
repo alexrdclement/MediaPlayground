@@ -13,13 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
 import com.alexrdclement.mediaplayground.ui.theme.ButtonSpace
 import com.alexrdclement.uiplayground.components.Button
@@ -33,7 +33,7 @@ internal fun LocalContent(
     onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal = PlaygroundTheme.spacing.medium),
 ) {
     AudioLibraryContent(
         headerText = "Imported",
@@ -76,7 +76,7 @@ private fun EmptyContent(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = PlaygroundTheme.spacing.small),
     ) {
         Button(
             onClick = onImportClick,
@@ -94,25 +94,39 @@ private fun Content(
     contentPadding: PaddingValues,
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
         modifier = Modifier
             .fillMaxSize()
     ) {
+        val albums = localContentState.albums.collectAsLazyPagingItems()
+        val albumsLazyListState = rememberLazyListState()
         val tracks = localContentState.tracks.collectAsLazyPagingItems()
-        val state = rememberLazyListState()
+        val tracksLazyListState = rememberLazyListState()
 
+        LaunchedEffect(albums.itemCount) {
+            albumsLazyListState.scrollToItem(0)
+        }
         LaunchedEffect(tracks.itemCount) {
-            state.scrollToItem(0)
+            tracksLazyListState.scrollToItem(0)
         }
 
+        MediaItemRow(
+            mediaItems = albums,
+            onItemClick = onItemClick,
+            onItemPlayPauseClick = onItemPlayPauseClick,
+            title = "Imported albums",
+            lazyListState = albumsLazyListState,
+            itemWidth = MediaItemWidthCompact,
+            contentPadding = contentPadding,
+        )
         MediaItemRow(
             mediaItems = tracks,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Imported tracks",
-            lazyListState = state,
+            lazyListState = tracksLazyListState,
             itemWidth = MediaItemWidthCompact,
             contentPadding = contentPadding,
-            modifier = Modifier
         )
     }
 }
@@ -137,6 +151,7 @@ private fun ContentPreview() {
         LocalContent(
             localContentState = LocalContentState.Content(
                 tracks = flowOf(PagingData.from(PreviewTracksUi1)),
+                albums = flowOf(PagingData.from(PreviewAlbumsUi1)),
             ),
             onImportClick = {},
             onItemClick = {},

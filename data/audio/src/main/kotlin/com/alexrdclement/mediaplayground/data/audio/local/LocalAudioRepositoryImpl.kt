@@ -1,10 +1,12 @@
 package com.alexrdclement.mediaplayground.data.audio.local
 
 import android.net.Uri
-import androidx.paging.PagingSource
-import com.alexrdclement.mediaplayground.data.audio.local.pagination.LocalTrackPagingSource
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
+import com.alexrdclement.mediaplayground.model.audio.Album
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
@@ -25,28 +27,21 @@ class LocalAudioRepositoryImpl @Inject constructor(
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var importJob: Job? = null
 
-    override fun importTrackFromDisk(uri: Uri) {
+    override fun importTracksFromDisk(uris: List<Uri>) {
         importJob?.cancel()
         importJob = coroutineScope.launch {
-            val result = mediaImporter.importTrackFromDisk(
-                uri = uri,
-                fileWriteDir = pathProvider.trackImportFileWriteDir,
-            )
-            when (result) {
-                is Result.Failure -> ::onMediaImportFailure
-                is Result.Success -> {
-                    localAudioDataStore.putTrack(result.value)
-                }
+            uris.forEach { uri ->
+                importTrackFromDisk(uri)
             }
         }
     }
 
-    override fun getTracks(): Flow<List<Track>> {
-        return localAudioDataStore.getTracksFlow()
+    override fun getTrackCountFlow(): Flow<Int> {
+        return localAudioDataStore.getTrackCountFlow()
     }
 
-    override fun getTrackPagingSource(): PagingSource<Int, Track> {
-        return LocalTrackPagingSource(localAudioDataStore)
+    override fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> {
+        return localAudioDataStore.getTrackPagingData(config)
     }
 
     override suspend fun getTrack(id: TrackId): Result<Track?, LocalAudioRepository.Failure> {
@@ -55,6 +50,45 @@ class LocalAudioRepositoryImpl @Inject constructor(
             Result.Failure(LocalAudioRepository.Failure.TrackNotFound)
         } else {
             Result.Success(track)
+        }
+    }
+
+    override fun getAlbumCountFlow(): Flow<Int> {
+        return localAudioDataStore.getAlbumCountFlow()
+    }
+
+    override fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>> {
+        return localAudioDataStore.getAlbumPagingData(config)
+    }
+
+    override suspend fun getAlbum(id: AlbumId): Result<Album?, LocalAudioRepository.Failure> {
+        val album = localAudioDataStore.getAlbum(id)
+        return if (album == null) {
+            Result.Failure(LocalAudioRepository.Failure.AlbumNotFound)
+        } else {
+            Result.Success(album)
+        }
+    }
+
+    private suspend fun importTrackFromDisk(uri: Uri) {
+        val result = mediaImporter.importTrackFromDisk(
+            uri = uri,
+            getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
+            getArtistByName = { artistName ->
+                localAudioDataStore.getArtistByName(artistName)
+            },
+            getAlbumByTitleAndArtistId = { albumTitle, artistId ->
+                localAudioDataStore.getAlbumByTitleAndArtistId(
+                    albumTitle = albumTitle,
+                    artistId = artistId,
+                )
+            },
+        )
+        when (result) {
+            is Result.Failure -> onMediaImportFailure(result.failure)
+            is Result.Success -> {
+                localAudioDataStore.putTrack(result.value)
+            }
         }
     }
 

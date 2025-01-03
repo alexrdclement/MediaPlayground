@@ -7,6 +7,7 @@ kotlin = "2.0.0"
 ksp = "2.0.0-1.0.23"
 kotlinx-coroutines = "1.9.0"
 kotlinx-coroutines-android = "1.9.0"
+kotlinx-datetime = "0.6.1"
 kotlinx-io = "0.5.4"
 kotlinx-serialization-json = "1.7.3"
 core-ktx = "1.15.0"
@@ -23,6 +24,7 @@ hilt = "2.52"
 androidxHiltNavigationCompose = "1.2.0"
 media3 = "1.5.1"
 material3 = "1.3.1"
+room = "2.6.1"
 turbine = "1.1.0"
 tv-foundation = "1.0.0-alpha11"
 tv-material = "1.0.0"
@@ -41,6 +43,7 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version.ref = "kotlinx-io" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx-activity" }
@@ -76,6 +79,10 @@ media3-transformer = { group = "androidx.media3", name = "media3-transformer", v
 media3-decoder = { group = "androidx.media3", name = "media3-decoder", version.ref = "media3" }
 media3-datasource = { group = "androidx.media3", name = "media3-datasource", version.ref = "media3" }
 media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tv-foundation" }
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tv-material" }
@@ -84,6 +91,7 @@ spotify-api-kotlin-core = { group = "com.adamratzman", name = "spotify-api-kotli
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
+paging-testing = { group = "androidx.paging", name = "paging-testing", version.ref = "paging" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 uiPlayground-components = { group = "com.alexrdclement.uiplayground", name = "ui-playground-components", version.ref = "uiPlayground-components" }
@@ -94,6 +102,7 @@ android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", ve
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+room-gradle-plugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -103,6 +112,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+room = { id = "androidx.room", version.ref = "room" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 
 mediaplayground-android-application = { id = "mediaplayground.android.application", version = "unspecified" }
@@ -113,6 +123,7 @@ mediaplayground-android-hilt-test-fixtures = { id = "mediaplayground.android.hil
 mediaplayground-android-library = { id = "mediaplayground.android.library", version = "unspecified" }
 mediaplayground-android-library-compose = { id = "mediaplayground.android.library.compose", version = "unspecified" }
 mediaplayground-android-library-test-fixtures = { id = "mediaplayground.android.library.test.fixtures", version = "unspecified" }
+mediaplayground-android-room = { id = "mediaplayground.android.room", version = "unspecified" }
 mediaplayground-android-test = { id = "mediaplayground.android.test", version = "unspecified" }
 mediaplayground-jvm-library = { id = "mediaplayground.jvm.library", version = "unspecified" }
 

@@ -70,10 +70,7 @@ class AudioLibraryViewModel @Inject constructor(
         mediaSessionManager.playPause()
     }
 
-    fun onMediaImportItemSelected(uri: Uri?) {
-        if (uri == null) {
-            return
-        }
-        localAudioRepository.importTrackFromDisk(uri)
+    fun onMediaImportItemSelected(uris: List<Uri>) {
+        localAudioRepository.importTracksFromDisk(uris)
     }
 }

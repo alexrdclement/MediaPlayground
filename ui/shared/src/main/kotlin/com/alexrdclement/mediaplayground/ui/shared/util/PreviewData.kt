@@ -1,65 +1,47 @@
 package com.alexrdclement.mediaplayground.ui.shared.util
 
-import com.alexrdclement.mediaplayground.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
-import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.model.audio.TrackId
-import com.alexrdclement.mediaplayground.model.audio.mapper.toAlbum
-import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbum1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbum2
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbum3
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbums1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleAlbum1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleArtist1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleTrack1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleTrack2
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleTrack3
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleTracks1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack2
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack3
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTracks1
 import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 
 
-val PreviewSimpleArtist1 = SimpleArtist(
-    id = "1",
-    name = "Speedy Ortiz",
-)
+val PreviewSimpleArtist1 = FakeSimpleArtist1
 
-val PreviewSimpleAlbum1 = SimpleAlbum(
-    id = AlbumId("1"),
-    name = "Major Arcana",
-    artists = listOf(PreviewSimpleArtist1),
-    images = listOf(),
-)
+val PreviewSimpleAlbum1 = FakeSimpleAlbum1
 
-val PreviewSimpleTrack1 = SimpleTrack(
-    id = TrackId("1"),
-    name = "Pioneer Spine",
-    artists = listOf(PreviewSimpleArtist1),
-    durationMs = 217000,
-    trackNumber = 1,
-    uri = null,
-)
+val PreviewSimpleTrack1 = FakeSimpleTrack1
 
-val PreviewSimpleTrack2 = SimpleTrack(
-    id = TrackId("2"),
-    name = "Tiger Tank",
-    artists = listOf(PreviewSimpleArtist1),
-    durationMs = 166000,
-    trackNumber = 2,
-    uri = null,
-)
+val PreviewSimpleTrack2 = FakeSimpleTrack2
 
-val PreviewSimpleTrack3 = SimpleTrack(
-    id = TrackId("3"),
-    name = "Hitch",
-    artists = listOf(PreviewSimpleArtist1),
-    durationMs = 155000,
-    trackNumber = 3,
-    uri = null,
-)
+val PreviewSimpleTrack3 = FakeSimpleTrack3
 
-val PreviewTrack1 = PreviewSimpleTrack1.toTrack(
-    simpleAlbum = PreviewSimpleAlbum1,
-)
+val PreviewTrack1 = FakeTrack1
 
-val PreviewTrack2 = PreviewSimpleTrack2.toTrack(
-    simpleAlbum = PreviewSimpleAlbum1,
-)
+val PreviewTrack2 = FakeTrack2
 
-val PreviewTrack3 = PreviewSimpleTrack3.toTrack(
-    simpleAlbum = PreviewSimpleAlbum1,
-)
+val PreviewTrack3 = FakeTrack3
+
+val PreviewSimpleTracks1 = FakeSimpleTracks1
+
+val PreviewAlbum1 = FakeAlbum1
+
+val PreviewAlbum2 = FakeAlbum2
+
+val PreviewAlbum3 = FakeAlbum3
+
+val PreviewAlbums1 = FakeAlbums1
 
 val PreviewTrackUi1 = MediaItemUi(
     mediaItem = PreviewTrack1,
@@ -76,36 +58,12 @@ val PreviewTrackUi3 = MediaItemUi(
     isPlaying = false
 )
 
-val PreviewSimpleTracks1 = listOf(
-    PreviewSimpleTrack1,
-    PreviewSimpleTrack2,
-    PreviewSimpleTrack3,
-)
-
-val PreviewTracks1 = listOf(
-    PreviewTrack1,
-    PreviewTrack2,
-    PreviewTrack3,
-)
+val PreviewTracks1 = FakeTracks1
 
 val PreviewTracksUi1 = listOf(
     PreviewTrackUi1,
     PreviewTrackUi2,
     PreviewTrackUi3,
-)
-
-val PreviewAlbum1 = PreviewSimpleAlbum1.toAlbum(
-    tracks = PreviewSimpleTracks1
-).copy(id = AlbumId("1"))
-
-val PreviewAlbum2 = PreviewAlbum1.copy(id = AlbumId("2"))
-
-val PreviewAlbum3 = PreviewAlbum1.copy(id = AlbumId("3"))
-
-val PreviewAlbums1 = listOf(
-    PreviewAlbum1,
-    PreviewAlbum2,
-    PreviewAlbum3,
 )
 
 val PreviewAlbumUi1 = MediaItemUi(

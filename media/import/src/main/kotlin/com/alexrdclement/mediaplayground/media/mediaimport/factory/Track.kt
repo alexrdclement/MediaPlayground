@@ -1,22 +1,27 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
-import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toSimpleAlbum
-import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toSimpleArtist
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
+import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
+import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.io.files.Path
+import java.util.UUID
 
 internal fun makeTrack(
-    mediaId: String,
-    path: Path,
+    id: UUID,
+    filePath: Path,
     mediaMetadata: MediaMetadata,
-) = Track(
-    id = TrackId(mediaId),
-    title = mediaMetadata.title ?: path.name,
-    artists = listOf(mediaMetadata.toSimpleArtist()),
-    durationMs = mediaMetadata.durationMs?.toInt() ?: 0,
-    trackNumber = null,
-    uri = path.toString(),
-    simpleAlbum = mediaMetadata.toSimpleAlbum(),
-)
+    simpleArtist: SimpleArtist,
+    simpleAlbum: SimpleAlbum,
+): Track {
+    return Track(
+        id = TrackId(id.toString()),
+        title = mediaMetadata.title ?: filePath.name,
+        artists = listOf(simpleArtist),
+        durationMs = mediaMetadata.durationMs?.toInt() ?: 0,
+        trackNumber = mediaMetadata.trackNumber,
+        uri = filePath.toString(),
+        simpleAlbum = simpleAlbum,
+    )
+}

@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 
-import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -10,7 +9,7 @@ import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 class LocalContentStateProvider @Inject constructor(
@@ -23,23 +22,27 @@ class LocalContentStateProvider @Inject constructor(
         pagingConfig: PagingConfig,
     ): Flow<LocalContentState> {
         val tracksFlow = tracksFlow(coroutineScope, pagingConfig)
-        return localAudioRepository.getTracks()
-            .map { tracks ->
-                if (tracks.isEmpty()) {
-                    LocalContentState.Empty
-                } else {
-                    LocalContentState.Content(
-                        tracks = tracksFlow
-                    )
-                }
+        val albumsFlow = albumsFlow(coroutineScope, pagingConfig)
+        return combine(
+            localAudioRepository.getTrackCountFlow(),
+            localAudioRepository.getAlbumCountFlow(),
+        ) { trackCount, albumCount ->
+            if (trackCount == 0 && albumCount == 0) {
+                LocalContentState.Empty
+            } else {
+                LocalContentState.Content(
+                    tracks = tracksFlow,
+                    albums = albumsFlow,
+                )
             }
+        }.distinctUntilChanged()
     }
 
     private fun tracksFlow(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ) = combine(
-        tracksPager(pagingConfig).flow.cachedIn(coroutineScope),
+        localAudioRepository.getTrackPagingData(pagingConfig).cachedIn(coroutineScope),
         mediaSessionManager.loadedMediaItem,
         mediaSessionManager.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
@@ -51,8 +54,19 @@ class LocalContentStateProvider @Inject constructor(
         }
     }.cachedIn(coroutineScope)
 
-    private fun tracksPager(pagingConfig: PagingConfig) = Pager(
-        config = pagingConfig,
-        pagingSourceFactory = localAudioRepository::getTrackPagingSource,
-    )
+    private fun albumsFlow(
+        coroutineScope: CoroutineScope,
+        pagingConfig: PagingConfig,
+    ) = combine(
+        localAudioRepository.getAlbumPagingData(pagingConfig).cachedIn(coroutineScope),
+        mediaSessionManager.loadedMediaItem,
+        mediaSessionManager.isPlaying,
+    ) { pagingData, loadedMediaItem, isPlaying ->
+        pagingData.map { album ->
+            MediaItemUi(
+                mediaItem = album,
+                isPlaying = isPlaying && album.id == loadedMediaItem?.id
+            )
+        }
+    }.cachedIn(coroutineScope)
 }

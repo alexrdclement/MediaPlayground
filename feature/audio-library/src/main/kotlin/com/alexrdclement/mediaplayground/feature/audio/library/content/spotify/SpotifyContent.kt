@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
@@ -30,7 +29,7 @@ internal fun SpotifyContent(
     onLogOutClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal = PlaygroundTheme.spacing.medium),
 ) {
     AudioLibraryContent(
         headerText = "Spotify",
@@ -70,7 +69,7 @@ private fun SpotifyLoggedInContent(
     contentPadding: PaddingValues,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
         modifier = Modifier
             .fillMaxSize()
     ) {
