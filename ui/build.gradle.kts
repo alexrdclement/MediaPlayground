@@ -19,7 +19,6 @@ dependencies {
     implementation(libs.media3.ui)
     implementation(libs.paging)
     implementation(libs.paging.compose)
-    implementation(libs.coil)
     implementation(libs.coil.compose)
     implementation(libs.uiPlayground.components)
     implementation(libs.uiPlayground.theme)
