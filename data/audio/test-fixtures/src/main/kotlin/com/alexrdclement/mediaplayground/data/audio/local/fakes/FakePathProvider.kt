@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 class FakePathProvider @Inject constructor(): PathProvider {
     override fun getAlbumDir(albumId: String): Path {
-        return Path("file://", albumId)
+        // Path de-dupes slashes, even in the scheme
+        return Path("file:/", albumId)
     }
 }

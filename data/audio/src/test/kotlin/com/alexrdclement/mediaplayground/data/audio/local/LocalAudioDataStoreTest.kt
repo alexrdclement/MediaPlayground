@@ -73,7 +73,7 @@ class LocalAudioDataStoreTest {
     @Test
     fun getTrack_returnsPutTracks() = runTest {
         val artists = listOf(FakeSimpleArtist1)
-        val simpleAlbum = FakeTrack1.simpleAlbum.copy(
+        val simpleAlbum = FakeSimpleAlbum1.copy(
             artists = artists,
             images = listOf(FakeImage1),
         )
