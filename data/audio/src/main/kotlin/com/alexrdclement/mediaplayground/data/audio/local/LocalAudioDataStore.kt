@@ -31,6 +31,7 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -85,7 +86,7 @@ class LocalAudioDataStore @Inject constructor(
     }
 
     fun getTrackCountFlow(): Flow<Int> {
-        return trackDao.getTrackCountFlow()
+        return trackDao.getTrackCountFlow().distinctUntilChanged()
     }
 
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> {
@@ -137,7 +138,7 @@ class LocalAudioDataStore @Inject constructor(
     }
 
     fun getAlbumCountFlow(): Flow<Int> {
-        return albumDao.getAlbumCountFlow()
+        return albumDao.getAlbumCountFlow().distinctUntilChanged()
     }
 
     fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>> {
