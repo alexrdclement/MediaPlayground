@@ -28,3 +28,12 @@ fun SimpleTrack.toTrack(
     artists = artists,
     simpleAlbum = album.toSimpleAlbum(),
 )
+
+fun Track.toSimpleTrack() = SimpleTrack(
+    id = id,
+    name = title,
+    durationMs = durationMs,
+    trackNumber = trackNumber,
+    uri = uri,
+    artists = artists,
+)

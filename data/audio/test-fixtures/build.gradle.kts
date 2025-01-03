@@ -10,6 +10,7 @@ android {
 
 dependencies {
     api(projects.data.audio)
-    api(projects.database.testFixtures)
     api(projects.media.import.testFixtures)
+    
+    implementation(projects.database.testFixtures)
 }

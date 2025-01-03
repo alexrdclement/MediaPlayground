@@ -24,4 +24,10 @@ dependencies {
 
     implementation(projects.database)
     implementation(projects.media.import)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(projects.data.audio.testFixtures)
+    testImplementation(projects.database.testFixtures)
+    testImplementation(projects.model.audio.testFixtures)
 }
