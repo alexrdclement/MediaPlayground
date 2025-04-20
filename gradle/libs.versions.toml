@@ -1,16 +1,16 @@
 [versions]
-android-desugar-jdk-libs = "2.1.4"
-android-gradle-plugin = "8.7.3"
-android-tools = "31.7.3"
-compose-bom = "2024.12.01"
+android-desugar-jdk-libs = "2.1.5"
+android-gradle-plugin = "8.9.1"
+android-tools = "31.9.1"
+compose-bom = "2025.04.00"
 kotlin = "2.0.0"
 ksp = "2.0.0-1.0.23"
 kotlinx-coroutines = "1.9.0"
 kotlinx-coroutines-android = "1.9.0"
 kotlinx-datetime = "0.6.1"
 kotlinx-io = "0.5.4"
-kotlinx-serialization-json = "1.7.3"
-core-ktx = "1.15.0"
+kotlinx-serialization-json = "1.8.0"
+core-ktx = "1.16.0"
 junit = "4.13.2"
 androidx-activity = "1.8.2" # Anything higher requires https://github.com/adamint/spotify-web-api-kotlin/issues/338
 androidx-core-splashscreen = "1.0.1"
@@ -20,20 +20,20 @@ androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 lifecycle-runtime-ktx = "2.8.7"
 lifecycle-runtime-compose = "2.8.7"
-navigation-compose = "2.8.5"
+navigation-compose = "2.8.9"
 hilt = "2.52"
 androidxHiltNavigationCompose = "1.2.0"
-media3 = "1.5.1"
-material3 = "1.3.1"
-room = "2.6.1"
+media3 = "1.6.1"
+material3 = "1.3.2"
+room = "2.7.0"
 turbine = "1.1.0"
-tv-foundation = "1.0.0-alpha11"
+tv-foundation = "1.0.0-alpha12"
 tv-material = "1.0.0"
 appcompat = "1.7.0"
 org-jetbrains-kotlin-jvm = "1.9.0"
 spotify-api-kotlin-core = "4.1.3"
-uiTooling = "1.7.6"
-paging = "3.3.5"
+uiTooling = "1.7.8"
+paging = "3.3.6"
 coil = "3.0.4"
 uiPlayground-components = "0.0.8"
 uiPlayground-theme = "0.0.8"
@@ -116,16 +116,16 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 
-mediaplayground-android-application = { id = "mediaplayground.android.application", version = "unspecified" }
-mediaplayground-android-application-compose = { id = "mediaplayground.android.application.compose", version = "unspecified" }
-mediaplayground-android-feature = { id = "mediaplayground.android.feature", version = "unspecified" }
-mediaplayground-android-hilt = { id = "mediaplayground.android.hilt", version = "unspecified" }
-mediaplayground-android-hilt-test-fixtures = { id = "mediaplayground.android.hilt.test.fixtures", version = "unspecified" }
-mediaplayground-android-library = { id = "mediaplayground.android.library", version = "unspecified" }
-mediaplayground-android-library-compose = { id = "mediaplayground.android.library.compose", version = "unspecified" }
-mediaplayground-android-library-test-fixtures = { id = "mediaplayground.android.library.test.fixtures", version = "unspecified" }
-mediaplayground-android-room = { id = "mediaplayground.android.room", version = "unspecified" }
-mediaplayground-android-test = { id = "mediaplayground.android.test", version = "unspecified" }
-mediaplayground-jvm-library = { id = "mediaplayground.jvm.library", version = "unspecified" }
+mediaplayground-android-application = { id = "mediaplayground.android.application" }
+mediaplayground-android-application-compose = { id = "mediaplayground.android.application.compose" }
+mediaplayground-android-feature = { id = "mediaplayground.android.feature" }
+mediaplayground-android-hilt = { id = "mediaplayground.android.hilt" }
+mediaplayground-android-hilt-test-fixtures = { id = "mediaplayground.android.hilt.test.fixtures" }
+mediaplayground-android-library = { id = "mediaplayground.android.library" }
+mediaplayground-android-library-compose = { id = "mediaplayground.android.library.compose" }
+mediaplayground-android-library-test-fixtures = { id = "mediaplayground.android.library.test.fixtures" }
+mediaplayground-android-room = { id = "mediaplayground.android.room" }
+mediaplayground-android-test = { id = "mediaplayground.android.test" }
+mediaplayground-jvm-library = { id = "mediaplayground.jvm.library" }
 
 [bundles]
