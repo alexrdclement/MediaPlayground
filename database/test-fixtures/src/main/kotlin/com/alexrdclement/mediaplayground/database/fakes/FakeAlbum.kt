@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.model.Album
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 val FakeAlbum1 = Album(
     id = "1",

@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.model.Track
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 val FakeTrack1 = Track(
     id = "1",
