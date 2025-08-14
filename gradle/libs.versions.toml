@@ -27,7 +27,6 @@ media3 = "1.8.0"
 material3 = "1.3.2"
 room = "2.7.2"
 turbine = "1.2.1"
-tv-foundation = "1.0.0-alpha12"
 tv-material = "1.0.1"
 appcompat = "1.7.1"
 org-jetbrains-kotlin-jvm = "2.2.0"
@@ -86,7 +85,6 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tv-foundation" }
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tv-material" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 spotify-api-kotlin-core = { group = "com.adamratzman", name = "spotify-api-kotlin-core", version.ref = "spotify-api-kotlin-core" }

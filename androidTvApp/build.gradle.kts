@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.tv.foundation)
     implementation(libs.tv.material)
     implementation(libs.lifecycle.runtime.ktx)
 
