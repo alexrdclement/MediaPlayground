@@ -4,15 +4,20 @@ import androidx.paging.PagingConfig
 import app.cash.turbine.test
 import com.alexrdclement.media.session.fakes.FakeMediaSessionManager
 import com.alexrdclement.mediaplayground.data.audio.local.fixtures.LocalAudioRepositoryFixture
+import com.alexrdclement.mediaplayground.testing.MainDispatcherRule
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracks1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class LocalContentStateProviderTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var localAudioRepositoryFixture: LocalAudioRepositoryFixture
     private lateinit var mediaSessionManager: FakeMediaSessionManager

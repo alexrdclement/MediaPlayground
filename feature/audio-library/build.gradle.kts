@@ -29,4 +29,5 @@ dependencies {
 
     testImplementation(projects.data.audio.testFixtures)
     testImplementation(projects.media.session.testFixtures)
+    testImplementation(projects.testing)
 }

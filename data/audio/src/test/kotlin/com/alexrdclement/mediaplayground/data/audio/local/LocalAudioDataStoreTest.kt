@@ -20,7 +20,9 @@ import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack2
 import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleTrack
+import com.alexrdclement.mediaplayground.testing.MainDispatcherRule
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,6 +31,9 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class LocalAudioDataStoreTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var transactionRunner: DatabaseTransactionRunner
     private lateinit var artistDao: ArtistDao
