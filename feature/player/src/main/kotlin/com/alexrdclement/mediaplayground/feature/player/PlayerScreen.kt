@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.media3.common.Player
 import com.alexrdclement.mediaplayground.ui.components.MediaPlayer
-import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable

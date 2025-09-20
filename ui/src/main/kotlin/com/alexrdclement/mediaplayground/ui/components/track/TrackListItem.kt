@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.ui.shared.theme.DisabledAlpha
 import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
-import com.alexrdclement.uiplayground.components.PlayPauseButton
-import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlin.time.Duration.Companion.milliseconds
 

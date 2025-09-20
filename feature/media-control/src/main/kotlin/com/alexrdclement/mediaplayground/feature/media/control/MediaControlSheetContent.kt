@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.PlayPauseButton
-import com.alexrdclement.uiplayground.components.Text
-import com.alexrdclement.uiplayground.components.model.Artist
-import com.alexrdclement.uiplayground.components.model.MediaItem
+import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.media.PlayPauseButton
+import com.alexrdclement.uiplayground.components.media.model.Artist
+import com.alexrdclement.uiplayground.components.media.model.MediaItem
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable

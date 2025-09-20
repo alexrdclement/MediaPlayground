@@ -2,7 +2,6 @@ package com.alexrdclement.mediaplayground.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,9 +22,9 @@ import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
-import com.alexrdclement.uiplayground.components.PlayPauseButton
-import com.alexrdclement.uiplayground.components.Surface
-import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.core.Surface
+import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable

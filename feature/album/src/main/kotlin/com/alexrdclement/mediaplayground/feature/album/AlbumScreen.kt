@@ -26,9 +26,9 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.shared.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbum1
 import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
-import com.alexrdclement.uiplayground.components.PlayPauseButton
-import com.alexrdclement.uiplayground.components.Surface
-import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.core.Surface
+import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable

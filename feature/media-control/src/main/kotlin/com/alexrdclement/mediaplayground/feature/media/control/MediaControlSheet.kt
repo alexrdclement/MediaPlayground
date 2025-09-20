@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -19,11 +18,12 @@ import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.shared.R
-import com.alexrdclement.uiplayground.components.MediaControlSheetState
-import com.alexrdclement.uiplayground.components.Surface
-import com.alexrdclement.uiplayground.components.model.Artist
+import com.alexrdclement.uiplayground.components.core.Surface
+import com.alexrdclement.uiplayground.components.media.MediaControlSheetState
+import com.alexrdclement.uiplayground.components.media.model.Artist
 import kotlinx.coroutines.launch
-import com.alexrdclement.uiplayground.components.MediaControlSheet as MediaControlSheetComponent
+import com.alexrdclement.uiplayground.components.media.MediaControlSheet as MediaControlSheetComponent
+import com.alexrdclement.uiplayground.components.media.model.MediaItem as UiMediaItem
 
 @Composable
 fun MediaControlSheet(
@@ -66,7 +66,7 @@ fun MediaControlSheet(
                 }
             }
             val uiMediaItem by derivedStateOf {
-                com.alexrdclement.uiplayground.components.model.MediaItem(
+                UiMediaItem(
                     artworkLargeUrl = mediaItem.largeImageUrl,
                     artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
                     title = mediaItem.title,
