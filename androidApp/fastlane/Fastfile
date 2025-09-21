@@ -16,23 +16,19 @@
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
+  desc "Build and upload the app to Firebase App Distribution"
+  lane :distribute_to_firebase do |options|
+    gradle(
+      task: "assembleRelease",
+      project_dir: "../",
+    )
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
-
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+    firebase_app_distribution(
+      app: options[:firebase_app_id],
+      groups: "testers",
+      release_notes: options[:release_notes],
+      android_artifact_path: "build/outputs/apk/release/androidApp-release.apk",
+#       android_artifact_path: "build/outputs/bundle/release/androidApp-release.aab",
+    )
   end
 end
