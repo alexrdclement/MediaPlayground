@@ -16,3 +16,5 @@ local.properties
 .idea/
 tokens.properties
 .kotlin
+*/vendor/*
+androidApp/.bundle
