@@ -2,9 +2,9 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.spotify
 
 import androidx.paging.PagingConfig
 import app.cash.turbine.test
-import com.alexrdclement.mediaplayground.data.audio.spotify.fixtures.SpotifyAudioRepositoryFixture
+import com.alexrdclement.media.ui.fakes.FakeMediaSessionState
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.FakeSpotifyAuth
-import com.alexrdclement.media.session.fakes.FakeMediaSessionManager
+import com.alexrdclement.mediaplayground.data.audio.spotify.fixtures.SpotifyAudioRepositoryFixture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -16,7 +16,7 @@ class SpotifyContentStateProviderTest {
 
     private lateinit var spotifyAuth: FakeSpotifyAuth
     private lateinit var spotifyAudioRepositoryFixture: SpotifyAudioRepositoryFixture
-    private lateinit var mediaSessionManager: FakeMediaSessionManager
+    private lateinit var mediaSessionState: FakeMediaSessionState
 
     private lateinit var spotifyContentStateProvider: SpotifyContentStateProvider
 
@@ -26,11 +26,11 @@ class SpotifyContentStateProviderTest {
     fun setup() {
         spotifyAuth = FakeSpotifyAuth()
         spotifyAudioRepositoryFixture = SpotifyAudioRepositoryFixture()
-        mediaSessionManager = FakeMediaSessionManager()
+        mediaSessionState = FakeMediaSessionState()
         spotifyContentStateProvider = SpotifyContentStateProvider(
             spotifyAuth = spotifyAuth,
             spotifyAudioRepository = spotifyAudioRepositoryFixture.spotifyAudioRepository,
-            mediaSessionManager = mediaSessionManager,
+            mediaSessionState = mediaSessionState,
         )
     }
 

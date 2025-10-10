@@ -4,7 +4,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
-import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
+import com.alexrdclement.mediaplayground.media.session.MediaSessionState
+import com.alexrdclement.mediaplayground.media.session.isPlaying
+import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +16,7 @@ import javax.inject.Inject
 
 class LocalContentStateProvider @Inject constructor(
     private val localAudioRepository: LocalAudioRepository,
-    private val mediaSessionManager: MediaSessionManager,
+    private val mediaSessionState: MediaSessionState,
 ) {
 
     fun flow(
@@ -43,8 +45,8 @@ class LocalContentStateProvider @Inject constructor(
         pagingConfig: PagingConfig,
     ) = combine(
         localAudioRepository.getTrackPagingData(pagingConfig).cachedIn(coroutineScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
+        mediaSessionState.loadedMediaItem,
+        mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { track ->
             MediaItemUi(
@@ -59,8 +61,8 @@ class LocalContentStateProvider @Inject constructor(
         pagingConfig: PagingConfig,
     ) = combine(
         localAudioRepository.getAlbumPagingData(pagingConfig).cachedIn(coroutineScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
+        mediaSessionState.loadedMediaItem,
+        mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { album ->
             MediaItemUi(

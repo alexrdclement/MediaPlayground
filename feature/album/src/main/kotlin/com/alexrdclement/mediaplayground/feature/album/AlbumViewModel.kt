@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumIdArgKey
-import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
-import com.alexrdclement.mediaplayground.media.session.loadIfNecessary
-import com.alexrdclement.mediaplayground.media.session.playPause
+import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
+import com.alexrdclement.mediaplayground.media.engine.playPause
+import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
+import com.alexrdclement.mediaplayground.media.session.MediaSessionState
+import com.alexrdclement.mediaplayground.media.session.isPlaying
+import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
@@ -17,6 +20,7 @@ import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +28,8 @@ import javax.inject.Inject
 class AlbumViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     audioRepository: AudioRepository,
-    private val mediaSessionManager: MediaSessionManager,
+    private val mediaSessionControl: MediaSessionControl,
+    private val mediaSessionState: MediaSessionState,
 ) : ViewModel() {
     private val albumId: AlbumId? = savedStateHandle.get<String>(AlbumIdArgKey)?.let(::AlbumId)
 
@@ -32,8 +37,8 @@ class AlbumViewModel @Inject constructor(
 
     val uiState = combine(
         album,
-        mediaSessionManager.isPlaying,
-        mediaSessionManager.loadedMediaItem
+        mediaSessionState.isPlaying,
+        mediaSessionState.loadedMediaItem
     ) { album, isPlaying, loadedMediaItem ->
         if (album == null) {
             return@combine AlbumUiState.Loading
@@ -72,26 +77,36 @@ class AlbumViewModel @Inject constructor(
         val album = album.value ?: return
         val simpleTrack = trackUi.track
 
-        if (mediaSessionManager.loadedMediaItem.value?.id == albumId) {
-            val trackIndex = album.tracks.indexOf(simpleTrack)
-            mediaSessionManager.loadFromPlaylist(trackIndex)
-        } else {
-            val track = simpleTrack.toTrack(album)
-            mediaSessionManager.load(track)
-        }
+        viewModelScope.launch {
+            val engineState = mediaSessionState.mediaEngineState
+            val engineControl = mediaSessionControl.getMediaEngineControl()
+            if (engineState.getLoadedMediaItem().first()?.id == albumId) {
+                val trackIndex = album.tracks.indexOf(simpleTrack)
+                engineControl.loadFromPlaylist(trackIndex)
+            } else {
+                val track = simpleTrack.toTrack(album)
+                engineControl.load(track)
+            }
 
-        mediaSessionManager.play()
+            engineControl.transportControl.play()
+        }
     }
 
     fun onAlbumPlayPauseClick() {
         val album = album.value ?: return
         if (!album.isPlayable) return
 
-        mediaSessionManager.loadIfNecessary(album)
-        mediaSessionManager.playPause()
+        viewModelScope.launch {
+            with(mediaSessionControl.getMediaEngineControl()) {
+                loadIfNecessary(album)
+                playPause()
+            }
+        }
     }
 
     fun onTrackPlayPauseClick(trackUi: TrackUi) {
-        mediaSessionManager.playPause()
+        viewModelScope.launch {
+            mediaSessionControl.getMediaEngineControl().playPause()
+        }
     }
 }

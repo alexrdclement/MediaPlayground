@@ -16,6 +16,6 @@ dependencies {
     implementation(libs.uiPlayground.components)
     implementation(libs.uiPlayground.theme)
 
-    implementation(projects.media.session)
+    implementation(projects.media.session.api)
     implementation(projects.model.audio)
 }

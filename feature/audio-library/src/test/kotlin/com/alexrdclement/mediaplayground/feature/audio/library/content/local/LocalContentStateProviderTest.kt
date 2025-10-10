@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 
 import androidx.paging.PagingConfig
 import app.cash.turbine.test
-import com.alexrdclement.media.session.fakes.FakeMediaSessionManager
+import com.alexrdclement.media.ui.fakes.FakeMediaSessionState
 import com.alexrdclement.mediaplayground.data.audio.local.fixtures.LocalAudioRepositoryFixture
 import com.alexrdclement.mediaplayground.testing.MainDispatcherRule
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracks1
@@ -20,17 +20,17 @@ class LocalContentStateProviderTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var localAudioRepositoryFixture: LocalAudioRepositoryFixture
-    private lateinit var mediaSessionManager: FakeMediaSessionManager
+    private lateinit var mediaSessionState: FakeMediaSessionState
 
     private lateinit var localContentStateProvider: LocalContentStateProvider
 
     @BeforeTest
     fun setup() {
         localAudioRepositoryFixture = LocalAudioRepositoryFixture()
-        mediaSessionManager = FakeMediaSessionManager()
+        mediaSessionState = FakeMediaSessionState()
         localContentStateProvider = LocalContentStateProvider(
             localAudioRepository = localAudioRepositoryFixture.localAudioRepository,
-            mediaSessionManager = mediaSessionManager,
+            mediaSessionState = mediaSessionState,
         )
     }
 
