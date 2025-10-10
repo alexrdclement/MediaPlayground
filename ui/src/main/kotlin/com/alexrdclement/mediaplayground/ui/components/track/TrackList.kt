@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.ui.shared.model.TrackUi
+import com.alexrdclement.mediaplayground.ui.model.TrackUi
 
 @Composable
 fun TrackList(

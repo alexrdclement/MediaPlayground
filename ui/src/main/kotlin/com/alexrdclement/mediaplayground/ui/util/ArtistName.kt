@@ -1,9 +1,9 @@
-package com.alexrdclement.mediaplayground.ui.shared.util
+package com.alexrdclement.mediaplayground.ui.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.ui.shared.R
+import com.alexrdclement.mediaplayground.ui.R
 
 @Composable
 fun artistNamesOrDefault(artists: List<SimpleArtist>): String {

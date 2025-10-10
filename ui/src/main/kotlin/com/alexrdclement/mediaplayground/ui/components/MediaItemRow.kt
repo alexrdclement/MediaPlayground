@@ -20,8 +20,8 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
-import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
+import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme

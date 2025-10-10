@@ -5,7 +5,7 @@ import app.cash.turbine.test
 import com.alexrdclement.media.session.fakes.FakeMediaSessionManager
 import com.alexrdclement.mediaplayground.data.audio.local.fixtures.LocalAudioRepositoryFixture
 import com.alexrdclement.mediaplayground.testing.MainDispatcherRule
-import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracks1
+import com.alexrdclement.mediaplayground.ui.util.PreviewTracks1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

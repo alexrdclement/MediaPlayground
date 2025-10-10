@@ -20,8 +20,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.ui.shared.theme.DisabledAlpha
-import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
+import com.alexrdclement.mediaplayground.ui.theme.DisabledAlpha
+import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme

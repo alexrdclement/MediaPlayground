@@ -23,9 +23,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.track.TrackList
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
-import com.alexrdclement.mediaplayground.ui.shared.model.TrackUi
-import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbum1
-import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
+import com.alexrdclement.mediaplayground.ui.model.TrackUi
+import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
+import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton

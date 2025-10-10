@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.album
 
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.ui.shared.model.TrackUi
+import com.alexrdclement.mediaplayground.ui.model.TrackUi
 
 sealed class AlbumUiState {
     data object Loading : AlbumUiState()

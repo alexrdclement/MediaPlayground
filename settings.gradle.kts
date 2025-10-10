@@ -37,7 +37,6 @@ include(":feature:player")
 include(":feature:spotify")
 include(":testing")
 include(":ui")
-include(":ui:shared")
 
 if (file("../UiPlayground").exists()) {
     includeBuild("../UiPlayground") {

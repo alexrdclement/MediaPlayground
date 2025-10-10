@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.ui.shared.theme
+package com.alexrdclement.mediaplayground.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

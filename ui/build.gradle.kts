@@ -8,8 +8,6 @@ android {
 }
 
 dependencies {
-    api(projects.ui.shared)
-
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
