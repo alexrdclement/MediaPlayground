@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.ui.shared.model
+package com.alexrdclement.mediaplayground.ui.model
 
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 

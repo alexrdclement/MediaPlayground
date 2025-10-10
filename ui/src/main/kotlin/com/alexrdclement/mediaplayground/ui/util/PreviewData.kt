@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.ui.shared.util
+package com.alexrdclement.mediaplayground.ui.util
 
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbum1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbum2
@@ -14,7 +14,7 @@ import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack3
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTracks1
-import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 
 
 val PreviewSimpleArtist1 = FakeSimpleArtist1

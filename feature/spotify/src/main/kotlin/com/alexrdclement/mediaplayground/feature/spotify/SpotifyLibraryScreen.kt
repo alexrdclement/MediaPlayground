@@ -33,9 +33,9 @@ import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.components.spotify.SpotifyAuthButton
-import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
-import com.alexrdclement.mediaplayground.ui.shared.util.PreviewAlbumsUi1
-import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTracksUi1
+import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
+import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme

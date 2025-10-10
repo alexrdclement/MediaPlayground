@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.audio.library.content.spotify
 
 import androidx.paging.PagingData
-import com.alexrdclement.mediaplayground.ui.shared.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import kotlinx.coroutines.flow.Flow
 
 sealed class SpotifyContentState {

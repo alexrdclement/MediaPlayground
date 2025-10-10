@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import coil3.compose.AsyncImage
-import com.alexrdclement.mediaplayground.ui.shared.theme.DisabledAlpha
+import com.alexrdclement.mediaplayground.ui.theme.DisabledAlpha
 
 @Composable
 fun MediaItemArtwork(

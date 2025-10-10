@@ -8,8 +8,6 @@ android {
 }
 
 dependencies {
-    api(projects.ui.shared)
-
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
@@ -24,4 +22,5 @@ dependencies {
     implementation(libs.uiPlayground.theme)
 
     implementation(projects.model.audio)
+    implementation(projects.model.audio.testFixtures) // Preview data
 }

@@ -17,7 +17,7 @@ import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
-import com.alexrdclement.mediaplayground.ui.shared.R
+import com.alexrdclement.mediaplayground.ui.R
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.media.MediaControlSheetState
 import com.alexrdclement.uiplayground.components.media.model.Artist

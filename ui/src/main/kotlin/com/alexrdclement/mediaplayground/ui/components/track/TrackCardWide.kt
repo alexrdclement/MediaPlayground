@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
-import com.alexrdclement.mediaplayground.ui.shared.util.PreviewTrack1
-import com.alexrdclement.mediaplayground.ui.shared.util.artistNamesOrDefault
+import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
+import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
