@@ -22,4 +22,5 @@ dependencies {
     implementation(libs.uiPlayground.theme)
 
     implementation(projects.model.audio)
+    implementation(projects.model.audio.testFixtures) // Preview data
 }
