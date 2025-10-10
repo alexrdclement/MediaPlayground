@@ -21,7 +21,7 @@ dependencies {
     implementation(libs.uiPlayground.theme)
 
     implementation(projects.data.audio)
-    implementation(projects.media.session)
+    implementation(projects.media.session.api)
     implementation(projects.model.audio)
 
     testImplementation(libs.kotlinx.coroutines.test)

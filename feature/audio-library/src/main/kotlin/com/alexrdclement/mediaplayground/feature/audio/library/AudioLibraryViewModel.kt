@@ -8,9 +8,11 @@ import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStateProvider
 import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentStateProvider
-import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
-import com.alexrdclement.mediaplayground.media.session.loadIfNecessary
-import com.alexrdclement.mediaplayground.media.session.playPause
+import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
+import com.alexrdclement.mediaplayground.media.engine.playPause
+import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
+import com.alexrdclement.mediaplayground.media.session.MediaSessionState
+import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +30,8 @@ class AudioLibraryViewModel @Inject constructor(
     spotifyContentStateProvider: SpotifyContentStateProvider,
     private val spotifyAuth: SpotifyAuth,
     private val localAudioRepository: LocalAudioRepository,
-    private val mediaSessionManager: MediaSessionManager,
+    private val mediaSessionControl: MediaSessionControl,
+    private val mediaSessionState: MediaSessionState,
 ): ViewModel() {
     
     private companion object {
@@ -37,7 +41,7 @@ class AudioLibraryViewModel @Inject constructor(
     val uiState: StateFlow<AudioLibraryUiState> = combine(
         localContentStateProvider.flow(viewModelScope, pagingConfig),
         spotifyContentStateProvider.flow(viewModelScope, pagingConfig),
-        mediaSessionManager.loadedMediaItem
+        mediaSessionState.loadedMediaItem
     ) { localContentState, spotifyContentState, loadedMediaItem ->
         AudioLibraryUiState.ContentReady(
             localContentState = localContentState,
@@ -59,15 +63,23 @@ class AudioLibraryViewModel @Inject constructor(
             is Album -> {}
             is Track -> {
                 if (!mediaItem.isPlayable) return
-                mediaSessionManager.loadIfNecessary(mediaItemUi.mediaItem)
-                mediaSessionManager.play()
+                viewModelScope.launch {
+                    with(mediaSessionControl.getMediaEngineControl()) {
+                        loadIfNecessary(mediaItemUi.mediaItem)
+                        transportControl.play()
+                    }
+                }
             }
         }
     }
 
     fun onPlayPauseClick(mediaItemUi: MediaItemUi) {
-        mediaSessionManager.loadIfNecessary(mediaItemUi.mediaItem)
-        mediaSessionManager.playPause()
+        viewModelScope.launch {
+            with(mediaSessionControl.getMediaEngineControl()) {
+                loadIfNecessary(mediaItemUi.mediaItem)
+                transportControl.playPause()
+            }
+        }
     }
 
     fun onMediaImportItemSelected(uris: List<Uri>) {

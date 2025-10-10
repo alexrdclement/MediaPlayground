@@ -10,17 +10,11 @@ android {
 dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.material3)
-    implementation(libs.media3.exoplayer)
-    implementation(libs.media3.ui)
-    implementation(libs.media3.session)
-    implementation(libs.media3.datasource)
-    implementation(libs.media3.common)
     implementation(libs.uiPlayground.components)
     implementation(libs.uiPlayground.theme)
 
     implementation(projects.data.audio)
     implementation(projects.model.audio)
-    implementation(projects.media.session)
+    implementation(projects.media.session.api)
+    implementation(projects.media.ui.api)
 }

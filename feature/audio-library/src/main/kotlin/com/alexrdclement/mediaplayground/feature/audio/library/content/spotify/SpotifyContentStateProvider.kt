@@ -7,7 +7,10 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
-import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
+import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
+import com.alexrdclement.mediaplayground.media.session.MediaSessionState
+import com.alexrdclement.mediaplayground.media.session.isPlaying
+import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +21,7 @@ import javax.inject.Inject
 class SpotifyContentStateProvider @Inject constructor(
     private val spotifyAuth: SpotifyAuth,
     private val spotifyAudioRepository: SpotifyAudioRepository,
-    private val mediaSessionManager: MediaSessionManager,
+    private val mediaSessionState: MediaSessionState,
 ) {
 
     fun flow(
@@ -45,8 +48,8 @@ class SpotifyContentStateProvider @Inject constructor(
         pagingConfig: PagingConfig,
     ): Flow<PagingData<MediaItemUi>> = combine(
         savedTracksPager(pagingConfig).flow.cachedIn(coroutineScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
+        mediaSessionState.loadedMediaItem,
+        mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { track ->
             MediaItemUi(
@@ -61,8 +64,8 @@ class SpotifyContentStateProvider @Inject constructor(
         pagingConfig: PagingConfig,
     ) = combine(
         savedAlbumsPager(pagingConfig).flow.cachedIn(coroutineScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
+        mediaSessionState.loadedMediaItem,
+        mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { album ->
             MediaItemUi(

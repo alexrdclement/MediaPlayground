@@ -9,9 +9,12 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
-import com.alexrdclement.mediaplayground.media.session.MediaSessionManager
-import com.alexrdclement.mediaplayground.media.session.loadIfNecessary
-import com.alexrdclement.mediaplayground.media.session.playPause
+import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
+import com.alexrdclement.mediaplayground.media.engine.playPause
+import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
+import com.alexrdclement.mediaplayground.media.session.MediaSessionState
+import com.alexrdclement.mediaplayground.media.session.isPlaying
+import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
@@ -21,13 +24,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SpotifyLibraryViewModel @Inject constructor(
     private val spotifyAuth: SpotifyAuth,
     private val spotifyAudioRepository: SpotifyAudioRepository,
-    private val mediaSessionManager: MediaSessionManager,
+    private val mediaSessionControl: MediaSessionControl,
+    mediaSessionState: MediaSessionState,
 ) : ViewModel() {
 
     private companion object {
@@ -40,8 +45,8 @@ class SpotifyLibraryViewModel @Inject constructor(
     )
     private val savedTracks: Flow<PagingData<MediaItemUi>> = combine(
         savedTracksPager.flow.cachedIn(viewModelScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
+        mediaSessionState.loadedMediaItem,
+        mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { track ->
             MediaItemUi(
@@ -57,8 +62,8 @@ class SpotifyLibraryViewModel @Inject constructor(
     )
     private val savedAlbums = combine(
         savedAlbumsPager.flow.cachedIn(viewModelScope),
-        mediaSessionManager.loadedMediaItem,
-        mediaSessionManager.isPlaying,
+        mediaSessionState.loadedMediaItem,
+        mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { album ->
             MediaItemUi(
@@ -69,7 +74,7 @@ class SpotifyLibraryViewModel @Inject constructor(
     }.cachedIn(viewModelScope)
 
     val uiState: StateFlow<SpotifyLibraryUiState> = spotifyAuth.isLoggedIn.combine(
-        mediaSessionManager.loadedMediaItem
+        mediaSessionState.loadedMediaItem,
     ) { isLoggedIn, loadedMediaItem ->
         if (!isLoggedIn) {
             return@combine SpotifyLibraryUiState.NotLoggedIn
@@ -95,14 +100,22 @@ class SpotifyLibraryViewModel @Inject constructor(
             is Album -> {}
             is Track -> {
                 if (!mediaItem.isPlayable) return
-                mediaSessionManager.loadIfNecessary(mediaItemUi.mediaItem)
-                mediaSessionManager.play()
+                viewModelScope.launch {
+                    with(mediaSessionControl.getMediaEngineControl()) {
+                        loadIfNecessary(mediaItemUi.mediaItem)
+                        transportControl.play()
+                    }
+                }
             }
         }
     }
 
     fun onPlayPauseClick(mediaItemUi: MediaItemUi) {
-        mediaSessionManager.loadIfNecessary(mediaItemUi.mediaItem)
-        mediaSessionManager.playPause()
+        viewModelScope.launch {
+            with(mediaSessionControl.getMediaEngineControl()) {
+                loadIfNecessary(mediaItemUi.mediaItem)
+                transportControl.playPause()
+            }
+        }
     }
 }
