@@ -44,7 +44,7 @@ private fun DefaultPreview() {
     PlaygroundTheme {
         SpotifyAuthButton(
             isLoggedIn = false,
-            onClick = { /*TODO*/ },
+            onClick = {},
             style = SpotifyAuthButtonStyle.Default,
         )
     }
@@ -56,7 +56,7 @@ private fun CompactPreview() {
     PlaygroundTheme {
         SpotifyAuthButton(
             isLoggedIn = false,
-            onClick = { /*TODO*/ },
+            onClick = {},
             style = SpotifyAuthButtonStyle.Compact,
         )
     }
