@@ -19,7 +19,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "MediaPlayground"
 
 include(":androidApp")
-include(":androidTvApp")
 include(":data:audio")
 include(":data:audio:test-fixtures")
 include(":database")
@@ -39,7 +38,6 @@ include(":feature:spotify")
 include(":testing")
 include(":ui")
 include(":ui:shared")
-include(":ui:tv")
 
 if (file("../UiPlayground").exists()) {
     includeBuild("../UiPlayground") {
