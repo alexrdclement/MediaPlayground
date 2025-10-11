@@ -18,9 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.ui.theme.DisabledAlpha
+import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
@@ -44,7 +45,7 @@ fun TrackListItem(
             .height(IntrinsicSize.Min)
             .clickable(enabled = isPlayable) { onClick() }
             .padding(vertical = PlaygroundTheme.spacing.small)
-            .alpha(if (isPlayable) 1f else DisabledAlpha)
+            .alpha(if (isPlayable) 1f else PlaygroundTheme.colorScheme.disabledContentAlpha)
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -99,6 +100,21 @@ fun TrackListItem(
             modifier = Modifier
                 .height(IntrinsicSize.Max)
                 .width(64.dp),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview() {
+    PlaygroundTheme {
+        TrackListItem(
+            track = PreviewSimpleTrack1,
+            isLoaded = true,
+            isPlayable = false,
+            isPlaying = false,
+            onClick = {},
+            onPlayPauseClick = {},
         )
     }
 }

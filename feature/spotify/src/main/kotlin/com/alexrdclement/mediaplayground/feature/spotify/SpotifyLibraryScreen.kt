@@ -32,7 +32,7 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
-import com.alexrdclement.mediaplayground.ui.components.spotify.SpotifyAuthButton
+import com.alexrdclement.mediaplayground.ui.components.AuthButton
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
@@ -109,7 +109,7 @@ fun SpotifyLibraryScreen(
                 },
                 actions = {
                     val isLoggedIn = remember(uiState) { uiState is SpotifyLibraryUiState.LoggedIn }
-                    SpotifyAuthButton(
+                    AuthButton(
                         isLoggedIn = isLoggedIn,
                         onClick = {
                             if (isLoggedIn) {

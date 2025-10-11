@@ -13,8 +13,6 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
-    implementation(libs.media3.exoplayer)
-    implementation(libs.media3.ui)
     implementation(libs.paging)
     implementation(libs.paging.compose)
     implementation(libs.coil.compose)

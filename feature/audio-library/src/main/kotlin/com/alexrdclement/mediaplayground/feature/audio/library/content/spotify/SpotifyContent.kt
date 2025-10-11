@@ -14,8 +14,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
-import com.alexrdclement.mediaplayground.ui.components.spotify.SpotifyAuthButton
-import com.alexrdclement.mediaplayground.ui.components.spotify.SpotifyAuthButtonStyle
+import com.alexrdclement.mediaplayground.ui.components.AuthButton
+import com.alexrdclement.mediaplayground.ui.components.AuthButtonStyle
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
@@ -37,8 +37,8 @@ internal fun SpotifyContent(
         headerAction = {
             when (spotifyContentState) {
                 is SpotifyContentState.LoggedIn -> {
-                    SpotifyAuthButton(
-                        style = SpotifyAuthButtonStyle.Compact,
+                    AuthButton(
+                        style = AuthButtonStyle.Compact,
                         isLoggedIn = true,
                         onClick = onLogOutClick,
                     )
@@ -104,7 +104,7 @@ private fun SpotifyNotLoggedInContent(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        SpotifyAuthButton(
+        AuthButton(
             isLoggedIn = false,
             onClick = onLogInClick,
         )

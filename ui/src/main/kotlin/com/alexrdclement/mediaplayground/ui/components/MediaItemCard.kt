@@ -28,7 +28,7 @@ import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
-fun MediaItemCardTall(
+fun MediaItemCard(
     mediaItem: MediaItem,
     isPlaying: Boolean,
     isPlaybackEnabled: Boolean,
@@ -90,7 +90,7 @@ fun MediaItemCardTall(
 @Composable
 private fun Preview() {
     PlaygroundTheme {
-        MediaItemCardTall(
+        MediaItemCard(
             mediaItem = PreviewTrack1,
             isPlaybackEnabled = true,
             isPlaying = false,

@@ -1,8 +1,5 @@
 package com.alexrdclement.mediaplayground.model.result
 
-// Kotlin's Result class doesn't support sealed classes for failures and I don't want to pull in
-// a library for this. Also, it was fun.
-
 sealed class Result<Success, Failure> {
     data class Success<Success, Failure>(val value: Success) : Result<Success, Failure>()
     data class Failure<Success, Failure>(val failure: Failure) : Result<Success, Failure>()

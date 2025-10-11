@@ -21,8 +21,8 @@ import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.theme.ButtonSpace
 import com.alexrdclement.uiplayground.components.core.Button
+import com.alexrdclement.uiplayground.components.core.ButtonDefaults
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
@@ -43,7 +43,7 @@ internal fun LocalContent(
                 LocalContentState.Empty -> {}
                 is LocalContentState.Content -> Button(
                     onClick = onImportClick,
-                    contentPadding = ButtonSpace.ContentPaddingCompact,
+                    contentPadding = ButtonDefaults.ContentPaddingDefault,
                     modifier = Modifier.wrapContentSize(),
                 ) {
                     Text(
@@ -131,7 +131,7 @@ private fun Content(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun EmptyPreview() {
     PlaygroundTheme {
@@ -144,7 +144,7 @@ private fun EmptyPreview() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun ContentPreview() {
     PlaygroundTheme {

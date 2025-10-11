@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import coil3.compose.AsyncImage
-import com.alexrdclement.mediaplayground.ui.theme.DisabledAlpha
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun MediaItemArtwork(
@@ -19,7 +19,7 @@ fun MediaItemArtwork(
             contentDescription = null,
             modifier = modifier
                 .aspectRatio(1f)
-                .alpha(if (isEnabled) 1f else DisabledAlpha)
+                .alpha(if (isEnabled) 1f else PlaygroundTheme.colorScheme.disabledContentAlpha)
         )
     } else {
         // TODO: fallback image

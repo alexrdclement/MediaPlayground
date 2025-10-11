@@ -64,7 +64,7 @@ fun MediaItemRow(
                 key = mediaItems.itemKey { it.mediaItem.id.value }
             ) { index ->
                 val mediaItem = mediaItems[index] ?: return@items
-                MediaItemCardTall(
+                MediaItemCard(
                     mediaItem = mediaItem.mediaItem,
                     isPlaybackEnabled = mediaItem.mediaItem.isPlayable,
                     isPlaying = mediaItem.isPlaying,
