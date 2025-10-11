@@ -18,15 +18,17 @@ import com.alexrdclement.mediaplayground.media.engine.MediaEngineStateImpl
 import com.alexrdclement.mediaplayground.media.engine.getPlayer
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.ui.util.rememberLifecycleEvent
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun AndroidMediaPlayer(
     mediaSessionState: MediaSessionState,
     modifier: Modifier = Modifier,
 ) {
-    val engineImpl = (mediaSessionState.mediaEngineState as? MediaEngineStateImpl) ?: return
-    val player by engineImpl.getPlayer().collectAsStateWithLifecycle(null)
-
+    val player by mediaSessionState.mediaEngineState
+        .flatMapLatest { (it as? MediaEngineStateImpl)?.getPlayer() ?: flowOf(null) }
+        .collectAsStateWithLifecycle(null)
     player?.let { player ->
         MediaPlayer(
             player = player,
