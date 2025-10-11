@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -23,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
+import com.alexrdclement.mediaplayground.ui.util.formatShort
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun TrackListItem(
@@ -91,11 +92,8 @@ fun TrackListItem(
                     .basicMarquee()
             )
         }
-        // TODO: use real formatter?
-        val milliseconds = track.durationMs.milliseconds
-        val seconds = (milliseconds.inWholeSeconds % 60).toString()
         Text(
-            text = "${milliseconds.inWholeMinutes}:${seconds.padStart(2, '0')}",
+            text = remember { track.duration.formatShort() },
             style = PlaygroundTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
             modifier = Modifier
                 .height(IntrinsicSize.Max)

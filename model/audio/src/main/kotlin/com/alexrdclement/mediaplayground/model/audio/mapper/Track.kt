@@ -10,7 +10,7 @@ fun SimpleTrack.toTrack(
 ) = Track(
     id = id,
     title = name,
-    durationMs = durationMs,
+    duration = duration,
     trackNumber = trackNumber,
     uri = uri,
     artists = artists,
@@ -22,7 +22,7 @@ fun SimpleTrack.toTrack(
 ) = Track(
     id = id,
     title = name,
-    durationMs = durationMs,
+    duration = duration,
     trackNumber = trackNumber,
     uri = uri,
     artists = artists,
@@ -32,7 +32,7 @@ fun SimpleTrack.toTrack(
 fun Track.toSimpleTrack() = SimpleTrack(
     id = id,
     name = title,
-    durationMs = durationMs,
+    duration = duration,
     trackNumber = trackNumber,
     uri = uri,
     artists = artists,

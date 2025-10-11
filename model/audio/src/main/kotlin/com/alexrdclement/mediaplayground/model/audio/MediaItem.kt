@@ -1,5 +1,7 @@
 package com.alexrdclement.mediaplayground.model.audio
 
+import kotlin.time.Duration
+
 sealed interface MediaItemId {
     val value: String
 }
@@ -10,6 +12,7 @@ sealed interface MediaItem {
     val artists: List<SimpleArtist>
     val images: List<Image>
     val isPlayable: Boolean
+    val duration: Duration
 }
 
 val MediaItem.thumbnailImageUrl: String?

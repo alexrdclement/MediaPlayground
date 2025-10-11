@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.io.files.Path
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack as CompleteTrackEntity
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
 
@@ -17,7 +18,7 @@ fun Track.toTrackEntity(): TrackEntity {
         fileName = fileNameFromUri(uri),
         title = title,
         albumId = simpleAlbum.id.value,
-        durationMs = durationMs,
+        durationMs = duration.inWholeMilliseconds.toInt(),
         trackNumber = trackNumber,
         modifiedDate = Clock.System.now(),
     )
@@ -32,7 +33,7 @@ fun TrackEntity.toSimpleTrack(
         uri = uriFromFileName(mediaItemDir, fileName),
         name = title,
         artists = simpleArtists,
-        durationMs = durationMs,
+        duration = durationMs.milliseconds,
         trackNumber = trackNumber,
     )
 }
@@ -45,7 +46,7 @@ fun CompleteTrackEntity.toTrack(
         id = TrackId(track.id),
         title = track.title,
         artists = simpleArtists,
-        durationMs = track.durationMs,
+        duration = track.durationMs.milliseconds,
         trackNumber = track.trackNumber,
         uri = uriFromFileName(albumDir, track.fileName),
         simpleAlbum = SimpleAlbum(

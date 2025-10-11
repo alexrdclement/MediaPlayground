@@ -1,6 +1,8 @@
 package com.alexrdclement.mediaplayground.model.audio
 
 import kotlinx.serialization.Serializable
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @JvmInline
 @Serializable
@@ -15,4 +17,7 @@ data class Album(
 ) : MediaItem {
     override val isPlayable: Boolean
         get() = tracks.any { it.uri != null }
+
+    override val duration: Duration
+        get() = tracks.sumOf { it.duration.inWholeSeconds }.seconds
 }

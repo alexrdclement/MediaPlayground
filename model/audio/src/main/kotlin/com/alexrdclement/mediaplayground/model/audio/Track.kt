@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.model.audio
 
 import kotlinx.serialization.Serializable
+import kotlin.time.Duration
 
 @JvmInline
 @Serializable
@@ -11,7 +12,7 @@ data class Track(
     override val id: TrackId,
     override val title: String,
     override val artists: List<SimpleArtist>,
-    val durationMs: Int,
+    override val duration: Duration,
     val trackNumber: Int?,
     val uri: String?,
     val simpleAlbum: SimpleAlbum,
