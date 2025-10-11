@@ -14,12 +14,11 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
-import com.alexrdclement.mediaplayground.media.engine.MediaEngineStateImpl
+import com.alexrdclement.mediaplayground.media.engine.AndroidMediaEngineState
 import com.alexrdclement.mediaplayground.media.engine.getPlayer
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.ui.util.rememberLifecycleEvent
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun AndroidMediaPlayer(
@@ -27,7 +26,7 @@ fun AndroidMediaPlayer(
     modifier: Modifier = Modifier,
 ) {
     val player by mediaSessionState.mediaEngineState
-        .flatMapLatest { (it as? MediaEngineStateImpl)?.getPlayer() ?: flowOf(null) }
+        .map { (it as? AndroidMediaEngineState)?.getPlayer() }
         .collectAsStateWithLifecycle(null)
     player?.let { player ->
         MediaPlayer(

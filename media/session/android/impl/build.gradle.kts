@@ -5,17 +5,16 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.media.engine"
+    namespace = "com.alexrdclement.mediaplayground.media.session"
 }
 
 dependencies {
-    api(projects.media.engine.api)
+    api(projects.media.session.api)
+    api(projects.media.session.android.api)
 
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.session)
 
-    implementation(projects.data.audio)
-    implementation(projects.media.session.android.api)
+    implementation(projects.media.engine.android)
 }

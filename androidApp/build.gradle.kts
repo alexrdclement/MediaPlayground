@@ -88,7 +88,7 @@ dependencies {
     implementation(projects.feature.spotify)
     implementation(projects.media.ui.android)
     implementation(projects.media.engine.android)
-    implementation(projects.media.session.android)
+    implementation(projects.media.session.android.impl)
     implementation(projects.model.audio)
     implementation(projects.ui)
 }

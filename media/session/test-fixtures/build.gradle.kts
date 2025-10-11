@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    api(projects.media.session.android)
+    api(projects.media.session.android.impl)
 
     implementation(projects.media.engine.testFixtures)
 }

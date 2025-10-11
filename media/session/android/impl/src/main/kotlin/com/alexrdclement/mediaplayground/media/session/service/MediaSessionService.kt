@@ -4,16 +4,17 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.app.PendingIntent.getActivity
-import androidx.media3.common.AudioAttributes
-import androidx.media3.common.C.WAKE_MODE_LOCAL
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
+import com.alexrdclement.mediaplayground.media.engine.AndroidPlayerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MediaSessionService @Inject constructor() : MediaSessionService() {
+
+    @Inject
+    lateinit var androidPlayerFactory: AndroidPlayerFactory
 
     private val sessionActivityPendingIntent: PendingIntent
         get() = getActivity(
@@ -27,14 +28,7 @@ class MediaSessionService @Inject constructor() : MediaSessionService() {
 
     override fun onCreate() {
         super.onCreate()
-        val player = ExoPlayer.Builder(this)
-            .setAudioAttributes(AudioAttributes.DEFAULT, /* handleAudioFocus= */ true)
-            .setHandleAudioBecomingNoisy(true)
-            .setWakeMode(WAKE_MODE_LOCAL)
-            .build()
-        mediaSession = MediaSession.Builder(this, player)
-            .setSessionActivity(sessionActivityPendingIntent)
-            .build()
+        mediaSession = createMediaSession()
     }
 
     override fun onDestroy() {
@@ -48,5 +42,11 @@ class MediaSessionService @Inject constructor() : MediaSessionService() {
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
         return mediaSession
+    }
+
+    private fun createMediaSession(): MediaSession {
+        return MediaSession.Builder(this, androidPlayerFactory.createPlayer())
+            .setSessionActivity(sessionActivityPendingIntent)
+            .build()
     }
 }

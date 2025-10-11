@@ -7,13 +7,3 @@ plugins {
 android {
     namespace = "com.alexrdclement.mediaplayground.media.session"
 }
-
-dependencies {
-    api(projects.media.session.api)
-
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.media3.exoplayer)
-    implementation(libs.media3.session)
-
-    implementation(projects.media.engine.api)
-}

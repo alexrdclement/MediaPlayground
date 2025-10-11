@@ -1,10 +1,9 @@
 package com.alexrdclement.mediaplayground.media.engine
 
-import android.content.ComponentName
 import android.content.Context
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import com.alexrdclement.mediaplayground.media.session.service.MediaSessionService
+import com.alexrdclement.mediaplayground.media.session.MediaSessionEntry
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.sync.Mutex
@@ -13,6 +12,7 @@ import javax.inject.Inject
 
 class MediaControllerHolder @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val mediaSessionEntry: MediaSessionEntry,
 ) {
     private val mutex = Mutex()
     private var mediaController: MediaController? = null
@@ -26,7 +26,7 @@ class MediaControllerHolder @Inject constructor(
     }
 
     private suspend fun createMediaController(): MediaController {
-        val sessionToken = SessionToken(context, ComponentName(context, MediaSessionService::class.java))
+        val sessionToken = SessionToken(context, mediaSessionEntry.getServiceComponent())
         return MediaController.Builder(context, sessionToken)
             .buildAsync()
             .await()
