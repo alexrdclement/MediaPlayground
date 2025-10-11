@@ -4,10 +4,10 @@ import com.alexrdclement.mediaplayground.media.engine.MediaEngineControl
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineControlImpl
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineState
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineStateImpl
-import com.alexrdclement.mediaplayground.media.engine.MediaItemControl
-import com.alexrdclement.mediaplayground.media.engine.MediaItemControlImpl
-import com.alexrdclement.mediaplayground.media.engine.MediaItemState
-import com.alexrdclement.mediaplayground.media.engine.MediaItemStateImpl
+import com.alexrdclement.mediaplayground.media.engine.PlaylistControl
+import com.alexrdclement.mediaplayground.media.engine.PlaylistControlImpl
+import com.alexrdclement.mediaplayground.media.engine.PlaylistState
+import com.alexrdclement.mediaplayground.media.engine.PlaylistStateImpl
 import com.alexrdclement.mediaplayground.media.engine.TransportControl
 import com.alexrdclement.mediaplayground.media.engine.TransportControlImpl
 import dagger.Binds
@@ -35,12 +35,12 @@ abstract class MediaEngineBindingModule {
     ): TransportControl
 
     @Binds
-    abstract fun bindMediaItemControl(
-        mediaItemLoaderImpl: MediaItemControlImpl,
-    ): MediaItemControl
+    abstract fun bindPlaylistControl(
+        playlistControlImpl: PlaylistControlImpl,
+    ): PlaylistControl
 
     @Binds
-    abstract fun bindMediaItemState(
-        mediaItemStateImpl: MediaItemStateImpl,
-    ): MediaItemState
+    abstract fun bindPlaylistState(
+        playlistStateImpl: PlaylistStateImpl,
+    ): PlaylistState
 }

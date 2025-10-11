@@ -7,7 +7,6 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
-import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem

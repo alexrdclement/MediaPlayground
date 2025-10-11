@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,14 +40,27 @@ class SpotifyLibraryViewModel @Inject constructor(
         val pagingConfig = PagingConfig(pageSize = 10)
     }
 
+    private val loadedMediaItem = mediaSessionState.loadedMediaItem
+        .shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            replay = 1,
+        )
+    private val isPlaying = mediaSessionState.isPlaying
+        .shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            replay = 1,
+        )
+
     private val savedTracksPager = Pager(
         config = pagingConfig,
         pagingSourceFactory = spotifyAudioRepository::getSavedTracksPagingSource,
     )
     private val savedTracks: Flow<PagingData<MediaItemUi>> = combine(
         savedTracksPager.flow.cachedIn(viewModelScope),
-        mediaSessionState.loadedMediaItem,
-        mediaSessionState.isPlaying,
+        loadedMediaItem,
+        isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { track ->
             MediaItemUi(
@@ -62,8 +76,8 @@ class SpotifyLibraryViewModel @Inject constructor(
     )
     private val savedAlbums = combine(
         savedAlbumsPager.flow.cachedIn(viewModelScope),
-        mediaSessionState.loadedMediaItem,
-        mediaSessionState.isPlaying,
+        loadedMediaItem,
+        isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { album ->
             MediaItemUi(
@@ -74,7 +88,7 @@ class SpotifyLibraryViewModel @Inject constructor(
     }.cachedIn(viewModelScope)
 
     val uiState: StateFlow<SpotifyLibraryUiState> = spotifyAuth.isLoggedIn.combine(
-        mediaSessionState.loadedMediaItem,
+        loadedMediaItem,
     ) { isLoggedIn, loadedMediaItem ->
         if (!isLoggedIn) {
             return@combine SpotifyLibraryUiState.NotLoggedIn
@@ -102,7 +116,7 @@ class SpotifyLibraryViewModel @Inject constructor(
                 if (!mediaItem.isPlayable) return
                 viewModelScope.launch {
                     with(mediaSessionControl.getMediaEngineControl()) {
-                        loadIfNecessary(mediaItemUi.mediaItem)
+                        playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
                         transportControl.play()
                     }
                 }
@@ -113,7 +127,7 @@ class SpotifyLibraryViewModel @Inject constructor(
     fun onPlayPauseClick(mediaItemUi: MediaItemUi) {
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
-                loadIfNecessary(mediaItemUi.mediaItem)
+                playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
                 transportControl.playPause()
             }
         }

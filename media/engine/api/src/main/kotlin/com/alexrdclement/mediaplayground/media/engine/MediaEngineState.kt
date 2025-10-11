@@ -5,9 +5,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 interface MediaEngineState {
+    val playlistState: PlaylistState
     fun getTransportState(): Flow<TransportState>
-    fun getLoadedMediaItem(): Flow<MediaItem?>
 }
 
 val MediaEngineState.isPlaying: Flow<Boolean>
     get() = getTransportState().map { it == TransportState.Playing }
+
+val MediaEngineState.loadedMediaItem: Flow<MediaItem?>
+    get() = playlistState.getLoadedMediaItem()

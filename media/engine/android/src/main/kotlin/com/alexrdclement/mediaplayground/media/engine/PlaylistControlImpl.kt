@@ -8,9 +8,10 @@ import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import javax.inject.Inject
 
-class MediaItemControlImpl @Inject constructor(
+class PlaylistControlImpl @Inject constructor(
+    override val playlistState: PlaylistState,
     private val mediaControllerHolder: MediaControllerHolder,
-): MediaItemControl {
+): PlaylistControl {
 
     override suspend fun load(mediaItem: MediaItem) {
         when (mediaItem) {
@@ -19,13 +20,13 @@ class MediaItemControlImpl @Inject constructor(
         }
     }
 
-    override suspend fun loadFromPlaylist(index: Int) {
+    override suspend fun seek(playlistItemIndex: Int) {
         val mediaController = mediaControllerHolder.getMediaController()
-        if (index >= mediaController.mediaItemCount) {
+        if (playlistItemIndex >= mediaController.mediaItemCount) {
             // TODO: log error
             return
         }
-        mediaController.seekTo(index, 0)
+        mediaController.seekTo(playlistItemIndex, 0)
     }
 
     private suspend fun loadTrack(track: Track) {

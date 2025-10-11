@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MediaItemStateImpl @Inject constructor(
+class PlaylistStateImpl @Inject constructor(
     private val mediaControllerHolder: MediaControllerHolder,
     private val audioRepository: AudioRepository,
-): MediaItemState {
+): PlaylistState {
 
     override fun getLoadedMediaItem(): Flow<MediaItem?> {
         return callbackFlow {

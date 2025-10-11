@@ -31,7 +31,7 @@ class AudioLibraryViewModel @Inject constructor(
     private val spotifyAuth: SpotifyAuth,
     private val localAudioRepository: LocalAudioRepository,
     private val mediaSessionControl: MediaSessionControl,
-    private val mediaSessionState: MediaSessionState,
+    mediaSessionState: MediaSessionState,
 ): ViewModel() {
     
     private companion object {
@@ -41,7 +41,7 @@ class AudioLibraryViewModel @Inject constructor(
     val uiState: StateFlow<AudioLibraryUiState> = combine(
         localContentStateProvider.flow(viewModelScope, pagingConfig),
         spotifyContentStateProvider.flow(viewModelScope, pagingConfig),
-        mediaSessionState.loadedMediaItem
+        mediaSessionState.loadedMediaItem,
     ) { localContentState, spotifyContentState, loadedMediaItem ->
         AudioLibraryUiState.ContentReady(
             localContentState = localContentState,
@@ -65,7 +65,7 @@ class AudioLibraryViewModel @Inject constructor(
                 if (!mediaItem.isPlayable) return
                 viewModelScope.launch {
                     with(mediaSessionControl.getMediaEngineControl()) {
-                        loadIfNecessary(mediaItemUi.mediaItem)
+                        playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
                         transportControl.play()
                     }
                 }
@@ -76,7 +76,7 @@ class AudioLibraryViewModel @Inject constructor(
     fun onPlayPauseClick(mediaItemUi: MediaItemUi) {
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
-                loadIfNecessary(mediaItemUi.mediaItem)
+                playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
                 transportControl.playPause()
             }
         }

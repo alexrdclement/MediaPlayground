@@ -19,8 +19,9 @@ import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,16 +30,24 @@ class AlbumViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     audioRepository: AudioRepository,
     private val mediaSessionControl: MediaSessionControl,
-    private val mediaSessionState: MediaSessionState,
+    mediaSessionState: MediaSessionState,
 ) : ViewModel() {
     private val albumId: AlbumId? = savedStateHandle.get<String>(AlbumIdArgKey)?.let(::AlbumId)
 
     private val album = MutableStateFlow<Album?>(null)
 
+    private val loadedMediaItem = mediaSessionState.loadedMediaItem
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5_000L),
+            initialValue = null,
+        )
+    private val isPlaying = mediaSessionState.isPlaying
+
     val uiState = combine(
         album,
-        mediaSessionState.isPlaying,
-        mediaSessionState.loadedMediaItem
+        isPlaying,
+        loadedMediaItem,
     ) { album, isPlaying, loadedMediaItem ->
         if (album == null) {
             return@combine AlbumUiState.Loading
@@ -78,14 +87,15 @@ class AlbumViewModel @Inject constructor(
         val simpleTrack = trackUi.track
 
         viewModelScope.launch {
-            val engineState = mediaSessionState.mediaEngineState
             val engineControl = mediaSessionControl.getMediaEngineControl()
-            if (engineState.getLoadedMediaItem().first()?.id == albumId) {
+            val loadedMediaItem = loadedMediaItem.value
+
+            if (loadedMediaItem?.id == albumId) {
                 val trackIndex = album.tracks.indexOf(simpleTrack)
-                engineControl.loadFromPlaylist(trackIndex)
+                engineControl.playlistControl.seek(trackIndex)
             } else {
                 val track = simpleTrack.toTrack(album)
-                engineControl.load(track)
+                engineControl.playlistControl.load(track)
             }
 
             engineControl.transportControl.play()
@@ -98,15 +108,17 @@ class AlbumViewModel @Inject constructor(
 
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
-                loadIfNecessary(album)
-                playPause()
+                playlistControl.loadIfNecessary(album)
+                transportControl.playPause()
             }
         }
     }
 
     fun onTrackPlayPauseClick(trackUi: TrackUi) {
         viewModelScope.launch {
-            mediaSessionControl.getMediaEngineControl().playPause()
+            with(mediaSessionControl.getMediaEngineControl()) {
+                transportControl.playPause()
+            }
         }
     }
 }
