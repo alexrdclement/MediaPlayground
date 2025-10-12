@@ -3,17 +3,24 @@ package com.alexrdclement.mediaplayground.feature.media.control
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.DpSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
@@ -22,11 +29,15 @@ import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.R
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
+import com.alexrdclement.mediaplayground.ui.util.minus
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.media.MediaControlSheetState
 import com.alexrdclement.uiplayground.components.media.model.Artist
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 import com.alexrdclement.uiplayground.components.media.MediaControlSheet as MediaControlSheetComponent
 import com.alexrdclement.uiplayground.components.media.model.MediaItem as UiMediaItem
 
@@ -61,11 +72,15 @@ fun MediaControlSheet(
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
+    val navigationBarsHorizontalPadding = navigationBarsPadding.calculateHorizontalPadding()
 
     AnimatedVisibility(
         visible = loadedMediaItem != null,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
+        modifier = Modifier
+            .padding(horizontal = navigationBarsHorizontalPadding)
     ) {
         loadedMediaItem?.let { mediaItem ->
             // TODO: temp
@@ -87,46 +102,80 @@ fun MediaControlSheet(
             }
 
             val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
-            val bottomPadding by derivedStateOf {
-                val bottomPadding = navigationBarsPadding.calculateBottomPadding()
-                bottomPadding - (bottomPadding * mediaControlSheetState.partialToFullProgress)
+            val navBarBottomPadding = navigationBarsPadding.calculateBottomPadding()
+            val yOffset by derivedStateOf {
+                navBarBottomPadding * (1f - mediaControlSheetState.partialToFullProgress)
             }
 
-            MediaControlSheetComponent(
-                mediaItem = uiMediaItem,
-                isPlaying = isPlaying,
-                onPlayPauseClick = onPlayPauseClick,
-                state = mediaControlSheetState,
-                onControlBarClick = {
-                    coroutineScope.launch {
-                        if (mediaControlSheetState.isExpanded) {
-                            mediaControlSheetState.partialExpand()
-                        } else {
-                            mediaControlSheetState.expand()
+            BoxWithConstraints {
+                val maxHeight = this@BoxWithConstraints.maxHeight
+                val maxWidth = this@BoxWithConstraints.maxWidth
+                MediaControlSheetComponent(
+                    mediaItem = uiMediaItem,
+                    isPlaying = isPlaying,
+                    onPlayPauseClick = onPlayPauseClick,
+                    state = mediaControlSheetState,
+                    onControlBarClick = {
+                        coroutineScope.launch {
+                            if (mediaControlSheetState.isExpanded) {
+                                mediaControlSheetState.partialExpand()
+                            } else {
+                                mediaControlSheetState.expand()
+                            }
                         }
-                    }
-                },
-                minHeight = MediaControlSheetPartialExpandHeight,
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .graphicsLayer {
-                        translationY = -bottomPadding.toPx()
-                    }
-            ) {
-                Surface(
-                    modifier = Modifier.graphicsLayer {
-                        alpha = mediaControlSheetState.partialToFullProgress
-                    }
+                    },
+                    minContentSize = DpSize(
+                        width = MediaControlSheetPartialExpandHeight,
+                        height = MediaControlSheetPartialExpandHeight,
+                    ),
+                    maxContentSize = when {
+                        maxHeight < maxWidth -> DpSize(
+                            width = maxWidth,
+                            height = maxHeight / 2f,
+                        )
+                        else -> DpSize(
+                            width = maxWidth,
+                            height = maxWidth, // Square for now
+                        )
+                    },
+                    aboveControlBar = {
+                        val statusBarsPadding = WindowInsets.statusBars.asPaddingValues()
+                        val statusBarTopPadding = statusBarsPadding.calculateTopPadding()
+                        Box(
+                            modifier = Modifier
+                                .background(PlaygroundTheme.colorScheme.surface)
+                                .fillMaxWidth()
+                                .layout { measureables, constraints ->
+                                    val placeables = measureables.measure(constraints)
+                                    val progress = mediaControlSheetState.partialToFullProgress
+                                    val topPadding = statusBarTopPadding * progress
+                                    layout(constraints.maxWidth, topPadding.toPx().roundToInt()) {
+                                        placeables.place(0, 0)
+                                    }
+                                }
+                        )
+                    },
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationY = -yOffset.toPx()
+                        }
                 ) {
-                    MediaControlSheetContent(
-                        loadedMediaItem = uiMediaItem,
-                        playlist = playlist,
-                        isPlaying = isPlaying,
-                        onPlayPauseClick = onPlayPauseClick,
-                        onItemClick = onItemClick,
-                        onItemPlayPauseClick = onItemPlayPauseClick,
-                        contentPadding = WindowInsets.navigationBars.asPaddingValues(),
-                    )
+                    Surface(
+                        modifier = Modifier.graphicsLayer {
+                            alpha = mediaControlSheetState.partialToFullProgress
+                        }
+                    ) {
+                        MediaControlSheetContent(
+                            loadedMediaItem = uiMediaItem,
+                            playlist = playlist,
+                            isPlaying = isPlaying,
+                            onPlayPauseClick = onPlayPauseClick,
+                            onItemClick = onItemClick,
+                            onItemPlayPauseClick = onItemPlayPauseClick,
+                            contentPadding = navigationBarsPadding
+                                .minus(horizontal = navigationBarsPadding),
+                        )
+                    }
                 }
             }
         }
