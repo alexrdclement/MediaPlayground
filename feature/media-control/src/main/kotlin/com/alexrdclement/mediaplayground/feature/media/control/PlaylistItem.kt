@@ -37,6 +37,7 @@ fun PlaylistItem(
     item: MediaItemUi,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     PlaylistItem(
         item = item.mediaItem,
@@ -45,6 +46,7 @@ fun PlaylistItem(
         isPlaying = item.isPlaying,
         onClick = onClick,
         onPlayPauseClick = onPlayPauseClick,
+        modifier = modifier,
     )
 }
 
@@ -56,11 +58,12 @@ fun PlaylistItem(
     isPlaying: Boolean,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clickable(enabled = isPlayable) { onClick() }
