@@ -19,7 +19,7 @@ data class MediaItemUi(
                 mediaItem = mediaItem,
                 isLoaded = mediaItem.id == loadedMediaItem?.id,
                 isPlayable = mediaItem.isPlayable,
-                isPlaying = isPlaying,
+                isPlaying = isPlaying && mediaItem.id == loadedMediaItem?.id,
             )
         }
     }
