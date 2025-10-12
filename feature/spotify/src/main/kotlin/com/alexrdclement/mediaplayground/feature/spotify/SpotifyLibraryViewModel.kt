@@ -41,10 +41,10 @@ class SpotifyLibraryViewModel @Inject constructor(
     }
 
     private val loadedMediaItem = mediaSessionState.loadedMediaItem
-        .shareIn(
+        .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            replay = 1,
+            initialValue = null,
         )
     private val isPlaying = mediaSessionState.isPlaying
         .shareIn(
@@ -129,8 +129,13 @@ class SpotifyLibraryViewModel @Inject constructor(
     fun onPlayPauseClick(mediaItemUi: MediaItemUi) {
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
-                playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
-                transportControl.playPause()
+                val loadedMediaItem = loadedMediaItem.value
+                if (mediaItemUi.mediaItem.id == loadedMediaItem?.id) {
+                    transportControl.playPause()
+                    return@launch
+                }
+                playlistControl.load(mediaItemUi.mediaItem)
+                transportControl.play()
             }
         }
     }

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumIdArgKey
-import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
@@ -13,6 +12,7 @@ import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import com.alexrdclement.mediaplayground.model.result.guardSuccess
@@ -30,7 +30,7 @@ class AlbumViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     audioRepository: AudioRepository,
     private val mediaSessionControl: MediaSessionControl,
-    mediaSessionState: MediaSessionState,
+    private val mediaSessionState: MediaSessionState,
 ) : ViewModel() {
     private val albumId: AlbumId? = savedStateHandle.get<String>(AlbumIdArgKey)?.let(::AlbumId)
 
@@ -43,6 +43,11 @@ class AlbumViewModel @Inject constructor(
             initialValue = null,
         )
     private val isPlaying = mediaSessionState.isPlaying
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5_000L),
+            initialValue = false,
+        )
 
     val uiState = combine(
         album,
@@ -68,7 +73,11 @@ class AlbumViewModel @Inject constructor(
             artists = album.artists,
             tracks = tracks,
             isAlbumPlayable = album.isPlayable,
-            isAlbumPlaying = loadedMediaItem?.id == albumId && isPlaying,
+            isAlbumPlaying = isPlaying && when (val mediaItem = loadedMediaItem) {
+                is Album -> mediaItem.id == album.id
+                is Track -> mediaItem.simpleAlbum.id == album.id
+                null -> false
+            },
             isMediaItemLoaded = loadedMediaItem != null,
         )
     }
@@ -108,8 +117,17 @@ class AlbumViewModel @Inject constructor(
 
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
-                playlistControl.loadIfNecessary(album)
-                transportControl.playPause()
+                val isPlayingAlbum = when (val mediaItem = loadedMediaItem.value) {
+                    is Album -> mediaItem.id == album.id
+                    is Track -> mediaItem.simpleAlbum.id == album.id
+                    null -> false
+                }
+                if (isPlayingAlbum) {
+                    transportControl.playPause()
+                } else {
+                    playlistControl.load(album)
+                    transportControl.play()
+                }
             }
         }
     }

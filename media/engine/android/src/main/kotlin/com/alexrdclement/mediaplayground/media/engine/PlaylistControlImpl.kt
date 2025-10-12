@@ -30,19 +30,32 @@ class PlaylistControlImpl @Inject constructor(
     }
 
     private suspend fun loadTrack(track: Track) {
-        mediaControllerHolder.getMediaController().setMediaItem(track.toMediaItem())
+        with(mediaControllerHolder.getMediaController()) {
+            val wasPlaying = isPlaying
+            pause()
+
+            clearMediaItems()
+            setMediaItem(track.toMediaItem())
+            if (wasPlaying) play() else pause()
+        }
     }
 
     private suspend fun loadAlbum(album: Album) {
-        val mediaController = mediaControllerHolder.getMediaController()
-        mediaController.clearMediaItems()
+        with(mediaControllerHolder.getMediaController()) {
+            val wasPlaying = isPlaying
+            pause()
 
-        val mediaItems = album.tracks.map { simpleTrack ->
-            val track = simpleTrack.toTrack(
-                simpleAlbum = album.toSimpleAlbum()
-            )
-            track.toMediaItem()
+            clearMediaItems()
+
+            val mediaItems = album.tracks.map { simpleTrack ->
+                val track = simpleTrack.toTrack(
+                    simpleAlbum = album.toSimpleAlbum()
+                )
+                track.toMediaItem()
+            }
+            addMediaItems(0, mediaItems)
+
+            if (wasPlaying) play() else pause()
         }
-        mediaController.addMediaItems(0, mediaItems)
     }
 }
