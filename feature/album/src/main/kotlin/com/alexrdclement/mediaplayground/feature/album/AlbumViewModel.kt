@@ -97,15 +97,13 @@ class AlbumViewModel @Inject constructor(
 
         viewModelScope.launch {
             val engineControl = mediaSessionControl.getMediaEngineControl()
-            val loadedMediaItem = loadedMediaItem.value
 
-            if (loadedMediaItem?.id == albumId) {
-                val trackIndex = album.tracks.indexOf(simpleTrack)
-                engineControl.playlistControl.seek(trackIndex)
-            } else {
-                val track = simpleTrack.toTrack(album)
-                engineControl.playlistControl.load(track)
+            if (!isPlayingAlbum()) {
+                engineControl.playlistControl.load(album)
             }
+
+            val trackIndex = album.tracks.indexOf(simpleTrack)
+            engineControl.playlistControl.seek(trackIndex)
 
             engineControl.transportControl.play()
         }
@@ -117,12 +115,7 @@ class AlbumViewModel @Inject constructor(
 
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
-                val isPlayingAlbum = when (val mediaItem = loadedMediaItem.value) {
-                    is Album -> mediaItem.id == album.id
-                    is Track -> mediaItem.simpleAlbum.id == album.id
-                    null -> false
-                }
-                if (isPlayingAlbum) {
+                if (isPlayingAlbum()) {
                     transportControl.playPause()
                 } else {
                     playlistControl.load(album)
@@ -137,6 +130,16 @@ class AlbumViewModel @Inject constructor(
             with(mediaSessionControl.getMediaEngineControl()) {
                 transportControl.playPause()
             }
+        }
+    }
+
+    private fun isPlayingAlbum(): Boolean {
+        val loadedMediaItem = loadedMediaItem.value
+        val isPlaying = isPlaying.value
+        return isPlaying && when (val mediaItem = loadedMediaItem) {
+            is Album -> mediaItem.id == album.value?.id
+            is Track -> mediaItem.simpleAlbum.id == album.value?.id
+            null -> false
         }
     }
 }
