@@ -16,11 +16,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
-import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.R
+import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
+import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.media.MediaControlSheetState
 import com.alexrdclement.uiplayground.components.media.model.Artist
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.launch
 import com.alexrdclement.uiplayground.components.media.MediaControlSheet as MediaControlSheetComponent
 import com.alexrdclement.uiplayground.components.media.model.MediaItem as UiMediaItem
@@ -31,13 +33,17 @@ fun MediaControlSheet(
 ) {
     val viewModel = hiltViewModel<MediaControlSheetViewModel>()
     val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
+    val playlist by viewModel.playlist.collectAsStateWithLifecycle()
     val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()
 
     MediaControlSheet(
         mediaControlSheetState = mediaControlSheetState,
         loadedMediaItem = loadedMediaItem,
+        playlist = playlist,
         isPlaying = isPlaying,
         onPlayPauseClick = viewModel::onPlayPauseClick,
+        onItemClick = viewModel::onItemClick,
+        onItemPlayPauseClick = viewModel::onItemPlayPauseClick,
     )
 }
 
@@ -45,8 +51,11 @@ fun MediaControlSheet(
 fun MediaControlSheet(
     mediaControlSheetState: MediaControlSheetState,
     loadedMediaItem: MediaItem?,
+    playlist: PersistentList<MediaItemUi>,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
+    onItemClick: (MediaItemUi) -> Unit,
+    onItemPlayPauseClick: (MediaItemUi) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -94,8 +103,11 @@ fun MediaControlSheet(
                 Surface {
                     MediaControlSheetContent(
                         loadedMediaItem = uiMediaItem,
+                        playlist = playlist,
                         isPlaying = isPlaying,
                         onPlayPauseClick = onPlayPauseClick,
+                        onItemClick = onItemClick,
+                        onItemPlayPauseClick = onItemPlayPauseClick,
                         modifier = Modifier.graphicsLayer {
                             alpha = mediaControlSheetState.partialToFullProgress
                         }

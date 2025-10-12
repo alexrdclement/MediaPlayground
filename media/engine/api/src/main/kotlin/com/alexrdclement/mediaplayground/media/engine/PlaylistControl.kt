@@ -16,3 +16,15 @@ suspend fun PlaylistControl.loadIfNecessary(mediaItem: MediaItem) {
         }
     } ?: load(mediaItem)
 }
+
+suspend fun PlaylistControl.seekIfNecessary(playlistItemIndex: Int) {
+    require(playlistItemIndex >= 0) { "playlistItemIndex must be non-negative" }
+
+    val playlist = playlistState.getPlaylist().first()
+    require(playlistItemIndex < playlist.size) { "playlistItemIndex must be less than playlist size" }
+
+    val loadedMediaItemIndex = playlistState.getLoadedMediaItemIndex().first() ?: return
+    if (playlistItemIndex != loadedMediaItemIndex) {
+        seek(playlistItemIndex)
+    }
+}

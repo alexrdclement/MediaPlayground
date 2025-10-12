@@ -9,7 +9,7 @@ android {
 
 dependencies {
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.material3)
+    implementation(libs.kotlinx.collections.immutable)
     implementation(libs.navigation.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)

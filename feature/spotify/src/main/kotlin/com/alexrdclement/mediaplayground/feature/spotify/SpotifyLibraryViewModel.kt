@@ -63,9 +63,10 @@ class SpotifyLibraryViewModel @Inject constructor(
         isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { track ->
-            MediaItemUi(
+            MediaItemUi.from(
                 mediaItem = track,
-                isPlaying = isPlaying && track.id == loadedMediaItem?.id
+                loadedMediaItem = loadedMediaItem,
+                isPlaying = isPlaying,
             )
         }
     }.cachedIn(viewModelScope)
@@ -80,9 +81,10 @@ class SpotifyLibraryViewModel @Inject constructor(
         isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { album ->
-            MediaItemUi(
+            MediaItemUi.from(
                 mediaItem = album,
-                isPlaying = isPlaying && album.id == loadedMediaItem?.id
+                loadedMediaItem = loadedMediaItem,
+                isPlaying = isPlaying,
             )
         }
     }.cachedIn(viewModelScope)

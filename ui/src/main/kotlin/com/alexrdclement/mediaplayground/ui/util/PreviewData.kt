@@ -43,18 +43,21 @@ val PreviewAlbum3 = FakeAlbum3
 
 val PreviewAlbums1 = FakeAlbums1
 
-val PreviewTrackUi1 = MediaItemUi(
+val PreviewTrackUi1 = MediaItemUi.from(
     mediaItem = PreviewTrack1,
+    loadedMediaItem = null,
     isPlaying = false
 )
 
-val PreviewTrackUi2 = MediaItemUi(
+val PreviewTrackUi2 = MediaItemUi.from(
     mediaItem = PreviewTrack2,
+    loadedMediaItem = null,
     isPlaying = false
 )
 
-val PreviewTrackUi3 = MediaItemUi(
+val PreviewTrackUi3 = MediaItemUi.from(
     mediaItem = PreviewTrack3,
+    loadedMediaItem = null,
     isPlaying = false
 )
 
@@ -66,18 +69,21 @@ val PreviewTracksUi1 = listOf(
     PreviewTrackUi3,
 )
 
-val PreviewAlbumUi1 = MediaItemUi(
+val PreviewAlbumUi1 = MediaItemUi.from(
     mediaItem = PreviewAlbum1,
+    loadedMediaItem = null,
     isPlaying = false,
 )
 
-val PreviewAlbumUi2 = MediaItemUi(
+val PreviewAlbumUi2 = MediaItemUi.from(
     mediaItem = PreviewAlbum2,
+    loadedMediaItem = null,
     isPlaying = false,
 )
 
-val PreviewAlbumUi3 = MediaItemUi(
+val PreviewAlbumUi3 = MediaItemUi.from(
     mediaItem = PreviewAlbum3,
+    loadedMediaItem = null,
     isPlaying = false,
 )
 

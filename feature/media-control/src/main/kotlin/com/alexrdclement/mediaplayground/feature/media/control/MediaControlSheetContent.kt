@@ -12,17 +12,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
+import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.components.media.model.Artist
 import com.alexrdclement.uiplayground.components.media.model.MediaItem
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun MediaControlSheetContent(
     loadedMediaItem: MediaItem,
+    playlist: PersistentList<MediaItemUi>,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
+    onItemClick: (MediaItemUi) -> Unit,
+    onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -57,6 +65,13 @@ fun MediaControlSheetContent(
                     .basicMarquee()
             )
         }
+        PlaylistContent(
+            playlist = playlist,
+            onItemClick = onItemClick,
+            onPlayPauseClick = onItemPlayPauseClick,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        )
     }
 }
 
@@ -71,8 +86,22 @@ private fun Preview() {
                 title = "Title",
                 artists = listOf(Artist("Artist 1"), Artist("Artist 2"))
             ),
+            playlist = persistentListOf(
+                MediaItemUi.from(
+                    mediaItem = PreviewTrack1,
+                    loadedMediaItem = null,
+                    isPlaying = false,
+                ),
+                MediaItemUi.from(
+                    mediaItem = PreviewTrack2,
+                    loadedMediaItem = null,
+                    isPlaying = false,
+                ),
+            ),
             isPlaying = false,
-            onPlayPauseClick = {}
+            onItemClick = {},
+            onPlayPauseClick = {},
+            onItemPlayPauseClick = {},
         )
     }
 }
