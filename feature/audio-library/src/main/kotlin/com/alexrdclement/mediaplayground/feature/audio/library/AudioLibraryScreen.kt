@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -142,9 +143,7 @@ fun ContentReady(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxSize()
-            .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
             .verticalScroll(scrollState)
-            .navigationBarsPadding()
     ) {
         LocalContent(
             localContentState = uiState.localContentState,
@@ -160,6 +159,11 @@ fun ContentReady(
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             contentPadding = contentPadding,
+        )
+        Spacer(
+            modifier = Modifier
+                .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
+                .navigationBarsPadding()
         )
     }
 }

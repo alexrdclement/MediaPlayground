@@ -4,13 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,10 +27,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.ui.components.AuthButton
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
-import com.alexrdclement.mediaplayground.ui.components.AuthButton
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
@@ -145,7 +143,6 @@ private fun LoggedInContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
     ) {
         val savedAlbums = uiState.savedAlbums.collectAsLazyPagingItems()
         val savedTracks = uiState.savedTracks.collectAsLazyPagingItems()
@@ -168,7 +165,11 @@ private fun LoggedInContent(
             itemWidth = MediaItemWidth,
             modifier = Modifier
         )
-        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+        Spacer(
+            modifier = Modifier
+                .mediaControlSheetPadding(isMediaItemLoaded = uiState.isMediaItemLoaded)
+                .navigationBarsPadding()
+        )
     }
 }
 

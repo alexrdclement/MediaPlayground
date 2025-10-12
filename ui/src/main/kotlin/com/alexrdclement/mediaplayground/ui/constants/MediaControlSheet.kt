@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.ui.constants
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -12,4 +13,8 @@ fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean) = this.then(
     } else {
         Modifier
     }
+)
+
+fun mediaControlSheetPaddingValues(isMediaItemLoaded: Boolean) = PaddingValues(
+    bottom = if (isMediaItemLoaded) MediaControlSheetPartialExpandHeight else 0.dp
 )
