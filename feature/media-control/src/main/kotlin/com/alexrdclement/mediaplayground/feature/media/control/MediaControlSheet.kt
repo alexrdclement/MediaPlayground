@@ -113,7 +113,11 @@ fun MediaControlSheet(
                         translationY = -bottomPadding.toPx()
                     }
             ) {
-                Surface {
+                Surface(
+                    modifier = Modifier.graphicsLayer {
+                        alpha = mediaControlSheetState.partialToFullProgress
+                    }
+                ) {
                     MediaControlSheetContent(
                         loadedMediaItem = uiMediaItem,
                         playlist = playlist,
@@ -122,9 +126,6 @@ fun MediaControlSheet(
                         onItemClick = onItemClick,
                         onItemPlayPauseClick = onItemPlayPauseClick,
                         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
-                        modifier = Modifier.graphicsLayer {
-                            alpha = mediaControlSheetState.partialToFullProgress
-                        }
                     )
                 }
             }
