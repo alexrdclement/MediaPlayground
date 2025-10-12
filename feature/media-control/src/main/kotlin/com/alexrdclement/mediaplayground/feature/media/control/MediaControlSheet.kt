@@ -3,7 +3,10 @@ package com.alexrdclement.mediaplayground.feature.media.control
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -83,6 +86,12 @@ fun MediaControlSheet(
                 )
             }
 
+            val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
+            val bottomPadding by derivedStateOf {
+                val bottomPadding = navigationBarsPadding.calculateBottomPadding()
+                bottomPadding - (bottomPadding * mediaControlSheetState.partialToFullProgress)
+            }
+
             MediaControlSheetComponent(
                 mediaItem = uiMediaItem,
                 isPlaying = isPlaying,
@@ -98,7 +107,11 @@ fun MediaControlSheet(
                     }
                 },
                 minHeight = MediaControlSheetPartialExpandHeight,
-                modifier = Modifier.navigationBarsPadding()
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .graphicsLayer {
+                        translationY = -bottomPadding.toPx()
+                    }
             ) {
                 Surface {
                     MediaControlSheetContent(
@@ -108,6 +121,7 @@ fun MediaControlSheet(
                         onPlayPauseClick = onPlayPauseClick,
                         onItemClick = onItemClick,
                         onItemPlayPauseClick = onItemPlayPauseClick,
+                        contentPadding = WindowInsets.navigationBars.asPaddingValues(),
                         modifier = Modifier.graphicsLayer {
                             alpha = mediaControlSheetState.partialToFullProgress
                         }

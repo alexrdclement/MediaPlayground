@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.feature.media.control
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,6 +16,9 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
+import com.alexrdclement.mediaplayground.ui.util.Spacer
+import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
+import com.alexrdclement.mediaplayground.ui.util.minus
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.components.media.model.Artist
@@ -32,14 +36,17 @@ fun MediaControlSheetContent(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = 16.dp)
+            .padding(top = PlaygroundTheme.spacing.medium)
+            .padding(horizontal = contentPadding.calculateHorizontalPadding())
     ) {
+        Spacer(height = contentPadding.calculateTopPadding())
         PlayPauseButton(
             isPlaying = isPlaying,
             onClick = onPlayPauseClick,
@@ -47,7 +54,7 @@ fun MediaControlSheetContent(
                 .size(72.dp)
         )
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -69,8 +76,9 @@ fun MediaControlSheetContent(
             playlist = playlist,
             onItemClick = onItemClick,
             onPlayPauseClick = onItemPlayPauseClick,
+            contentPadding = contentPadding.minus(top = contentPadding.calculateTopPadding()),
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = PlaygroundTheme.spacing.medium)
         )
     }
 }
