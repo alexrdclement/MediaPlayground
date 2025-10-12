@@ -4,8 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -34,6 +37,7 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
+import com.alexrdclement.mediaplayground.ui.util.plus
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -146,22 +150,24 @@ private fun LoggedInContent(
     ) {
         val savedAlbums = uiState.savedAlbums.collectAsLazyPagingItems()
         val savedTracks = uiState.savedTracks.collectAsLazyPagingItems()
+        val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium) +
+            WindowInsets.navigationBars.asPaddingValues()
         MediaItemRow(
             mediaItems = savedAlbums,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Saved albums",
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            contentPadding = contentPadding,
             itemWidth = MediaItemWidth,
             modifier = Modifier
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.medium))
         MediaItemRow(
             mediaItems = savedTracks,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Saved tracks",
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            contentPadding = contentPadding,
             itemWidth = MediaItemWidth,
             modifier = Modifier
         )

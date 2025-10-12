@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -18,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
@@ -33,6 +36,9 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
+import com.alexrdclement.mediaplayground.ui.util.calculateEndPadding
+import com.alexrdclement.mediaplayground.ui.util.calculateStartPadding
+import com.alexrdclement.mediaplayground.ui.util.plus
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -89,8 +95,6 @@ fun AudioLibraryScreen(
     onSpotifyLogOutClick: () -> Unit,
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxSize(),
         color = PlaygroundTheme.colorScheme.surface,
     ) {
         Column(
@@ -102,7 +106,11 @@ fun AudioLibraryScreen(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .statusBarsPadding()
+                    .padding(
+                        top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
+                        start = WindowInsets.navigationBars.asPaddingValues().calculateStartPadding(),
+                        end = WindowInsets.navigationBars.asPaddingValues().calculateEndPadding(),
+                    )
                     .padding(
                         horizontal = PlaygroundTheme.spacing.medium,
                         vertical = PlaygroundTheme.spacing.small,
@@ -137,10 +145,12 @@ fun ContentReady(
     onLogInClick: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {
-    val contentPadding = PaddingValues(horizontal = 16.dp)
+    val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium).plus(
+        horizontal = WindowInsets.navigationBars.asPaddingValues(),
+    )
     val scrollState = rememberScrollState()
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)

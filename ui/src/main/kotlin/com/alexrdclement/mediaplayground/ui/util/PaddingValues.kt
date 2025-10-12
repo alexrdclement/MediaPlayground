@@ -13,6 +13,12 @@ fun PaddingValues.calculateVerticalPadding() =
     this.calculateTopPadding() + this.calculateBottomPadding()
 
 @Composable
+fun PaddingValues.calculateStartPadding() = this.calculateStartPadding(LocalLayoutDirection.current)
+
+@Composable
+fun PaddingValues.calculateEndPadding() = this.calculateEndPadding(LocalLayoutDirection.current)
+
+@Composable
 fun PaddingValues.calculateHorizontalPadding() = calculateHorizontalPadding(
     layoutDirection = LocalLayoutDirection.current,
 )
@@ -73,6 +79,33 @@ fun PaddingValues.plus(
 }
 
 @Composable
+fun PaddingValues.plus(
+    horizontal: PaddingValues = PaddingValues(0.dp),
+    vertical: PaddingValues = PaddingValues(0.dp),
+): PaddingValues {
+    val layoutDirection = LocalLayoutDirection.current
+    return this.plus(
+        vertical = vertical,
+        horizontal = horizontal,
+        layoutDirection = layoutDirection,
+    )
+}
+
+fun PaddingValues.plus(
+    horizontal: PaddingValues = PaddingValues(0.dp),
+    vertical: PaddingValues = PaddingValues(0.dp),
+    layoutDirection: LayoutDirection,
+): PaddingValues {
+    return this.plus(
+        start = horizontal.calculateStartPadding(layoutDirection = layoutDirection),
+        top = vertical.calculateTopPadding(),
+        end = horizontal.calculateEndPadding(layoutDirection = layoutDirection),
+        bottom = vertical.calculateBottomPadding(),
+        layoutDirection = layoutDirection,
+    )
+}
+
+@Composable
 operator fun PaddingValues.minus(other: PaddingValues): PaddingValues {
     val layoutDirection = LocalLayoutDirection.current
     return this.minus(other, layoutDirection)
@@ -121,6 +154,33 @@ fun PaddingValues.minus(
         top = (this.calculateTopPadding() - top).coerceAtLeast(0.dp),
         end = (this.calculateEndPadding(layoutDirection = layoutDirection) - end).coerceAtLeast(0.dp),
         bottom = (this.calculateBottomPadding() - bottom).coerceAtLeast(0.dp),
+        layoutDirection = layoutDirection,
+    )
+}
+
+@Composable
+fun PaddingValues.minus(
+    horizontal: PaddingValues = PaddingValues(0.dp),
+    vertical: PaddingValues = PaddingValues(0.dp),
+): PaddingValues {
+    val layoutDirection = LocalLayoutDirection.current
+    return this.minus(
+        vertical = vertical,
+        horizontal = horizontal,
+        layoutDirection = layoutDirection,
+    )
+}
+
+fun PaddingValues.minus(
+    horizontal: PaddingValues = PaddingValues(0.dp),
+    vertical: PaddingValues = PaddingValues(0.dp),
+    layoutDirection: LayoutDirection,
+): PaddingValues {
+    return this.minus(
+        start = horizontal.calculateStartPadding(layoutDirection = layoutDirection),
+        top = vertical.calculateTopPadding(),
+        end = horizontal.calculateEndPadding(layoutDirection = layoutDirection),
+        bottom = vertical.calculateBottomPadding(),
         layoutDirection = layoutDirection,
     )
 }
