@@ -11,7 +11,10 @@ data class CompleteAlbum(
         entityColumn = "album_id"
     )
     val tracks: List<Track>,
-)
+) {
+    val orderedTracks: List<Track>
+        get() = tracks.sortedBy { it.trackNumber }
+}
 
 val CompleteAlbum.id: String
     get() = simpleAlbum.album.id

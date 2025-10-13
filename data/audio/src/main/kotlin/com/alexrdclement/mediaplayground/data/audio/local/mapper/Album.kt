@@ -70,7 +70,11 @@ fun CompleteAlbum.toAlbum(
     val simpleArtists = simpleAlbum.artists.map { it.toSimpleArtist() }.toPersistentList()
     return simpleAlbum.album.toAlbum(
         artists = simpleArtists,
-        images = simpleAlbum.images.map { it.toImage(albumDir = mediaItemDir) }.toPersistentList(),
-        simpleTracks = tracks.map { it.toSimpleTrack(mediaItemDir, simpleArtists) }.toPersistentList(),
+        images = simpleAlbum.images
+            .map { it.toImage(albumDir = mediaItemDir) }
+            .toPersistentList(),
+        simpleTracks = orderedTracks
+            .map { it.toSimpleTrack(mediaItemDir, simpleArtists) }
+            .toPersistentList(),
     )
 }
