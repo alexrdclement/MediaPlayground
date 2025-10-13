@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumIdArgKey
+import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
@@ -34,6 +35,12 @@ class AlbumViewModel @Inject constructor(
     private val mediaSessionControl: MediaSessionControl,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
+
+    private companion object {
+        private const val tag = "AlbumViewModel"
+        private fun tag(methodName: String) = "$tag#$methodName"
+    }
+
     private val albumId: AlbumId? = savedStateHandle.get<String>(AlbumIdArgKey)?.let(::AlbumId)
 
     private val album = flow {
@@ -99,16 +106,22 @@ class AlbumViewModel @Inject constructor(
         val simpleTrack = trackUi.track
 
         viewModelScope.launch {
-            val engineControl = mediaSessionControl.getMediaEngineControl()
+            try {
+                val engineControl = mediaSessionControl.getMediaEngineControl()
 
-            if (!isAlbumLoaded()) {
-                engineControl.playlistControl.load(album)
+                if (!isAlbumLoaded()) {
+                    engineControl.playlistControl.load(album)
+                }
+
+                val trackIndex = album.tracks.indexOf(simpleTrack)
+                engineControl.playlistControl.seek(trackIndex)
+
+                engineControl.transportControl.play()
+            } catch (e: PlaylistError) {
+                logger.error(tag = tag("onTrackClick")) {
+                    AlbumUiError.PlaylistError(e)
+                }
             }
-
-            val trackIndex = album.tracks.indexOf(simpleTrack)
-            engineControl.playlistControl.seek(trackIndex)
-
-            engineControl.transportControl.play()
         }
     }
 
@@ -123,12 +136,18 @@ class AlbumViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            with(mediaSessionControl.getMediaEngineControl()) {
-                if (isAlbumLoaded()) {
-                    transportControl.playPause()
-                } else {
-                    playlistControl.load(album)
-                    transportControl.play()
+            try {
+                with(mediaSessionControl.getMediaEngineControl()) {
+                    if (isAlbumLoaded()) {
+                        transportControl.playPause()
+                    } else {
+                        playlistControl.load(album)
+                        transportControl.play()
+                    }
+                }
+            } catch (e: PlaylistError) {
+                logger.error(tag = tag("onAlbumPlayPauseClick")) {
+                    AlbumUiError.PlaylistError(e)
                 }
             }
         }

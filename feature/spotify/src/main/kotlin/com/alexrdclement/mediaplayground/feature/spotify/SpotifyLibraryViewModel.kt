@@ -10,6 +10,7 @@ import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuthState
+import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
@@ -42,6 +43,10 @@ class SpotifyLibraryViewModel @Inject constructor(
 
     private companion object {
         val pagingConfig = PagingConfig(pageSize = 10)
+
+        private const val tag = "SpotifyLibraryViewModel"
+        private const val onItemClickTag = "$tag#onItemClick"
+        private const val onPlayPauseClickTag = "$tag#onPlayPauseClick"
     }
 
     private val loadedMediaItem = mediaSessionState.loadedMediaItem
@@ -122,13 +127,19 @@ class SpotifyLibraryViewModel @Inject constructor(
             is Album -> {}
             is Track -> {
                 if (!mediaItem.isPlayable) {
-                    logger.error { SpotifyLibraryError.NotPlayable }
+                    logger.error { SpotifyLibraryUiError.NotPlayable }
                     return
                 }
                 viewModelScope.launch {
-                    with(mediaSessionControl.getMediaEngineControl()) {
-                        playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
-                        transportControl.play()
+                    try {
+                        with(mediaSessionControl.getMediaEngineControl()) {
+                            playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
+                            transportControl.play()
+                        }
+                    } catch (e: PlaylistError) {
+                        logger.error(onItemClickTag) {
+                            SpotifyLibraryUiError.PlaylistError(error = e)
+                        }
                     }
                 }
             }
@@ -137,14 +148,20 @@ class SpotifyLibraryViewModel @Inject constructor(
 
     fun onPlayPauseClick(mediaItemUi: MediaItemUi) {
         viewModelScope.launch {
-            with(mediaSessionControl.getMediaEngineControl()) {
-                val loadedMediaItem = loadedMediaItem.value
-                if (mediaItemUi.mediaItem.id == loadedMediaItem?.id) {
-                    transportControl.playPause()
-                    return@launch
+            try {
+                with(mediaSessionControl.getMediaEngineControl()) {
+                    val loadedMediaItem = loadedMediaItem.value
+                    if (mediaItemUi.mediaItem.id == loadedMediaItem?.id) {
+                        transportControl.playPause()
+                        return@launch
+                    }
+                    playlistControl.load(mediaItemUi.mediaItem)
+                    transportControl.play()
                 }
-                playlistControl.load(mediaItemUi.mediaItem)
-                transportControl.play()
+            } catch (e: PlaylistError) {
+                logger.error(onPlayPauseClickTag) {
+                    SpotifyLibraryUiError.PlaylistError(error = e)
+                }
             }
         }
     }

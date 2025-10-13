@@ -10,4 +10,6 @@ android {
 
 dependencies {
     api(projects.model.audio)
+    api(projects.model.result)
+    api(libs.uiPlayground.loggable)
 }

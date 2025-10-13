@@ -14,7 +14,7 @@ class PlaylistControlImpl @Inject constructor(
 ): PlaylistControl {
 
     override suspend fun load(mediaItem: MediaItem) {
-        when (mediaItem) {
+        return when (mediaItem) {
             is Album -> loadAlbum(mediaItem)
             is Track -> loadTrack(mediaItem)
         }
@@ -23,8 +23,10 @@ class PlaylistControlImpl @Inject constructor(
     override suspend fun seek(playlistItemIndex: Int) {
         val mediaController = mediaControllerHolder.getMediaController()
         if (playlistItemIndex >= mediaController.mediaItemCount) {
-            // TODO: log error
-            return
+            throw PlaylistError.IndexOutOfBounds(
+                index = playlistItemIndex,
+                size = mediaController.mediaItemCount,
+            )
         }
         mediaController.seekTo(playlistItemIndex, 0)
     }

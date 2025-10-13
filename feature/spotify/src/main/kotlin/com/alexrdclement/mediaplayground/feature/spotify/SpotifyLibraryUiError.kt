@@ -1,21 +1,18 @@
-package com.alexrdclement.mediaplayground.feature.album
+package com.alexrdclement.mediaplayground.feature.spotify
 
 import com.alexrdclement.uiplayground.loggable.Loggable
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError as EnginePlaylistError
 
-sealed class AlbumUiError(
+sealed class SpotifyLibraryUiError(
     override val message: String,
     override val throwable: Throwable? = null,
 ) : Loggable {
-    data object AlbumNotFound : AlbumUiError(
-        message = "Album not found",
-    )
-    data object AlbumNotPlayable : AlbumUiError(
-        message = "Album is not playable",
+    data object NotPlayable : SpotifyLibraryUiError(
+        message = "Item is not playable",
     )
     data class PlaylistError(
         val error: EnginePlaylistError,
-    ) : AlbumUiError(
+    ) : SpotifyLibraryUiError(
         message = "Playlist error: ${error.message}",
         throwable = error,
     )

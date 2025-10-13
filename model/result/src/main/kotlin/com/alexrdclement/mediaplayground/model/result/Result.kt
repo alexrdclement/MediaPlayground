@@ -54,3 +54,15 @@ inline infix fun <Success, Failure, R> Result<Success, Failure>.mapFailure(
         onFailure = { Result.Failure(block(it)) }
     )
 }
+
+suspend inline fun <Success, Failure, reified T : Throwable> runCatchingResult(
+    onException: (T) -> Failure,
+    crossinline block: suspend () -> Result<Success, Failure>,
+): Result<Success, Failure> {
+    return try {
+        block()
+    } catch (t: Throwable) {
+        if (t !is T) throw t
+        Result.Failure(onException(t))
+    }
+}

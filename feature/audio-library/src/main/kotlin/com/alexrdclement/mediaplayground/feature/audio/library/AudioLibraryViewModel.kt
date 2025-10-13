@@ -10,6 +10,7 @@ import com.alexrdclement.mediaplayground.data.audio.local.MediaImportState
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStateProvider
 import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentStateProvider
+import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
@@ -44,9 +45,12 @@ class AudioLibraryViewModel @Inject constructor(
 ) : ViewModel() {
 
     private companion object {
-        private const val tag = "AudioLibraryViewModel"
-
         val pagingConfig = PagingConfig(pageSize = 10)
+
+        private const val tag = "AudioLibraryViewModel"
+        private const val onItemClickTag = "$tag#onItemClick"
+        private const val onPlayPauseClickTag = "$tag#onPlayPauseClick"
+        private const val onMediaImportItemSelectedTag = "$tag#onMediaImportItemSelected"
     }
 
     private var importStateJob: Job? = null
@@ -87,9 +91,15 @@ class AudioLibraryViewModel @Inject constructor(
                     return
                 }
                 viewModelScope.launch {
-                    with(mediaSessionControl.getMediaEngineControl()) {
-                        playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
-                        transportControl.play()
+                    try {
+                        with(mediaSessionControl.getMediaEngineControl()) {
+                            playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
+                            transportControl.play()
+                        }
+                    } catch (e: PlaylistError) {
+                        logger.error(onItemClickTag) {
+                            AudioLibraryUiError.PlaylistError(error = e)
+                        }
                     }
                 }
             }
@@ -98,14 +108,20 @@ class AudioLibraryViewModel @Inject constructor(
 
     fun onPlayPauseClick(mediaItemUi: MediaItemUi) {
         viewModelScope.launch {
-            with(mediaSessionControl.getMediaEngineControl()) {
-                val loadedMediaItem = loadedMediaItem.value
-                if (mediaItemUi.mediaItem.id == loadedMediaItem?.id) {
-                    transportControl.playPause()
-                    return@launch
+            try {
+                with(mediaSessionControl.getMediaEngineControl()) {
+                    val loadedMediaItem = loadedMediaItem.value
+                    if (mediaItemUi.mediaItem.id == loadedMediaItem?.id) {
+                        transportControl.playPause()
+                        return@launch
+                    }
+                    playlistControl.load(mediaItemUi.mediaItem)
+                    transportControl.play()
                 }
-                playlistControl.load(mediaItemUi.mediaItem)
-                transportControl.play()
+            } catch (e: PlaylistError) {
+                logger.error(onPlayPauseClickTag) {
+                    AudioLibraryUiError.PlaylistError(error = e)
+                }
             }
         }
     }
@@ -118,7 +134,7 @@ class AudioLibraryViewModel @Inject constructor(
                 .takeWhile { resultsByUri ->
                     val failuresByUri = mapToFailures(resultsByUri)
                     failuresByUri.forEach { (uri, failure) ->
-                        logger.error(tag) {
+                        logger.error(onMediaImportItemSelectedTag) {
                             AudioLibraryUiError.ImportFailure(uri, failure.error)
                         }
                     }
@@ -127,7 +143,7 @@ class AudioLibraryViewModel @Inject constructor(
                 .map(::mapToSuccess)
                 .collect { successByUri ->
                     for ((uri, success) in successByUri) {
-                        logger.infoString(tag) {
+                        logger.infoString(onMediaImportItemSelectedTag) {
                             "Imported track ${success.track.title} from $uri"
                         }
                     }

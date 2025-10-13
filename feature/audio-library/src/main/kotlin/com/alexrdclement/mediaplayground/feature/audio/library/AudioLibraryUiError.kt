@@ -3,33 +3,31 @@ package com.alexrdclement.mediaplayground.feature.audio.library
 import android.net.Uri
 import com.alexrdclement.mediaplayground.data.audio.local.MediaImportResult
 import com.alexrdclement.uiplayground.loggable.Loggable
+import com.alexrdclement.mediaplayground.media.engine.PlaylistError as EnginePlaylistError
 
-sealed class AudioLibraryUiError : Loggable {
+sealed class AudioLibraryUiError(
+    override val message: String,
+    override val throwable: Throwable? = null,
+) : Loggable {
     data class ImportFailure(
         val uri: Uri,
         val error: MediaImportResult.Error,
-    ) : AudioLibraryUiError()
-    data object NotPlayable : AudioLibraryUiError()
-    data object SpotifyNotAuthenticated: AudioLibraryUiError()
+    ) : AudioLibraryUiError(
+        message = "Failed to import media from $uri: ${error.message}",
+        throwable = when (error) {
+            is MediaImportResult.Error.Unknown -> error.throwable
+            is MediaImportResult.Error.ImportError -> null
+        },
+    )
 
-    override val message: String
-        get() = when (this) {
-            is ImportFailure -> when (error) {
-                is MediaImportResult.Error.Unknown ->
-                    "Unknown error importing item: ${error.throwable.message}"
-                is MediaImportResult.Error.ImportError -> "Error importing item: ${error.message}"
-            }
-            NotPlayable -> "Item not playable"
-            SpotifyNotAuthenticated -> "Spotify not authenticated"
-        }
+    data object NotPlayable : AudioLibraryUiError(
+        message = "Item not playable",
+    )
 
-    override val throwable: Throwable?
-        get() = when (this) {
-            is ImportFailure -> when (error) {
-                is MediaImportResult.Error.Unknown -> error.throwable
-                is MediaImportResult.Error.ImportError -> null
-            }
-            NotPlayable -> null
-            SpotifyNotAuthenticated -> null
-        }
+    data class PlaylistError(
+        val error: EnginePlaylistError,
+    ) : AudioLibraryUiError(
+        message = "Playlist error: ${error.message}",
+        throwable = error,
+    )
 }
