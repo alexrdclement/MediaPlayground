@@ -30,6 +30,7 @@ import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialEx
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
 import com.alexrdclement.mediaplayground.ui.util.minus
+import com.alexrdclement.mediaplayground.ui.util.plus
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.media.MediaControlSheetState
 import com.alexrdclement.uiplayground.components.media.model.Artist
@@ -172,7 +173,8 @@ fun MediaControlSheet(
                             onItemClick = onItemClick,
                             onItemPlayPauseClick = onItemPlayPauseClick,
                             contentPadding = navigationBarsPadding
-                                .minus(horizontal = navigationBarsPadding),
+                                .minus(horizontal = navigationBarsPadding)
+                                .plus(top = PlaygroundTheme.spacing.medium),
                         )
                     }
                 }

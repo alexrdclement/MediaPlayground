@@ -44,7 +44,6 @@ fun MediaControlSheetContent(
         contentPadding = contentPadding,
         modifier = modifier
             .fillMaxSize()
-            .padding(top = PlaygroundTheme.spacing.medium)
             .padding(horizontal = contentPadding.calculateHorizontalPadding())
     ) {
         item {
