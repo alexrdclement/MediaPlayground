@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.album
 
-import com.alexrdclement.uiplayground.log.Loggable
+import com.alexrdclement.uiplayground.loggable.Loggable
 
 sealed class AlbumUiError : Loggable {
     data object AlbumNotFound : AlbumUiError()

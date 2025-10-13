@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.spotify
 
-import com.alexrdclement.uiplayground.log.Loggable
+import com.alexrdclement.uiplayground.loggable.Loggable
 
 sealed class SpotifyLibraryError : Loggable {
     data object NotPlayable : SpotifyLibraryError()

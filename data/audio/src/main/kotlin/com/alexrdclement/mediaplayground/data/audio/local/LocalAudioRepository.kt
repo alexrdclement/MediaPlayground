@@ -16,7 +16,8 @@ interface LocalAudioRepository {
         data object AlbumNotFound : Failure()
     }
 
-    fun importTracksFromDisk(uris: List<Uri>)
+    fun importTracksFromDisk(uris: List<Uri>): Flow<Map<Uri, MediaImportState>>
+    fun getTrackImportProgress(): Flow<Map<Uri, MediaImportState>>
     fun getTrackCountFlow(): Flow<Int>
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>>
     suspend fun getTrack(id: TrackId): Result<Track?, Failure>

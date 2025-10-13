@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
     implementation(libs.paging)
+    implementation(libs.uiPlayground.loggable)
 
     implementation(projects.database)
     implementation(projects.media.import)

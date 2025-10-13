@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
-import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -14,8 +13,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import javax.inject.Inject
 
 class LocalAudioRepositoryImpl @Inject constructor(
@@ -27,13 +35,22 @@ class LocalAudioRepositoryImpl @Inject constructor(
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var importJob: Job? = null
 
-    override fun importTracksFromDisk(uris: List<Uri>) {
+    private val trackImportProgress = MutableSharedFlow<Map<Uri, MediaImportState>>(extraBufferCapacity = 1)
+
+    override fun importTracksFromDisk(
+        uris: List<Uri>,
+    ): Flow<Map<Uri, MediaImportState>> {
         importJob?.cancel()
         importJob = coroutineScope.launch {
-            uris.forEach { uri ->
-                importTrackFromDisk(uri)
-            }
+            trackImportProgress.emitAll(importTracksFromDiskFlow(uris = uris))
         }
+        return trackImportProgress.map {
+            it.filter { entry -> uris.contains(entry.key) }
+        }
+    }
+
+    override fun getTrackImportProgress(): Flow<Map<Uri, MediaImportState>> {
+        return trackImportProgress
     }
 
     override fun getTrackCountFlow(): Flow<Int> {
@@ -70,42 +87,55 @@ class LocalAudioRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun importTrackFromDisk(uri: Uri) {
-        val result = mediaImporter.importTrackFromDisk(
-            uri = uri,
-            getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
-            getArtistByName = { artistName ->
-                localAudioDataStore.getArtistByName(artistName)
-            },
-            getAlbumByTitleAndArtistId = { albumTitle, artistId ->
-                localAudioDataStore.getAlbumByTitleAndArtistId(
-                    albumTitle = albumTitle,
-                    artistId = artistId,
-                )
-            },
-        )
-        when (result) {
-            is Result.Failure -> onMediaImportFailure(result.failure)
-            is Result.Success -> {
-                localAudioDataStore.putTrack(result.value)
+    private fun importTracksFromDiskFlow(
+        uris: List<Uri>,
+    ): Flow<Map<Uri, MediaImportState>> {
+        return channelFlow {
+            val results = uris.associateWith<Uri, MediaImportState> {
+                MediaImportState.InProgress
+            }.toMutableMap()
+            send(results.toMap())
+
+            coroutineScope {
+                uris.map { uri ->
+                    async {
+                        val result = importTrackFromDisk(uri)
+                        results[uri] = MediaImportState.Completed(result)
+                        send(results.toMap())
+                    }
+                }.awaitAll()
             }
         }
     }
 
-    private fun onMediaImportFailure(error: MediaImportError) = when (error) {
-        MediaImportError.MkdirError -> TODO("MkdirError")
-        MediaImportError.InputFileError -> {
-            TODO("InputFileError")
-        }
-        is MediaImportError.FileWriteError.InputFileNotFound -> TODO("InputFileNotFound")
-        MediaImportError.FileWriteError.InputStreamError -> TODO("InputStreamError")
-        is MediaImportError.FileWriteError.Unknown -> {
-            // TODO
-            error.throwable?.let { throw it }
-        }
-        is MediaImportError.Unknown -> {
-            // TODO
-            error.throwable?.let { throw it }
+    private suspend fun importTrackFromDisk(uri: Uri): MediaImportResult {
+        return try {
+            val result = mediaImporter.importTrackFromDisk(
+                uri = uri,
+                getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
+                getArtistByName = { artistName ->
+                    localAudioDataStore.getArtistByName(artistName)
+                },
+                getAlbumByTitleAndArtistId = { albumTitle, artistId ->
+                    localAudioDataStore.getAlbumByTitleAndArtistId(
+                        albumTitle = albumTitle,
+                        artistId = artistId,
+                    )
+                },
+            )
+            when (result) {
+                is Result.Failure -> {
+                    val error = MediaImportResult.Error.ImportError(result.failure)
+                    MediaImportResult.Failure(error)
+                }
+                is Result.Success -> {
+                    localAudioDataStore.putTrack(result.value)
+                    MediaImportResult.Success(result.value)
+                }
+            }
+        } catch (e: Throwable) {
+            yield()
+            MediaImportResult.Failure(MediaImportResult.Error.Unknown(throwable = e))
         }
     }
 }

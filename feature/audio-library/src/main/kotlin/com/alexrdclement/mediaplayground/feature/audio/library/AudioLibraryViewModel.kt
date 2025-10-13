@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
+import com.alexrdclement.mediaplayground.data.audio.local.MediaImportResult
+import com.alexrdclement.mediaplayground.data.audio.local.MediaImportState
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStateProvider
 import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentStateProvider
@@ -18,11 +20,15 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.uiplayground.log.Logger
 import com.alexrdclement.uiplayground.log.error
+import com.alexrdclement.uiplayground.log.infoString
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,11 +41,15 @@ class AudioLibraryViewModel @Inject constructor(
     private val localAudioRepository: LocalAudioRepository,
     private val mediaSessionControl: MediaSessionControl,
     mediaSessionState: MediaSessionState,
-): ViewModel() {
-    
+) : ViewModel() {
+
     private companion object {
+        private const val tag = "AudioLibraryViewModel"
+
         val pagingConfig = PagingConfig(pageSize = 10)
     }
+
+    private var importStateJob: Job? = null
 
     private val loadedMediaItem = mediaSessionState.loadedMediaItem
         .stateIn(
@@ -73,7 +83,7 @@ class AudioLibraryViewModel @Inject constructor(
             is Album -> {}
             is Track -> {
                 if (!mediaItem.isPlayable) {
-                    logger.error { AudioLibraryError.NotPlayable }
+                    logger.error { AudioLibraryUiError.NotPlayable }
                     return
                 }
                 viewModelScope.launch {
@@ -101,6 +111,50 @@ class AudioLibraryViewModel @Inject constructor(
     }
 
     fun onMediaImportItemSelected(uris: List<Uri>) {
-        localAudioRepository.importTracksFromDisk(uris)
+        importStateJob?.cancel()
+        importStateJob = viewModelScope.launch {
+            localAudioRepository.importTracksFromDisk(uris)
+                .map(::mapToResults)
+                .takeWhile { resultsByUri ->
+                    val failuresByUri = mapToFailures(resultsByUri)
+                    failuresByUri.forEach { (uri, failure) ->
+                        logger.error(tag) {
+                            AudioLibraryUiError.ImportFailure(uri, failure.error)
+                        }
+                    }
+                    failuresByUri.isEmpty()
+                }
+                .map(::mapToSuccess)
+                .collect { successByUri ->
+                    for ((uri, success) in successByUri) {
+                        logger.infoString(tag) {
+                            "Imported track ${success.track.title} from $uri"
+                        }
+                    }
+                }
+        }
     }
+
+    private fun mapToResults(
+        statesByUri: Map<Uri, MediaImportState>,
+    ): Map<Uri, MediaImportResult> {
+        return statesByUri.mapNotNull { (uri, state) ->
+            (state as? MediaImportState.Completed)?.result ?: return@mapNotNull null
+            uri to state.result
+        }.toMap()
+    }
+
+    private fun mapToSuccess(
+        resultsByUri: Map<Uri, MediaImportResult>,
+    ): Map<Uri, MediaImportResult.Success> = resultsByUri.mapNotNull { (uri, result) ->
+        val mappedResult = result as? MediaImportResult.Success ?: return@mapNotNull null
+        uri to mappedResult
+    }.toMap()
+
+    private fun mapToFailures(
+        resultsByUri: Map<Uri, MediaImportResult>,
+    ) = resultsByUri.mapNotNull { (uri, result) ->
+        val mappedResult = result as? MediaImportResult.Failure ?: return@mapNotNull null
+        uri to mappedResult
+    }.toMap()
 }
