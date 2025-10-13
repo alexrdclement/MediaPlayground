@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.data.audio
 
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.model.audio.Source
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
@@ -29,7 +30,7 @@ interface AudioRepository {
         offset: Int = 0,
     ): Result<ListFetchSuccess<Album>, Failure>
 
-    suspend fun getAlbum(id: AlbumId): Result<Album?, Failure>
+    suspend fun getAlbum(id: AlbumId, source: Source? = null): Result<Album?, Failure>
 
-    suspend fun getTrack(id: TrackId): Result<Track?, Failure>
+    suspend fun getTrack(id: TrackId, source: Source? = null): Result<Track?, Failure>
 }

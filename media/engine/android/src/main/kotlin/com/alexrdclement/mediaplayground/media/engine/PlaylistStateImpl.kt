@@ -5,6 +5,7 @@ import androidx.media3.common.Timeline
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.MediaItemId
+import com.alexrdclement.mediaplayground.model.audio.Source
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import kotlinx.coroutines.Job
@@ -106,7 +107,7 @@ class PlaylistStateImpl @Inject constructor(
 
     private suspend fun getMediaItem(mediaId: String): MediaItem? {
         return audioRepository
-            .getTrack(id = TrackId(mediaId))
+            .getTrack(id = TrackId(mediaId), source = Source.Local)
             .guardSuccess {
                 return null
             }

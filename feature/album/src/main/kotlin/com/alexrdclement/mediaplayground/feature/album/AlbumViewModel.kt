@@ -14,7 +14,6 @@ import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
-import com.alexrdclement.mediaplayground.model.audio.mapper.toTrack
 import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +29,7 @@ class AlbumViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     audioRepository: AudioRepository,
     private val mediaSessionControl: MediaSessionControl,
-    private val mediaSessionState: MediaSessionState,
+    mediaSessionState: MediaSessionState,
 ) : ViewModel() {
     private val albumId: AlbumId? = savedStateHandle.get<String>(AlbumIdArgKey)?.let(::AlbumId)
 
