@@ -7,6 +7,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
+import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuthState
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
@@ -29,16 +30,18 @@ class SpotifyContentStateProvider @Inject constructor(
     ): Flow<SpotifyContentState> {
         val savedTracks = savedTracksFlow(coroutineScope, pagingConfig)
         val savedAlbums = savedAlbumsFlow(coroutineScope, pagingConfig)
-        return spotifyAuth.isLoggedIn
-            .map { isLoggedIn ->
-                if (!isLoggedIn) {
-                    return@map SpotifyContentState.NotLoggedIn
+        return spotifyAuth.authState
+            .map { authState ->
+                when (authState) {
+                    is SpotifyAuthState.LoggedIn -> SpotifyContentState.LoggedIn(
+                        savedTracks = savedTracks,
+                        savedAlbums = savedAlbums,
+                    )
+                    is SpotifyAuthState.LoggingIn,
+                    is SpotifyAuthState.LoggedOut,
+                    is SpotifyAuthState.Error,
+                    -> SpotifyContentState.NotLoggedIn
                 }
-
-                return@map SpotifyContentState.LoggedIn(
-                    savedTracks = savedTracks,
-                    savedAlbums = savedAlbums,
-                )
             }
     }
 

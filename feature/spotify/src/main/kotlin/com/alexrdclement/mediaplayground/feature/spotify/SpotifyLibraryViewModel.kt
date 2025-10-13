@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.audio.spotify.SpotifyAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
+import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuthState
 import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
@@ -89,18 +90,20 @@ class SpotifyLibraryViewModel @Inject constructor(
         }
     }.cachedIn(viewModelScope)
 
-    val uiState: StateFlow<SpotifyLibraryUiState> = spotifyAuth.isLoggedIn.combine(
+    val uiState: StateFlow<SpotifyLibraryUiState> = spotifyAuth.authState.combine(
         loadedMediaItem,
-    ) { isLoggedIn, loadedMediaItem ->
-        if (!isLoggedIn) {
-            return@combine SpotifyLibraryUiState.NotLoggedIn
+    ) { authState, loadedMediaItem ->
+        when (authState) {
+            is SpotifyAuthState.LoggedIn -> SpotifyLibraryUiState.LoggedIn(
+                savedTracks = savedTracks,
+                savedAlbums = savedAlbums,
+                isMediaItemLoaded = loadedMediaItem != null,
+            )
+            is SpotifyAuthState.LoggingIn,
+            is SpotifyAuthState.LoggedOut,
+            is SpotifyAuthState.Error,
+            -> SpotifyLibraryUiState.NotLoggedIn
         }
-
-        return@combine SpotifyLibraryUiState.LoggedIn(
-            savedTracks = savedTracks,
-            savedAlbums = savedAlbums,
-            isMediaItemLoaded = loadedMediaItem != null,
-        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000L),

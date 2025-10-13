@@ -26,7 +26,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
-import com.alexrdclement.mediaplayground.ui.R
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
@@ -38,6 +37,7 @@ import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import com.alexrdclement.mediaplayground.ui.R as UiR
 import com.alexrdclement.uiplayground.components.media.MediaControlSheet as MediaControlSheetComponent
 import com.alexrdclement.uiplayground.components.media.model.MediaItem as UiMediaItem
 
@@ -83,8 +83,7 @@ fun MediaControlSheet(
             .padding(horizontal = navigationBarsHorizontalPadding)
     ) {
         loadedMediaItem?.let { mediaItem ->
-            // TODO: temp
-            val fallbackArtistName = stringResource(id = R.string.artist_name_fallback)
+            val fallbackArtistName = stringResource(id = UiR.string.artist_name_fallback)
             val artists by derivedStateOf {
                 mediaItem.artists.map {
                     Artist(
@@ -97,7 +96,7 @@ fun MediaControlSheet(
                     artworkLargeUrl = mediaItem.largeImageUrl,
                     artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
                     title = mediaItem.title,
-                    artists = artists
+                    artists = artists,
                 )
             }
 

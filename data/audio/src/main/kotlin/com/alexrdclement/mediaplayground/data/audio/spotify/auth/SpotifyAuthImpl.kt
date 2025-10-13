@@ -12,17 +12,28 @@ class SpotifyAuthImpl @Inject constructor(
     private val credentialStore: SpotifyDefaultCredentialStore,
 ) : SpotifyAuth {
 
-    // TODO: do this properly
-    private val _isLoggedIn = MutableStateFlow(credentialStore.canApiBeRefreshed())
-    override val isLoggedIn = _isLoggedIn.asStateFlow()
+    private val _authState = MutableStateFlow(getAuthState())
+    override val authState = _authState.asStateFlow()
 
     override fun logOut() {
         credentialStore.clear()
-        _isLoggedIn.value = false
+        updateAuthState()
     }
 
     internal fun onLogin(api: SpotifyClientApi) {
         credentialStore.setSpotifyApi(api)
-        _isLoggedIn.value = true
+        updateAuthState()
+    }
+
+    private fun updateAuthState() {
+        _authState.value = getAuthState()
+    }
+
+    private fun getAuthState(): SpotifyAuthState {
+        return if (credentialStore.canApiBeRefreshed()) {
+            SpotifyAuthState.LoggedIn
+        } else {
+            SpotifyAuthState.LoggedOut
+        }
     }
 }
