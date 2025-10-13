@@ -129,6 +129,7 @@ class AudioLibraryViewModel @Inject constructor(
     fun onMediaImportItemSelected(uris: List<Uri>) {
         importStateJob?.cancel()
         importStateJob = viewModelScope.launch {
+            val importedUris = mutableSetOf<Uri>()
             localAudioRepository.importTracksFromDisk(uris)
                 .map(::mapToResults)
                 .takeWhile { resultsByUri ->
@@ -143,6 +144,9 @@ class AudioLibraryViewModel @Inject constructor(
                 .map(::mapToSuccess)
                 .collect { successByUri ->
                     for ((uri, success) in successByUri) {
+                        if (importedUris.contains(uri)) continue
+                        importedUris.add(uri)
+
                         logger.infoString(onMediaImportItemSelectedTag) {
                             "Imported track ${success.track.title} from $uri"
                         }
