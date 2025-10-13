@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.paging)
     implementation(libs.paging.compose)
     implementation(libs.uiPlayground.components)
+    implementation(libs.uiPlayground.log)
     implementation(libs.uiPlayground.theme)
 
     implementation(projects.data.audio)

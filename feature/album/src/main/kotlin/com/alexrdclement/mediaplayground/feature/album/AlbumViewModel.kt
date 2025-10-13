@@ -16,6 +16,8 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.result.successOrDefault
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
+import com.alexrdclement.uiplayground.log.Logger
+import com.alexrdclement.uiplayground.log.error
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine
@@ -27,6 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AlbumViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val logger: Logger,
     audioRepository: AudioRepository,
     private val mediaSessionControl: MediaSessionControl,
     mediaSessionState: MediaSessionState,
@@ -89,8 +92,10 @@ class AlbumViewModel @Inject constructor(
     }
 
     fun onTrackClick(trackUi: TrackUi) {
-        // TODO: error handling
-        val album = album.value ?: return
+        val album = album.value ?: run {
+            logger.error { AlbumUiError.AlbumNotFound }
+            return
+        }
         val simpleTrack = trackUi.track
 
         viewModelScope.launch {
@@ -108,8 +113,14 @@ class AlbumViewModel @Inject constructor(
     }
 
     fun onAlbumPlayPauseClick() {
-        val album = album.value ?: return
-        if (!album.isPlayable) return
+        val album = album.value ?: run {
+            logger.error { AlbumUiError.AlbumNotFound }
+            return
+        }
+        if (!album.isPlayable) {
+            logger.error { AlbumUiError.AlbumNotPlayable }
+            return
+        }
 
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {

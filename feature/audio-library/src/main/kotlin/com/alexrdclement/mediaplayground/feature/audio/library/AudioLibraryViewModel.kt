@@ -16,6 +16,8 @@ import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.uiplayground.log.Logger
+import com.alexrdclement.uiplayground.log.error
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AudioLibraryViewModel @Inject constructor(
+    private val logger: Logger,
     localContentStateProvider: LocalContentStateProvider,
     spotifyContentStateProvider: SpotifyContentStateProvider,
     private val spotifyAuth: SpotifyAuth,
@@ -69,7 +72,10 @@ class AudioLibraryViewModel @Inject constructor(
         when (val mediaItem = mediaItemUi.mediaItem) {
             is Album -> {}
             is Track -> {
-                if (!mediaItem.isPlayable) return
+                if (!mediaItem.isPlayable) {
+                    logger.error { AudioLibraryError.NotPlayable }
+                    return
+                }
                 viewModelScope.launch {
                     with(mediaSessionControl.getMediaEngineControl()) {
                         playlistControl.loadIfNecessary(mediaItemUi.mediaItem)
