@@ -1,40 +1,33 @@
 package com.alexrdclement.mediaplayground.feature.album
 
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
-import com.alexrdclement.mediaplayground.ui.components.track.TrackList
-import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingValues
+import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
+import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
-import com.alexrdclement.mediaplayground.ui.util.Spacer
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.mediaplayground.ui.util.plus
 import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
@@ -78,63 +71,57 @@ private fun LoadedContent(
     onTrackClick: (TrackUi) -> Unit,
     onTrackPlayPauseClick: (TrackUi) -> Unit,
 ) {
-    val verticalScrollState = rememberScrollState()
-
     BoxWithConstraints {
-        Column(
+        LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+            contentPadding = WindowInsets.systemBars.asPaddingValues(),
             modifier = Modifier
-                .verticalScroll(verticalScrollState)
                 .fillMaxSize()
         ) {
-            Spacer(padding = WindowInsets.statusBars.asPaddingValues())
-            MediaItemArtwork(
-                imageUrl = state.imageUrl,
-                modifier = Modifier
-                    .heightIn(
-                        max = with(LocalDensity.current) {
-                            (this@BoxWithConstraints.constraints.maxHeight / 2f).toDp()
-                        }
-                    )
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = state.title,
-                    style = PlaygroundTheme.typography.titleLarge.copy(textAlign = TextAlign.Center),
-                    maxLines = 1,
+            item {
+                MediaItemArtwork(
+                    imageUrl = state.imageUrl,
                     modifier = Modifier
-                        .basicMarquee()
-                )
-                Text(
-                    text = artistNamesOrDefault(artists = state.artists),
-                    style = PlaygroundTheme.typography.titleMedium.copy(textAlign = TextAlign.Center),
-                    maxLines = 1,
-                    modifier = Modifier
-                        .basicMarquee()
+                        .heightIn(
+                            max = with(LocalDensity.current) {
+                                (this@BoxWithConstraints.constraints.maxHeight / 2f).toDp()
+                            }
+                        )
                 )
             }
-            PlayPauseButton(
-                isPlaying = state.isAlbumPlaying,
-                isEnabled = state.isAlbumPlayable,
-                onClick = onAlbumPlayPauseClick,
-                modifier = Modifier
-                    .size(72.dp)
-            )
-            TrackList(
-                tracks = state.tracks,
-                onTrackClick = onTrackClick,
-                onPlayPauseClick = onTrackPlayPauseClick,
-                contentPadding = WindowInsets.navigationBars.asPaddingValues()
-                    + mediaControlSheetPaddingValues(isMediaItemLoaded = state.isMediaItemLoaded),
-                modifier = Modifier
-                    .padding(vertical = PlaygroundTheme.spacing.small)
-            )
+            item {
+                TitleArtistBlock(
+                    title = state.title,
+                    artists = artistNamesOrDefault(artists = state.artists),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = PlaygroundTheme.spacing.small)
+                )
+            }
+            item {
+                PlayPauseButton(
+                    isPlaying = state.isAlbumPlaying,
+                    isEnabled = state.isAlbumPlayable,
+                    onClick = onAlbumPlayPauseClick,
+                    modifier = Modifier
+                        .size(72.dp)
+                        .padding(vertical = PlaygroundTheme.spacing.small)
+                )
+            }
+            items(
+                state.tracks,
+                key = { it.track.id.value }
+            ) { trackUi ->
+                TrackListItem(
+                    track = trackUi.track,
+                    isLoaded = trackUi.isLoaded,
+                    isPlayable = trackUi.isPlayable,
+                    isPlaying = trackUi.isPlaying,
+                    onClick = { onTrackClick(trackUi) },
+                    onPlayPauseClick = { onTrackPlayPauseClick(trackUi) },
+                )
+            }
         }
     }
 }

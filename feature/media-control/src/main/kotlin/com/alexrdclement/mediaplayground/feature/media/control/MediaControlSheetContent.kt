@@ -1,10 +1,9 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,14 +11,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
+import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
-import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.components.media.model.Artist
 import com.alexrdclement.uiplayground.components.media.model.MediaItem
@@ -47,37 +46,23 @@ fun MediaControlSheetContent(
             .padding(horizontal = contentPadding.calculateHorizontalPadding())
     ) {
         item {
+            TitleArtistBlock(
+                title = loadedMediaItem.title,
+                artists = artistNamesOrDefault(artists = loadedMediaItem.artists),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = PlaygroundTheme.spacing.small)
+            )
+        }
+        item {
             PlayPauseButton(
                 isPlaying = isPlaying,
                 onClick = onPlayPauseClick,
                 modifier = Modifier
                     .size(72.dp)
+                    .padding(vertical = PlaygroundTheme.spacing.small)
             )
         }
-        item {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(vertical = PlaygroundTheme.spacing.small)
-            ) {
-                Text(
-                    text = loadedMediaItem.title,
-                    style = PlaygroundTheme.typography.titleLarge.copy(textAlign = TextAlign.Center),
-                    maxLines = 1,
-                    modifier = Modifier
-                        .basicMarquee()
-                )
-                Text(
-                    text = loadedMediaItem.artists.joinToString { it.name },
-                    style = PlaygroundTheme.typography.bodyLarge.copy(textAlign = TextAlign.Center),
-                    maxLines = 1,
-                    modifier = Modifier
-                        .basicMarquee()
-                )
-            }
-        }
-
         items(
             items = playlist,
             key = { item -> item.mediaItem.id.value },
