@@ -3,9 +3,10 @@ package com.alexrdclement.mediaplayground.model.audio.mapper
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
+import kotlinx.collections.immutable.PersistentList
 
 fun SimpleAlbum.toAlbum(
-    tracks: List<SimpleTrack>,
+    tracks: PersistentList<SimpleTrack>,
 ) = Album(
     id = id,
     title = name,

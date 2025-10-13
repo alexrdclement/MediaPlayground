@@ -1,13 +1,14 @@
 package com.alexrdclement.mediaplayground.model.audio
 
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class SimpleAlbum(
     val id: AlbumId,
     val name: String,
-    val artists: List<SimpleArtist>,
-    val images: List<Image>,
+    val artists: PersistentList<SimpleArtist>,
+    val images: PersistentList<Image>,
     val source: Source,
 )
 

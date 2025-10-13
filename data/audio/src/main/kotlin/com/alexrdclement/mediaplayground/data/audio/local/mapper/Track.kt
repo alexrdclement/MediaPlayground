@@ -6,6 +6,8 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.io.files.Path
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.milliseconds
@@ -27,7 +29,7 @@ fun Track.toTrackEntity(): TrackEntity {
 
 fun TrackEntity.toSimpleTrack(
     mediaItemDir: Path,
-    simpleArtists: List<SimpleArtist>,
+    simpleArtists: PersistentList<SimpleArtist>,
 ): SimpleTrack {
     return SimpleTrack(
         id = TrackId(id),
@@ -43,7 +45,7 @@ fun TrackEntity.toSimpleTrack(
 fun CompleteTrackEntity.toTrack(
     albumDir: Path,
 ): Track {
-    val simpleArtists = artists.map { it.toSimpleArtist() }
+    val simpleArtists = artists.map { it.toSimpleArtist() }.toPersistentList()
     return Track(
         id = TrackId(track.id),
         title = track.title,
@@ -55,7 +57,7 @@ fun CompleteTrackEntity.toTrack(
             id = AlbumId(album.id),
             name = album.title,
             artists = simpleArtists,
-            images = images.map { it.toImage(albumDir = albumDir) },
+            images = images.map { it.toImage(albumDir = albumDir) }.toPersistentList(),
             source = album.source.toDomainSource(),
         ),
         source = track.source.toDomainSource(),

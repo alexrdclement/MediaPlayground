@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.model.audio
 
+import kotlinx.collections.immutable.PersistentList
 import kotlin.time.Duration
 
 sealed interface MediaItemId {
@@ -9,8 +10,8 @@ sealed interface MediaItemId {
 sealed interface MediaItem {
     val id: MediaItemId
     val title: String
-    val artists: List<SimpleArtist>
-    val images: List<Image>
+    val artists: PersistentList<SimpleArtist>
+    val images: PersistentList<Image>
     val isPlayable: Boolean
     val duration: Duration
     val source: Source

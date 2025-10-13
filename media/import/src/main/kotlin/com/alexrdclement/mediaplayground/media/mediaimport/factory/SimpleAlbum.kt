@@ -7,6 +7,7 @@ import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.Source
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.io.files.Path
 import java.util.UUID
 
@@ -31,8 +32,8 @@ internal suspend fun makeSimpleAlbum(
     return mediaMetadata.toSimpleAlbum(
         id = albumId,
         title = albumName,
-        artists = listOf(simpleArtist),
-        images = listOfNotNull(image),
+        artists = persistentListOf(simpleArtist),
+        images = image?.let { persistentListOf(image) } ?: persistentListOf(),
         source = source,
     )
 }

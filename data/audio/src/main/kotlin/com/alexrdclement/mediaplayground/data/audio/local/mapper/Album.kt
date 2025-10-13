@@ -8,6 +8,8 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.model.audio.Source
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.io.files.Path
 import kotlin.time.Clock
 import com.alexrdclement.mediaplayground.database.model.Album as AlbumEntity
@@ -23,8 +25,8 @@ fun SimpleAlbum.toAlbumEntity(source: Source): AlbumEntity {
 }
 
 fun AlbumEntity.toSimpleAlbum(
-    artists: List<SimpleArtist>,
-    images: List<Image>,
+    artists: PersistentList<SimpleArtist>,
+    images: PersistentList<Image>,
 ): SimpleAlbum {
     return SimpleAlbum(
         id = AlbumId(id),
@@ -36,9 +38,9 @@ fun AlbumEntity.toSimpleAlbum(
 }
 
 fun AlbumEntity.toAlbum(
-    artists: List<SimpleArtist>,
-    images: List<Image>,
-    simpleTracks: List<SimpleTrack>,
+    artists: PersistentList<SimpleArtist>,
+    images: PersistentList<Image>,
+    simpleTracks: PersistentList<SimpleTrack>,
 ): Album {
     return Album(
         id = AlbumId(id),
@@ -56,8 +58,8 @@ fun SimpleAlbumEntity.toSimpleAlbum(
     return SimpleAlbum(
         id = AlbumId(album.id),
         name = album.title,
-        artists = artists.map { it.toSimpleArtist() },
-        images = images.map { it.toImage(albumDir = mediaItemDir) },
+        artists = artists.map { it.toSimpleArtist() }.toPersistentList(),
+        images = images.map { it.toImage(albumDir = mediaItemDir) }.toPersistentList(),
         source = album.source.toDomainSource(),
     )
 }
@@ -65,10 +67,10 @@ fun SimpleAlbumEntity.toSimpleAlbum(
 fun CompleteAlbum.toAlbum(
     mediaItemDir: Path,
 ): Album {
-    val simpleArtists = simpleAlbum.artists.map { it.toSimpleArtist() }
+    val simpleArtists = simpleAlbum.artists.map { it.toSimpleArtist() }.toPersistentList()
     return simpleAlbum.album.toAlbum(
         artists = simpleArtists,
-        images = simpleAlbum.images.map { it.toImage(albumDir = mediaItemDir) },
-        simpleTracks = tracks.map { it.toSimpleTrack(mediaItemDir, simpleArtists) },
+        images = simpleAlbum.images.map { it.toImage(albumDir = mediaItemDir) }.toPersistentList(),
+        simpleTracks = tracks.map { it.toSimpleTrack(mediaItemDir, simpleArtists) }.toPersistentList(),
     )
 }

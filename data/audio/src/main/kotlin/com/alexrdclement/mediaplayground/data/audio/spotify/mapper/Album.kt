@@ -3,13 +3,15 @@ package com.alexrdclement.mediaplayground.data.audio.spotify.mapper
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Source
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import com.adamratzman.spotify.models.Album as SpotifyAlbum
 
 fun SpotifyAlbum.toAlbum() = Album(
     id = AlbumId(this.id),
     title = this.name,
-    artists = this.artists.map { it.toSimpleArtist() },
-    images = this.images?.map { it.toImage() } ?: emptyList(),
-    tracks = this.tracks.mapNotNull { it?.toSimpleTrack() },
+    artists = this.artists.map { it.toSimpleArtist() }.toPersistentList(),
+    images = this.images?.map { it.toImage() }?.toPersistentList() ?: persistentListOf(),
+    tracks = this.tracks.mapNotNull { it?.toSimpleTrack() }.toPersistentList(),
     source = Source.Spotify,
 )

@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.data.audio.spotify.mapper
 import com.alexrdclement.mediaplayground.model.audio.Source
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
+import kotlinx.collections.immutable.toPersistentList
 import kotlin.time.Duration.Companion.milliseconds
 import com.adamratzman.spotify.models.Track as SpotifyTrack
 
@@ -12,7 +13,7 @@ fun SpotifyTrack.toTrack() = Track(
     duration = this.durationMs.milliseconds,
     trackNumber = this.trackNumber,
     uri = this.previewUrl,
-    artists = this.artists.map { it.toSimpleArtist() },
+    artists = this.artists.map { it.toSimpleArtist() }.toPersistentList(),
     simpleAlbum = this.album.toSimpleAlbum(),
     source = Source.Spotify,
 )

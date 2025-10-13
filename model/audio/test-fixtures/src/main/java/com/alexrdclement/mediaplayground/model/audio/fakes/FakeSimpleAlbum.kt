@@ -2,19 +2,20 @@ package com.alexrdclement.mediaplayground.model.audio.fakes
 
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
+import kotlinx.collections.immutable.persistentListOf
 
 val FakeSimpleAlbum1 = SimpleAlbum(
     id = AlbumId("1"),
     name = "Major Arcana",
-    artists = listOf(FakeSimpleArtist1),
-    images = listOf(FakeImage1),
+    artists = persistentListOf(FakeSimpleArtist1),
+    images = persistentListOf(FakeImage1),
     source = FakeSource1,
 )
 
 val FakeSimpleAlbum2 = SimpleAlbum(
     id = AlbumId("2"),
     name = "TANGK",
-    artists = listOf(FakeSimpleArtist2),
-    images = listOf(FakeImage2),
+    artists = persistentListOf(FakeSimpleArtist2),
+    images = persistentListOf(FakeImage2),
     source = FakeSource2,
 )

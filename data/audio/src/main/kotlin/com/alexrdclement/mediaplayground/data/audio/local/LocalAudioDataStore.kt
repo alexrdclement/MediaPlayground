@@ -30,6 +30,7 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -78,10 +79,10 @@ class LocalAudioDataStore @Inject constructor(
         val simpleAlbumEntity =
             simpleAlbumDao.getAlbumByTitleAndArtistId(albumTitle, artistId) ?: return null
         return simpleAlbumEntity.album.toSimpleAlbum(
-            artists = simpleAlbumEntity.artists.map { it.toSimpleArtist() },
+            artists = simpleAlbumEntity.artists.map { it.toSimpleArtist() }.toPersistentList(),
             images = simpleAlbumEntity.images.map {
                 it.toImage(albumDir = pathProvider.getAlbumDir(simpleAlbumEntity.album.id))
-            },
+            }.toPersistentList(),
         )
     }
 

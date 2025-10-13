@@ -6,6 +6,7 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.Source
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.io.files.Path
 import java.util.UUID
 import kotlin.time.Duration.Companion.milliseconds
@@ -21,7 +22,7 @@ internal fun makeTrack(
     return Track(
         id = TrackId(id.toString()),
         title = mediaMetadata.title ?: filePath.name,
-        artists = listOf(simpleArtist),
+        artists = persistentListOf(simpleArtist),
         duration = mediaMetadata.durationMs?.milliseconds ?: 0.milliseconds,
         trackNumber = mediaMetadata.trackNumber,
         uri = filePath.toString(),
