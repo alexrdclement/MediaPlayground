@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -13,14 +14,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
@@ -97,21 +95,19 @@ class LocalAudioRepositoryImpl @Inject constructor(
             send(results.toMap())
 
             coroutineScope {
-                uris.map { uri ->
-                    async {
-                        val result = importTrackFromDisk(uri)
-                        results[uri] = MediaImportState.Completed(result)
-                        send(results.toMap())
-                    }
-                }.awaitAll()
+                importTracksFromDiskSuspend(
+                    uris = uris,
+                )
             }
         }
     }
 
-    private suspend fun importTrackFromDisk(uri: Uri): MediaImportResult {
+    private suspend fun importTracksFromDiskSuspend(
+        uris: List<Uri>,
+    ): Map<Uri, MediaImportResult> {
         return try {
-            val result = mediaImporter.importTrackFromDisk(
-                uri = uri,
+            mediaImporter.importTracksFromDisk(
+                uris = uris,
                 getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
                 getArtistByName = { artistName ->
                     localAudioDataStore.getArtistByName(artistName)
@@ -122,20 +118,28 @@ class LocalAudioRepositoryImpl @Inject constructor(
                         artistId = artistId,
                     )
                 },
-            )
-            when (result) {
-                is Result.Failure -> {
-                    val error = MediaImportResult.Error.ImportError(result.failure)
-                    MediaImportResult.Failure(error)
-                }
-                is Result.Success -> {
-                    localAudioDataStore.putTrack(result.value)
-                    MediaImportResult.Success(result.value)
-                }
-            }
+                saveTrack = { track ->
+                    localAudioDataStore.putTrack(track)
+                },
+            ).map { (uri, result) ->
+                uri to mapMediaImportResult(result)
+            }.toMap()
         } catch (e: Throwable) {
             yield()
-            MediaImportResult.Failure(MediaImportResult.Error.Unknown(throwable = e))
+            val result = MediaImportResult.Failure(MediaImportResult.Error.Unknown(throwable = e))
+            uris.associateWith { result }
+        }
+    }
+
+    private fun mapMediaImportResult(result: Result<Track, MediaImportError>): MediaImportResult {
+        return when (result) {
+            is Result.Failure -> {
+                val error = MediaImportResult.Error.ImportError(result.failure)
+                MediaImportResult.Failure(error)
+            }
+            is Result.Success -> {
+                MediaImportResult.Success(result.value)
+            }
         }
     }
 }
