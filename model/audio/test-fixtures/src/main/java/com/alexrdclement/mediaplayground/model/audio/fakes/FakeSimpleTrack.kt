@@ -11,6 +11,7 @@ val FakeSimpleTrack1 = SimpleTrack(
     duration = 217.seconds,
     trackNumber = 1,
     uri = null,
+    source = FakeSource1,
 )
 
 val FakeSimpleTrack2 = SimpleTrack(
@@ -20,6 +21,7 @@ val FakeSimpleTrack2 = SimpleTrack(
     duration = 166.seconds,
     trackNumber = 2,
     uri = null,
+    source = FakeSource2,
 )
 
 val FakeSimpleTrack3 = SimpleTrack(
@@ -29,6 +31,7 @@ val FakeSimpleTrack3 = SimpleTrack(
     duration = 155.seconds,
     trackNumber = 3,
     uri = null,
+    source = FakeSource1,
 )
 
 val FakeSimpleTracks1 = listOf(

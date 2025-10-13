@@ -13,6 +13,7 @@ sealed interface MediaItem {
     val images: List<Image>
     val isPlayable: Boolean
     val duration: Duration
+    val source: Source
 }
 
 val MediaItem.thumbnailImageUrl: String?

@@ -9,4 +9,5 @@ data class SimpleTrack(
     val duration: Duration,
     val trackNumber: Int?,
     val uri: String?,
+    val source: Source,
 )

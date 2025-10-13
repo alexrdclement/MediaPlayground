@@ -4,7 +4,7 @@ import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.mapper.toAlbum
 
 val FakeAlbum1 = FakeSimpleAlbum1.toAlbum(
-    tracks = FakeSimpleTracks1
+    tracks = FakeSimpleTracks1,
 ).copy(id = AlbumId("1"))
 
 val FakeAlbum2 = FakeAlbum1.copy(id = AlbumId("2"))

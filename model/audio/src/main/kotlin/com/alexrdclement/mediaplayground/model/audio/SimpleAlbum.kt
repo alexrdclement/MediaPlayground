@@ -8,6 +8,7 @@ data class SimpleAlbum(
     val name: String,
     val artists: List<SimpleArtist>,
     val images: List<Image>,
+    val source: Source,
 )
 
 val SimpleAlbum.thumbnailImageUrl: String?

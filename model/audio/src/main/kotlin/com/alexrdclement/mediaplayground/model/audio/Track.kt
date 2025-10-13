@@ -16,6 +16,7 @@ data class Track(
     val trackNumber: Int?,
     val uri: String?,
     val simpleAlbum: SimpleAlbum,
+    override val source: Source,
 ) : MediaItem {
     override val images: List<Image>
         get() = simpleAlbum.images

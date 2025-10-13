@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportErro
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.model.audio.Source
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +48,7 @@ class MediaImporter @Inject constructor(
                     Path(getImportDir(albumId), MediaThumbnailFileName)
                 },
                 getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
+                source = Source.Local,
             )
 
             val importDir = getImportDir(simpleAlbum.id)
@@ -77,6 +79,7 @@ class MediaImporter @Inject constructor(
                         mediaMetadata = mediaMetadata,
                         simpleArtist = simpleArtist,
                         simpleAlbum = simpleAlbum,
+                        source = Source.Local,
                     )
                 )
             }

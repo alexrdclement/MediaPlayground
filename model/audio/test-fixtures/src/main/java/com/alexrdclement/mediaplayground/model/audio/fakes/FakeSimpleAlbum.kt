@@ -8,6 +8,7 @@ val FakeSimpleAlbum1 = SimpleAlbum(
     name = "Major Arcana",
     artists = listOf(FakeSimpleArtist1),
     images = listOf(FakeImage1),
+    source = FakeSource1,
 )
 
 val FakeSimpleAlbum2 = SimpleAlbum(
@@ -15,4 +16,5 @@ val FakeSimpleAlbum2 = SimpleAlbum(
     name = "TANGK",
     artists = listOf(FakeSimpleArtist2),
     images = listOf(FakeImage2),
+    source = FakeSource2,
 )

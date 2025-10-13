@@ -55,7 +55,7 @@ class LocalAudioDataStore @Inject constructor(
                 artistDao.insert(it.toArtistEntity())
             }
 
-            albumDao.insert(track.simpleAlbum.toAlbumEntity())
+            albumDao.insert(track.simpleAlbum.toAlbumEntity(source = track.source))
 
             val albumArtistCrossRef = track.artists.map { artist ->
                 AlbumArtistCrossRef(albumId = track.simpleAlbum.id.value, artistId = artist.id)

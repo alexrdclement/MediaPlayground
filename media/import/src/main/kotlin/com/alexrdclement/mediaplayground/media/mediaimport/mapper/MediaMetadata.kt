@@ -5,6 +5,7 @@ import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Image
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.model.audio.Source
 import kotlinx.io.files.Path
 import java.util.UUID
 
@@ -22,12 +23,14 @@ fun MediaMetadata.toSimpleAlbum(
     title: String,
     artists: List<SimpleArtist>,
     images: List<Image>,
+    source: Source,
 ): SimpleAlbum {
     return SimpleAlbum(
         id = id,
         name = title,
         artists = artists,
         images = images,
+        source = source,
     )
 }
 

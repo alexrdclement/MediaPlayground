@@ -6,6 +6,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.model.audio.Source
 import kotlinx.io.files.Path
 import java.util.UUID
 
@@ -16,6 +17,7 @@ internal suspend fun makeSimpleAlbum(
     simpleArtist: SimpleArtist,
     getImageFilePath: (AlbumId) -> Path,
     getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
+    source: Source,
 ): SimpleAlbum {
     val albumName = mediaMetadata.albumTitle ?: UnknownAlbumName
 
@@ -31,5 +33,6 @@ internal suspend fun makeSimpleAlbum(
         title = albumName,
         artists = listOf(simpleArtist),
         images = listOfNotNull(image),
+        source = source,
     )
 }

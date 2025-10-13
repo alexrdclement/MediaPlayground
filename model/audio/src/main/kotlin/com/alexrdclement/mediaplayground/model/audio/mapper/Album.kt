@@ -5,13 +5,14 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 
 fun SimpleAlbum.toAlbum(
-    tracks: List<SimpleTrack>
+    tracks: List<SimpleTrack>,
 ) = Album(
     id = id,
     title = name,
     artists = artists,
     images = images,
     tracks = tracks,
+    source = source,
 )
 
 fun Album.toSimpleAlbum() = SimpleAlbum(
@@ -19,4 +20,5 @@ fun Album.toSimpleAlbum() = SimpleAlbum(
     name = title,
     artists = artists,
     images = images,
+    source = source,
 )

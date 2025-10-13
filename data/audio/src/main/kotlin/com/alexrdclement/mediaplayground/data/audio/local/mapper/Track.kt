@@ -21,6 +21,7 @@ fun Track.toTrackEntity(): TrackEntity {
         durationMs = duration.inWholeMilliseconds.toInt(),
         trackNumber = trackNumber,
         modifiedDate = Clock.System.now(),
+        source = source.toEntitySource(),
     )
 }
 
@@ -35,6 +36,7 @@ fun TrackEntity.toSimpleTrack(
         artists = simpleArtists,
         duration = durationMs.milliseconds,
         trackNumber = trackNumber,
+        source = source.toDomainSource(),
     )
 }
 
@@ -54,6 +56,8 @@ fun CompleteTrackEntity.toTrack(
             name = album.title,
             artists = simpleArtists,
             images = images.map { it.toImage(albumDir = albumDir) },
+            source = album.source.toDomainSource(),
         ),
+        source = track.source.toDomainSource(),
     )
 }

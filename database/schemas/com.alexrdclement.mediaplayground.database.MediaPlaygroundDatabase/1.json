@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f86f9bb41cb746c45873f56db7335ef0",
+    "identityHash": "944791623e0fa59e7b7d3d21d90c7693",
     "entities": [
       {
         "tableName": "tracks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `file_name` TEXT, `title` TEXT NOT NULL, `album_id` TEXT NOT NULL, `duration_ms` INTEGER NOT NULL, `track_number` INTEGER, `modified_date` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`album_id`) REFERENCES `albums`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `file_name` TEXT, `title` TEXT NOT NULL, `album_id` TEXT NOT NULL, `duration_ms` INTEGER NOT NULL, `track_number` INTEGER, `modified_date` INTEGER NOT NULL, `source` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`album_id`) REFERENCES `albums`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -17,8 +17,7 @@
           {
             "fieldPath": "fileName",
             "columnName": "file_name",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "title",
@@ -41,13 +40,18 @@
           {
             "fieldPath": "trackNumber",
             "columnName": "track_number",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "modifiedDate",
             "columnName": "modified_date",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -84,7 +88,7 @@
       },
       {
         "tableName": "albums",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `modified_date` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `modified_date` INTEGER NOT NULL, `source` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -103,6 +107,12 @@
             "columnName": "modified_date",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -110,9 +120,7 @@
           "columnNames": [
             "id"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "artists",
@@ -127,8 +135,7 @@
           {
             "fieldPath": "name",
             "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -136,9 +143,7 @@
           "columnNames": [
             "id"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "images",
@@ -264,10 +269,9 @@
         ]
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f86f9bb41cb746c45873f56db7335ef0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '944791623e0fa59e7b7d3d21d90c7693')"
     ]
   }
 }

@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.media.mediaimport.factory
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.model.audio.Source
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.TrackId
 import kotlinx.io.files.Path
@@ -15,6 +16,7 @@ internal fun makeTrack(
     mediaMetadata: MediaMetadata,
     simpleArtist: SimpleArtist,
     simpleAlbum: SimpleAlbum,
+    source: Source,
 ): Track {
     return Track(
         id = TrackId(id.toString()),
@@ -24,5 +26,6 @@ internal fun makeTrack(
         trackNumber = mediaMetadata.trackNumber,
         uri = filePath.toString(),
         simpleAlbum = simpleAlbum,
+        source = source,
     )
 }

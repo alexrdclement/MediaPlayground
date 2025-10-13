@@ -14,6 +14,7 @@ data class Album(
     override val artists: List<SimpleArtist>,
     override val images: List<Image>,
     val tracks: List<SimpleTrack>,
+    override val source: Source,
 ) : MediaItem {
     override val isPlayable: Boolean
         get() = tracks.any { it.uri != null }

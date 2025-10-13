@@ -34,4 +34,5 @@ data class Track(
     val trackNumber: Int?,
     @ColumnInfo(name = "modified_date")
     val modifiedDate: Instant,
+    val source: Source,
 )

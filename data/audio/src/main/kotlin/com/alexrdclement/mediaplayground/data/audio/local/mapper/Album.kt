@@ -7,16 +7,18 @@ import com.alexrdclement.mediaplayground.model.audio.Image
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
+import com.alexrdclement.mediaplayground.model.audio.Source
 import kotlinx.io.files.Path
 import kotlin.time.Clock
 import com.alexrdclement.mediaplayground.database.model.Album as AlbumEntity
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum as SimpleAlbumEntity
 
-fun SimpleAlbum.toAlbumEntity(): AlbumEntity {
+fun SimpleAlbum.toAlbumEntity(source: Source): AlbumEntity {
     return AlbumEntity(
         id = id.value,
         title = name,
         modifiedDate = Clock.System.now(),
+        source = source.toEntitySource(),
     )
 }
 
@@ -29,6 +31,7 @@ fun AlbumEntity.toSimpleAlbum(
         name = title,
         artists = artists,
         images = images,
+        source = source.toDomainSource(),
     )
 }
 
@@ -43,6 +46,7 @@ fun AlbumEntity.toAlbum(
         artists = artists,
         images = images,
         tracks = simpleTracks,
+        source = source.toDomainSource(),
     )
 }
 
@@ -54,6 +58,7 @@ fun SimpleAlbumEntity.toSimpleAlbum(
         name = album.title,
         artists = artists.map { it.toSimpleArtist() },
         images = images.map { it.toImage(albumDir = mediaItemDir) },
+        source = album.source.toDomainSource(),
     )
 }
 
