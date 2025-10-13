@@ -22,10 +22,10 @@ fun AudioLibraryContent(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = PlaygroundTheme.spacing.small)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

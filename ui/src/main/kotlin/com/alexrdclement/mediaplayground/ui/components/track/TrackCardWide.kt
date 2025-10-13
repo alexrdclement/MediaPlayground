@@ -40,7 +40,7 @@ fun TrackCardWide(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(PlaygroundTheme.spacing.medium),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -56,9 +56,9 @@ fun TrackCardWide(
                     onClick = onPlayClick
                 )
             }
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(PlaygroundTheme.spacing.medium))
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(text = track.title)
