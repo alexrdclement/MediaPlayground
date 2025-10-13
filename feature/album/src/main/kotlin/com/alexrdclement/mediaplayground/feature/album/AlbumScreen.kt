@@ -24,9 +24,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
+import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingValues
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
+import com.alexrdclement.mediaplayground.ui.util.plus
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -75,7 +77,9 @@ private fun LoadedContent(
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
-            contentPadding = WindowInsets.systemBars.asPaddingValues(),
+            contentPadding = WindowInsets.systemBars.asPaddingValues().plus(
+                mediaControlSheetPaddingValues(state.isMediaItemLoaded),
+            ),
             modifier = Modifier
                 .fillMaxSize()
         ) {
