@@ -96,6 +96,7 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 uiPlayground-components = { group = "com.alexrdclement.uiplayground", name = "ui-playground-components", version.ref = "uiPlayground" }
 uiPlayground-log = { group = "com.alexrdclement.uiplayground", name = "ui-playground-log", version.ref = "uiPlayground" }
 uiPlayground-theme = { group = "com.alexrdclement.uiplayground", name = "ui-playground-theme", version.ref = "uiPlayground" }
+uiPlayground-uievent = { group = "com.alexrdclement.uiplayground", name = "ui-playground-uievent", version.ref = "uiPlayground" }
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }

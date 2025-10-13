@@ -40,6 +40,7 @@ include(":model:audio:test-fixtures")
 include(":model:result")
 include(":feature:album")
 include(":feature:audio-library")
+include(":feature:error")
 include(":feature:media-control")
 include(":feature:player")
 include(":feature:spotify")
@@ -52,6 +53,7 @@ if (file("../UiPlayground").exists()) {
             substitute(module("com.alexrdclement.uiplayground:ui-playground-components")).using(project(":components"))
             substitute(module("com.alexrdclement.uiplayground:ui-playground-log")).using(project(":log"))
             substitute(module("com.alexrdclement.uiplayground:ui-playground-theme")).using(project(":theme"))
+            substitute(module("com.alexrdclement.uiplayground:ui-playground-uievent")).using(project(":uievent"))
         }
     }
 }
