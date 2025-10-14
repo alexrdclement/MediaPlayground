@@ -11,6 +11,7 @@ import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
+import com.alexrdclement.mediaplayground.media.session.playlistState
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -22,6 +23,7 @@ import com.alexrdclement.uiplayground.log.error
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -33,7 +35,7 @@ class AlbumViewModel @Inject constructor(
     private val logger: Logger,
     audioRepository: AudioRepository,
     private val mediaSessionControl: MediaSessionControl,
-    mediaSessionState: MediaSessionState,
+    private val mediaSessionState: MediaSessionState,
 ) : ViewModel() {
 
     private companion object {
@@ -161,12 +163,20 @@ class AlbumViewModel @Inject constructor(
         }
     }
 
-    private fun isAlbumLoaded(): Boolean {
-        val loadedMediaItem = loadedMediaItem.value
+    private suspend fun isAlbumLoaded(): Boolean {
+        val album = album.value ?: return false
+
+        val playlistState = mediaSessionState.playlistState.first()
+        val playlist = playlistState.getPlaylist().first()
+        if (playlist.isEmpty()) return false
+
+        val loadedMediaItem = loadedMediaItem.value ?: return false
         return when (val mediaItem = loadedMediaItem) {
-            is Album -> mediaItem.id == album.value?.id
-            is Track -> mediaItem.simpleAlbum.id == album.value?.id
-            null -> false
+            is Album -> mediaItem.id == album.id
+            is Track -> playlist.all {
+                val asTrack = it as? Track ?: return@all false
+                asTrack.simpleAlbum.id == album.id
+            }
         }
     }
 }
