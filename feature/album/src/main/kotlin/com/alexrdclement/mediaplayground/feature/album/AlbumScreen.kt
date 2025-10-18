@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,7 +29,7 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingVa
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.mediaplayground.ui.util.plus
+import com.alexrdclement.uiplayground.components.util.plus
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -77,7 +78,7 @@ private fun LoadedContent(
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
-            contentPadding = WindowInsets.systemBars.asPaddingValues().plus(
+            contentPadding = WindowInsets.safeDrawing.asPaddingValues().plus(
                 mediaControlSheetPaddingValues(state.isMediaItemLoaded),
             ),
             modifier = Modifier

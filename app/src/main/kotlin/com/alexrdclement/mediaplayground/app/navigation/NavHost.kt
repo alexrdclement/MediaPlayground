@@ -1,11 +1,9 @@
 package com.alexrdclement.mediaplayground.app.navigation
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.alexrdclement.mediaplayground.app.catalog.MainCatalogItem
@@ -29,7 +27,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavHost(
     errorMessages: UiEventState<String> = UiEventState(),
-    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()

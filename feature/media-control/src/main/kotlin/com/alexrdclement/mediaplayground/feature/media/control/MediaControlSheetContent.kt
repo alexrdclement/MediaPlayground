@@ -18,7 +18,6 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
 import com.alexrdclement.uiplayground.components.media.PlayPauseButton
 import com.alexrdclement.uiplayground.components.media.model.Artist
 import com.alexrdclement.uiplayground.components.media.model.MediaItem
@@ -43,7 +42,6 @@ fun MediaControlSheetContent(
         contentPadding = contentPadding,
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = contentPadding.calculateHorizontalPadding())
     ) {
         item {
             TitleArtistBlock(
@@ -71,8 +69,6 @@ fun MediaControlSheetContent(
                 item = item,
                 onClick = { onItemClick(item) },
                 onPlayPauseClick = { onItemPlayPauseClick(item) },
-                modifier = Modifier
-                    .padding(horizontal = PlaygroundTheme.spacing.medium)
             )
         }
     }

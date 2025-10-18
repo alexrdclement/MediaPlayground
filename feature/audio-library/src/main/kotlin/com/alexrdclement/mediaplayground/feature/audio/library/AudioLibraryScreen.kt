@@ -33,7 +33,7 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.util.plus
+import com.alexrdclement.uiplayground.components.util.plus
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.layout.TopBar

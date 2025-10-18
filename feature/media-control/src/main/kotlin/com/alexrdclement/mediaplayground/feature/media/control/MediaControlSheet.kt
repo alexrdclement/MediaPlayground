@@ -8,9 +8,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -28,12 +29,15 @@ import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
-import com.alexrdclement.mediaplayground.ui.util.minus
-import com.alexrdclement.mediaplayground.ui.util.plus
+import com.alexrdclement.uiplayground.components.util.calculateHorizontalPaddingValues
+import com.alexrdclement.uiplayground.components.util.minus
+import com.alexrdclement.uiplayground.components.util.plus
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.media.MediaControlSheetState
 import com.alexrdclement.uiplayground.components.media.model.Artist
+import com.alexrdclement.uiplayground.components.util.calculateVerticalPadding
+import com.alexrdclement.uiplayground.components.util.calculateVerticalPaddingValues
+import com.alexrdclement.uiplayground.components.util.copy
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.launch
@@ -73,15 +77,11 @@ fun MediaControlSheet(
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
-    val navigationBarsHorizontalPadding = navigationBarsPadding.calculateHorizontalPadding()
 
     AnimatedVisibility(
         visible = loadedMediaItem != null,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
-        modifier = Modifier
-            .padding(horizontal = navigationBarsHorizontalPadding)
     ) {
         loadedMediaItem?.let { mediaItem ->
             val fallbackArtistName = stringResource(id = UiR.string.artist_name_fallback)
@@ -110,11 +110,14 @@ fun MediaControlSheet(
             BoxWithConstraints {
                 val maxHeight = this@BoxWithConstraints.maxHeight
                 val maxWidth = this@BoxWithConstraints.maxWidth
+
+                val contentPadding = WindowInsets.safeDrawing.asPaddingValues()
                 MediaControlSheetComponent(
                     mediaItem = uiMediaItem,
                     isPlaying = isPlaying,
                     onPlayPauseClick = onPlayPauseClick,
                     state = mediaControlSheetState,
+                    contentPadding = contentPadding.calculateHorizontalPaddingValues(),
                     onControlBarClick = {
                         coroutineScope.launch {
                             if (mediaControlSheetState.isExpanded) {
@@ -172,9 +175,9 @@ fun MediaControlSheet(
                             onPlayPauseClick = onPlayPauseClick,
                             onItemClick = onItemClick,
                             onItemPlayPauseClick = onItemPlayPauseClick,
-                            contentPadding = navigationBarsPadding
-                                .minus(horizontal = navigationBarsPadding)
-                                .plus(top = PlaygroundTheme.spacing.medium),
+                            contentPadding = contentPadding.copy(
+                                top = PlaygroundTheme.spacing.medium,
+                            )
                         )
                     }
                 }
