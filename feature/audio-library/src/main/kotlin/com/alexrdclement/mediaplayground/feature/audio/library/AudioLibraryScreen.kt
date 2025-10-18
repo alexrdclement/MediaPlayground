@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -128,9 +129,9 @@ fun ContentReady(
     onLogOutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium).plus(
-        horizontal = WindowInsets.navigationBars.asPaddingValues(),
-    )
+    val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium)
+        .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
+        .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
     val scrollState = rememberScrollState()
     Column(
         verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),

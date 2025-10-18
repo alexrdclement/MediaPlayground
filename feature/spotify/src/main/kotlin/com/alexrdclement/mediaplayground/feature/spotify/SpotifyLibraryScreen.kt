@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
@@ -34,7 +35,7 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
+import com.alexrdclement.mediaplayground.ui.util.plus
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.layout.TopBar
@@ -146,11 +147,9 @@ private fun LoggedInContent(
     ) {
         val savedAlbums = uiState.savedAlbums.collectAsLazyPagingItems()
         val savedTracks = uiState.savedTracks.collectAsLazyPagingItems()
-        val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
-        val contentPadding = PaddingValues(
-            horizontal = PlaygroundTheme.spacing.medium
-                + navigationBarsPadding.calculateHorizontalPadding()
-        )
+        val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium)
+            .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
+            .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
         MediaItemRow(
             mediaItems = savedAlbums,
             onItemClick = onItemClick,
