@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.mediaplayground.android.feature)
     alias(libs.plugins.mediaplayground.android.library.compose)
     alias(libs.plugins.mediaplayground.android.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -11,6 +12,7 @@ android {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
     implementation(platform(libs.compose.bom))
