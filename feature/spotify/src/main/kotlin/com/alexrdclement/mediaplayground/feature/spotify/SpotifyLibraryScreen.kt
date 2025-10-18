@@ -11,18 +11,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
@@ -31,15 +27,17 @@ import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.components.AuthButton
+import com.alexrdclement.mediaplayground.ui.components.AuthButtonStyle
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.util.plus
-import com.alexrdclement.uiplayground.components.core.Surface
+import com.alexrdclement.mediaplayground.ui.util.calculateHorizontalPadding
 import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.layout.Scaffold
+import com.alexrdclement.uiplayground.components.layout.TopBar
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -78,7 +76,6 @@ fun SpotifyLibraryScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpotifyLibraryScreen(
     uiState: SpotifyLibraryUiState,
@@ -87,22 +84,9 @@ fun SpotifyLibraryScreen(
     onLogInClick: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {
-    val verticalScrollState = rememberScrollState()
-    Surface(
-        modifier = Modifier
-            .fillMaxSize(),
-        color = PlaygroundTheme.colorScheme.surface,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
-            modifier = Modifier
-                .verticalScroll(verticalScrollState)
-                .fillMaxSize()
-                .statusBarsPadding()
-                .padding(vertical = 16.dp)
-        ) {
-            TopAppBar(
+    Scaffold(
+        topBar = {
+            TopBar(
                 title = {
                     Text(
                         text = "Spotify Library",
@@ -120,9 +104,16 @@ fun SpotifyLibraryScreen(
                                 onLogInClick()
                             }
                         },
+                        style = AuthButtonStyle.Compact,
                     )
                 }
             )
+        },
+    ) { innerPadding ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
+        ) {
             when (uiState) {
                 SpotifyLibraryUiState.InitialState,
                 SpotifyLibraryUiState.NotLoggedIn -> {}
@@ -131,6 +122,9 @@ fun SpotifyLibraryScreen(
                         uiState = uiState,
                         onItemClick = onItemClick,
                         onItemPlayPauseClick = onItemPlayPauseClick,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
                     )
                 }
             }
@@ -142,16 +136,21 @@ fun SpotifyLibraryScreen(
 private fun LoggedInContent(
     uiState: SpotifyLibraryUiState.LoggedIn,
     onItemClick: (MediaItemUi) -> Unit,
-    onItemPlayPauseClick: (MediaItemUi) -> Unit
+    onItemPlayPauseClick: (MediaItemUi) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         val savedAlbums = uiState.savedAlbums.collectAsLazyPagingItems()
         val savedTracks = uiState.savedTracks.collectAsLazyPagingItems()
-        val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium) +
-            WindowInsets.navigationBars.asPaddingValues()
+        val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
+        val contentPadding = PaddingValues(
+            horizontal = PlaygroundTheme.spacing.medium
+                + navigationBarsPadding.calculateHorizontalPadding()
+        )
         MediaItemRow(
             mediaItems = savedAlbums,
             onItemClick = onItemClick,
