@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.navigation
+package com.alexrdclement.mediaplayground.app.navigation
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues

@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.navigation
+package com.alexrdclement.mediaplayground.app.navigation
 
 import com.alexrdclement.mediaplayground.feature.album.navigation.createAlbumRoute
 import com.alexrdclement.mediaplayground.feature.spotify.navigation.SpotifyLibraryRoute

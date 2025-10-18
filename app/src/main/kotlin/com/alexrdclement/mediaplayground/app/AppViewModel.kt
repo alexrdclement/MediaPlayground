@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground
+package com.alexrdclement.mediaplayground.app
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
