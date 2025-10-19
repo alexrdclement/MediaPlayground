@@ -24,8 +24,8 @@ dependencies {
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
+    testImplementation(libs.maindispatcherrule.junit4)
 
     testImplementation(projects.data.audio.testFixtures)
     testImplementation(projects.media.session.testFixtures)
-    testImplementation(projects.testing)
 }

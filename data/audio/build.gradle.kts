@@ -26,8 +26,9 @@ dependencies {
     implementation(projects.database)
     implementation(projects.media.import)
 
+    testImplementation(libs.maindispatcherrule.junit4)
+
     testImplementation(projects.data.audio.testFixtures)
     testImplementation(projects.database.testFixtures)
     testImplementation(projects.model.audio.testFixtures)
-    testImplementation(projects.testing)
 }

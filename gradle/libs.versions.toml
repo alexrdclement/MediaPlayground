@@ -37,6 +37,7 @@ coil = "3.3.0"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
 log = "0.0.1"
+maindispatcherrule = "0.0.1"
 uiPlayground = "0.0.31"
 
 [libraries]
@@ -98,6 +99,7 @@ paging-testing = { group = "androidx.paging", name = "paging-testing", version.r
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 log-core = { group = "com.alexrdclement.log", name = "log-core", version.ref = "log" }
 loggable = { group = "com.alexrdclement.log", name = "loggable", version.ref = "log" }
+maindispatcherrule-junit4 = { group = "com.alexrdclement.testing", name = "maindispatcherrule-junit4", version.ref = "maindispatcherrule" }
 uiPlayground-components = { group = "com.alexrdclement.uiplayground", name = "ui-playground-components", version.ref = "uiPlayground" }
 uiPlayground-log = { group = "com.alexrdclement.uiplayground", name = "ui-playground-log", version.ref = "uiPlayground" }
 uiPlayground-loggable = { group = "com.alexrdclement.uiplayground", name = "ui-playground-loggable", version.ref = "uiPlayground" }

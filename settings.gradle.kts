@@ -45,7 +45,6 @@ include(":feature:error")
 include(":feature:media-control")
 include(":feature:player")
 include(":feature:spotify")
-include(":testing")
 include(":ui")
 
 if (file("../UiPlayground").exists()) {
@@ -63,6 +62,15 @@ if (file("../log").exists()) {
         dependencySubstitution {
             substitute(module("com.alexrdclement.log:log-core")).using(project(":log-core"))
             substitute(module("com.alexrdclement.log:loggable")).using(project(":loggable"))
+        }
+    }
+}
+
+if (file("../maindispatcherrule").exists()) {
+    includeBuild("../maindispatcherrule") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.testing:maindispatcherrule-junit4")).using(project(":maindispatcherrule-junit4"))
+            substitute(module("com.alexrdclement.testing:maindispatcherrule-junit-jupiter")).using(project(":maindispatcherrule-junit-jupiter"))
         }
     }
 }
