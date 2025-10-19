@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.di
+package com.alexrdclement.mediaplayground.app.di
 
 import com.alexrdclement.uiplayground.log.Logger
 import com.alexrdclement.uiplayground.log.LoggerImpl

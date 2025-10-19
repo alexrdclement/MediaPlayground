@@ -8,17 +8,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,11 +33,10 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.mediaplayground.ui.util.calculateEndPadding
-import com.alexrdclement.mediaplayground.ui.util.calculateStartPadding
-import com.alexrdclement.mediaplayground.ui.util.plus
-import com.alexrdclement.uiplayground.components.core.Surface
+import com.alexrdclement.uiplayground.components.util.plus
 import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.layout.Scaffold
+import com.alexrdclement.uiplayground.components.layout.TopBar
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -93,44 +90,31 @@ fun AudioLibraryScreen(
     onSpotifyLogInClick: () -> Unit,
     onSpotifyLogOutClick: () -> Unit,
 ) {
-    Surface(
-        color = PlaygroundTheme.colorScheme.surface,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Surface(
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = {
+                    Text(
+                        text = "Audio Library",
+                        style = PlaygroundTheme.typography.headline,
+                    )
+                }
+            )
+        },
+    ) { innerPadding ->
+        when (uiState) {
+            AudioLibraryUiState.InitialState -> {}
+            is AudioLibraryUiState.ContentReady -> ContentReady(
+                uiState = uiState,
+                onImportClick = onImportClick,
+                onItemClick = onItemClick,
+                onItemPlayPauseClick = onItemPlayPauseClick,
+                onLogInClick = onSpotifyLogInClick,
+                onLogOutClick = onSpotifyLogOutClick,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
-                        start = WindowInsets.navigationBars.asPaddingValues().calculateStartPadding(),
-                        end = WindowInsets.navigationBars.asPaddingValues().calculateEndPadding(),
-                    )
-                    .padding(
-                        horizontal = PlaygroundTheme.spacing.medium,
-                        vertical = PlaygroundTheme.spacing.small,
-                    )
-            ) {
-                Text(
-                    text = "Audio Library",
-                    style = PlaygroundTheme.typography.headline,
-                )
-            }
-            when (uiState) {
-                AudioLibraryUiState.InitialState -> {}
-                is AudioLibraryUiState.ContentReady -> ContentReady(
-                    uiState = uiState,
-                    onImportClick = onImportClick,
-                    onItemClick = onItemClick,
-                    onItemPlayPauseClick = onItemPlayPauseClick,
-                    onLogInClick = onSpotifyLogInClick,
-                    onLogOutClick = onSpotifyLogOutClick,
-                )
-            }
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            )
         }
     }
 }
@@ -143,14 +127,15 @@ fun ContentReady(
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     onLogInClick: () -> Unit,
     onLogOutClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium).plus(
-        horizontal = WindowInsets.navigationBars.asPaddingValues(),
-    )
+    val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium)
+        .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
+        .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
     val scrollState = rememberScrollState()
     Column(
         verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {

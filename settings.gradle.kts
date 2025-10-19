@@ -19,6 +19,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "MediaPlayground"
 
 include(":androidApp")
+include(":app")
 include(":data:audio")
 include(":data:audio:test-fixtures")
 include(":database")
