@@ -57,3 +57,37 @@ jobs:
         with:
           name: test-results
           path: '**/build/test-results/test*UnitTest/**.xml'
+
+  publish:
+    name: "Publish"
+
+    if: github.ref == 'refs/heads/main'
+
+    runs-on: macos-15
+    needs: [ build_and_test ]
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          add-job-summary-as-pr-comment: 'on-failure'
+          build-scan-publish: true
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
+
+      - name: GitHub Release
+        run: ./gradlew githubRelease --no-configuration-cache
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
