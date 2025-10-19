@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.model.audio.fakes
 
 import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
+import com.alexrdclement.mediaplayground.model.audio.Source
 import kotlinx.collections.immutable.persistentListOf
 
 val FakeSimpleAlbum1 = SimpleAlbum(
@@ -18,4 +19,12 @@ val FakeSimpleAlbum2 = SimpleAlbum(
     artists = persistentListOf(FakeSimpleArtist2),
     images = persistentListOf(FakeImage2),
     source = FakeSource2,
+)
+
+val FakeLocalSimpleAlbum1 = FakeSimpleAlbum1.copy(
+    source = Source.Local,
+)
+
+val FakeLocalSimpleAlbum2 = FakeSimpleAlbum2.copy(
+    source = Source.Local,
 )

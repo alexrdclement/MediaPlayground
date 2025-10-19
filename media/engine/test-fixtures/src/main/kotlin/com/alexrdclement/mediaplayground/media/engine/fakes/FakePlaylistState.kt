@@ -5,7 +5,6 @@ import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.MediaItemId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class FakePlaylistState @Inject constructor() : PlaylistState {
@@ -35,12 +34,11 @@ class FakePlaylistState @Inject constructor() : PlaylistState {
         mutableLoadedMediaItemId.emit(mediaItem.id)
     }
 
-    override fun getLoadedMediaItem(): Flow<MediaItem?> {
-        return combine(
-            mutablePlaylist,
-            mutableLoadedMediaItemId,
-        ) { playlist, loadedMediaItemId ->
-            playlist.firstOrNull { it.id == loadedMediaItemId }
-        }
+    override fun getLoadedMediaItemId(): Flow<MediaItemId?> {
+        return mutableLoadedMediaItemId
+    }
+
+    override fun getPlaylist(): Flow<List<MediaItem>> {
+        return mutablePlaylist
     }
 }

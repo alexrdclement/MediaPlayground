@@ -10,17 +10,21 @@ import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
+import com.alexrdclement.mediaplayground.model.audio.Source
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage2
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalSimpleAlbum1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalSimpleAlbum2
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalTrack1
+import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalTrack2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleAlbum1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleAlbum2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleArtist1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleArtist2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack2
 import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleTrack
 import com.alexrdclement.mediaplayground.testing.MainDispatcherRule
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.BeforeTest
@@ -77,14 +81,16 @@ class LocalAudioDataStoreTest {
 
     @Test
     fun getTrack_returnsPutTracks() = runTest {
-        val artists = listOf(FakeSimpleArtist1)
-        val simpleAlbum = FakeSimpleAlbum1.copy(
+        val artists = persistentListOf(FakeSimpleArtist1)
+        val simpleAlbum = FakeLocalSimpleAlbum1.copy(
             artists = artists,
-            images = listOf(FakeImage1),
+            images = persistentListOf(FakeImage1),
+            source = Source.Local,
         )
-        val track = FakeTrack1.copy(
+        val track = FakeLocalTrack1.copy(
             artists = artists,
             simpleAlbum = simpleAlbum,
+            source = Source.Local,
         )
 
         localAudioDataStore.putTrack(track)
@@ -95,19 +101,48 @@ class LocalAudioDataStoreTest {
     }
 
     @Test
-    fun deleteTrack_notOnlyTrackInAlbum_doesNotDeleteAlbum() = runTest {
-        val artists = listOf(FakeSimpleArtist1)
+    fun getTrack_returnsPutTracksWithSameSource() = runTest {
+        val artists = persistentListOf(FakeSimpleArtist1)
         val simpleAlbum = FakeSimpleAlbum1.copy(
             artists = artists,
-            images = listOf(FakeImage1),
+            images = persistentListOf(FakeImage1),
+            source = Source.Spotify,
         )
-        val track1 = FakeTrack1.copy(
+        val track = FakeTrack1.copy(
             artists = artists,
             simpleAlbum = simpleAlbum,
+            source = Source.Spotify,
         )
-        val track2 = FakeTrack2.copy(
+        val expectedTrack = track.copy(
+            source = Source.Spotify,
+            simpleAlbum = simpleAlbum.copy(
+                source = Source.Spotify,
+            ),
+        )
+
+        localAudioDataStore.putTrack(track)
+
+        val actualTrack = localAudioDataStore.getTrack(track.id)
+
+        assertEquals(expectedTrack, actualTrack)
+    }
+
+    @Test
+    fun deleteTrack_notOnlyTrackInAlbum_doesNotDeleteAlbum() = runTest {
+        val artists = persistentListOf(FakeSimpleArtist1)
+        val simpleAlbum = FakeLocalSimpleAlbum1.copy(
+            artists = artists,
+            images = persistentListOf(FakeImage1),
+        )
+        val track1 = FakeLocalTrack1.copy(
             artists = artists,
             simpleAlbum = simpleAlbum,
+            source = Source.Local,
+        )
+        val track2 = FakeLocalTrack2.copy(
+            artists = artists,
+            simpleAlbum = simpleAlbum,
+            source = Source.Local,
         )
 
         localAudioDataStore.putTrack(track1)
@@ -125,14 +160,16 @@ class LocalAudioDataStoreTest {
 
     @Test
     fun deleteTrack_onlyTrackOnAlbum_deletesAlbum() = runTest {
-        val artists1 = listOf(FakeSimpleArtist1)
-        val simpleAlbum = FakeSimpleAlbum1.copy(
+        val artists1 = persistentListOf(FakeSimpleArtist1)
+        val simpleAlbum = FakeLocalSimpleAlbum1.copy(
             artists = artists1,
-            images = listOf(FakeImage1),
+            images = persistentListOf(FakeImage1),
+            source = Source.Local,
         )
-        val track1 = FakeTrack1.copy(
+        val track1 = FakeLocalTrack1.copy(
             artists = artists1,
             simpleAlbum = simpleAlbum,
+            source = Source.Local,
         )
 
         localAudioDataStore.putTrack(track1)
@@ -148,23 +185,27 @@ class LocalAudioDataStoreTest {
 
     @Test
     fun deleteTrack_notOnlyAlbumWithArtist_doesNotDeleteArtist() = runTest {
-        val artists1 = listOf(FakeSimpleArtist1)
-        val artists2 = listOf(FakeSimpleArtist1, FakeSimpleArtist2)
-        val simpleAlbum1 = FakeSimpleAlbum1.copy(
+        val artists1 = persistentListOf(FakeSimpleArtist1)
+        val artists2 = persistentListOf(FakeSimpleArtist1, FakeSimpleArtist2)
+        val simpleAlbum1 = FakeLocalSimpleAlbum1.copy(
             artists = artists1,
-            images = listOf(FakeImage1),
+            images = persistentListOf(FakeImage1),
+            source = Source.Local,
         )
-        val simpleAlbum2 = FakeSimpleAlbum2.copy(
+        val simpleAlbum2 = FakeLocalSimpleAlbum2.copy(
             artists = artists2,
-            images = listOf(FakeImage2),
+            images = persistentListOf(FakeImage2),
+            source = Source.Local,
         )
-        val track1 = FakeTrack1.copy(
+        val track1 = FakeLocalTrack1.copy(
             artists = artists1,
             simpleAlbum = simpleAlbum1,
+            source = Source.Local,
         )
-        val track2 = FakeTrack2.copy(
+        val track2 = FakeLocalTrack2.copy(
             artists = artists2,
             simpleAlbum = simpleAlbum2,
+            source = Source.Local,
         )
 
         localAudioDataStore.putTrack(track1)
@@ -179,12 +220,13 @@ class LocalAudioDataStoreTest {
 
     @Test
     fun deleteTrack_onlyAlbumWithArtist_deletesArtist() = runTest {
-        val artists1 = listOf(FakeSimpleArtist1, FakeSimpleArtist2)
-        val simpleAlbum1 = FakeSimpleAlbum1.copy(
+        val artists1 = persistentListOf(FakeSimpleArtist1, FakeSimpleArtist2)
+        val simpleAlbum1 = FakeLocalSimpleAlbum1.copy(
             artists = artists1,
-            images = listOf(FakeImage1),
+            images = persistentListOf(FakeImage1),
+            source = Source.Local,
         )
-        val track1 = FakeTrack1.copy(
+        val track1 = FakeLocalTrack1.copy(
             artists = artists1,
             simpleAlbum = simpleAlbum1,
         )
