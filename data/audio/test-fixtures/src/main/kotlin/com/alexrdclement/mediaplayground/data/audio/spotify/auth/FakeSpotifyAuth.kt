@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.data.audio.spotify.auth
 
-import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -8,14 +7,16 @@ import javax.inject.Inject
 
 class FakeSpotifyAuth @Inject constructor() : SpotifyAuth {
 
-    val mutableIsLoggedIn = MutableStateFlow(false)
-    override val isLoggedIn: StateFlow<Boolean> = mutableIsLoggedIn
+    val mutableAuthState = MutableStateFlow<SpotifyAuthState>(SpotifyAuthState.LoggedOut)
+    override val authState: StateFlow<SpotifyAuthState> = mutableAuthState
 
     override fun logOut() {
-        mutableIsLoggedIn.update { false }
+        mutableAuthState.update { SpotifyAuthState.LoggedOut }
     }
 
     fun stubIsLoggedIn(isLoggedIn: Boolean) {
-        mutableIsLoggedIn.update { isLoggedIn }
+        mutableAuthState.update {
+            if (isLoggedIn) SpotifyAuthState.LoggedIn else SpotifyAuthState.LoggedOut
+        }
     }
 }
