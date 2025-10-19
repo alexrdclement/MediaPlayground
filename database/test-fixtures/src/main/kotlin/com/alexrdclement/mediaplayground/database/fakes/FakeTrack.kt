@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
+import com.alexrdclement.mediaplayground.database.model.Source
 import com.alexrdclement.mediaplayground.database.model.Track
 import kotlin.time.Instant
 
@@ -11,6 +12,7 @@ val FakeTrack1 = Track(
     trackNumber = 1,
     fileName = "1.mp3",
     modifiedDate = Instant.DISTANT_PAST,
+    source = Source.Local,
 )
 
 val FakeTrack2 = FakeTrack1.copy(
