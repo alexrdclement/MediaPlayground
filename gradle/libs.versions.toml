@@ -36,7 +36,7 @@ paging = "3.3.6"
 coil = "3.3.0"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
-uiPlayground = "0.0.30"
+uiPlayground = "0.0.31"
 
 [libraries]
 android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
