@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
-import com.alexrdclement.uiplayground.loggable.Loggable
+import com.alexrdclement.loggable.Loggable
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError as EnginePlaylistError
 
 sealed class MediaControlSheetError(

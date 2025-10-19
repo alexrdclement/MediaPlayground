@@ -3,8 +3,8 @@ package com.alexrdclement.mediaplayground.app
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexrdclement.uiplayground.log.LogLevel
-import com.alexrdclement.uiplayground.log.Logger
+import com.alexrdclement.log.LogLevel
+import com.alexrdclement.log.Logger
 import com.alexrdclement.uiplayground.uievent.toUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map

@@ -13,8 +13,8 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.paging)
     implementation(libs.paging.compose)
+    implementation(libs.log.core)
     implementation(libs.uiPlayground.components)
-    implementation(libs.uiPlayground.log)
     implementation(libs.uiPlayground.theme)
 
     implementation(projects.data.audio)

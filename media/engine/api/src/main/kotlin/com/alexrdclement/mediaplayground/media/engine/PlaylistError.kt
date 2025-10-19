@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.media.engine
 
-import com.alexrdclement.uiplayground.loggable.Loggable
+import com.alexrdclement.loggable.Loggable
 
 sealed class PlaylistError(
     override val message: String,

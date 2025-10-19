@@ -11,8 +11,8 @@ import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.media.session.playlistState
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.uiplayground.log.Logger
-import com.alexrdclement.uiplayground.log.error
+import com.alexrdclement.log.Logger
+import com.alexrdclement.log.error
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf

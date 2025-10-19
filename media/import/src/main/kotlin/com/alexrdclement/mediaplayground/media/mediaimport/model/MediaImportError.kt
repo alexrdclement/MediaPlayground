@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.model
 
-import com.alexrdclement.uiplayground.loggable.Loggable
+import com.alexrdclement.loggable.Loggable
 
 sealed class MediaImportError : Loggable {
     data object MkdirError : MediaImportError()

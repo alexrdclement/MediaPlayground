@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.feature.audio.library
 
 import android.net.Uri
 import com.alexrdclement.mediaplayground.data.audio.local.MediaImportResult
-import com.alexrdclement.uiplayground.loggable.Loggable
+import com.alexrdclement.loggable.Loggable
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError as EnginePlaylistError
 
 sealed class AudioLibraryUiError(

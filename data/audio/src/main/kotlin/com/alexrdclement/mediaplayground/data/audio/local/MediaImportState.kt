@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.data.audio.local
 
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.uiplayground.loggable.Loggable
+import com.alexrdclement.loggable.Loggable
 
 sealed class MediaImportState {
     object InProgress : MediaImportState()

@@ -15,7 +15,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.uiPlayground.components)
     implementation(libs.uiPlayground.theme)
-    implementation(libs.uiPlayground.log)
+    implementation(libs.log.core)
 
     implementation(projects.media.session.api)
     implementation(projects.model.audio)

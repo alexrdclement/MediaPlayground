@@ -52,10 +52,17 @@ if (file("../UiPlayground").exists()) {
     includeBuild("../UiPlayground") {
         dependencySubstitution {
             substitute(module("com.alexrdclement.uiplayground:ui-playground-components")).using(project(":components"))
-            substitute(module("com.alexrdclement.uiplayground:ui-playground-log")).using(project(":log"))
-            substitute(module("com.alexrdclement.uiplayground:ui-playground-loggable")).using(project(":loggable"))
             substitute(module("com.alexrdclement.uiplayground:ui-playground-theme")).using(project(":theme"))
             substitute(module("com.alexrdclement.uiplayground:ui-playground-uievent")).using(project(":uievent"))
+        }
+    }
+}
+
+if (file("../log").exists()) {
+    includeBuild("../log") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.log:log-core")).using(project(":log-core"))
+            substitute(module("com.alexrdclement.log:loggable")).using(project(":loggable"))
         }
     }
 }
