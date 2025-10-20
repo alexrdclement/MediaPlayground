@@ -13,7 +13,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.paging)
     implementation(libs.paging.compose)
-    implementation(libs.log.core)
+    implementation(libs.logger.api)
     implementation(libs.uiPlayground.components)
     implementation(libs.uiPlayground.theme)
 

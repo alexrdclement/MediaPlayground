@@ -21,7 +21,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.log.core)
+    implementation(libs.logger.impl)
     implementation(libs.uiPlayground.components)
     implementation(libs.uiPlayground.theme)
     implementation(libs.uiPlayground.uievent)

@@ -57,10 +57,11 @@ if (file("../UiPlayground").exists()) {
     }
 }
 
-if (file("../log").exists()) {
-    includeBuild("../log") {
+if (file("../logging").exists()) {
+    includeBuild("../logging") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.log:log-core")).using(project(":log-core"))
+            substitute(module("com.alexrdclement.log:logger-apl")).using(project(":logger-api"))
+            substitute(module("com.alexrdclement.log:logger-impl")).using(project(":logger-impl"))
             substitute(module("com.alexrdclement.log:loggable")).using(project(":loggable"))
         }
     }

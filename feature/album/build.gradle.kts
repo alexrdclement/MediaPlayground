@@ -12,7 +12,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation(libs.log.core)
+    implementation(libs.logger.api)
     implementation(libs.uiPlayground.components)
     implementation(libs.uiPlayground.theme)
 
