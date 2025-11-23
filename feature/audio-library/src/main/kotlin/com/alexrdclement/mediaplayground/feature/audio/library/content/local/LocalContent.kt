@@ -25,6 +25,7 @@ import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.ButtonDefaults
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -44,6 +45,7 @@ internal fun LocalContent(
                 is LocalContentState.Content -> Button(
                     onClick = onImportClick,
                     contentPadding = ButtonDefaults.ContentPaddingDefault,
+                    style = ButtonStyleToken.Secondary,
                     modifier = Modifier.wrapContentSize(),
                 ) {
                     Text(
