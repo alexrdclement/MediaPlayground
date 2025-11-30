@@ -2,6 +2,8 @@
 android-desugar-jdk-libs = "2.1.5"
 android-gradle-plugin = "8.13.1"
 android-tools = "31.13.0"
+camerax = "1.5.1"
+calf = "0.9.0"
 compose-bom = "2025.11.01"
 kotlin = "2.2.20"
 ksp = "2.3.3"
@@ -40,6 +42,11 @@ uiPlayground = "0.0.62"
 
 [libraries]
 android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
+camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
+camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
+camera-compose = { group = "androidx.camera", name = "camera-compose", version.ref = "camerax" }
+camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+calf-permissions = { group = "com.mohamedrejeb.calf", name = "calf-permissions", version.ref = "calf" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
 kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }

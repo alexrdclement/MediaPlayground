@@ -13,6 +13,8 @@ import com.alexrdclement.mediaplayground.feature.album.navigation.albumScreen
 import com.alexrdclement.mediaplayground.feature.album.navigation.navigateToAlbum
 import com.alexrdclement.mediaplayground.feature.audio.library.navigation.audioLibraryScreen
 import com.alexrdclement.mediaplayground.feature.audio.library.navigation.navigateToAudioLibrary
+import com.alexrdclement.mediaplayground.feature.camera.navigation.cameraScreen
+import com.alexrdclement.mediaplayground.feature.camera.navigation.navigateToCamera
 import com.alexrdclement.mediaplayground.feature.error.navigation.errorDialog
 import com.alexrdclement.mediaplayground.feature.error.navigation.navigateToError
 import com.alexrdclement.mediaplayground.feature.media.control.MediaControlSheet
@@ -54,6 +56,7 @@ fun NavHost(
             onItemClick = { item ->
                 when (item) {
                     MainCatalogItem.AudioLibrary -> navController.navigateToAudioLibrary()
+                    MainCatalogItem.Camera -> navController.navigateToCamera()
                     MainCatalogItem.SpotifyLibrary -> navController.navigateToSpotifyLibrary()
                     MainCatalogItem.Player -> navController.navigateToPlayer()
                 }
@@ -71,6 +74,7 @@ fun NavHost(
                 )
             }
         )
+        cameraScreen()
         spotifyLibraryScreen(
             onNavigateToPlayer = { mediaItem ->
                 coroutineScope.launch {
