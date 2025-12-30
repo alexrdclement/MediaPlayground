@@ -2,7 +2,7 @@
 android-desugar-jdk-libs = "2.1.5"
 android-gradle-plugin = "8.13.1"
 android-tools = "31.13.0"
-camerax = "1.5.1"
+camerax = "1.5.2"
 calf = "0.9.0"
 compose-bom = "2025.11.01"
 kotlin = "2.2.20"
