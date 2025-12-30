@@ -1,7 +1,7 @@
 [versions]
 android-desugar-jdk-libs = "2.1.5"
 android-gradle-plugin = "8.13.1"
-android-tools = "31.13.0"
+android-tools = "31.13.2"
 camerax = "1.5.1"
 calf = "0.9.0"
 compose-bom = "2025.11.01"
