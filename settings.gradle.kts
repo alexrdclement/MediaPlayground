@@ -1,5 +1,8 @@
 pluginManagement {
     includeBuild("build-logic")
+    if (file("../gradle-plugins").exists()) {
+        includeBuild("../gradle-plugins")
+    }
     repositories {
         google()
         mavenCentral()
@@ -11,6 +14,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+    }
+    versionCatalogs {
+        if (file("../gradle-plugins").exists()) {
+            create("alexrdclementPluginLibs") {
+                from(files("../gradle-plugins/gradle/libs.versions.toml"))
+            }
+        }
     }
 }
 
@@ -84,7 +94,7 @@ if (includeUievent && file("../uievent").exists()) {
 }
 
 val includeUiplayground = localProps.getProperty("includeUiplayground")?.toBoolean() ?: false
-if (file("../UiPlayground").exists()) {
+if (includeUiplayground && file("../UiPlayground").exists()) {
     includeBuild("../UiPlayground") {
         dependencySubstitution {
             substitute(module("com.alexrdclement.uiplayground:ui-playground-components")).using(project(":components"))

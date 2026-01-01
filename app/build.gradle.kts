@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.mediaplayground.android.feature)
-    alias(libs.plugins.mediaplayground.android.library.compose)
-    alias(libs.plugins.mediaplayground.android.hilt)
+    alias(libs.plugins.alexrdclement.android.library.compose)
+    alias(libs.plugins.alexrdclement.android.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 

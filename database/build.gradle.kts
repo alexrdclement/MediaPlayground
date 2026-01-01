@@ -1,7 +1,7 @@
 plugins {
-    id(libs.plugins.mediaplayground.android.library.asProvider().get().pluginId)
-    id(libs.plugins.mediaplayground.android.hilt.asProvider().get().pluginId)
-    id(libs.plugins.mediaplayground.android.room.get().pluginId)
+    alias(libs.plugins.alexrdclement.android.library)
+    alias(libs.plugins.alexrdclement.android.hilt)
+    alias(libs.plugins.alexrdclement.android.room)
     alias(libs.plugins.kotlin.serialization)
 }
 

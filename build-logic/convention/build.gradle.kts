@@ -34,49 +34,9 @@ tasks {
 
 gradlePlugin {
     plugins {
-        register("androidApplicationCompose") {
-            id = "mediaplayground.android.application.compose"
-            implementationClass = "AndroidApplicationComposeConventionPlugin"
-        }
-        register("androidApplication") {
-            id = "mediaplayground.android.application"
-            implementationClass = "AndroidApplicationConventionPlugin"
-        }
-        register("androidLibraryCompose") {
-            id = "mediaplayground.android.library.compose"
-            implementationClass = "AndroidLibraryComposeConventionPlugin"
-        }
-        register("androidLibrary") {
-            id = "mediaplayground.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
-        }
-        register("androidLibraryTestFixtures") {
-            id = "mediaplayground.android.library.test.fixtures"
-            implementationClass = "AndroidLibraryTestFixturesConventionPlugin"
-        }
         register("androidFeature") {
             id = "mediaplayground.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
-        }
-        register("androidTest") {
-            id = "mediaplayground.android.test"
-            implementationClass = "AndroidTestConventionPlugin"
-        }
-        register("androidHilt") {
-            id = "mediaplayground.android.hilt"
-            implementationClass = "AndroidHiltConventionPlugin"
-        }
-        register("androidHiltTestFixtures") {
-            id = "mediaplayground.android.hilt.test.fixtures"
-            implementationClass = "AndroidHiltTestFixturesConventionPlugin"
-        }
-        register("androidRoom") {
-            id = "mediaplayground.android.room"
-            implementationClass = "AndroidRoomConventionPlugin"
-        }
-        register("jvmLibrary") {
-            id = "mediaplayground.jvm.library"
-            implementationClass = "JvmLibraryConventionPlugin"
         }
     }
 }
