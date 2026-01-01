@@ -10,8 +10,8 @@ android {
 dependencies {
     implementation(libs.calf.permissions)
     implementation(libs.ui)
-    implementation(libs.uiPlayground.components)
-    implementation(libs.uiPlayground.theme)
+    implementation(libs.palette.components)
+    implementation(libs.palette.theme)
 
     implementation(projects.media.ui.api)
 }

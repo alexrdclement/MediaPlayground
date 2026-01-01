@@ -21,11 +21,11 @@ import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.uiplayground.components.core.Button
-import com.alexrdclement.uiplayground.components.core.ButtonDefaults
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
+import com.alexrdclement.palette.components.core.Button
+import com.alexrdclement.palette.components.core.ButtonDefaults
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -34,7 +34,7 @@ internal fun LocalContent(
     onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    contentPadding: PaddingValues = PaddingValues(horizontal = PlaygroundTheme.spacing.medium),
+    contentPadding: PaddingValues = PaddingValues(horizontal = PaletteTheme.spacing.medium),
 ) {
     AudioLibraryContent(
         headerText = "Imported",
@@ -50,7 +50,7 @@ internal fun LocalContent(
                 ) {
                     Text(
                         text = "Import",
-                        style = PlaygroundTheme.typography.bodySmall
+                        style = PaletteTheme.typography.bodySmall
                     )
                 }
             }
@@ -78,7 +78,7 @@ private fun EmptyContent(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PlaygroundTheme.spacing.small),
+            .padding(vertical = PaletteTheme.spacing.small),
     ) {
         Button(
             onClick = onImportClick,
@@ -96,7 +96,7 @@ private fun Content(
     contentPadding: PaddingValues,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -136,7 +136,7 @@ private fun Content(
 @Preview(showBackground = true)
 @Composable
 private fun EmptyPreview() {
-    PlaygroundTheme {
+    PaletteTheme {
         LocalContent(
             localContentState = LocalContentState.Empty,
             onImportClick = {},
@@ -149,7 +149,7 @@ private fun EmptyPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ContentPreview() {
-    PlaygroundTheme {
+    PaletteTheme {
         LocalContent(
             localContentState = LocalContentState.Content(
                 tracks = flowOf(PagingData.from(PreviewTracksUi1)),

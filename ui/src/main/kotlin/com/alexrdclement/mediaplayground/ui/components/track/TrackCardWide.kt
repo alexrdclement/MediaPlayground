@@ -21,10 +21,10 @@ import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.media.PlayPauseButton
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.media.PlayPauseButton
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun TrackCardWide(
@@ -40,7 +40,7 @@ fun TrackCardWide(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(PlaygroundTheme.spacing.medium),
+            modifier = Modifier.padding(PaletteTheme.spacing.medium),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -56,9 +56,9 @@ fun TrackCardWide(
                     onClick = onPlayClick
                 )
             }
-            Spacer(modifier = Modifier.width(PlaygroundTheme.spacing.medium))
+            Spacer(modifier = Modifier.width(PaletteTheme.spacing.medium))
             Column(
-                verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(text = track.title)
@@ -72,7 +72,7 @@ fun TrackCardWide(
 @Preview
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         TrackCardWide(
             track = PreviewTrack1,
             onPlayClick = {},

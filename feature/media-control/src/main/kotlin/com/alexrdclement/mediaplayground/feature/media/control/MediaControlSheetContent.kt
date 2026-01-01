@@ -18,10 +18,10 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.uiplayground.components.media.PlayPauseButton
-import com.alexrdclement.uiplayground.components.media.model.Artist
-import com.alexrdclement.uiplayground.components.media.model.MediaItem
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.media.PlayPauseButton
+import com.alexrdclement.palette.components.media.model.Artist
+import com.alexrdclement.palette.components.media.model.MediaItem
+import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -37,7 +37,7 @@ fun MediaControlSheetContent(
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = contentPadding,
         modifier = modifier
@@ -49,7 +49,7 @@ fun MediaControlSheetContent(
                 artists = artistNamesOrDefault(artists = loadedMediaItem.artists),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = PlaygroundTheme.spacing.small)
+                    .padding(vertical = PaletteTheme.spacing.small)
             )
         }
         item {
@@ -58,7 +58,7 @@ fun MediaControlSheetContent(
                 onClick = onPlayPauseClick,
                 modifier = Modifier
                     .size(72.dp)
-                    .padding(vertical = PlaygroundTheme.spacing.small)
+                    .padding(vertical = PaletteTheme.spacing.small)
             )
         }
         items(
@@ -77,7 +77,7 @@ fun MediaControlSheetContent(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         MediaControlSheetContent(
             loadedMediaItem = MediaItem(
                 artworkThumbnailUrl = null,

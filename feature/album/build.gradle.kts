@@ -13,8 +13,8 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.logger.api)
-    implementation(libs.uiPlayground.components)
-    implementation(libs.uiPlayground.theme)
+    implementation(libs.palette.components)
+    implementation(libs.palette.theme)
 
     implementation(projects.data.audio)
     implementation(projects.media.session.api)

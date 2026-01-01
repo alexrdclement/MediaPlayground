@@ -29,22 +29,22 @@ import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.uiplayground.components.util.calculateHorizontalPaddingValues
-import com.alexrdclement.uiplayground.components.util.minus
-import com.alexrdclement.uiplayground.components.util.plus
-import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.components.media.MediaControlSheetState
-import com.alexrdclement.uiplayground.components.media.model.Artist
-import com.alexrdclement.uiplayground.components.util.calculateVerticalPadding
-import com.alexrdclement.uiplayground.components.util.calculateVerticalPaddingValues
-import com.alexrdclement.uiplayground.components.util.copy
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.util.calculateHorizontalPaddingValues
+import com.alexrdclement.palette.components.util.minus
+import com.alexrdclement.palette.components.util.plus
+import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.media.MediaControlSheetState
+import com.alexrdclement.palette.components.media.model.Artist
+import com.alexrdclement.palette.components.util.calculateVerticalPadding
+import com.alexrdclement.palette.components.util.calculateVerticalPaddingValues
+import com.alexrdclement.palette.components.util.copy
+import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import com.alexrdclement.mediaplayground.ui.R as UiR
-import com.alexrdclement.uiplayground.components.media.MediaControlSheet as MediaControlSheetComponent
-import com.alexrdclement.uiplayground.components.media.model.MediaItem as UiMediaItem
+import com.alexrdclement.palette.components.media.MediaControlSheet as MediaControlSheetComponent
+import com.alexrdclement.palette.components.media.model.MediaItem as UiMediaItem
 
 @Composable
 fun MediaControlSheet(
@@ -146,7 +146,7 @@ fun MediaControlSheet(
                         val statusBarTopPadding = statusBarsPadding.calculateTopPadding()
                         Box(
                             modifier = Modifier
-                                .background(PlaygroundTheme.colorScheme.surface)
+                                .background(PaletteTheme.colorScheme.surface)
                                 .fillMaxWidth()
                                 .layout { measureables, constraints ->
                                     val placeables = measureables.measure(constraints)
@@ -176,7 +176,7 @@ fun MediaControlSheet(
                             onItemClick = onItemClick,
                             onItemPlayPauseClick = onItemPlayPauseClick,
                             contentPadding = contentPadding.copy(
-                                top = PlaygroundTheme.spacing.medium,
+                                top = PaletteTheme.spacing.medium,
                             )
                         )
                     }

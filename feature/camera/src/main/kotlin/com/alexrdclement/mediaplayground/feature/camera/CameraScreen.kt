@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.ui.CameraPreview
-import com.alexrdclement.uiplayground.components.core.Button
-import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Button
+import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission
 import com.mohamedrejeb.calf.permissions.PermissionStatus
@@ -38,7 +38,7 @@ fun CameraScreen(
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        color = PlaygroundTheme.colorScheme.surface,
+        color = PaletteTheme.colorScheme.surface,
     ) {
         when (cameraPermissionState.status) {
             is PermissionStatus.Denied -> {

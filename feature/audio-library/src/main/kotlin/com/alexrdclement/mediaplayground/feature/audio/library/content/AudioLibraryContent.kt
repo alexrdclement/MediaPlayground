@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun AudioLibraryContent(
@@ -22,10 +22,10 @@ fun AudioLibraryContent(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PlaygroundTheme.spacing.small)
+            .padding(vertical = PaletteTheme.spacing.small)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -37,7 +37,7 @@ fun AudioLibraryContent(
         ) {
             Text(
                 text = headerText,
-                style = PlaygroundTheme.typography.titleLarge,
+                style = PaletteTheme.typography.titleLarge,
             )
             headerAction?.invoke()
         }

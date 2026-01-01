@@ -10,8 +10,8 @@ android {
 dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.ui)
-    implementation(libs.uiPlayground.components)
-    implementation(libs.uiPlayground.theme)
+    implementation(libs.palette.components)
+    implementation(libs.palette.theme)
 
     implementation(projects.data.audio)
     implementation(projects.model.audio)

@@ -17,10 +17,10 @@ import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.uiplayground.components.auth.AuthButton
-import com.alexrdclement.uiplayground.components.auth.AuthButtonStyle
-import com.alexrdclement.uiplayground.components.auth.AuthState
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.auth.AuthButton
+import com.alexrdclement.palette.components.auth.AuthButtonStyle
+import com.alexrdclement.palette.components.auth.AuthState
+import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -30,7 +30,7 @@ internal fun SpotifyContent(
     onLogOutClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    contentPadding: PaddingValues = PaddingValues(horizontal = PlaygroundTheme.spacing.medium),
+    contentPadding: PaddingValues = PaddingValues(horizontal = PaletteTheme.spacing.medium),
 ) {
     AudioLibraryContent(
         headerText = "Spotify",
@@ -72,7 +72,7 @@ private fun SpotifyLoggedInContent(
     contentPadding: PaddingValues,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -118,7 +118,7 @@ private fun SpotifyNotLoggedInContent(
 @Preview
 @Composable
 private fun LoggedInPreview() {
-    PlaygroundTheme {
+    PaletteTheme {
         val spotifyContentState = SpotifyContentState.LoggedIn(
             savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),
             savedAlbums = flowOf(PagingData.from(PreviewAlbumsUi1)),
@@ -136,7 +136,7 @@ private fun LoggedInPreview() {
 @Preview
 @Composable
 private fun LoggedOutPreview() {
-    PlaygroundTheme {
+    PaletteTheme {
         val spotifyContentState = SpotifyContentState.NotLoggedIn
         SpotifyContent(
             spotifyContentState = spotifyContentState,

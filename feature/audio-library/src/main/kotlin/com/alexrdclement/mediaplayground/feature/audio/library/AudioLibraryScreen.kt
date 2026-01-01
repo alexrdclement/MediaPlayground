@@ -33,11 +33,11 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.uiplayground.components.util.plus
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.layout.Scaffold
-import com.alexrdclement.uiplayground.components.layout.TopBar
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.util.plus
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.layout.Scaffold
+import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
 
 private const val MediaPickerAudioMimeType = "audio/*"
@@ -96,7 +96,7 @@ fun AudioLibraryScreen(
                 title = {
                     Text(
                         text = "Audio Library",
-                        style = PlaygroundTheme.typography.headline,
+                        style = PaletteTheme.typography.headline,
                     )
                 }
             )
@@ -129,12 +129,12 @@ fun ContentReady(
     onLogOutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium)
+    val contentPadding = PaddingValues(horizontal = PaletteTheme.spacing.medium)
         .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
         .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
     val scrollState = rememberScrollState()
     Column(
-        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
@@ -165,7 +165,7 @@ fun ContentReady(
 @Preview
 @Composable
 internal fun PreviewLibraryScreen() {
-    PlaygroundTheme {
+    PaletteTheme {
         val uiState = AudioLibraryUiState.ContentReady(
             localContentState = LocalContentState.Content(
                 tracks = flowOf(PagingData.from(PreviewTracksUi1)),

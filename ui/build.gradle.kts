@@ -16,8 +16,8 @@ dependencies {
     implementation(libs.paging)
     implementation(libs.paging.compose)
     implementation(libs.coil.compose)
-    implementation(libs.uiPlayground.components)
-    implementation(libs.uiPlayground.theme)
+    implementation(libs.palette.components)
+    implementation(libs.palette.theme)
 
     implementation(projects.model.audio)
     implementation(projects.model.audio.testFixtures) // Preview data
