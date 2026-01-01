@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.mediaplayground.android.feature)
-    alias(libs.plugins.mediaplayground.android.library.compose)
-    alias(libs.plugins.mediaplayground.android.hilt)
+    alias(libs.plugins.alexrdclement.android.library.compose)
+    alias(libs.plugins.alexrdclement.android.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -21,10 +21,11 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.uiPlayground.components)
-    implementation(libs.uiPlayground.log)
-    implementation(libs.uiPlayground.theme)
-    implementation(libs.uiPlayground.uievent)
+    implementation(libs.logger.impl)
+    implementation(libs.trace)
+    implementation(libs.uievent)
+    implementation(libs.palette.components)
+    implementation(libs.palette.theme)
 
     implementation(projects.data.audio)
     implementation(projects.feature.album)

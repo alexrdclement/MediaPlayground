@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.mediaplayground.android.library)
-    alias(libs.plugins.mediaplayground.android.hilt)
+    alias(libs.plugins.alexrdclement.android.library)
+    alias(libs.plugins.alexrdclement.android.hilt)
 }
 
 android {
@@ -25,5 +25,5 @@ dependencies {
     implementation(libs.media3.decoder)
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
-    implementation(libs.uiPlayground.loggable)
+    implementation(libs.loggable)
 }

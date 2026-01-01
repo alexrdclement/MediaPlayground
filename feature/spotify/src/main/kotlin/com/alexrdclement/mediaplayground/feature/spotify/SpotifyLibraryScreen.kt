@@ -33,14 +33,14 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.uiplayground.components.auth.AuthButton
-import com.alexrdclement.uiplayground.components.auth.AuthButtonStyle
-import com.alexrdclement.uiplayground.components.auth.AuthState
-import com.alexrdclement.uiplayground.components.util.plus
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.layout.Scaffold
-import com.alexrdclement.uiplayground.components.layout.TopBar
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.auth.AuthButton
+import com.alexrdclement.palette.components.auth.AuthButtonStyle
+import com.alexrdclement.palette.components.auth.AuthState
+import com.alexrdclement.palette.components.util.plus
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.layout.Scaffold
+import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
 
 private val MediaItemWidth = MediaItemWidthCompact
@@ -92,7 +92,7 @@ fun SpotifyLibraryScreen(
                 title = {
                     Text(
                         text = "Spotify Library",
-                        style = PlaygroundTheme.typography.headline,
+                        style = PaletteTheme.typography.headline,
                     )
                 },
                 actions = {
@@ -154,7 +154,7 @@ private fun LoggedInContent(
     ) {
         val savedAlbums = uiState.savedAlbums.collectAsLazyPagingItems()
         val savedTracks = uiState.savedTracks.collectAsLazyPagingItems()
-        val contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.medium)
+        val contentPadding = PaddingValues(horizontal = PaletteTheme.spacing.medium)
             .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
             .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
         MediaItemRow(
@@ -166,7 +166,7 @@ private fun LoggedInContent(
             itemWidth = MediaItemWidth,
             modifier = Modifier
         )
-        Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.medium))
+        Spacer(modifier = Modifier.height(PaletteTheme.spacing.medium))
         MediaItemRow(
             mediaItems = savedTracks,
             onItemClick = onItemClick,
@@ -187,7 +187,7 @@ private fun LoggedInContent(
 @Preview
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         val uiState = SpotifyLibraryUiState.LoggedIn(
             savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),
             savedAlbums = flowOf(PagingData.from(PreviewAlbumsUi1)),

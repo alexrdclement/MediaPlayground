@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.spotify
 
-import com.alexrdclement.uiplayground.loggable.Loggable
+import com.alexrdclement.logging.Loggable
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError as EnginePlaylistError
 
 sealed class SpotifyLibraryUiError(

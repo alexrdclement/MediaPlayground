@@ -22,9 +22,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
 
 val MediaItemWidthDefault = 280.dp
@@ -48,7 +48,7 @@ fun MediaItemRow(
         if (title != null) {
             Text(
                 text = title,
-                style = PlaygroundTheme.typography.titleMedium,
+                style = PaletteTheme.typography.titleMedium,
                 modifier = Modifier.padding(contentPadding),
             )
         }
@@ -87,7 +87,7 @@ fun MediaItemRow(
 @Preview
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         Surface {
             val tracks = flowOf(PagingData.from(PreviewTracksUi1))
             MediaItemRow(

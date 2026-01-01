@@ -29,10 +29,10 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingVa
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.uiplayground.components.util.plus
-import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.components.media.PlayPauseButton
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.util.plus
+import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.media.PlayPauseButton
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun AlbumScreen(
@@ -77,7 +77,7 @@ private fun LoadedContent(
     BoxWithConstraints {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
             contentPadding = WindowInsets.safeDrawing.asPaddingValues().plus(
                 mediaControlSheetPaddingValues(state.isMediaItemLoaded),
             ),
@@ -101,7 +101,7 @@ private fun LoadedContent(
                     artists = artistNamesOrDefault(artists = state.artists),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = PlaygroundTheme.spacing.small)
+                        .padding(vertical = PaletteTheme.spacing.small)
                 )
             }
             item {
@@ -111,7 +111,7 @@ private fun LoadedContent(
                     onClick = onAlbumPlayPauseClick,
                     modifier = Modifier
                         .size(72.dp)
-                        .padding(vertical = PlaygroundTheme.spacing.small)
+                        .padding(vertical = PaletteTheme.spacing.small)
                 )
             }
             items(
@@ -134,7 +134,7 @@ private fun LoadedContent(
 @Preview
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         val album = PreviewAlbum1
         val tracks = album.tracks.mapIndexed { index, track ->
             TrackUi(

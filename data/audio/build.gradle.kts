@@ -1,7 +1,7 @@
 plugins {
     // See https://github.com/gradle/gradle/issues/17968
-    id(libs.plugins.mediaplayground.android.library.asProvider().get().pluginId)
-    id(libs.plugins.mediaplayground.android.hilt.asProvider().get().pluginId)
+    alias(libs.plugins.alexrdclement.android.library)
+    alias(libs.plugins.alexrdclement.android.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -21,13 +21,14 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.spotify.api.kotlin.core)
     implementation(libs.paging)
-    implementation(libs.uiPlayground.loggable)
+    implementation(libs.loggable)
 
     implementation(projects.database)
     implementation(projects.media.import)
 
+    testImplementation(libs.maindispatcherrule.junit4)
+
     testImplementation(projects.data.audio.testFixtures)
     testImplementation(projects.database.testFixtures)
     testImplementation(projects.model.audio.testFixtures)
-    testImplementation(projects.testing)
 }

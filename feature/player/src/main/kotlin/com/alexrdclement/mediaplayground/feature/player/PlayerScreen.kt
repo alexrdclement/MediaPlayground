@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.ui.MediaPlayer
-import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun PlayerScreen(
@@ -28,7 +28,7 @@ fun PlayerScreen(
         modifier = Modifier
             .statusBarsPadding()
             .fillMaxSize(),
-        color = PlaygroundTheme.colorScheme.surface,
+        color = PaletteTheme.colorScheme.surface,
     ) {
         if (mediaSessionState != null) {
             MediaPlayer(

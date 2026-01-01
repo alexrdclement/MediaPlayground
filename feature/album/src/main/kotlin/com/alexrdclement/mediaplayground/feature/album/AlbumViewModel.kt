@@ -18,8 +18,8 @@ import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.model.result.successOrDefault
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
-import com.alexrdclement.uiplayground.log.Logger
-import com.alexrdclement.uiplayground.log.error
+import com.alexrdclement.logging.Logger
+import com.alexrdclement.logging.error
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine

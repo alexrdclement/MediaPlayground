@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.mediaplayground.android.application)
-    alias(libs.plugins.mediaplayground.android.application.compose)
-    alias(libs.plugins.mediaplayground.android.hilt)
+    alias(libs.plugins.alexrdclement.android.application)
+    alias(libs.plugins.alexrdclement.android.application.compose)
+    alias(libs.plugins.alexrdclement.android.hilt)
 }
 
 android {

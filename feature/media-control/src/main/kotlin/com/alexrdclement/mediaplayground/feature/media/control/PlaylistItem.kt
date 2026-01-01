@@ -28,9 +28,9 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.media.PlayPauseButton
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.media.PlayPauseButton
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun PlaylistItem(
@@ -67,8 +67,8 @@ fun PlaylistItem(
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clickable(enabled = isPlayable) { onClick() }
-            .padding(vertical = PlaygroundTheme.spacing.small)
-            .alpha(if (isPlayable) 1f else PlaygroundTheme.colorScheme.disabledContentAlpha)
+            .padding(vertical = PaletteTheme.spacing.small)
+            .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -97,18 +97,18 @@ fun PlaylistItem(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = PlaygroundTheme.spacing.small)
+                .padding(horizontal = PaletteTheme.spacing.small)
         ) {
             Text(
                 text = item.title,
-                style = PlaygroundTheme.typography.titleMedium,
+                style = PaletteTheme.typography.titleMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
             )
             Text(
                 text = artistNamesOrDefault(item.artists),
-                style = PlaygroundTheme.typography.bodyMedium,
+                style = PaletteTheme.typography.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
@@ -116,7 +116,7 @@ fun PlaylistItem(
         }
         Text(
             text = remember { item.duration.formatShort() },
-            style = PlaygroundTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+            style = PaletteTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
             modifier = Modifier
                 .height(IntrinsicSize.Max)
                 .width(64.dp),
@@ -127,7 +127,7 @@ fun PlaylistItem(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         PlaylistItem(
             item = PreviewTrack1,
             isLoaded = false,

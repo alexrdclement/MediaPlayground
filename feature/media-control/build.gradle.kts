@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.mediaplayground.android.feature)
-    alias(libs.plugins.mediaplayground.android.library.compose)
+    alias(libs.plugins.alexrdclement.android.library.compose)
 }
 
 android {
@@ -13,9 +13,9 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation(libs.uiPlayground.components)
-    implementation(libs.uiPlayground.theme)
-    implementation(libs.uiPlayground.log)
+    implementation(libs.palette.components)
+    implementation(libs.palette.theme)
+    implementation(libs.logger.api)
 
     implementation(projects.media.session.api)
     implementation(projects.model.audio)

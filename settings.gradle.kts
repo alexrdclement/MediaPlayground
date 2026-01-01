@@ -1,5 +1,8 @@
 pluginManagement {
     includeBuild("build-logic")
+    if (file("../gradle-plugins").exists()) {
+        includeBuild("../gradle-plugins")
+    }
     repositories {
         google()
         mavenCentral()
@@ -11,6 +14,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+    }
+    versionCatalogs {
+        if (file("../gradle-plugins").exists()) {
+            create("alexrdclementPluginLibs") {
+                from(files("../gradle-plugins/gradle/libs.versions.toml"))
+            }
+        }
     }
 }
 
@@ -46,17 +56,49 @@ include(":feature:error")
 include(":feature:media-control")
 include(":feature:player")
 include(":feature:spotify")
-include(":testing")
 include(":ui")
 
-if (file("../UiPlayground").exists()) {
+val localPropsFile = rootDir.resolve("local.properties").takeIf { it.exists() }
+val localProps = java.util.Properties().apply {
+    localPropsFile?.inputStream()?.use { load(it) }
+}
+
+val includeLogging = localProps.getProperty("includeLogging")?.toBoolean() ?: false
+if (includeLogging && file("../logging").exists()) {
+    includeBuild("../logging") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.log:logger-apl")).using(project(":logger-api"))
+            substitute(module("com.alexrdclement.log:logger-impl")).using(project(":logger-impl"))
+            substitute(module("com.alexrdclement.log:loggable")).using(project(":loggable"))
+        }
+    }
+}
+
+val includeMaindispatcherrule = localProps.getProperty("includeMaindispatcherrule")?.toBoolean() ?: false
+if (includeMaindispatcherrule && file("../maindispatcherrule").exists()) {
+    includeBuild("../maindispatcherrule") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.testing:maindispatcherrule-junit4")).using(project(":maindispatcherrule-junit4"))
+            substitute(module("com.alexrdclement.testing:maindispatcherrule-junit-jupiter")).using(project(":maindispatcherrule-junit-jupiter"))
+        }
+    }
+}
+
+val includeUievent = localProps.getProperty("includeUievent")?.toBoolean() ?: false
+if (includeUievent && file("../uievent").exists()) {
+    includeBuild("../uievent") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.uievent:uievent")).using(project(":uievent"))
+        }
+    }
+}
+
+val includeUiplayground = localProps.getProperty("includeUiplayground")?.toBoolean() ?: false
+if (includeUiplayground && file("../UiPlayground").exists()) {
     includeBuild("../UiPlayground") {
         dependencySubstitution {
             substitute(module("com.alexrdclement.uiplayground:ui-playground-components")).using(project(":components"))
-            substitute(module("com.alexrdclement.uiplayground:ui-playground-log")).using(project(":log"))
-            substitute(module("com.alexrdclement.uiplayground:ui-playground-loggable")).using(project(":loggable"))
             substitute(module("com.alexrdclement.uiplayground:ui-playground-theme")).using(project(":theme"))
-            substitute(module("com.alexrdclement.uiplayground:ui-playground-uievent")).using(project(":uievent"))
         }
     }
 }

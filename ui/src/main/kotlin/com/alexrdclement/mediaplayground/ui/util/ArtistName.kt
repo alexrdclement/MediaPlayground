@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.R
-import com.alexrdclement.uiplayground.components.media.model.Artist
+import com.alexrdclement.palette.components.media.model.Artist
 
 @Composable
 @JvmName("artistNamesOrDefaultArtist")

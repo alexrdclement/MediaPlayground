@@ -25,9 +25,9 @@ import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.media.PlayPauseButton
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.media.PlayPauseButton
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun TrackListItem(
@@ -45,8 +45,8 @@ fun TrackListItem(
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clickable(enabled = isPlayable) { onClick() }
-            .padding(vertical = PlaygroundTheme.spacing.small)
-            .alpha(if (isPlayable) 1f else PlaygroundTheme.colorScheme.disabledContentAlpha)
+            .padding(vertical = PaletteTheme.spacing.small)
+            .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -65,7 +65,7 @@ fun TrackListItem(
             } else {
                 Text(
                     text = track.trackNumber.toString(),
-                    style = PlaygroundTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+                    style = PaletteTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
                     modifier = Modifier
                 )
             }
@@ -75,18 +75,18 @@ fun TrackListItem(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = PlaygroundTheme.spacing.small)
+                .padding(horizontal = PaletteTheme.spacing.small)
         ) {
             Text(
                 text = track.name,
-                style = PlaygroundTheme.typography.titleMedium,
+                style = PaletteTheme.typography.titleMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
             )
             Text(
                 text = artistNamesOrDefault(track.artists),
-                style = PlaygroundTheme.typography.bodyMedium,
+                style = PaletteTheme.typography.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
@@ -94,7 +94,7 @@ fun TrackListItem(
         }
         Text(
             text = remember { track.duration.formatShort() },
-            style = PlaygroundTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+            style = PaletteTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
             modifier = Modifier
                 .height(IntrinsicSize.Max)
                 .width(64.dp),
@@ -105,7 +105,7 @@ fun TrackListItem(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         TrackListItem(
             track = PreviewSimpleTrack1,
             isLoaded = true,

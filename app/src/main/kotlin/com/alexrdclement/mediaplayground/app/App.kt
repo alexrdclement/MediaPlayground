@@ -3,9 +3,9 @@ package com.alexrdclement.mediaplayground.app
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.alexrdclement.mediaplayground.app.navigation.NavHost
-import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.uievent.UiEventState
+import com.alexrdclement.uievent.UiEventState
+import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun App() {
@@ -19,7 +19,7 @@ fun App() {
 fun App(
     errorMessages: UiEventState<String> = UiEventState(),
 ) {
-    PlaygroundTheme {
+    PaletteTheme {
         Surface {
             NavHost(
                 errorMessages = errorMessages,

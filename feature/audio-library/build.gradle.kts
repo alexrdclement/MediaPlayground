@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.mediaplayground.android.feature)
-    alias(libs.plugins.mediaplayground.android.library.compose)
+    alias(libs.plugins.alexrdclement.android.library.compose)
 }
 
 android {
@@ -14,9 +14,9 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.paging)
     implementation(libs.paging.compose)
-    implementation(libs.uiPlayground.components)
-    implementation(libs.uiPlayground.theme)
-    implementation(libs.uiPlayground.log)
+    implementation(libs.logger.api)
+    implementation(libs.palette.components)
+    implementation(libs.palette.theme)
 
     implementation(projects.data.audio)
     implementation(projects.media.session.api)
@@ -24,8 +24,8 @@ dependencies {
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
+    testImplementation(libs.maindispatcherrule.junit4)
 
     testImplementation(projects.data.audio.testFixtures)
     testImplementation(projects.media.session.testFixtures)
-    testImplementation(projects.testing)
 }

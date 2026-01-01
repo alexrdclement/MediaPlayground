@@ -22,8 +22,8 @@ import com.alexrdclement.mediaplayground.feature.player.navigation.navigateToPla
 import com.alexrdclement.mediaplayground.feature.player.navigation.playerScreen
 import com.alexrdclement.mediaplayground.feature.spotify.navigation.navigateToSpotifyLibrary
 import com.alexrdclement.mediaplayground.feature.spotify.navigation.spotifyLibraryScreen
-import com.alexrdclement.uiplayground.components.media.rememberMediaControlSheetState
-import com.alexrdclement.uiplayground.uievent.UiEventState
+import com.alexrdclement.uievent.UiEventState
+import com.alexrdclement.palette.components.media.rememberMediaControlSheetState
 import kotlinx.coroutines.launch
 
 @Composable

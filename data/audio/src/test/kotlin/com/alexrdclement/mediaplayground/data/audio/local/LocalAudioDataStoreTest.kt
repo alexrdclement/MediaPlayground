@@ -23,7 +23,7 @@ import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleArtist2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack1
 import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleTrack
-import com.alexrdclement.mediaplayground.testing.MainDispatcherRule
+import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

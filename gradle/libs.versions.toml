@@ -35,10 +35,15 @@ org-jetbrains-kotlin-jvm = "2.2.20"
 spotify-api-kotlin-core = "4.1.3"
 uiTooling = "1.9.5"
 paging = "3.3.6"
+palette = "0.0.9"
 coil = "3.3.0"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
-uiPlayground = "0.0.62"
+logging = "0.0.12"
+maindispatcherrule = "0.0.2"
+trace = "0.0.5"
+uievent = "0.0.7"
+gradle-plugins = "0.0.35"
 
 [libraries]
 android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
@@ -101,19 +106,15 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", vers
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 paging-testing = { group = "androidx.paging", name = "paging-testing", version.ref = "paging" }
+palette-components = { group = "com.alexrdclement.palette", name = "palette-components", version.ref = "palette" }
+palette-theme = { group = "com.alexrdclement.palette", name = "palette-theme", version.ref = "palette" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
-uiPlayground-components = { group = "com.alexrdclement.uiplayground", name = "ui-playground-components", version.ref = "uiPlayground" }
-uiPlayground-log = { group = "com.alexrdclement.uiplayground", name = "ui-playground-log", version.ref = "uiPlayground" }
-uiPlayground-loggable = { group = "com.alexrdclement.uiplayground", name = "ui-playground-loggable", version.ref = "uiPlayground" }
-uiPlayground-theme = { group = "com.alexrdclement.uiplayground", name = "ui-playground-theme", version.ref = "uiPlayground" }
-uiPlayground-uievent = { group = "com.alexrdclement.uiplayground", name = "ui-playground-uievent", version.ref = "uiPlayground" }
-
-# Dependencies of the included build-logic
-android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
-android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-room-gradle-plugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+logger-api = { group = "com.alexrdclement.logging", name = "logger-api", version.ref = "logging" }
+logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
+loggable = { group = "com.alexrdclement.logging", name = "loggable", version.ref = "logging" }
+maindispatcherrule-junit4 = { group = "com.alexrdclement.testing", name = "maindispatcherrule-junit4", version.ref = "maindispatcherrule" }
+trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }
+uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -128,17 +129,16 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org
 shipkit-autoversion = { id = "org.shipkit.shipkit-auto-version", version.ref = "shipkit-autoversion" }
 shipkit-changelog = { id = "org.shipkit.shipkit-changelog", version.ref = "shipkit-changelog" }
 shipkit-githubrelease = { id = "org.shipkit.shipkit-github-release", version.ref = "shipkit-changelog" }
-
-mediaplayground-android-application = { id = "mediaplayground.android.application" }
-mediaplayground-android-application-compose = { id = "mediaplayground.android.application.compose" }
 mediaplayground-android-feature = { id = "mediaplayground.android.feature" }
-mediaplayground-android-hilt = { id = "mediaplayground.android.hilt" }
-mediaplayground-android-hilt-test-fixtures = { id = "mediaplayground.android.hilt.test.fixtures" }
-mediaplayground-android-library = { id = "mediaplayground.android.library" }
-mediaplayground-android-library-compose = { id = "mediaplayground.android.library.compose" }
-mediaplayground-android-library-test-fixtures = { id = "mediaplayground.android.library.test.fixtures" }
-mediaplayground-android-room = { id = "mediaplayground.android.room" }
-mediaplayground-android-test = { id = "mediaplayground.android.test" }
-mediaplayground-jvm-library = { id = "mediaplayground.jvm.library" }
+alexrdclement-android-application = { id = "com.alexrdclement.gradle.plugin.android.application", version.ref = "gradle-plugins" }
+alexrdclement-android-application-compose = { id = "com.alexrdclement.gradle.plugin.android.application.compose", version.ref = "gradle-plugins" }
+alexrdclement-android-library = { id = "com.alexrdclement.gradle.plugin.android.library", version.ref = "gradle-plugins" }
+alexrdclement-android-library-compose = { id = "com.alexrdclement.gradle.plugin.android.library.compose", version.ref = "gradle-plugins" }
+alexrdclement-android-library-test-fixtures = { id = "com.alexrdclement.gradle.plugin.android.library.test.fixtures", version.ref = "gradle-plugins" }
+alexrdclement-android-test = { id = "com.alexrdclement.gradle.plugin.android.test", version.ref = "gradle-plugins" }
+alexrdclement-android-hilt = { id = "com.alexrdclement.gradle.plugin.android.hilt", version.ref = "gradle-plugins" }
+alexrdclement-android-hilt-test-fixtures = { id = "com.alexrdclement.gradle.plugin.android.hilt.test.fixtures", version.ref = "gradle-plugins" }
+alexrdclement-android-room = { id = "com.alexrdclement.gradle.plugin.android.room", version.ref = "gradle-plugins" }
+alexrdclement-jvm-library = { id = "com.alexrdclement.gradle.plugin.jvm.library", version.ref = "gradle-plugins" }
 
 [bundles]

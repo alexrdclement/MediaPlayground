@@ -8,8 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun TitleArtistBlock(
@@ -23,12 +23,12 @@ fun TitleArtistBlock(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
         modifier = modifier
     ) {
         Text(
             text = title,
-            style = PlaygroundTheme.typography.titleLarge.merge(
+            style = PaletteTheme.typography.titleLarge.merge(
                 textAlign = titleTextAlign,
             ),
             maxLines = titleMaxLines,
@@ -44,7 +44,7 @@ fun TitleArtistBlock(
         if (!artists.isNullOrEmpty()) {
             Text(
                 text = artists,
-                style = PlaygroundTheme.typography.bodyLarge.merge(
+                style = PaletteTheme.typography.bodyLarge.merge(
                     textAlign = artistTextAlign,
                 ),
                 maxLines = artistMaxLines,
@@ -64,7 +64,7 @@ fun TitleArtistBlock(
 @Preview
 @Composable
 fun MediaItemTitleArtistPreview() {
-    PlaygroundTheme {
+    PaletteTheme {
         TitleArtistBlock(
             title = "Song Title",
             artists = "Artist Name"

@@ -22,10 +22,10 @@ import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.media.PlayPauseButton
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.media.PlayPauseButton
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun MediaItemCard(
@@ -38,7 +38,7 @@ fun MediaItemCard(
 ) {
     Surface(
         onClick = onClick,
-        border = BorderStroke(1.dp, PlaygroundTheme.colorScheme.outline),
+        border = BorderStroke(1.dp, PaletteTheme.colorScheme.outline),
         modifier = modifier,
     ) {
         Column(
@@ -69,14 +69,14 @@ fun MediaItemCard(
             ) {
                 Text(
                     text = mediaItem.title,
-                    style = PlaygroundTheme.typography.titleMedium,
+                    style = PaletteTheme.typography.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
                 )
                 Text(
                     text = artistNamesOrDefault(mediaItem.artists),
-                    style = PlaygroundTheme.typography.bodyMedium,
+                    style = PaletteTheme.typography.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
@@ -89,7 +89,7 @@ fun MediaItemCard(
 @Preview
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         MediaItemCard(
             mediaItem = PreviewTrack1,
             isPlaybackEnabled = true,

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.mediaplayground.jvm.library)
+    alias(libs.plugins.alexrdclement.jvm.library)
     alias(libs.plugins.kotlin.serialization)
 }
 

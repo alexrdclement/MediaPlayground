@@ -6,14 +6,14 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.layout.Scaffold
-import com.alexrdclement.uiplayground.components.layout.TopBar
-import com.alexrdclement.uiplayground.components.layout.catalog.Catalog
-import com.alexrdclement.uiplayground.components.layout.catalog.CatalogItem
-import com.alexrdclement.uiplayground.components.navigation.BackNavigationButton
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.trace.ReportDrawn
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.layout.Scaffold
+import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.components.layout.catalog.Catalog
+import com.alexrdclement.palette.components.layout.catalog.CatalogItem
+import com.alexrdclement.palette.components.navigation.BackNavigationButton
+import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.trace.ReportDrawn
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(
@@ -29,7 +29,7 @@ fun <T : CatalogItem> CatalogScreen(
         topBar = {
             TopBar(
                 title = title?.let {
-                    { Text(title, style = PlaygroundTheme.typography.titleMedium) }
+                    { Text(title, style = PaletteTheme.typography.titleMedium) }
                 },
                 navButton = onNavigateBack?.let {
                     { BackNavigationButton(onNavigateBack) }
@@ -46,7 +46,7 @@ fun <T : CatalogItem> CatalogScreen(
             contentPadding = innerPadding,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = PlaygroundTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.spacing.medium)
         )
     }
 }
@@ -54,7 +54,7 @@ fun <T : CatalogItem> CatalogScreen(
 @Preview
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         CatalogScreen(
             items = MainCatalogItem.entries.toList(),
             onItemClick = {}
@@ -65,7 +65,7 @@ private fun Preview() {
 @Preview
 @Composable
 private fun WithNavPreview() {
-    PlaygroundTheme {
+    PaletteTheme {
         CatalogScreen(
             items = MainCatalogItem.entries.toList(),
             onItemClick = {},
