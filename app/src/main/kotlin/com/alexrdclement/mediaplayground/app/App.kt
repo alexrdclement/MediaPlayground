@@ -3,9 +3,9 @@ package com.alexrdclement.mediaplayground.app
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.alexrdclement.mediaplayground.app.navigation.NavHost
+import com.alexrdclement.uievent.UiEventState
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.uievent.UiEventState
 
 @Composable
 fun App() {

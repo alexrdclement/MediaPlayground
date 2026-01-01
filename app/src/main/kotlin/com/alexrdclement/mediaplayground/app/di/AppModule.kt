@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.app.di
 
-import com.alexrdclement.log.Logger
-import com.alexrdclement.log.LoggerImpl
+import com.alexrdclement.logging.Logger
+import com.alexrdclement.logging.LoggerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

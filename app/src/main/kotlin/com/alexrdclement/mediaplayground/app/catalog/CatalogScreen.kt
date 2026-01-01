@@ -13,7 +13,7 @@ import com.alexrdclement.uiplayground.components.layout.catalog.Catalog
 import com.alexrdclement.uiplayground.components.layout.catalog.CatalogItem
 import com.alexrdclement.uiplayground.components.navigation.BackNavigationButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.trace.ReportDrawn
+import com.alexrdclement.trace.ReportDrawn
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(

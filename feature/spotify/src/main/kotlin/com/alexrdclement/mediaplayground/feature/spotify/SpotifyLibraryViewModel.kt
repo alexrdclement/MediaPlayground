@@ -20,8 +20,8 @@ import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.Track
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.log.Logger
-import com.alexrdclement.log.error
+import com.alexrdclement.logging.Logger
+import com.alexrdclement.logging.error
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted

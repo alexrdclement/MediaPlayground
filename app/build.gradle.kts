@@ -22,9 +22,10 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.logger.impl)
+    implementation(libs.trace)
+    implementation(libs.uievent)
     implementation(libs.uiPlayground.components)
     implementation(libs.uiPlayground.theme)
-    implementation(libs.uiPlayground.uievent)
 
     implementation(projects.data.audio)
     implementation(projects.feature.album)

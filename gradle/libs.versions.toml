@@ -40,6 +40,8 @@ shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
 logging = "0.0.12"
 maindispatcherrule = "0.0.2"
+trace = "0.0.5"
+uievent = "0.0.7"
 uiPlayground = "0.0.68"
 
 [libraries]
@@ -108,9 +110,10 @@ logger-api = { group = "com.alexrdclement.logging", name = "logger-api", version
 logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
 loggable = { group = "com.alexrdclement.logging", name = "loggable", version.ref = "logging" }
 maindispatcherrule-junit4 = { group = "com.alexrdclement.testing", name = "maindispatcherrule-junit4", version.ref = "maindispatcherrule" }
+trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }
+uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
 uiPlayground-components = { group = "com.alexrdclement.uiplayground", name = "ui-playground-components", version.ref = "uiPlayground" }
 uiPlayground-theme = { group = "com.alexrdclement.uiplayground", name = "ui-playground-theme", version.ref = "uiPlayground" }
-uiPlayground-uievent = { group = "com.alexrdclement.uiplayground", name = "ui-playground-uievent", version.ref = "uiPlayground" }
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
