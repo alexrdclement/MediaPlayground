@@ -13,11 +13,16 @@ dependencies {
 
     api(projects.media.session.api)
 
-    implementation(libs.ui)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.compose)
+    implementation(libs.camera.core)
+    implementation(libs.camera.lifecycle)
     implementation(libs.compose.foundation)
+    implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.media3.common)
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.ui)
+    implementation(libs.ui)
 
     implementation(projects.ui)
     implementation(projects.media.engine.android)

@@ -27,14 +27,15 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.mediaplayground.ui.components.AuthButton
-import com.alexrdclement.mediaplayground.ui.components.AuthButtonStyle
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
+import com.alexrdclement.uiplayground.components.auth.AuthButton
+import com.alexrdclement.uiplayground.components.auth.AuthButtonStyle
+import com.alexrdclement.uiplayground.components.auth.AuthState
 import com.alexrdclement.uiplayground.components.util.plus
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
@@ -95,17 +96,23 @@ fun SpotifyLibraryScreen(
                     )
                 },
                 actions = {
-                    val isLoggedIn = remember(uiState) { uiState is SpotifyLibraryUiState.LoggedIn }
+                    val authState = remember(uiState) {
+                        when (uiState) {
+                            SpotifyLibraryUiState.InitialState -> AuthState.Loading
+                            is SpotifyLibraryUiState.LoggedIn -> AuthState.LoggedIn
+                            SpotifyLibraryUiState.NotLoggedIn -> AuthState.LoggedOut
+                        }
+                    }
                     AuthButton(
-                        isLoggedIn = isLoggedIn,
+                        authState = authState,
                         onClick = {
-                            if (isLoggedIn) {
-                                onLogOutClick()
-                            } else {
-                                onLogInClick()
+                            when (authState) {
+                                AuthState.Loading -> Unit
+                                AuthState.LoggedOut -> onLogInClick()
+                                AuthState.LoggedIn -> onLogOutClick()
                             }
                         },
-                        style = AuthButtonStyle.Compact,
+                        style = AuthButtonStyle.Secondary,
                     )
                 }
             )

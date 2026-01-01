@@ -14,11 +14,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
-import com.alexrdclement.mediaplayground.ui.components.AuthButton
-import com.alexrdclement.mediaplayground.ui.components.AuthButtonStyle
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
+import com.alexrdclement.uiplayground.components.auth.AuthButton
+import com.alexrdclement.uiplayground.components.auth.AuthButtonStyle
+import com.alexrdclement.uiplayground.components.auth.AuthState
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -38,11 +39,12 @@ internal fun SpotifyContent(
             when (spotifyContentState) {
                 is SpotifyContentState.LoggedIn -> {
                     AuthButton(
-                        style = AuthButtonStyle.Compact,
-                        isLoggedIn = true,
+                        authState = AuthState.LoggedIn,
+                        style = AuthButtonStyle.Secondary,
                         onClick = onLogOutClick,
                     )
                 }
+
                 SpotifyContentState.NotLoggedIn -> {}
             }
         },
@@ -51,6 +53,7 @@ internal fun SpotifyContent(
             SpotifyContentState.NotLoggedIn -> SpotifyNotLoggedInContent(
                 onLogInClick = onLogInClick,
             )
+
             is SpotifyContentState.LoggedIn -> SpotifyLoggedInContent(
                 spotifyContentState = spotifyContentState,
                 onItemClick = onItemClick,
@@ -105,7 +108,8 @@ private fun SpotifyNotLoggedInContent(
         modifier = Modifier.fillMaxWidth()
     ) {
         AuthButton(
-            isLoggedIn = false,
+            authState = AuthState.LoggedOut,
+            style = AuthButtonStyle.Secondary,
             onClick = onLogInClick,
         )
     }

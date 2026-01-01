@@ -29,6 +29,7 @@ dependencies {
     implementation(projects.data.audio)
     implementation(projects.feature.album)
     implementation(projects.feature.audioLibrary)
+    implementation(projects.feature.camera)
     implementation(projects.feature.error)
     implementation(projects.feature.mediaControl)
     implementation(projects.feature.player)
