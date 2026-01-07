@@ -43,7 +43,7 @@ logging = "0.0.12"
 maindispatcherrule = "0.0.2"
 trace = "0.0.5"
 uievent = "0.0.7"
-gradle-plugins = "0.0.35"
+gradle-plugins = "0.0.52"
 
 [libraries]
 android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
