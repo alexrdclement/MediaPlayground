@@ -1,6 +1,6 @@
 plugins {
     id(libs.plugins.alexrdclement.jvm.library.get().pluginId)
-    alias(libs.plugins.kotlin.serialization)
+    id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
 }
 
 dependencies {

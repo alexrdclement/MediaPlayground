@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.mediaplayground.android.feature)
-    alias(libs.plugins.alexrdclement.android.library.compose)
+    id(libs.plugins.mediaplayground.android.feature.get().pluginId)
+    id(libs.plugins.alexrdclement.android.library.compose.get().pluginId)
 }
 
 android {

@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.alexrdclement.android.application)
-    alias(libs.plugins.alexrdclement.android.application.compose)
-    alias(libs.plugins.alexrdclement.android.hilt)
+    id(libs.plugins.alexrdclement.android.application.asProvider().get().pluginId)
+    id(libs.plugins.alexrdclement.android.application.compose.get().pluginId)
+    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
 }
 
 android {
@@ -59,9 +59,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.hilt.android)
 
     implementation(projects.app)
 }

@@ -1,7 +1,6 @@
 plugins {
-    // See https://github.com/gradle/gradle/issues/17968
-    alias(libs.plugins.alexrdclement.android.library)
-    alias(libs.plugins.alexrdclement.android.hilt)
+    id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
+    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
 }
 
 android {

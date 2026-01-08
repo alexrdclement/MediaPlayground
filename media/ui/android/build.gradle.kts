@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.alexrdclement.android.library)
-    alias(libs.plugins.alexrdclement.android.library.compose)
+    id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
+    id(libs.plugins.alexrdclement.android.library.compose.get().pluginId)
 }
 
 android {
@@ -17,7 +17,6 @@ dependencies {
     implementation(libs.camera.compose)
     implementation(libs.camera.core)
     implementation(libs.camera.lifecycle)
-    implementation(libs.compose.foundation)
     implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.media3.common)
     implementation(libs.media3.exoplayer)

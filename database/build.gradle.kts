@@ -1,8 +1,8 @@
 plugins {
-    alias(libs.plugins.alexrdclement.android.library)
-    alias(libs.plugins.alexrdclement.android.hilt)
-    alias(libs.plugins.alexrdclement.android.room)
-    alias(libs.plugins.kotlin.serialization)
+    id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
+    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
+    id(libs.plugins.alexrdclement.android.room.get().pluginId)
+    id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
 }
 
 android {

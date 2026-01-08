@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.alexrdclement.android.library)
-    alias(libs.plugins.alexrdclement.android.hilt)
+    id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
+    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
 }
 
 android {

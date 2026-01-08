@@ -1,12 +1,6 @@
 [versions]
-android-desugar-jdk-libs = "2.1.5"
-android-gradle-plugin = "8.13.1"
-android-tools = "31.13.0"
 camerax = "1.5.2"
 calf = "0.9.0"
-compose-bom = "2025.11.01"
-kotlin = "2.2.20"
-ksp = "2.3.3"
 kotlinx-coroutines = "1.10.2"
 kotlinx-coroutines-android = "1.10.2"
 kotlinx-datetime = "0.7.1-0.6.x-compat"
@@ -14,39 +8,31 @@ kotlinx-io = "0.8.2"
 kotlinx-collections-immutable = "0.4.0"
 kotlinx-serialization-json = "1.9.0"
 core-ktx = "1.17.0"
-junit = "4.13.2"
 androidx-activity = "1.8.2" # Anything higher requires https://github.com/adamint/spotify-web-api-kotlin/issues/338
 androidx-core-splashscreen = "1.2.0"
 androidx-documentfile = "1.1.0"
 androidx-test = "1.7.0"
 androidx-test-ext-junit = "1.3.0"
-espresso-core = "3.7.0"
 lifecycle-runtime-ktx = "2.10.0"
 lifecycle-runtime-compose = "2.10.0"
 navigation-compose = "2.9.6"
-hilt = "2.57.2"
 androidxHiltNavigationCompose = "1.3.0"
-media3 = "1.8.0"
+media3 = "1.9.0"
 material3 = "1.4.0"
 room = "2.8.4"
 turbine = "1.2.1"
 appcompat = "1.7.1"
-org-jetbrains-kotlin-jvm = "2.2.20"
 spotify-api-kotlin-core = "4.1.3"
-uiTooling = "1.9.5"
 paging = "3.3.6"
-palette = "0.0.9"
+palette = "0.0.22"
 coil = "3.3.0"
-shipkit-autoversion = "2.1.2"
-shipkit-changelog = "2.0.1"
-logging = "0.0.12"
+logging = "0.0.15"
 maindispatcherrule = "0.0.2"
 trace = "0.0.5"
 uievent = "0.0.7"
 gradle-plugins = "0.0.52"
 
 [libraries]
-android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
 camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
 camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
 camera-compose = { group = "androidx.camera", name = "camera-compose", version.ref = "camerax" }
@@ -66,25 +52,13 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "androidx-documentfile" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3"}
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
@@ -95,14 +69,10 @@ media3-transformer = { group = "androidx.media3", name = "media3-transformer", v
 media3-decoder = { group = "androidx.media3", name = "media3-decoder", version.ref = "media3" }
 media3-datasource = { group = "androidx.media3", name = "media3-datasource", version.ref = "media3" }
 media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 spotify-api-kotlin-core = { group = "com.adamratzman", name = "spotify-api-kotlin-core", version.ref = "spotify-api-kotlin-core" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 paging-testing = { group = "androidx.paging", name = "paging-testing", version.ref = "paging" }
@@ -117,18 +87,6 @@ trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trac
 uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
-android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-room = { id = "androidx.room", version.ref = "room" }
-org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
-shipkit-autoversion = { id = "org.shipkit.shipkit-auto-version", version.ref = "shipkit-autoversion" }
-shipkit-changelog = { id = "org.shipkit.shipkit-changelog", version.ref = "shipkit-changelog" }
-shipkit-githubrelease = { id = "org.shipkit.shipkit-github-release", version.ref = "shipkit-changelog" }
 mediaplayground-android-feature = { id = "mediaplayground.android.feature" }
 alexrdclement-android-application = { id = "com.alexrdclement.gradle.plugin.android.application", version.ref = "gradle-plugins" }
 alexrdclement-android-application-compose = { id = "com.alexrdclement.gradle.plugin.android.application.compose", version.ref = "gradle-plugins" }
@@ -138,6 +96,9 @@ alexrdclement-android-library-test-fixtures = { id = "com.alexrdclement.gradle.p
 alexrdclement-android-test = { id = "com.alexrdclement.gradle.plugin.android.test", version.ref = "gradle-plugins" }
 alexrdclement-android-hilt = { id = "com.alexrdclement.gradle.plugin.android.hilt", version.ref = "gradle-plugins" }
 alexrdclement-android-hilt-test-fixtures = { id = "com.alexrdclement.gradle.plugin.android.hilt.test.fixtures", version.ref = "gradle-plugins" }
+alexrdclement-github-release = { id = "com.alexrdclement.gradle.plugin.github.release", version.ref = "gradle-plugins" }
+alexrdclement-kotlin-multiplatform-library = { id = "com.alexrdclement.gradle.plugin.kotlin.multiplatform.library", version.ref = "gradle-plugins" }
+alexrdclement-kotlin-serialization = { id = "com.alexrdclement.gradle.plugin.kotlin.serialization", version.ref = "gradle-plugins" }
 alexrdclement-android-room = { id = "com.alexrdclement.gradle.plugin.android.room", version.ref = "gradle-plugins" }
 alexrdclement-jvm-library = { id = "com.alexrdclement.gradle.plugin.jvm.library", version.ref = "gradle-plugins" }
 

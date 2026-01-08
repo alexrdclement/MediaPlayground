@@ -1,8 +1,8 @@
 plugins {
-    alias(libs.plugins.mediaplayground.android.feature)
-    alias(libs.plugins.alexrdclement.android.library.compose)
-    alias(libs.plugins.alexrdclement.android.hilt)
-    alias(libs.plugins.kotlin.serialization)
+    id(libs.plugins.mediaplayground.android.feature.get().pluginId)
+    id(libs.plugins.alexrdclement.android.library.compose.get().pluginId)
+    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
+    id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
 }
 
 android {
@@ -15,10 +15,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.hilt.android)
     implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.logger.impl)
