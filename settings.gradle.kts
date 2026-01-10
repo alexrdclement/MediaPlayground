@@ -74,12 +74,12 @@ if (includeLogging && file("../logging").exists()) {
     }
 }
 
-val includeMaindispatcherrule = localProps.getProperty("includeMaindispatcherrule")?.toBoolean() ?: false
-if (includeMaindispatcherrule && file("../maindispatcherrule").exists()) {
-    includeBuild("../maindispatcherrule") {
+val includeTesting = localProps.getProperty("includeTesting")?.toBoolean() ?: false
+if (includeTesting && file("../testing").exists()) {
+    includeBuild("../testing") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.testing:maindispatcherrule-junit4")).using(project(":maindispatcherrule-junit4"))
-            substitute(module("com.alexrdclement.testing:maindispatcherrule-junit-jupiter")).using(project(":maindispatcherrule-junit-jupiter"))
+            substitute(module("com.alexrdclement.testing:maindispatcher-rule")).using(project(":maindispatcher-rule"))
+            substitute(module("com.alexrdclement.testing:maindispatcher-extension")).using(project(":maindispatcher-extension"))
         }
     }
 }

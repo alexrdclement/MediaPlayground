@@ -27,10 +27,10 @@ paging = "3.3.6"
 palette = "0.0.32"
 coil = "3.3.0"
 logging = "0.0.15"
-maindispatcherrule = "0.0.7"
+maindispatcher-rule = "0.0.13"
 trace = "0.0.5"
 uievent = "0.0.7"
-gradle-plugins = "0.0.52"
+gradle-plugins = "0.0.54"
 
 [libraries]
 camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
@@ -82,7 +82,7 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 logger-api = { group = "com.alexrdclement.logging", name = "logger-api", version.ref = "logging" }
 logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
 loggable = { group = "com.alexrdclement.logging", name = "loggable", version.ref = "logging" }
-maindispatcherrule-junit4 = { group = "com.alexrdclement.testing", name = "maindispatcherrule-junit4", version.ref = "maindispatcherrule" }
+maindispatcher-rule = { group = "com.alexrdclement.testing", name = "maindispatcher-rule", version.ref = "maindispatcher-rule" }
 trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }
 uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
 
