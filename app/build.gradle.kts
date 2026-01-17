@@ -10,7 +10,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
