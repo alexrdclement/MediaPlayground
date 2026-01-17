@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
-import com.alexrdclement.palette.components.layout.ErrorDialogContent
+import com.alexrdclement.palette.components.layout.dialog.ErrorDialogContent
 
 private const val ErrorRoute = "error"
 internal const val ErrorMessageArgKey = "errorMessage"

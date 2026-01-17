@@ -38,7 +38,7 @@ fun MediaItemCard(
 ) {
     Surface(
         onClick = onClick,
-        border = BorderStroke(1.dp, PaletteTheme.colorScheme.outline),
+        borderStyle = PaletteTheme.styles.border.surface,
         modifier = modifier,
     ) {
         Column(
