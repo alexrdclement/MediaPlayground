@@ -8,14 +8,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.logger.api)
     implementation(libs.navigation.compose)
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
-    implementation(libs.logger.api)
 
     implementation(projects.media.session.api)
     implementation(projects.model.audio)

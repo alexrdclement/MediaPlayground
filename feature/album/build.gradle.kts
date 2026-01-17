@@ -8,10 +8,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
+    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.logger.api)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)

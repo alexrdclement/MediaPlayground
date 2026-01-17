@@ -13,8 +13,8 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.room.paging)
 
-    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.kotlinx.coroutines.test)
 
     androidTestImplementation(projects.database.testFixtures)

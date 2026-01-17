@@ -9,7 +9,6 @@ android {
 
 dependencies {
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.ui)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
 

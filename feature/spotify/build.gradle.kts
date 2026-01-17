@@ -9,11 +9,9 @@ android {
 
 dependencies {
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
+    implementation(libs.logger.api)
     implementation(libs.paging)
     implementation(libs.paging.compose)
-    implementation(libs.logger.api)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
 

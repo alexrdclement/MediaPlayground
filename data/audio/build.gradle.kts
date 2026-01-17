@@ -9,18 +9,18 @@ android {
 }
 
 dependencies {
+    api(libs.kotlinx.io.core)
+
     api(projects.model.audio)
     api(projects.model.result)
 
-    api(libs.kotlinx.io.core)
-
     implementation(libs.androidx.activity)
+    implementation(libs.appcompat)
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.appcompat)
-    implementation(libs.spotify.api.kotlin.core)
-    implementation(libs.paging)
     implementation(libs.loggable)
+    implementation(libs.paging)
+    implementation(libs.spotify.api.kotlin.core)
 
     implementation(projects.database)
     implementation(projects.media.import)

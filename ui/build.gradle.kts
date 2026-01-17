@@ -8,14 +8,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.coil.compose)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.material3)
-    implementation(libs.material.icons.extended)
     implementation(libs.paging)
     implementation(libs.paging.compose)
-    implementation(libs.coil.compose)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
 

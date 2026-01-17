@@ -8,13 +8,11 @@ android {
 }
 
 dependencies {
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.logger.api)
     implementation(libs.paging)
     implementation(libs.paging.compose)
-    implementation(libs.logger.api)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
 
@@ -23,8 +21,8 @@ dependencies {
     implementation(projects.model.audio)
 
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
     testImplementation(libs.maindispatcher.rule)
+    testImplementation(libs.turbine)
 
     testImplementation(projects.data.audio.testFixtures)
     testImplementation(projects.media.session.testFixtures)

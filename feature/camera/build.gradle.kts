@@ -9,7 +9,6 @@ android {
 
 dependencies {
     implementation(libs.calf.permissions)
-    implementation(libs.ui)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
 

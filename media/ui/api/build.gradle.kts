@@ -8,7 +8,6 @@ android {
 }
 
 dependencies {
-    api(libs.ui)
     api(projects.media.session.api)
 
     // TODO KMP: Use expect/actual for Android MediaPlayer

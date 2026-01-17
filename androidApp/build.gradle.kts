@@ -55,10 +55,10 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.compose)
 
     implementation(projects.app)
 }

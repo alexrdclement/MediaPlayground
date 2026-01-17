@@ -8,7 +8,8 @@ android {
 }
 
 dependencies {
+    api(libs.loggable)
+
     api(projects.model.audio)
     api(projects.model.result)
-    api(libs.loggable)
 }
