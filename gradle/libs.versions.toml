@@ -1,6 +1,6 @@
 [versions]
 androidxHiltNavigationCompose = "1.3.0"
-androidx-activity = "1.8.2" # Anything higher requires https://github.com/adamint/spotify-web-api-kotlin/issues/338
+androidx-activity = "1.12.4" # Anything higher requires https://github.com/adamint/spotify-web-api-kotlin/issues/338
 androidx-core-splashscreen = "1.2.0"
 androidx-documentfile = "1.1.0"
 androidx-test = "1.7.0"
