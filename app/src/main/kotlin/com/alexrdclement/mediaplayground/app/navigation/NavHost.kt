@@ -20,8 +20,6 @@ import com.alexrdclement.mediaplayground.feature.error.navigation.navigateToErro
 import com.alexrdclement.mediaplayground.feature.media.control.MediaControlSheet
 import com.alexrdclement.mediaplayground.feature.player.navigation.navigateToPlayer
 import com.alexrdclement.mediaplayground.feature.player.navigation.playerScreen
-import com.alexrdclement.mediaplayground.feature.spotify.navigation.navigateToSpotifyLibrary
-import com.alexrdclement.mediaplayground.feature.spotify.navigation.spotifyLibraryScreen
 import com.alexrdclement.uievent.UiEventState
 import com.alexrdclement.palette.components.media.rememberMediaControlSheetState
 import kotlinx.coroutines.launch
@@ -57,7 +55,6 @@ fun NavHost(
                 when (item) {
                     MainCatalogItem.AudioLibrary -> navController.navigateToAudioLibrary()
                     MainCatalogItem.Camera -> navController.navigateToCamera()
-                    MainCatalogItem.SpotifyLibrary -> navController.navigateToSpotifyLibrary()
                     MainCatalogItem.Player -> navController.navigateToPlayer()
                 }
             }
@@ -75,18 +72,6 @@ fun NavHost(
             }
         )
         cameraScreen()
-        spotifyLibraryScreen(
-            onNavigateToPlayer = { mediaItem ->
-                coroutineScope.launch {
-                    mediaControlSheetState.expand()
-                }
-            },
-            onNavigateToAlbum = { album ->
-                navController.navigateToAlbum(
-                    albumId = album.id,
-                )
-            }
-        )
         albumScreen()
         playerScreen()
         errorDialog(

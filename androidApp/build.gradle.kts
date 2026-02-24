@@ -15,9 +15,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        
-        manifestPlaceholders["redirectSchemeName"] = "comalexrdclementmediaplayground"
-        manifestPlaceholders["redirectHostName"] = "callback"
     }
 
     signingConfigs {

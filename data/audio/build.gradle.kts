@@ -20,7 +20,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.loggable)
     implementation(libs.paging)
-    implementation(libs.spotify.api.kotlin.core)
 
     implementation(projects.database)
     implementation(projects.media.import)

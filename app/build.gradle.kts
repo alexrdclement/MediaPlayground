@@ -10,6 +10,9 @@ android {
 }
 
 dependencies {
+    // Expose Media3 session
+    api(projects.media.session.android.impl)
+
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
@@ -29,9 +32,7 @@ dependencies {
     implementation(projects.feature.error)
     implementation(projects.feature.mediaControl)
     implementation(projects.feature.player)
-    implementation(projects.feature.spotify)
     implementation(projects.media.engine.android)
-    implementation(projects.media.session.android.impl)
     implementation(projects.media.ui.android)
     implementation(projects.model.audio)
     implementation(projects.ui)

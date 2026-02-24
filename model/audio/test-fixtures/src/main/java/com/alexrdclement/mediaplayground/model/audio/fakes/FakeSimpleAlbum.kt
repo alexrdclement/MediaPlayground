@@ -18,7 +18,7 @@ val FakeSimpleAlbum2 = SimpleAlbum(
     name = "TANGK",
     artists = persistentListOf(FakeSimpleArtist2),
     images = persistentListOf(FakeImage2),
-    source = FakeSource2,
+    source = FakeSource1,
 )
 
 val FakeLocalSimpleAlbum1 = FakeSimpleAlbum1.copy(

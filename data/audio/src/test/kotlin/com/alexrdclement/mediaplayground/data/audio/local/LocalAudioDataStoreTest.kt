@@ -106,17 +106,17 @@ class LocalAudioDataStoreTest {
         val simpleAlbum = FakeSimpleAlbum1.copy(
             artists = artists,
             images = persistentListOf(FakeImage1),
-            source = Source.Spotify,
+            source = Source.Local,
         )
         val track = FakeTrack1.copy(
             artists = artists,
             simpleAlbum = simpleAlbum,
-            source = Source.Spotify,
+            source = Source.Local,
         )
         val expectedTrack = track.copy(
-            source = Source.Spotify,
+            source = Source.Local,
             simpleAlbum = simpleAlbum.copy(
-                source = Source.Spotify,
+                source = Source.Local,
             ),
         )
 

@@ -22,7 +22,7 @@ val FakeSimpleTrack2 = SimpleTrack(
     duration = 166.seconds,
     trackNumber = 2,
     uri = null,
-    source = FakeSource2,
+    source = FakeSource1,
 )
 
 val FakeSimpleTrack3 = SimpleTrack(

@@ -24,8 +24,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
-import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContent
-import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentState
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.model.audio.Track
@@ -44,7 +42,6 @@ private const val MediaPickerAudioMimeType = "audio/*"
 
 @Composable
 fun AudioLibraryScreen(
-    onNavigateToSpotifyLogIn: () -> Unit,
     onNavigateToPlayer: (MediaItem) -> Unit,
     onNavigateToAlbum: (Album) -> Unit,
     viewModel: AudioLibraryViewModel = hiltViewModel(),
@@ -76,8 +73,6 @@ fun AudioLibraryScreen(
             }
         },
         onItemPlayPauseClick = viewModel::onPlayPauseClick,
-        onSpotifyLogInClick = onNavigateToSpotifyLogIn,
-        onSpotifyLogOutClick = viewModel::onSpotifyLogOutClick,
     )
 }
 
@@ -87,8 +82,6 @@ fun AudioLibraryScreen(
     onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    onSpotifyLogInClick: () -> Unit,
-    onSpotifyLogOutClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -109,8 +102,6 @@ fun AudioLibraryScreen(
                 onImportClick = onImportClick,
                 onItemClick = onItemClick,
                 onItemPlayPauseClick = onItemPlayPauseClick,
-                onLogInClick = onSpotifyLogInClick,
-                onLogOutClick = onSpotifyLogOutClick,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
@@ -125,8 +116,6 @@ fun ContentReady(
     onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    onLogInClick: () -> Unit,
-    onLogOutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val contentPadding = PaddingValues(horizontal = PaletteTheme.spacing.medium)
@@ -142,14 +131,6 @@ fun ContentReady(
         LocalContent(
             localContentState = uiState.localContentState,
             onImportClick = onImportClick,
-            onItemClick = onItemClick,
-            onItemPlayPauseClick = onItemPlayPauseClick,
-            contentPadding = contentPadding,
-        )
-        SpotifyContent(
-            spotifyContentState = uiState.spotifyContentState,
-            onLogInClick = onLogInClick,
-            onLogOutClick = onLogOutClick,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             contentPadding = contentPadding,
@@ -171,10 +152,6 @@ internal fun PreviewLibraryScreen() {
                 tracks = flowOf(PagingData.from(PreviewTracksUi1)),
                 albums = flowOf(PagingData.from(PreviewAlbumsUi1)),
             ),
-            spotifyContentState = SpotifyContentState.LoggedIn(
-                savedTracks = flowOf(PagingData.from(PreviewTracksUi1)),
-                savedAlbums = flowOf(PagingData.from(PreviewAlbumsUi1)),
-            ),
             isMediaItemLoaded = false,
         )
         AudioLibraryScreen(
@@ -182,8 +159,6 @@ internal fun PreviewLibraryScreen() {
             onImportClick = {},
             onItemClick = {},
             onItemPlayPauseClick = {},
-            onSpotifyLogInClick = {},
-            onSpotifyLogOutClick = {},
         )
     }
 }

@@ -7,9 +7,7 @@ import androidx.paging.PagingConfig
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.local.MediaImportResult
 import com.alexrdclement.mediaplayground.data.audio.local.MediaImportState
-import com.alexrdclement.mediaplayground.data.audio.spotify.auth.SpotifyAuth
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStateProvider
-import com.alexrdclement.mediaplayground.feature.audio.library.content.spotify.SpotifyContentStateProvider
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
 import com.alexrdclement.mediaplayground.media.engine.playPause
@@ -37,8 +35,6 @@ import javax.inject.Inject
 class AudioLibraryViewModel @Inject constructor(
     private val logger: Logger,
     localContentStateProvider: LocalContentStateProvider,
-    spotifyContentStateProvider: SpotifyContentStateProvider,
-    private val spotifyAuth: SpotifyAuth,
     private val localAudioRepository: LocalAudioRepository,
     private val mediaSessionControl: MediaSessionControl,
     mediaSessionState: MediaSessionState,
@@ -64,12 +60,10 @@ class AudioLibraryViewModel @Inject constructor(
 
     val uiState: StateFlow<AudioLibraryUiState> = combine(
         localContentStateProvider.flow(viewModelScope, pagingConfig),
-        spotifyContentStateProvider.flow(viewModelScope, pagingConfig),
         loadedMediaItem,
-    ) { localContentState, spotifyContentState, loadedMediaItem ->
+    ) { localContentState, loadedMediaItem ->
         AudioLibraryUiState.ContentReady(
             localContentState = localContentState,
-            spotifyContentState = spotifyContentState,
             isMediaItemLoaded = loadedMediaItem != null
         )
     }.stateIn(
@@ -77,10 +71,6 @@ class AudioLibraryViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000L),
         initialValue = AudioLibraryUiState.InitialState
     )
-
-    fun onSpotifyLogOutClick() {
-        spotifyAuth.logOut()
-    }
 
     fun onItemClick(mediaItemUi: MediaItemUi) {
         when (val mediaItem = mediaItemUi.mediaItem) {

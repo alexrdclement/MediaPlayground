@@ -5,9 +5,7 @@
 -->
 <data-extraction-rules>
     <cloud-backup>
-        <exclude domain="sharedpref" path="spotify-api-encrypted-preferences.xml" />
     </cloud-backup>
     <device-transfer>
-        <exclude domain="sharedpref" path="spotify-api-encrypted-preferences.xml" />
     </device-transfer>
 </data-extraction-rules>

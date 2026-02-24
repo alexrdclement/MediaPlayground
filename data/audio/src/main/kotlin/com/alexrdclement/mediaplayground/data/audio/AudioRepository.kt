@@ -20,16 +20,6 @@ interface AudioRepository {
         val numTotalItems: Int,
     )
 
-    suspend fun getSavedTracks(
-        limit: Int = AudioRepositoryDefaultFetchLimit,
-        offset: Int = 0,
-    ): Result<ListFetchSuccess<Track>, Failure>
-
-    suspend fun getSavedAlbums(
-        limit: Int = AudioRepositoryDefaultFetchLimit,
-        offset: Int = 0,
-    ): Result<ListFetchSuccess<Album>, Failure>
-
     suspend fun getAlbum(id: AlbumId, source: Source? = null): Result<Album?, Failure>
 
     suspend fun getTrack(id: TrackId, source: Source? = null): Result<Track?, Failure>

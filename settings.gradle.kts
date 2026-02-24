@@ -55,7 +55,6 @@ include(":feature:camera")
 include(":feature:error")
 include(":feature:media-control")
 include(":feature:player")
-include(":feature:spotify")
 include(":ui")
 
 val localPropsFile = rootDir.resolve("local.properties").takeIf { it.exists() }
