@@ -31,6 +31,7 @@ import com.alexrdclement.mediaplayground.ui.util.formatShort
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.palette.theme.styles.copy
 
 @Composable
 fun PlaylistItem(
@@ -101,14 +102,14 @@ fun PlaylistItem(
         ) {
             Text(
                 text = item.title,
-                style = PaletteTheme.typography.titleMedium,
+                style = PaletteTheme.styles.text.titleMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
             )
             Text(
                 text = artistNamesOrDefault(item.artists),
-                style = PaletteTheme.typography.bodyMedium,
+                style = PaletteTheme.styles.text.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
@@ -116,7 +117,7 @@ fun PlaylistItem(
         }
         Text(
             text = remember { item.duration.formatShort() },
-            style = PaletteTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+            style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
             modifier = Modifier
                 .height(IntrinsicSize.Max)
                 .width(64.dp),

@@ -10,6 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.palette.theme.styles.copy
 
 @Composable
 fun TitleArtistBlock(
@@ -28,7 +29,7 @@ fun TitleArtistBlock(
     ) {
         Text(
             text = title,
-            style = PaletteTheme.typography.titleLarge.merge(
+            style = PaletteTheme.styles.text.titleLarge.copy(
                 textAlign = titleTextAlign,
             ),
             maxLines = titleMaxLines,
@@ -44,7 +45,7 @@ fun TitleArtistBlock(
         if (!artists.isNullOrEmpty()) {
             Text(
                 text = artists,
-                style = PaletteTheme.typography.bodyLarge.merge(
+                style = PaletteTheme.styles.text.bodyLarge.copy(
                     textAlign = artistTextAlign,
                 ),
                 maxLines = artistMaxLines,

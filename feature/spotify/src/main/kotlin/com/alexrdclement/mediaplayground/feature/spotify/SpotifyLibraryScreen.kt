@@ -92,7 +92,7 @@ fun SpotifyLibraryScreen(
                 title = {
                     Text(
                         text = "Spotify Library",
-                        style = PaletteTheme.typography.headline,
+                        style = PaletteTheme.styles.text.headline,
                     )
                 },
                 actions = {

@@ -50,7 +50,7 @@ internal fun LocalContent(
                 ) {
                     Text(
                         text = "Import",
-                        style = PaletteTheme.typography.bodySmall
+                        style = PaletteTheme.styles.text.bodySmall
                     )
                 }
             }

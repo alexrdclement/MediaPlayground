@@ -29,7 +29,7 @@ fun <T : CatalogItem> CatalogScreen(
         topBar = {
             TopBar(
                 title = title?.let {
-                    { Text(title, style = PaletteTheme.typography.titleMedium) }
+                    { Text(title, style = PaletteTheme.styles.text.titleMedium) }
                 },
                 navButton = onNavigateBack?.let {
                     { BackNavigationButton(onNavigateBack) }

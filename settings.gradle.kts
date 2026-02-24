@@ -67,9 +67,9 @@ val includeLogging = localProps.getProperty("includeLogging")?.toBoolean() ?: fa
 if (includeLogging && file("../logging").exists()) {
     includeBuild("../logging") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.log:logger-apl")).using(project(":logger-api"))
-            substitute(module("com.alexrdclement.log:logger-impl")).using(project(":logger-impl"))
-            substitute(module("com.alexrdclement.log:loggable")).using(project(":loggable"))
+            substitute(module("com.alexrdclement.logging:logger-api")).using(project(":logger-api"))
+            substitute(module("com.alexrdclement.logging:logger-impl")).using(project(":logger-impl"))
+            substitute(module("com.alexrdclement.logging:loggable")).using(project(":loggable"))
         }
     }
 }
@@ -93,12 +93,14 @@ if (includeUievent && file("../uievent").exists()) {
     }
 }
 
-val includeUiplayground = localProps.getProperty("includeUiplayground")?.toBoolean() ?: false
-if (includeUiplayground && file("../UiPlayground").exists()) {
-    includeBuild("../UiPlayground") {
+val includePalette = localProps.getProperty("includePalette")?.toBoolean() ?: false
+if (includePalette && file("../palette").exists()) {
+    includeBuild("../palette") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.uiplayground:ui-playground-components")).using(project(":components"))
-            substitute(module("com.alexrdclement.uiplayground:ui-playground-theme")).using(project(":theme"))
+            substitute(module("com.alexrdclement.palette:palette-components")).using(project(":components"))
+            substitute(module("com.alexrdclement.palette:palette-modifiers")).using(project(":modifiers"))
+            substitute(module("com.alexrdclement.palette:palette-navigation")).using(project(":navigation"))
+            substitute(module("com.alexrdclement.palette:palette-theme")).using(project(":theme"))
         }
     }
 }

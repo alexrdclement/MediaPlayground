@@ -96,7 +96,7 @@ fun AudioLibraryScreen(
                 title = {
                     Text(
                         text = "Audio Library",
-                        style = PaletteTheme.typography.headline,
+                        style = PaletteTheme.styles.text.headline,
                     )
                 }
             )

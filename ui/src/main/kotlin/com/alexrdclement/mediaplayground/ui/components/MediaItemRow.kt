@@ -48,7 +48,7 @@ fun MediaItemRow(
         if (title != null) {
             Text(
                 text = title,
-                style = PaletteTheme.typography.titleMedium,
+                style = PaletteTheme.styles.text.titleMedium,
                 modifier = Modifier.padding(contentPadding),
             )
         }

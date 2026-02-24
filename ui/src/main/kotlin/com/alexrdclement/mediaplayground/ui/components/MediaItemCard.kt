@@ -69,14 +69,14 @@ fun MediaItemCard(
             ) {
                 Text(
                     text = mediaItem.title,
-                    style = PaletteTheme.typography.titleMedium,
+                    style = PaletteTheme.styles.text.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
                 )
                 Text(
                     text = artistNamesOrDefault(mediaItem.artists),
-                    style = PaletteTheme.typography.bodyMedium,
+                    style = PaletteTheme.styles.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()

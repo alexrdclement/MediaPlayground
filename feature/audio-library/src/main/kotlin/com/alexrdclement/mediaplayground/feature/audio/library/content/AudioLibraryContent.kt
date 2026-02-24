@@ -37,7 +37,7 @@ fun AudioLibraryContent(
         ) {
             Text(
                 text = headerText,
-                style = PaletteTheme.typography.titleLarge,
+                style = PaletteTheme.styles.text.titleLarge,
             )
             headerAction?.invoke()
         }

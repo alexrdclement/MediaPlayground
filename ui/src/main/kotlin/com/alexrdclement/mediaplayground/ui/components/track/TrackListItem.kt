@@ -28,6 +28,7 @@ import com.alexrdclement.mediaplayground.ui.util.formatShort
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.palette.theme.styles.copy
 
 @Composable
 fun TrackListItem(
@@ -65,7 +66,7 @@ fun TrackListItem(
             } else {
                 Text(
                     text = track.trackNumber.toString(),
-                    style = PaletteTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+                    style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
                     modifier = Modifier
                 )
             }
@@ -79,14 +80,14 @@ fun TrackListItem(
         ) {
             Text(
                 text = track.name,
-                style = PaletteTheme.typography.titleMedium,
+                style = PaletteTheme.styles.text.titleMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
             )
             Text(
                 text = artistNamesOrDefault(track.artists),
-                style = PaletteTheme.typography.bodyMedium,
+                style = PaletteTheme.styles.text.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier
                     .basicMarquee()
@@ -94,7 +95,7 @@ fun TrackListItem(
         }
         Text(
             text = remember { track.duration.formatShort() },
-            style = PaletteTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+            style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
             modifier = Modifier
                 .height(IntrinsicSize.Max)
                 .width(64.dp),
