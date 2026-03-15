@@ -11,7 +11,6 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.logger.api)
-    implementation(libs.navigation.compose)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
 

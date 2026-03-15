@@ -1,24 +1,23 @@
 package com.alexrdclement.mediaplayground.feature.audio.library.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
 import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryScreen
 import com.alexrdclement.mediaplayground.model.audio.Album
 import com.alexrdclement.mediaplayground.model.audio.MediaItem
+import com.alexrdclement.palette.navigation.NavController
+import com.alexrdclement.palette.navigation.NavGraphBuilder
+import com.alexrdclement.palette.navigation.NavKey
 
-const val AudioLibraryRoute = "audioLibrary"
-
-fun NavController.navigateToAudioLibrary(navOptions: NavOptions? = null) {
-    navigate(AudioLibraryRoute, navOptions)
+fun NavGraphBuilder.audioLibraryNavGraph() {
+    route(AudioLibraryGraph)
 }
 
-fun NavGraphBuilder.audioLibraryScreen(
+fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
+    navController: NavController,
     onNavigateToPlayer: (MediaItem) -> Unit,
     onNavigateToAlbum: (Album) -> Unit,
 ) {
-    composable(AudioLibraryRoute) {
+    entry<AudioLibraryGraph> {
         AudioLibraryScreen(
             onNavigateToPlayer = onNavigateToPlayer,
             onNavigateToAlbum = onNavigateToAlbum,
