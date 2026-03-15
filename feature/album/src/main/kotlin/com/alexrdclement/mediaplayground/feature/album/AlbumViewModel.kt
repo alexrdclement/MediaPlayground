@@ -1,10 +1,8 @@
 package com.alexrdclement.mediaplayground.feature.album
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
-import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumIdArgKey
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
@@ -20,6 +18,9 @@ import com.alexrdclement.mediaplayground.model.result.successOrDefault
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.error
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine
@@ -27,26 +28,29 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AlbumViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = AlbumViewModel.Factory::class)
+class AlbumViewModel @AssistedInject constructor(
+    @Assisted private val albumIdValue: String,
     private val logger: Logger,
     audioRepository: AudioRepository,
     private val mediaSessionControl: MediaSessionControl,
     private val mediaSessionState: MediaSessionState,
 ) : ViewModel() {
 
+    @AssistedFactory
+    interface Factory {
+        fun create(albumIdValue: String): AlbumViewModel
+    }
+
+    private val albumId = AlbumId(albumIdValue)
+
     private companion object {
         private const val tag = "AlbumViewModel"
         private fun tag(methodName: String) = "$tag#$methodName"
     }
 
-    private val albumId: AlbumId? = savedStateHandle.get<String>(AlbumIdArgKey)?.let(::AlbumId)
-
     private val album = flow {
-        val albumId = albumId ?: return@flow emit(null)
         emit(audioRepository.getAlbum(albumId).successOrDefault(null))
     }.stateIn(
         scope = viewModelScope,

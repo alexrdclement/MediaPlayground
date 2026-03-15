@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexrdclement.mediaplayground.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
@@ -36,7 +37,10 @@ import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun AlbumScreen(
-    viewModel: AlbumViewModel = hiltViewModel()
+    albumId: AlbumId,
+    viewModel: AlbumViewModel = hiltViewModel<AlbumViewModel, AlbumViewModel.Factory>(
+        creationCallback = { factory -> factory.create(albumId.value) }
+    ),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
     AlbumScreen(

@@ -21,7 +21,6 @@ lifecycle-runtime-ktx = "2.10.0"
 logging = "0.0.15"
 maindispatcher-rule = "0.0.13"
 media3 = "1.9.2"
-navigation-compose = "2.9.7"
 paging = "3.4.1"
 palette = "0.0.69"
 room = "2.8.4"
@@ -65,11 +64,11 @@ media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", versi
 media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3" }
 media3-transformer = { group = "androidx.media3", name = "media3-transformer", version.ref = "media3" }
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 paging-testing = { group = "androidx.paging", name = "paging-testing", version.ref = "paging" }
 palette-components = { group = "com.alexrdclement.palette", name = "palette-components", version.ref = "palette" }
+palette-navigation = { group = "com.alexrdclement.palette", name = "palette-navigation", version.ref = "palette" }
 palette-theme = { group = "com.alexrdclement.palette", name = "palette-theme", version.ref = "palette" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }
