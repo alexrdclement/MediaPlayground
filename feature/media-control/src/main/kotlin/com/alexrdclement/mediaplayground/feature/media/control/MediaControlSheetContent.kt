@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
-import com.alexrdclement.mediaplayground.media.ui.Seekbar
+import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbar
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
@@ -26,9 +26,9 @@ import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.components.media.model.Artist
 import com.alexrdclement.palette.components.media.model.MediaItem
 import com.alexrdclement.palette.theme.PaletteTheme
-import kotlin.time.Duration
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import kotlin.time.Duration
 
 @Composable
 fun MediaControlSheetContent(
@@ -71,20 +71,14 @@ fun MediaControlSheetContent(
             )
         }
         item {
-            Seekbar(
-                transportState = transportState,
+            TimeLabeledSeekbar(
                 playheadState = playheadState,
                 timelineState = timelineState,
+                transportState = transportState,
                 onSeek = onSeek,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        horizontal = PaletteTheme.spacing.large,
-                    )
-                    .padding(
-                        top = PaletteTheme.spacing.medium,
-                        bottom = PaletteTheme.spacing.small,
-                    )
+                    .padding(vertical = PaletteTheme.spacing.medium)
             )
         }
         items(

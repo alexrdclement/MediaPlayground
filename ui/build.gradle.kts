@@ -15,6 +15,8 @@ dependencies {
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
 
+    implementation(projects.media.engine.api)
     implementation(projects.media.model.audio)
     implementation(projects.media.model.audio.testFixtures) // Preview data
+    implementation(projects.media.ui.api)
 }
