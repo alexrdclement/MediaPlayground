@@ -17,7 +17,7 @@ import androidx.media3.ui.PlayerView
 import com.alexrdclement.mediaplayground.media.engine.AndroidMediaEngineState
 import com.alexrdclement.mediaplayground.media.engine.getPlayer
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
-import com.alexrdclement.mediaplayground.ui.util.rememberLifecycleEvent
+import com.alexrdclement.mediaplayground.media.ui.util.rememberLifecycleEvent
 import kotlinx.coroutines.flow.map
 
 @Composable
