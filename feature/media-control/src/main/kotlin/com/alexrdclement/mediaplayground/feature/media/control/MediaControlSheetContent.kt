@@ -13,6 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.mediaplayground.media.engine.PlayheadState
+import com.alexrdclement.mediaplayground.media.engine.TimelineState
+import com.alexrdclement.mediaplayground.media.engine.TransportState
+import com.alexrdclement.mediaplayground.media.ui.Seekbar
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
@@ -22,6 +26,7 @@ import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.components.media.model.Artist
 import com.alexrdclement.palette.components.media.model.MediaItem
 import com.alexrdclement.palette.theme.PaletteTheme
+import kotlin.time.Duration
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -29,13 +34,17 @@ import kotlinx.collections.immutable.persistentListOf
 fun MediaControlSheetContent(
     loadedMediaItem: MediaItem,
     playlist: PersistentList<MediaItemUi>,
-    isPlaying: Boolean,
+    transportState: TransportState,
+    playheadState: PlayheadState?,
+    timelineState: TimelineState?,
     onPlayPauseClick: () -> Unit,
+    onSeek: (Duration) -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
+    val isPlaying = transportState == TransportState.Playing
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,6 +68,23 @@ fun MediaControlSheetContent(
                 modifier = Modifier
                     .size(72.dp)
                     .padding(vertical = PaletteTheme.spacing.small)
+            )
+        }
+        item {
+            Seekbar(
+                transportState = transportState,
+                playheadState = playheadState,
+                timelineState = timelineState,
+                onSeek = onSeek,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = PaletteTheme.spacing.large,
+                    )
+                    .padding(
+                        top = PaletteTheme.spacing.medium,
+                        bottom = PaletteTheme.spacing.small,
+                    )
             )
         }
         items(
@@ -97,9 +123,12 @@ private fun Preview() {
                     isPlaying = false,
                 ),
             ),
-            isPlaying = false,
-            onItemClick = {},
+            transportState = TransportState.Stopped,
+            playheadState = null,
+            timelineState = null,
             onPlayPauseClick = {},
+            onSeek = {},
+            onItemClick = {},
             onItemPlayPauseClick = {},
         )
     }

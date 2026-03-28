@@ -22,21 +22,25 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zacsweers.metrox.viewmodel.metroViewModel
+import com.alexrdclement.mediaplayground.media.engine.PlayheadState
+import com.alexrdclement.mediaplayground.media.engine.TimelineState
+import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.media.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.media.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.palette.components.util.calculateHorizontalPaddingValues
 import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.media.MediaControlSheetState
 import com.alexrdclement.palette.components.media.model.Artist
+import com.alexrdclement.palette.components.util.calculateHorizontalPaddingValues
 import com.alexrdclement.palette.components.util.copy
 import com.alexrdclement.palette.theme.PaletteTheme
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlin.time.Duration
 import com.alexrdclement.mediaplayground.ui.R as UiR
 import com.alexrdclement.palette.components.media.MediaControlSheet as MediaControlSheetComponent
 import com.alexrdclement.palette.components.media.model.MediaItem as UiMediaItem
@@ -48,14 +52,19 @@ fun MediaControlSheet(
     val viewModel = metroViewModel<MediaControlSheetViewModel>()
     val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
     val playlist by viewModel.playlist.collectAsStateWithLifecycle()
-    val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()
+    val transportState by viewModel.transportState.collectAsStateWithLifecycle()
+    val playheadState by viewModel.playheadState.collectAsStateWithLifecycle()
+    val timelineState by viewModel.timelineState.collectAsStateWithLifecycle()
 
     MediaControlSheet(
         mediaControlSheetState = mediaControlSheetState,
         loadedMediaItem = loadedMediaItem,
         playlist = playlist,
-        isPlaying = isPlaying,
+        transportState = transportState,
+        playheadState = playheadState,
+        timelineState = timelineState,
         onPlayPauseClick = viewModel::onPlayPauseClick,
+        onSeek = viewModel::onSeek,
         onItemClick = viewModel::onItemClick,
         onItemPlayPauseClick = viewModel::onItemPlayPauseClick,
     )
@@ -66,12 +75,16 @@ fun MediaControlSheet(
     mediaControlSheetState: MediaControlSheetState,
     loadedMediaItem: MediaItem?,
     playlist: PersistentList<MediaItemUi>,
-    isPlaying: Boolean,
+    transportState: TransportState,
+    playheadState: PlayheadState?,
+    timelineState: TimelineState?,
     onPlayPauseClick: () -> Unit,
+    onSeek: (Duration) -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val isPlaying = transportState == TransportState.Playing
 
     AnimatedVisibility(
         visible = loadedMediaItem != null,
@@ -166,8 +179,11 @@ fun MediaControlSheet(
                         MediaControlSheetContent(
                             loadedMediaItem = uiMediaItem,
                             playlist = playlist,
-                            isPlaying = isPlaying,
+                            transportState = transportState,
+                            playheadState = playheadState,
+                            timelineState = timelineState,
                             onPlayPauseClick = onPlayPauseClick,
+                            onSeek = onSeek,
                             onItemClick = onItemClick,
                             onItemPlayPauseClick = onItemPlayPauseClick,
                             contentPadding = contentPadding.copy(

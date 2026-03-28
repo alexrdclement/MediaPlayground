@@ -16,4 +16,5 @@ dependencies {
 
     implementation(projects.media.model.audio)
     implementation(projects.media.session.api)
+    implementation(projects.media.ui.api)
 }
