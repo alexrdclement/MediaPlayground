@@ -1,12 +1,12 @@
 package com.alexrdclement.mediaplayground.media.engine
 
 import com.alexrdclement.mediaplayground.media.engine.mapper.toMediaItem
-import javax.inject.Inject
 import com.alexrdclement.mediaplayground.media.model.audio.Album
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.media.model.audio.Track
 import com.alexrdclement.mediaplayground.media.model.audio.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.mapper.toTrack
+import dev.zacsweers.metro.Inject
 
 class PlaylistControlImpl @Inject constructor(
     override val playlistState: PlaylistState,

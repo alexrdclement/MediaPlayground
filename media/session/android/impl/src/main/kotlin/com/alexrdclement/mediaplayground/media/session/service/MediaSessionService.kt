@@ -7,14 +7,8 @@ import android.app.PendingIntent.getActivity
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import com.alexrdclement.mediaplayground.media.engine.AndroidPlayerFactory
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class MediaSessionService @Inject constructor() : MediaSessionService() {
-
-    @Inject
-    lateinit var androidPlayerFactory: AndroidPlayerFactory
+class MediaSessionService : MediaSessionService() {
 
     private val sessionActivityPendingIntent: PendingIntent
         get() = getActivity(
@@ -45,7 +39,7 @@ class MediaSessionService @Inject constructor() : MediaSessionService() {
     }
 
     private fun createMediaSession(): MediaSession {
-        return MediaSession.Builder(this, androidPlayerFactory.createPlayer())
+        return MediaSession.Builder(this, AndroidPlayerFactory(application).createPlayer())
             .setSessionActivity(sessionActivityPendingIntent)
             .build()
     }

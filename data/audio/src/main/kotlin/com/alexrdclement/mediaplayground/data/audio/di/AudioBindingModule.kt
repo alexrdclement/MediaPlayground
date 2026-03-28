@@ -2,16 +2,11 @@ package com.alexrdclement.mediaplayground.data.audio.di
 
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
 import com.alexrdclement.mediaplayground.data.audio.AudioRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.Binds
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class AudioBindingModule {
+@BindingContainer
+interface AudioBindingModule {
     @Binds
-    abstract fun bindAudioRepository(
-        audioRepositoryImpl: AudioRepositoryImpl
-    ): AudioRepository
+    val AudioRepositoryImpl.bind: AudioRepository
 }

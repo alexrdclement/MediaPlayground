@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -20,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
@@ -38,9 +37,9 @@ import com.alexrdclement.palette.theme.PaletteTheme
 @Composable
 fun AlbumScreen(
     albumId: AlbumId,
-    viewModel: AlbumViewModel = hiltViewModel<AlbumViewModel, AlbumViewModel.Factory>(
-        creationCallback = { factory -> factory.create(albumId.value) }
-    ),
+    viewModel: AlbumViewModel = assistedMetroViewModel<AlbumViewModel, AlbumViewModel.Factory> {
+        create(albumId.value)
+    },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
     AlbumScreen(

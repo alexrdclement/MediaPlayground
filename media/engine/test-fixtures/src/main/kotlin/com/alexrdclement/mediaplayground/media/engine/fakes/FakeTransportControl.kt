@@ -4,9 +4,8 @@ import com.alexrdclement.mediaplayground.media.engine.TransportControl
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import javax.inject.Inject
 
-class FakeTransportControl @Inject constructor() : TransportControl {
+class FakeTransportControl : TransportControl {
 
     val mutableTransportState = MutableSharedFlow<TransportState>(replay = 1)
 

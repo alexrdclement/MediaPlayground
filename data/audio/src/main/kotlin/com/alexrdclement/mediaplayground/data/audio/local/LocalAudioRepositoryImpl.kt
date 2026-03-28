@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class LocalAudioRepositoryImpl @Inject constructor(
     private val pathProvider: PathProvider,

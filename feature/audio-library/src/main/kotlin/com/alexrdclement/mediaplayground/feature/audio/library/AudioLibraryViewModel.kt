@@ -20,7 +20,7 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.error
 import com.alexrdclement.logging.infoString
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -29,9 +29,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
 class AudioLibraryViewModel @Inject constructor(
     private val logger: Logger,
     localContentStateProvider: LocalContentStateProvider,

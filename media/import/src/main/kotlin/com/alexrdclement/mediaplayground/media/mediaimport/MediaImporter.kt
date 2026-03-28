@@ -19,7 +19,7 @@ import kotlinx.io.IOException
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 import java.util.UUID
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class MediaImporter @Inject constructor(
     private val mediaMetadataRetriever: MediaMetadataRetriever,

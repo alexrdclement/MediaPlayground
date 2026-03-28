@@ -1,7 +1,7 @@
 plugins {
     id(libs.plugins.mediaplayground.android.feature.get().pluginId)
     id(libs.plugins.alexrdclement.android.library.compose.get().pluginId)
-    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
+    alias(libs.plugins.metro)
     id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
 }
 
@@ -13,7 +13,6 @@ dependencies {
     // Expose Media3 session
     api(projects.media.session.android.impl)
 
-    implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.compose)
@@ -25,6 +24,7 @@ dependencies {
     implementation(libs.trace)
     implementation(libs.uievent)
 
+    implementation(projects.database)
     implementation(projects.data.audio)
     implementation(projects.media.import)
     implementation(projects.media.model.audio)

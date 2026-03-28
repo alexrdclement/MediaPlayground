@@ -1,6 +1,5 @@
 plugins {
     id(libs.plugins.alexrdclement.android.library.test.fixtures.get().pluginId)
-    id(libs.plugins.alexrdclement.android.hilt.test.fixtures.get().pluginId)
 }
 
 android {
@@ -10,6 +9,7 @@ android {
 dependencies {
     api(projects.data.audio)
     api(projects.media.import.testFixtures)
-    
+    api(libs.kotlinx.coroutines.android)
+
     implementation(projects.database.testFixtures)
 }

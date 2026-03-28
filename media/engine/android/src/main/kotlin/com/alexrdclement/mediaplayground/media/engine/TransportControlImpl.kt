@@ -4,7 +4,7 @@ import androidx.media3.common.Player
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class TransportControlImpl @Inject constructor(
     private val mediaControllerHolder: MediaControllerHolder,

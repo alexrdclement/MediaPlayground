@@ -2,16 +2,11 @@ package com.alexrdclement.mediaplayground.media.mediaimport.di
 
 import com.alexrdclement.mediaplayground.media.mediaimport.FileWriter
 import com.alexrdclement.mediaplayground.media.mediaimport.FileWriterImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.Binds
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class FileWriterModule {
+@BindingContainer
+interface FileWriterModule {
     @Binds
-    abstract fun bindFileWriter(
-        fileWriterImpl: FileWriterImpl
-    ): FileWriter
+    val FileWriterImpl.bind: FileWriter
 }

@@ -6,27 +6,17 @@ import com.alexrdclement.mediaplayground.media.session.MediaSessionEntry
 import com.alexrdclement.mediaplayground.media.session.MediaSessionEntryImpl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.MediaSessionStateImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.Binds
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class MediaSessionBindingModule {
+@BindingContainer
+interface MediaSessionBindingModule {
+    @Binds
+    val MediaSessionEntryImpl.bind: MediaSessionEntry
 
     @Binds
-    abstract fun bindMediaSessionEntry(
-        mediaSessionEntryImpl: MediaSessionEntryImpl
-    ): MediaSessionEntry
+    val MediaSessionControlImpl.bind: MediaSessionControl
 
     @Binds
-    abstract fun bindMediaSessionControl(
-        mediaSessionControlImpl: MediaSessionControlImpl
-    ): MediaSessionControl
-
-    @Binds
-    abstract fun bindMediaSessionState(
-        mediaSessionStateImpl: MediaSessionStateImpl
-    ): MediaSessionState
+    val MediaSessionStateImpl.bind: MediaSessionState
 }

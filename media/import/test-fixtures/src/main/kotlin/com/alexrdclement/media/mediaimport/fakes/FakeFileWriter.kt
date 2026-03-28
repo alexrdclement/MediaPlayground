@@ -5,9 +5,8 @@ import com.alexrdclement.mediaplayground.media.mediaimport.FileWriteError
 import com.alexrdclement.mediaplayground.media.mediaimport.FileWriter
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.io.files.Path
-import javax.inject.Inject
 
-class FakeFileWriter @Inject constructor() : FileWriter {
+class FakeFileWriter : FileWriter {
 
     override suspend fun writeBitmapToDisk(
         byteArray: ByteArray,

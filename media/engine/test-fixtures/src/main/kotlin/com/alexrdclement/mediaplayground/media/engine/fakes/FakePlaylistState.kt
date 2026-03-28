@@ -5,9 +5,8 @@ import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import javax.inject.Inject
 
-class FakePlaylistState @Inject constructor() : PlaylistState {
+class FakePlaylistState : PlaylistState {
 
     val mutablePlaylist = MutableSharedFlow<List<MediaItem>>(replay = 1)
     val mutableLoadedMediaItemId = MutableSharedFlow<MediaItemId?>()

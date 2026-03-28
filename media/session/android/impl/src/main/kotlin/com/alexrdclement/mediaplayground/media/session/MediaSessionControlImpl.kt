@@ -1,10 +1,8 @@
 package com.alexrdclement.mediaplayground.media.session
 
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineControl
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
 
-@Singleton
 class MediaSessionControlImpl @Inject constructor(
     override val mediaSessionState: MediaSessionState,
     private val mediaEngineControl: MediaEngineControl,

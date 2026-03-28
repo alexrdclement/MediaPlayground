@@ -1,19 +1,18 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
-import android.content.Context
+import android.app.Application
 import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import android.media.MediaMetadataRetriever as AndroidMediaMetadataRetriever
 
 class MediaMetadataRetrieverImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val application: Application,
 ) : MediaMetadataRetriever {
 
     override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata {
         return AndroidMediaMetadataRetriever().use { retriever ->
-            retriever.setDataSource(context, contentUri)
+            retriever.setDataSource(application, contentUri)
 
             MediaMetadata(
                 title = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_TITLE),

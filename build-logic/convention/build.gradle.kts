@@ -24,6 +24,10 @@ tasks {
     }
 }
 
+dependencies {
+    implementation(libs.metro.gradle.plugin)
+}
+
 gradlePlugin {
     plugins {
         register("androidFeature") {

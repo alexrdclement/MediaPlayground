@@ -1,10 +1,9 @@
 package com.alexrdclement.mediaplayground.media.engine.fakes
 
 import com.alexrdclement.mediaplayground.media.engine.PlaylistControl
-import javax.inject.Inject
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
 
-class FakePlaylistControl @Inject constructor(
+class FakePlaylistControl(
     override val playlistState: FakePlaylistState = FakePlaylistState(),
 ) : PlaylistControl {
     override suspend fun load(mediaItem: MediaItem) {

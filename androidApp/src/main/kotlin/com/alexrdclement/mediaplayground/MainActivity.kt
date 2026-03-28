@@ -5,13 +5,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.alexrdclement.mediaplayground.app.App
+import com.alexrdclement.mediaplayground.app.di.MetroApp
 import com.alexrdclement.mediaplayground.app.navigation.rememberMediaPlaygroundNavController
 import com.alexrdclement.palette.navigation.NavController
-import dagger.hilt.android.AndroidEntryPoint
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var navController: NavController? = null
 
@@ -27,7 +28,11 @@ class MainActivity : ComponentActivity() {
                 onBackStackEmpty = ::finish,
             ).also { navController = it }
 
-            App(navController = navController)
+            CompositionLocalProvider(
+                LocalMetroViewModelFactory provides (application as MetroApp).viewModelFactory,
+            ) {
+                App(navController = navController)
+            }
         }
     }
 

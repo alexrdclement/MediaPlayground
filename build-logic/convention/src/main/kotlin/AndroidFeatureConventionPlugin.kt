@@ -9,11 +9,11 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("com.alexrdclement.gradle.plugin.android.library")
-                apply("com.alexrdclement.gradle.plugin.android.hilt")
+                apply("dev.zacsweers.metro")
             }
 
             dependencies {
-                add("implementation", libs.findLibrary("hilt-navigation-compose").get())
+                add("implementation", libs.findLibrary("metrox-viewmodel-compose").get())
                 add("implementation", libs.findLibrary("lifecycle-runtime-compose").get())
 
                 add("implementation", project(":ui"))

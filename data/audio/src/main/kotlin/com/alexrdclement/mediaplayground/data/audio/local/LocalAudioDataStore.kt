@@ -34,10 +34,8 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
 
-@Singleton
 class LocalAudioDataStore @Inject constructor(
     private val transactionRunner: DatabaseTransactionRunner,
     private val artistDao: ArtistDao,

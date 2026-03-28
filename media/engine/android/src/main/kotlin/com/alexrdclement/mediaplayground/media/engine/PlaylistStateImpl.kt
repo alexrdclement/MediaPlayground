@@ -16,7 +16,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class PlaylistStateImpl @Inject constructor(
     private val mediaControllerHolder: MediaControllerHolder,
