@@ -1,7 +1,7 @@
 plugins {
     id(libs.plugins.alexrdclement.android.application.asProvider().get().pluginId)
     id(libs.plugins.alexrdclement.android.application.compose.get().pluginId)
-    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
+    alias(libs.plugins.metro)
 }
 
 android {
@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.metrox.viewmodel.compose)
     implementation(libs.palette.navigation)
 
     implementation(projects.app)

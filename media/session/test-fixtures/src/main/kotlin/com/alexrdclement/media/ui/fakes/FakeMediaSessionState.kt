@@ -4,9 +4,8 @@ import com.alexrdclement.mediaplayground.media.engine.MediaEngineState
 import com.alexrdclement.mediaplayground.media.engine.fakes.FakeMediaEngineState
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
 
-class FakeMediaSessionState @Inject constructor(
+class FakeMediaSessionState(
     val fakeMediaEngineState: MediaEngineState = FakeMediaEngineState(),
 ) : MediaSessionState {
 

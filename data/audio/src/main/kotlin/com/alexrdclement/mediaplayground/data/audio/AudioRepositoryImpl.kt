@@ -12,7 +12,7 @@ import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.mapFailure
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class AudioRepositoryImpl @Inject constructor(
     private val localAudioRepository: LocalAudioRepository,

@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.media.session
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class MediaSessionStateImpl @Inject constructor(
     localMediaEngineState: MediaEngineState,

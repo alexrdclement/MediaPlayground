@@ -2,16 +2,11 @@ package com.alexrdclement.mediaplayground.data.audio.local.di
 
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
 import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.Binds
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class LocalAudioBindingModule {
+@BindingContainer
+interface LocalAudioBindingModule {
     @Binds
-    abstract fun bindLocalAudioRepository(
-        localAudioRepositoryImpl: LocalAudioRepositoryImpl
-    ): LocalAudioRepository
+    val LocalAudioRepositoryImpl.bind: LocalAudioRepository
 }

@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import com.alexrdclement.mediaplayground.media.ui.CameraPreview
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Surface
@@ -20,7 +20,7 @@ import com.mohamedrejeb.calf.permissions.rememberPermissionState
 
 @Composable
 fun CameraScreen(
-    viewModel: CameraViewModel = hiltViewModel(),
+    viewModel: CameraViewModel = metroViewModel(),
 ) {
     val mediaSessionState = viewModel.mediaSessionState
     CameraScreen(

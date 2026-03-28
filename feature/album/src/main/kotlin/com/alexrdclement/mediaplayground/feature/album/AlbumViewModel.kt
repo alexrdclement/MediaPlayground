@@ -18,10 +18,10 @@ import com.alexrdclement.mediaplayground.model.result.successOrDefault
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.error
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -29,8 +29,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = AlbumViewModel.Factory::class)
-class AlbumViewModel @AssistedInject constructor(
+@AssistedInject
+class AlbumViewModel(
     @Assisted private val albumIdValue: String,
     private val logger: Logger,
     audioRepository: AudioRepository,
@@ -39,7 +39,7 @@ class AlbumViewModel @AssistedInject constructor(
 ) : ViewModel() {
 
     @AssistedFactory
-    interface Factory {
+    fun interface Factory : ManualViewModelAssistedFactory {
         fun create(albumIdValue: String): AlbumViewModel
     }
 

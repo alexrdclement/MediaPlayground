@@ -13,7 +13,7 @@ import com.alexrdclement.mediaplayground.media.session.playlistState
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.error
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Inject
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -23,9 +23,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
 class MediaControlSheetViewModel @Inject constructor(
     private val logger: Logger,
     private val mediaSessionControl: MediaSessionControl,

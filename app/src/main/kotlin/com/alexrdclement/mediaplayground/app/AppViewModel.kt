@@ -6,12 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.alexrdclement.logging.LogLevel
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.uievent.toUiEvent
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
 class AppViewModel @Inject constructor(
     private val logger: Logger,
 ) : ViewModel() {

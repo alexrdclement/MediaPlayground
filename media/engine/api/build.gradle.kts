@@ -1,6 +1,5 @@
 plugins {
     id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
-    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
 }
 
 android {
@@ -9,6 +8,7 @@ android {
 
 dependencies {
     api(libs.loggable)
+    api(libs.kotlinx.coroutines.android)
 
     api(projects.media.model.audio)
     api(projects.model.result)

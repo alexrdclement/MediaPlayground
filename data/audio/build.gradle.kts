@@ -1,6 +1,6 @@
 plugins {
     id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
-    id(libs.plugins.alexrdclement.android.hilt.asProvider().get().pluginId)
+    alias(libs.plugins.metro)
     id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
 }
 

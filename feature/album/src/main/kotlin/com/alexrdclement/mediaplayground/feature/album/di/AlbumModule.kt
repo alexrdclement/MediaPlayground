@@ -1,0 +1,20 @@
+package com.alexrdclement.mediaplayground.feature.album.di
+
+import com.alexrdclement.mediaplayground.feature.album.AlbumViewModel
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.IntoMap
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
+
+@BindingContainer
+interface AlbumModule {
+    companion object {
+        @Provides
+        @IntoMap
+        @ManualViewModelAssistedFactoryKey(AlbumViewModel.Factory::class)
+        fun provideAlbumViewModelFactory(
+            factory: AlbumViewModel.Factory,
+        ): ManualViewModelAssistedFactory = factory
+    }
+}

@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class LocalContentStateProvider @Inject constructor(
     private val localAudioRepository: LocalAudioRepository,

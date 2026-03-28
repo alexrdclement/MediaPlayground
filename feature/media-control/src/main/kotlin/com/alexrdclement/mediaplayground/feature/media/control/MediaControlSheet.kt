@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.safeDrawing
@@ -22,21 +21,17 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.media.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.media.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.palette.components.util.calculateHorizontalPaddingValues
-import com.alexrdclement.palette.components.util.minus
-import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.media.MediaControlSheetState
 import com.alexrdclement.palette.components.media.model.Artist
-import com.alexrdclement.palette.components.util.calculateVerticalPadding
-import com.alexrdclement.palette.components.util.calculateVerticalPaddingValues
 import com.alexrdclement.palette.components.util.copy
 import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.PersistentList
@@ -50,7 +45,7 @@ import com.alexrdclement.palette.components.media.model.MediaItem as UiMediaItem
 fun MediaControlSheet(
     mediaControlSheetState: MediaControlSheetState
 ) {
-    val viewModel = hiltViewModel<MediaControlSheetViewModel>()
+    val viewModel = metroViewModel<MediaControlSheetViewModel>()
     val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
     val playlist by viewModel.playlist.collectAsStateWithLifecycle()
     val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()

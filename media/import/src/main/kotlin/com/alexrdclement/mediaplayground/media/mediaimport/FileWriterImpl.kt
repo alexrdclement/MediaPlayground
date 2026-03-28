@@ -1,11 +1,11 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
+import android.app.Application
 import android.content.ContentResolver
-import android.content.Context
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import com.alexrdclement.mediaplayground.model.result.Result
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
@@ -14,10 +14,9 @@ import kotlinx.io.buffered
 import kotlinx.io.files.FileNotFoundException
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
-import javax.inject.Inject
 
 class FileWriterImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val application: Application,
 ) : FileWriter {
 
     override suspend fun writeBitmapToDisk(
@@ -31,14 +30,14 @@ class FileWriterImpl @Inject constructor(
         contentUri: Uri,
         destinationDir: Path
     ): Result<Path, FileWriteError> {
-        val documentFile = DocumentFile.fromSingleUri(context, contentUri)
+        val documentFile = DocumentFile.fromSingleUri(application, contentUri)
             ?: return Result.Failure(FileWriteError.UnknownInputFileError)
         val documentFileName = documentFile.name
             ?: return Result.Failure(FileWriteError.UnknownInputFileError)
 
         return documentFile.writeToDisk(
             destination = Path(destinationDir, documentFileName),
-            contentResolver = context.contentResolver,
+            contentResolver = application.contentResolver,
         )
     }
 }

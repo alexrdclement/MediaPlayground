@@ -19,8 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
@@ -44,7 +44,7 @@ private const val MediaPickerAudioMimeType = "audio/*"
 fun AudioLibraryScreen(
     onNavigateToPlayer: (MediaItem) -> Unit,
     onNavigateToAlbum: (Album) -> Unit,
-    viewModel: AudioLibraryViewModel = hiltViewModel(),
+    viewModel: AudioLibraryViewModel = metroViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AudioLibraryUiState.InitialState)
     val mediaPickerLauncher = rememberLauncherForActivityResult(
