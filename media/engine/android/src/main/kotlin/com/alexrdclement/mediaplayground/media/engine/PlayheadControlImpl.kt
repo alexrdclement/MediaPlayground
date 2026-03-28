@@ -45,7 +45,7 @@ class PlayheadControlImpl @Inject constructor(
     }
 
     private fun currentPlayheadState(player: Player): PlayheadState = PlayheadState(
-        position = player.currentPosition.milliseconds,
+        positionSnapshot = player.currentPosition.milliseconds,
         capturedAt = TimeSource.Monotonic.markNow(),
     )
 }

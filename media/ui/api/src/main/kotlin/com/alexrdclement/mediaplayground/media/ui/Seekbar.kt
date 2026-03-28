@@ -1,12 +1,10 @@
 package com.alexrdclement.mediaplayground.media.ui
 
-import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -16,8 +14,6 @@ import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.palette.components.core.Slider
 import com.alexrdclement.palette.theme.PaletteTheme
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -25,37 +21,41 @@ import kotlin.time.TimeSource
 
 @Composable
 fun Seekbar(
-    transportState: TransportState,
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
+    transportState: TransportState,
     onSeek: (Duration) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val timelineDuration = timelineState?.duration
-    val isPlaying = transportState == TransportState.Playing
 
-    val currentPosition by produceState(
-        initialValue = playheadState?.position ?: Duration.ZERO,
-        key1 = playheadState,
-        key2 = isPlaying,
-    ) {
-        val state = playheadState ?: return@produceState
-        if (!isPlaying) {
-            value = state.position
-            return@produceState
-        }
-        while (isActive) {
-            withInfiniteAnimationFrameMillis {
-                value = state.position + state.capturedAt.elapsedNow()
-            }
-        }
-    }
+    val playheadPosition by rememberPlayheadPosition(
+        playheadState = playheadState,
+        transportState = transportState,
+    )
 
+    Seekbar(
+        currentPosition = playheadPosition,
+        seekCompletionKey = playheadState,
+        timelineDuration = timelineDuration,
+        onSeek = onSeek,
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun Seekbar(
+    currentPosition: Duration,
+    seekCompletionKey: Any?,
+    timelineDuration: Duration?,
+    onSeek: (Duration) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     var isDragging by remember { mutableStateOf(false) }
     var isSeeking by remember { mutableStateOf(false) }
     var seekValue by remember { mutableFloatStateOf(0f) }
 
-    LaunchedEffect(playheadState) {
+    LaunchedEffect(seekCompletionKey) {
         if (!isDragging) isSeeking = false
     }
 
@@ -87,17 +87,17 @@ fun Seekbar(
 
 @Preview(showBackground = true)
 @Composable
-private fun Preview() {
+private fun SeekbarPreview() {
     PaletteTheme {
         Seekbar(
-            transportState = TransportState.Playing,
             playheadState = PlayheadState(
-                position = 30.seconds,
+                positionSnapshot = 30.seconds,
                 capturedAt = TimeSource.Monotonic.markNow(),
             ),
             timelineState = TimelineState(
                 duration = 1.minutes,
             ),
+            transportState = TransportState.Stopped,
             onSeek = {},
         )
     }

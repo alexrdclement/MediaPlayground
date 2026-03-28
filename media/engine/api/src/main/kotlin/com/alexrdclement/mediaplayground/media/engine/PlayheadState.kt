@@ -4,6 +4,6 @@ import kotlin.time.Duration
 import kotlin.time.TimeMark
 
 data class PlayheadState(
-    val position: Duration,
+    val positionSnapshot: Duration,
     val capturedAt: TimeMark,
 )
