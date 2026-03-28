@@ -1,10 +1,10 @@
 package com.alexrdclement.mediaplayground.data.audio
 
-import com.alexrdclement.mediaplayground.model.audio.Album
-import com.alexrdclement.mediaplayground.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.model.audio.Source
-import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.mediaplayground.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.audio.Album
+import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.Source
+import com.alexrdclement.mediaplayground.media.model.audio.Track
+import com.alexrdclement.mediaplayground.media.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
 
 const val AudioRepositoryDefaultFetchLimit = 50

@@ -5,10 +5,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.model.audio.Album
-import com.alexrdclement.mediaplayground.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.mediaplayground.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.audio.Album
+import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.Track
+import com.alexrdclement.mediaplayground.media.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

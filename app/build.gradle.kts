@@ -26,6 +26,8 @@ dependencies {
     implementation(libs.uievent)
 
     implementation(projects.data.audio)
+    implementation(projects.media.import)
+    implementation(projects.media.model.audio)
     implementation(projects.feature.album)
     implementation(projects.feature.audioLibrary)
     implementation(projects.feature.camera)
@@ -34,6 +36,5 @@ dependencies {
     implementation(projects.feature.player)
     implementation(projects.media.engine.android)
     implementation(projects.media.ui.android)
-    implementation(projects.model.audio)
     implementation(projects.ui)
 }

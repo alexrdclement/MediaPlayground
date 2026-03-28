@@ -10,6 +10,6 @@ android {
 dependencies {
     api(libs.loggable)
 
-    api(projects.model.audio)
+    api(projects.media.model.audio)
     api(projects.model.result)
 }

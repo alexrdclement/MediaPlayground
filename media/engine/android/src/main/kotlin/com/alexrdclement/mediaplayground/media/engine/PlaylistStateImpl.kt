@@ -3,10 +3,10 @@ package com.alexrdclement.mediaplayground.media.engine
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import com.alexrdclement.mediaplayground.data.audio.AudioRepository
-import com.alexrdclement.mediaplayground.model.audio.MediaItem
-import com.alexrdclement.mediaplayground.model.audio.MediaItemId
-import com.alexrdclement.mediaplayground.model.audio.Source
-import com.alexrdclement.mediaplayground.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
+import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
+import com.alexrdclement.mediaplayground.media.model.audio.Source
+import com.alexrdclement.mediaplayground.media.model.audio.TrackId
 import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async

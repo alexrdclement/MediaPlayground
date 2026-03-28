@@ -10,7 +10,7 @@ import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
-import com.alexrdclement.mediaplayground.model.audio.Source
+import com.alexrdclement.mediaplayground.media.model.audio.Source
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalSimpleAlbum1
@@ -21,8 +21,8 @@ import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleAlbum1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleArtist1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleArtist2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack1
-import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleAlbum
-import com.alexrdclement.mediaplayground.model.audio.mapper.toSimpleTrack
+import com.alexrdclement.mediaplayground.media.model.audio.mapper.toSimpleAlbum
+import com.alexrdclement.mediaplayground.media.model.audio.mapper.toSimpleTrack
 import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest

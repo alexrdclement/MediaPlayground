@@ -12,7 +12,7 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionR
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeSimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrackDao
-import com.alexrdclement.mediaplayground.model.audio.Track
+import com.alexrdclement.mediaplayground.media.model.audio.Track
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 

@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.palette.theme)
 
     implementation(projects.data.audio)
+    implementation(projects.media.model.audio)
     implementation(projects.media.session.api)
-    implementation(projects.model.audio)
     implementation(projects.model.result)
 }

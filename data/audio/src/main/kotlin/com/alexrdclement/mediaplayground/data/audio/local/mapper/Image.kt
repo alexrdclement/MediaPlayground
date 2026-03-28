@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.data.audio.local.mapper
 
-import com.alexrdclement.mediaplayground.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.Image
 import kotlinx.io.files.Path
 import com.alexrdclement.mediaplayground.database.model.Image as ImageEntity
 

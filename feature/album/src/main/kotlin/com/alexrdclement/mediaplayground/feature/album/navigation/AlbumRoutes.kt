@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.album.navigation
 
-import com.alexrdclement.mediaplayground.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.palette.navigation.NavKey
 import com.alexrdclement.palette.navigation.PathSegment
 import com.alexrdclement.palette.navigation.toPathSegment

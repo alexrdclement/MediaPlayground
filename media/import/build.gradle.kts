@@ -10,7 +10,7 @@ android {
 dependencies {
     api(libs.kotlinx.io.core)
 
-    api(projects.model.audio)
+    api(projects.media.model.audio)
     api(projects.model.result)
 
     implementation(libs.androidx.documentfile)

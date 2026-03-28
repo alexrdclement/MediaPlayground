@@ -11,7 +11,7 @@ android {
 dependencies {
     api(libs.kotlinx.io.core)
 
-    api(projects.model.audio)
+    api(projects.media.model.audio)
     api(projects.model.result)
 
     implementation(libs.androidx.activity)
@@ -28,5 +28,5 @@ dependencies {
 
     testImplementation(projects.data.audio.testFixtures)
     testImplementation(projects.database.testFixtures)
-    testImplementation(projects.model.audio.testFixtures)
+    testImplementation(projects.media.model.audio.testFixtures)
 }

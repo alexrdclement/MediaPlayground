@@ -3,8 +3,8 @@ package com.alexrdclement.mediaplayground.media.engine.mapper
 import android.net.Uri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import com.alexrdclement.mediaplayground.model.audio.Track
-import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
+import com.alexrdclement.mediaplayground.media.model.audio.Track
+import com.alexrdclement.mediaplayground.media.model.audio.largeImageUrl
 
 fun Track.toMediaItem(): MediaItem {
     return MediaItem.Builder()

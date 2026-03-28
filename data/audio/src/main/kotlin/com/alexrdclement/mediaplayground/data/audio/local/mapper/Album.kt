@@ -1,13 +1,13 @@
 package com.alexrdclement.mediaplayground.data.audio.local.mapper
 
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
-import com.alexrdclement.mediaplayground.model.audio.Album
-import com.alexrdclement.mediaplayground.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.model.audio.Image
-import com.alexrdclement.mediaplayground.model.audio.SimpleAlbum
-import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.model.audio.Source
+import com.alexrdclement.mediaplayground.media.model.audio.Album
+import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
+import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.audio.SimpleTrack
+import com.alexrdclement.mediaplayground.media.model.audio.Source
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.io.files.Path

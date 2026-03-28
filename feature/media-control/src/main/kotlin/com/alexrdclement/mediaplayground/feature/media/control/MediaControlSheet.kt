@@ -24,9 +24,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.model.audio.MediaItem
-import com.alexrdclement.mediaplayground.model.audio.largeImageUrl
-import com.alexrdclement.mediaplayground.model.audio.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
+import com.alexrdclement.mediaplayground.media.model.audio.largeImageUrl
+import com.alexrdclement.mediaplayground.media.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.palette.components.util.calculateHorizontalPaddingValues

@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.ui.model
 
-import com.alexrdclement.mediaplayground.model.audio.SimpleTrack
+import com.alexrdclement.mediaplayground.media.model.audio.SimpleTrack
 
 data class TrackUi(
     val track: SimpleTrack,

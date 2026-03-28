@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.album
 
-import com.alexrdclement.mediaplayground.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 
 sealed class AlbumUiState {

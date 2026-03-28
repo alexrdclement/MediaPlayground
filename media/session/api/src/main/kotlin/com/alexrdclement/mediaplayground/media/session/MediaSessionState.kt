@@ -4,7 +4,7 @@ import com.alexrdclement.mediaplayground.media.engine.MediaEngineState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.engine.loadedMediaItem
-import com.alexrdclement.mediaplayground.model.audio.MediaItem
+import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
