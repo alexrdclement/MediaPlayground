@@ -1,7 +1,9 @@
 package com.alexrdclement.mediaplayground.media.session
 
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineState
+import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistState
+import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.engine.loadedMediaItem
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
@@ -24,3 +26,9 @@ val MediaSessionState.loadedMediaItem: Flow<MediaItem?>
 
 val MediaSessionState.isPlaying: Flow<Boolean>
     get() = transportState.map { it == TransportState.Playing }
+
+val MediaSessionState.playheadState: Flow<PlayheadState>
+    get() = mediaEngineState.flatMapLatest { it.getPlayheadState() }
+
+val MediaSessionState.timelineState: Flow<TimelineState>
+    get() = mediaEngineState.flatMapLatest { it.getTimelineState() }

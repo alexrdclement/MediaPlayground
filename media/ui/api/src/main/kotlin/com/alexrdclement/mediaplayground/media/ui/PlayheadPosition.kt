@@ -1,0 +1,31 @@
+package com.alexrdclement.mediaplayground.media.ui
+
+import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.produceState
+import com.alexrdclement.mediaplayground.media.engine.PlayheadState
+import com.alexrdclement.mediaplayground.media.engine.TransportState
+import com.alexrdclement.mediaplayground.media.engine.isPlaying
+import kotlinx.coroutines.isActive
+import kotlin.time.Duration
+
+@Composable
+fun rememberPlayheadPosition(
+    playheadState: PlayheadState?,
+    transportState: TransportState,
+) = produceState(
+    initialValue = playheadState?.positionSnapshot ?: Duration.ZERO,
+    key1 = playheadState,
+    key2 = transportState.isPlaying,
+) {
+    val state = playheadState ?: return@produceState
+    if (!transportState.isPlaying) {
+        value = state.positionSnapshot
+        return@produceState
+    }
+    while (isActive) {
+        withInfiniteAnimationFrameMillis {
+            value = state.positionSnapshot + state.capturedAt.elapsedNow()
+        }
+    }
+}

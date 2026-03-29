@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.map
 interface MediaEngineState {
     val playlistState: PlaylistState
     fun getTransportState(): Flow<TransportState>
+    fun getPlayheadState(): Flow<PlayheadState>
+    fun getTimelineState(): Flow<TimelineState>
 }
 
 val MediaEngineState.isPlaying: Flow<Boolean>

@@ -2,17 +2,22 @@ package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alexrdclement.logging.Logger
+import com.alexrdclement.logging.error
+import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
+import com.alexrdclement.mediaplayground.media.engine.TimelineState
+import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.engine.seekIfNecessary
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
-import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
+import com.alexrdclement.mediaplayground.media.session.playheadState
 import com.alexrdclement.mediaplayground.media.session.playlistState
+import com.alexrdclement.mediaplayground.media.session.timelineState
+import com.alexrdclement.mediaplayground.media.session.transportState
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.logging.Logger
-import com.alexrdclement.logging.error
 import dev.zacsweers.metro.Inject
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -21,8 +26,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.time.Duration
 
 class MediaControlSheetViewModel @Inject constructor(
     private val logger: Logger,
@@ -35,8 +42,18 @@ class MediaControlSheetViewModel @Inject constructor(
         private const val onAlbumPlayPauseClickTag = "$tag#onAlbumPlayPauseClick"
     }
 
-    val isPlaying = mediaSessionState.isPlaying
+    val transportState = mediaSessionState.transportState
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TransportState.Stopped)
+
+    private val isPlaying = transportState
+        .map { it == TransportState.Playing }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
+    val playheadState: StateFlow<PlayheadState?> = mediaSessionState.playheadState
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    val timelineState = mediaSessionState.timelineState
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TimelineState(duration = null))
 
     val loadedMediaItem = mediaSessionState.loadedMediaItem
         .stateIn(
@@ -69,6 +86,12 @@ class MediaControlSheetViewModel @Inject constructor(
             with(mediaSessionControl.getMediaEngineControl()) {
                 transportControl.playPause()
             }
+        }
+    }
+
+    fun onSeek(position: Duration) {
+        viewModelScope.launch {
+            mediaSessionControl.getMediaEngineControl().playheadControl.seek(position)
         }
     }
 
