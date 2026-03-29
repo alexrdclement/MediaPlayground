@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -37,17 +38,19 @@ import com.alexrdclement.palette.theme.PaletteTheme
 @Composable
 fun AlbumScreen(
     albumId: AlbumId,
-    viewModel: AlbumViewModel = assistedMetroViewModel<AlbumViewModel, AlbumViewModel.Factory> {
-        create(albumId.value)
-    },
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
-    AlbumScreen(
-        uiState = uiState,
-        onAlbumPlayPauseClick = viewModel::onAlbumPlayPauseClick,
-        onTrackClick = viewModel::onTrackClick,
-        onTrackPlayPauseClick = viewModel::onTrackPlayPauseClick,
-    )
+    key(albumId.value) {
+        val viewModel: AlbumViewModel = assistedMetroViewModel<AlbumViewModel, AlbumViewModel.Factory> {
+            create(albumId.value)
+        }
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
+        AlbumScreen(
+            uiState = uiState,
+            onAlbumPlayPauseClick = viewModel::onAlbumPlayPauseClick,
+            onTrackClick = viewModel::onTrackClick,
+            onTrackPlayPauseClick = viewModel::onTrackPlayPauseClick,
+        )
+    }
 }
 
 @Composable
