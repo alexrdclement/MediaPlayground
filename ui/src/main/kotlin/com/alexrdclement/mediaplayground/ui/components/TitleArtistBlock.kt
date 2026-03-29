@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.ui.components
 
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -21,6 +22,8 @@ fun TitleArtistBlock(
     artistMaxLines: Int = 1,
     titleTextAlign: TextAlign = TextAlign.Center,
     artistTextAlign: TextAlign = TextAlign.Center,
+    onTitleClick: (() -> Unit)? = null,
+    onArtistsClick: (() -> Unit)? = null,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -34,6 +37,7 @@ fun TitleArtistBlock(
             ),
             maxLines = titleMaxLines,
             modifier = Modifier
+                .then(if (onTitleClick != null) Modifier.clickable { onTitleClick() } else Modifier)
                 .then(
                     if (titleMaxLines > 1) {
                         Modifier
@@ -50,6 +54,7 @@ fun TitleArtistBlock(
                 ),
                 maxLines = artistMaxLines,
                 modifier = Modifier
+                    .then(if (onArtistsClick != null) Modifier.clickable { onArtistsClick() } else Modifier)
                     .then(
                         if (artistMaxLines > 1) {
                             Modifier

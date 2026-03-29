@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -38,19 +37,25 @@ import com.alexrdclement.palette.theme.PaletteTheme
 @Composable
 fun AlbumScreen(
     albumId: AlbumId,
+    onNavigateToAlbumEditor: (AlbumId) -> Unit = {},
+    onNavigateToArtistEditor: (artistId: String) -> Unit = {},
+    onNavigateToTrackEditor: (trackId: String) -> Unit = {},
 ) {
-    key(albumId.value) {
-        val viewModel: AlbumViewModel = assistedMetroViewModel<AlbumViewModel, AlbumViewModel.Factory> {
-            create(albumId.value)
-        }
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
-        AlbumScreen(
-            uiState = uiState,
-            onAlbumPlayPauseClick = viewModel::onAlbumPlayPauseClick,
-            onTrackClick = viewModel::onTrackClick,
-            onTrackPlayPauseClick = viewModel::onTrackPlayPauseClick,
-        )
+    val viewModel: AlbumViewModel = assistedMetroViewModel<AlbumViewModel, AlbumViewModel.Factory>(
+        key = albumId.value,
+    ) {
+        create(albumId.value)
     }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
+    AlbumScreen(
+        uiState = uiState,
+        onAlbumPlayPauseClick = viewModel::onAlbumPlayPauseClick,
+        onTrackClick = viewModel::onTrackClick,
+        onTrackPlayPauseClick = viewModel::onTrackPlayPauseClick,
+        onNavigateToAlbumEditor = { onNavigateToAlbumEditor(albumId) },
+        onNavigateToArtistEditor = onNavigateToArtistEditor,
+        onNavigateToTrackEditor = onNavigateToTrackEditor,
+    )
 }
 
 @Composable
@@ -59,6 +64,9 @@ fun AlbumScreen(
     onAlbumPlayPauseClick: () -> Unit,
     onTrackClick: (TrackUi) -> Unit,
     onTrackPlayPauseClick: (TrackUi) -> Unit,
+    onNavigateToAlbumEditor: () -> Unit = {},
+    onNavigateToArtistEditor: (artistId: String) -> Unit = {},
+    onNavigateToTrackEditor: (trackId: String) -> Unit = {},
 ) {
     Surface {
         when (uiState) {
@@ -68,6 +76,9 @@ fun AlbumScreen(
                 onAlbumPlayPauseClick = onAlbumPlayPauseClick,
                 onTrackClick = onTrackClick,
                 onTrackPlayPauseClick = onTrackPlayPauseClick,
+                onNavigateToAlbumEditor = onNavigateToAlbumEditor,
+                onNavigateToArtistEditor = onNavigateToArtistEditor,
+                onNavigateToTrackEditor = onNavigateToTrackEditor,
             )
         }
     }
@@ -79,6 +90,9 @@ private fun LoadedContent(
     onAlbumPlayPauseClick: () -> Unit,
     onTrackClick: (TrackUi) -> Unit,
     onTrackPlayPauseClick: (TrackUi) -> Unit,
+    onNavigateToAlbumEditor: () -> Unit = {},
+    onNavigateToArtistEditor: (artistId: String) -> Unit = {},
+    onNavigateToTrackEditor: (trackId: String) -> Unit = {},
 ) {
     BoxWithConstraints {
         LazyColumn(
@@ -105,6 +119,10 @@ private fun LoadedContent(
                 TitleArtistBlock(
                     title = state.title,
                     artists = artistNamesOrDefault(artists = state.artists),
+                    onTitleClick = onNavigateToAlbumEditor,
+                    onArtistsClick = state.artists.firstOrNull()?.let { artist ->
+                        { onNavigateToArtistEditor(artist.id) }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = PaletteTheme.spacing.small)
@@ -131,6 +149,7 @@ private fun LoadedContent(
                     isPlaying = trackUi.isPlaying,
                     onClick = { onTrackClick(trackUi) },
                     onPlayPauseClick = { onTrackPlayPauseClick(trackUi) },
+                    onLongClick = { onNavigateToTrackEditor(trackUi.track.id.value) },
                 )
             }
         }

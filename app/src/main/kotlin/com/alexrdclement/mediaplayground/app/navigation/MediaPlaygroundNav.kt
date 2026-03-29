@@ -13,6 +13,7 @@ import com.alexrdclement.mediaplayground.app.catalog.MainCatalogItem
 import com.alexrdclement.mediaplayground.app.catalog.navigation.MainCatalogGraph
 import com.alexrdclement.mediaplayground.app.catalog.navigation.mainCatalogEntryProvider
 import com.alexrdclement.mediaplayground.app.catalog.navigation.mainCatalogNavGraph
+import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumMetadataRoute
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumRoute
 import com.alexrdclement.mediaplayground.feature.album.navigation.albumEntryProvider
 import com.alexrdclement.mediaplayground.feature.album.navigation.albumNavGraph
@@ -26,6 +27,14 @@ import com.alexrdclement.mediaplayground.feature.error.navigation.ErrorGraph
 import com.alexrdclement.mediaplayground.feature.error.navigation.errorEntryProvider
 import com.alexrdclement.mediaplayground.feature.error.navigation.errorNavGraph
 import com.alexrdclement.mediaplayground.feature.media.control.MediaControlSheet
+import com.alexrdclement.mediaplayground.feature.artist.navigation.ArtistMetadataRoute
+import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadataEntryProvider
+import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadataNavGraph
+import com.alexrdclement.mediaplayground.feature.image.navigation.ImageMetadataRoute
+import com.alexrdclement.mediaplayground.feature.image.navigation.imageMetadataEntryProvider
+import com.alexrdclement.mediaplayground.feature.track.navigation.TrackMetadataRoute
+import com.alexrdclement.mediaplayground.feature.track.navigation.trackMetadataEntryProvider
+import com.alexrdclement.mediaplayground.feature.track.navigation.trackMetadataNavGraph
 import com.alexrdclement.mediaplayground.feature.player.navigation.PlayerGraph
 import com.alexrdclement.mediaplayground.feature.player.navigation.playerEntryProvider
 import com.alexrdclement.mediaplayground.feature.player.navigation.playerNavGraph
@@ -56,6 +65,8 @@ val MediaPlaygroundNavGraph = navGraph(
     mainCatalogNavGraph()
     audioLibraryNavGraph()
     albumNavGraph()
+    trackMetadataNavGraph()
+    artistMetadataNavGraph()
     playerNavGraph()
     cameraNavGraph()
     errorNavGraph()
@@ -110,6 +121,12 @@ fun MediaPlaygroundNav(
 
     MediaControlSheet(
         mediaControlSheetState = mediaControlSheetState,
+        onItemLongClick = { item ->
+            navController.navigate(TrackMetadataRoute(trackIdValue = item.mediaItem.id.value))
+            coroutineScope.launch {
+                mediaControlSheetState.partialExpand()
+            }
+        },
     )
 }
 
@@ -138,8 +155,41 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
         onNavigateToAlbum = { album ->
             navController.navigate(AlbumRoute(albumIdValue = album.id.value))
         },
+        onNavigateToTrackMetadata = { trackId ->
+            navController.navigate(TrackMetadataRoute(trackIdValue = trackId.value))
+        },
+        onNavigateToAlbumMetadata = { albumId ->
+            navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
+        },
     )
-    albumEntryProvider(navController)
+    albumEntryProvider(
+        navController = navController,
+        onNavigateToAlbumEditor = { albumId ->
+            navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
+        },
+        onNavigateToArtistEditor = { artistId ->
+            navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
+        },
+        onNavigateToTrackEditor = { trackId ->
+            navController.navigate(TrackMetadataRoute(trackIdValue = trackId))
+        },
+        onNavigateToArtistMetadata = { artistId ->
+            navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
+        },
+        onNavigateToImageMetadata = { albumId, imageIndex ->
+            navController.navigate(
+                ImageMetadataRoute(albumIdValue = albumId.value, imageIndex = imageIndex)
+            )
+        },
+    )
+    trackMetadataEntryProvider(
+        navController = navController,
+        onNavigateToArtistMetadata = { artistId ->
+            navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
+        },
+    )
+    artistMetadataEntryProvider(navController)
+    imageMetadataEntryProvider(navController)
     playerEntryProvider(navController)
     cameraEntryProvider(navController)
     errorEntryProvider(navController)

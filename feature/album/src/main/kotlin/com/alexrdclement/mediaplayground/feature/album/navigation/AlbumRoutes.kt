@@ -18,3 +18,12 @@ data class AlbumRoute(
 
     val albumId: AlbumId get() = AlbumId(albumIdValue)
 }
+
+@Serializable
+@SerialName("album-metadata")
+data class AlbumMetadataRoute(
+    val albumIdValue: String,
+) : AlbumNavRoute {
+    override val pathSegment: PathSegment = albumIdValue.toPathSegment()
+    val albumId: AlbumId get() = AlbumId(albumIdValue)
+}

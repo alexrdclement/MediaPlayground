@@ -11,6 +11,7 @@ android {
 dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.uievent)
     implementation(libs.logger.api)
     implementation(libs.palette.components)
     implementation(libs.palette.navigation)

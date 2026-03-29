@@ -42,6 +42,7 @@ fun MediaControlSheetContent(
     onSeek: (Duration) -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
+    onItemLongClick: (MediaItemUi) -> Unit = {},
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -93,6 +94,7 @@ fun MediaControlSheetContent(
                 item = item,
                 onClick = { onItemClick(item) },
                 onPlayPauseClick = { onItemPlayPauseClick(item) },
+                onLongClick = { onItemLongClick(item) },
             )
         }
     }

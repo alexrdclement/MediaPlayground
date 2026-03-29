@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +38,7 @@ fun PlaylistItem(
     item: MediaItemUi,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
+    onLongClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     PlaylistItem(
@@ -47,6 +48,7 @@ fun PlaylistItem(
         isPlaying = item.isPlaying,
         onClick = onClick,
         onPlayPauseClick = onPlayPauseClick,
+        onLongClick = onLongClick,
         modifier = modifier,
     )
 }
@@ -59,6 +61,7 @@ fun PlaylistItem(
     isPlaying: Boolean,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
+    onLongClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -67,7 +70,7 @@ fun PlaylistItem(
         modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .clickable(enabled = isPlayable) { onClick() }
+            .combinedClickable(enabled = isPlayable, onClick = onClick, onLongClick = onLongClick)
             .padding(vertical = PaletteTheme.spacing.small)
             .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
     ) {
