@@ -40,6 +40,11 @@ class PlayheadControlImpl @Inject constructor(
         awaitClose { mediaController.removeListener(listener) }
     }
 
+    override suspend fun getPlayheadPosition(): Duration {
+        val currentPosition = mediaControllerHolder.getMediaController().currentPosition
+        return currentPosition.milliseconds
+    }
+
     override suspend fun seek(position: Duration) {
         mediaControllerHolder.getMediaController().seekTo(position.inWholeMilliseconds)
     }

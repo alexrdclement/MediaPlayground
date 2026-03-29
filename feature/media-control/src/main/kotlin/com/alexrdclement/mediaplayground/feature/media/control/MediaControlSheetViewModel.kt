@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 class MediaControlSheetViewModel @Inject constructor(
     private val logger: Logger,
@@ -81,10 +82,41 @@ class MediaControlSheetViewModel @Inject constructor(
             persistentListOf(),
         )
 
+    val loadedMediaItemIndex: Int?
+        get() {
+            return playlist.value
+                .indexOfFirst { it.mediaItem.id == loadedMediaItem.value?.id }
+                .takeIf { it >= 0 }
+        }
+
     fun onPlayPauseClick() {
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
                 transportControl.playPause()
+            }
+        }
+    }
+
+    fun onSkipBackClick() {
+        viewModelScope.launch {
+            with(mediaSessionControl.getMediaEngineControl()) {
+                val loadedMediaItemIndex = loadedMediaItemIndex ?: return@launch
+                val playheadPosition = playheadControl.getPlayheadPosition()
+                when {
+                    loadedMediaItemIndex == 0 -> playheadControl.seek(Duration.ZERO)
+                    playheadPosition > 5.seconds -> playheadControl.seek(Duration.ZERO)
+                    else -> playlistControl.seekIfNecessary(loadedMediaItemIndex - 1)
+                }
+            }
+        }
+    }
+
+    fun onSkipClick() {
+        viewModelScope.launch {
+            with(mediaSessionControl.getMediaEngineControl()) {
+                val loadedMediaItemIndex = loadedMediaItemIndex ?: return@launch
+                val nextMediaItemIndex = (loadedMediaItemIndex + 1) % playlist.value.size
+                playlistControl.seekIfNecessary(nextMediaItemIndex)
             }
         }
     }

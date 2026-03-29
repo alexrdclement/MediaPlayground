@@ -5,5 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlayheadControl {
     fun getPlayheadState(): Flow<PlayheadState>
+    suspend fun getPlayheadPosition(): Duration
     suspend fun seek(position: Duration)
 }

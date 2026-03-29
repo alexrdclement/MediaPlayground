@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -18,11 +17,11 @@ import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbar
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
+import com.alexrdclement.mediaplayground.ui.components.TransportControlBar
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.components.media.model.Artist
 import com.alexrdclement.palette.components.media.model.MediaItem
 import com.alexrdclement.palette.theme.PaletteTheme
@@ -38,13 +37,14 @@ fun MediaControlSheetContent(
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
     onPlayPauseClick: () -> Unit,
+    onSkipClick: () -> Unit,
+    onSkipBackClick: () -> Unit,
     onSeek: (Duration) -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
-    val isPlaying = transportState == TransportState.Playing
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,16 +58,20 @@ fun MediaControlSheetContent(
                 artists = artistNamesOrDefault(artists = loadedMediaItem.artists),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = PaletteTheme.spacing.small)
+                    .padding(top = PaletteTheme.spacing.small)
             )
         }
         item {
-            PlayPauseButton(
-                isPlaying = isPlaying,
-                onClick = onPlayPauseClick,
+            TransportControlBar(
+                transportState = transportState,
+                onPlayPauseClick = onPlayPauseClick,
+                onSkipClick = onSkipClick,
+                onSkipBackClick = onSkipBackClick,
                 modifier = Modifier
-                    .size(72.dp)
-                    .padding(vertical = PaletteTheme.spacing.small)
+                    .padding(
+                        top = PaletteTheme.spacing.medium,
+                        bottom = PaletteTheme.spacing.small,
+                    )
             )
         }
         item {
@@ -78,7 +82,7 @@ fun MediaControlSheetContent(
                 onSeek = onSeek,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = PaletteTheme.spacing.medium)
+                    .padding(vertical = PaletteTheme.spacing.small)
             )
         }
         items(
@@ -121,6 +125,8 @@ private fun Preview() {
             playheadState = null,
             timelineState = null,
             onPlayPauseClick = {},
+            onSkipClick = {},
+            onSkipBackClick = {},
             onSeek = {},
             onItemClick = {},
             onItemPlayPauseClick = {},
