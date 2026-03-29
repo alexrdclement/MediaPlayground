@@ -18,7 +18,8 @@ dependencies {
     implementation(libs.palette.navigation)
     implementation(libs.palette.theme)
 
-    implementation(projects.data.audio)
+    implementation(projects.data.album)
+    implementation(projects.data.track)
     implementation(projects.media.model.audio)
     implementation(projects.media.session.api)
 
@@ -26,6 +27,6 @@ dependencies {
     testImplementation(libs.maindispatcher.rule)
     testImplementation(libs.turbine)
 
-    testImplementation(projects.data.audio.testFixtures)
+    testImplementation(projects.data.track.testFixtures)
     testImplementation(projects.media.session.testFixtures)
 }

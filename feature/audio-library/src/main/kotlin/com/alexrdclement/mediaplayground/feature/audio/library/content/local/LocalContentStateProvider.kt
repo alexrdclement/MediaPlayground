@@ -3,7 +3,8 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
+import com.alexrdclement.mediaplayground.data.album.AlbumRepository
+import com.alexrdclement.mediaplayground.data.track.local.LocalTrackRepository
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import dev.zacsweers.metro.Inject
 
 class LocalContentStateProvider @Inject constructor(
-    private val localAudioRepository: LocalAudioRepository,
+    private val localTrackRepository: LocalTrackRepository,
+    private val albumRepository: AlbumRepository,
     private val mediaSessionState: MediaSessionState,
 ) {
 
@@ -26,8 +28,8 @@ class LocalContentStateProvider @Inject constructor(
         val tracksFlow = tracksFlow(coroutineScope, pagingConfig)
         val albumsFlow = albumsFlow(coroutineScope, pagingConfig)
         return combine(
-            localAudioRepository.getTrackCountFlow(),
-            localAudioRepository.getAlbumCountFlow(),
+            localTrackRepository.getTrackCountFlow(),
+            albumRepository.getAlbumCountFlow(),
         ) { trackCount, albumCount ->
             if (trackCount == 0 && albumCount == 0) {
                 LocalContentState.Empty
@@ -44,7 +46,7 @@ class LocalContentStateProvider @Inject constructor(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ) = combine(
-        localAudioRepository.getTrackPagingData(pagingConfig).cachedIn(coroutineScope),
+        localTrackRepository.getTrackPagingData(pagingConfig).cachedIn(coroutineScope),
         mediaSessionState.loadedMediaItem,
         mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->
@@ -61,7 +63,7 @@ class LocalContentStateProvider @Inject constructor(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ) = combine(
-        localAudioRepository.getAlbumPagingData(pagingConfig).cachedIn(coroutineScope),
+        albumRepository.getAlbumPagingData(pagingConfig).cachedIn(coroutineScope),
         mediaSessionState.loadedMediaItem,
         mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->

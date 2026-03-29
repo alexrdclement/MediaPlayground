@@ -25,7 +25,11 @@ dependencies {
     implementation(libs.uievent)
 
     implementation(projects.database)
-    implementation(projects.data.audio)
+    implementation(projects.data.album)
+    implementation(projects.data.artist)
+    implementation(projects.data.disk)
+    implementation(projects.data.image)
+    implementation(projects.data.track)
     implementation(projects.media.import)
     implementation(projects.media.model.audio)
     implementation(projects.feature.album)

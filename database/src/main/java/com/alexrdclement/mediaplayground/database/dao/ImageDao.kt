@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.alexrdclement.mediaplayground.database.model.Image
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImageDao {
@@ -13,6 +14,9 @@ interface ImageDao {
 
     @Query("SELECT * FROM images WHERE album_id = :albumId")
     suspend fun getImagesForAlbum(albumId: String): List<Image>
+
+    @Query("SELECT * FROM images WHERE album_id = :albumId")
+    fun getImagesForAlbumFlow(albumId: String): Flow<List<Image>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg image: Image)

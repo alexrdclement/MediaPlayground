@@ -26,7 +26,7 @@ class FakeSimpleAlbumDao(
                         AlbumArtistCrossRef(album.id, artist.id)
                     )
                 },
-                images = imageDao.images.filter { it.albumId == album.id },
+                images = imageDao.images.value.filter { it.albumId == album.id },
             )
         }
     }

@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.feature.album.navigation
 
 import androidx.navigation3.runtime.EntryProviderScope
 import com.alexrdclement.mediaplayground.feature.album.AlbumScreen
+import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.navigation.NavGraphBuilder
 import com.alexrdclement.palette.navigation.NavKey

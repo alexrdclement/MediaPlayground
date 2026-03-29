@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CompleteAlbumDao {
@@ -15,4 +16,8 @@ interface CompleteAlbumDao {
     @Transaction
     @Query("SELECT * FROM albums WHERE id = :id")
     suspend fun getAlbum(id: String): CompleteAlbum?
+
+    @Transaction
+    @Query("SELECT * FROM albums WHERE id = :id")
+    fun getAlbumFlow(id: String): Flow<CompleteAlbum?>
 }

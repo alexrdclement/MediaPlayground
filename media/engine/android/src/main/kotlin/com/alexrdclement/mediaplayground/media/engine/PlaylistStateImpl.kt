@@ -2,12 +2,10 @@ package com.alexrdclement.mediaplayground.media.engine
 
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
-import com.alexrdclement.mediaplayground.data.audio.AudioRepository
+import com.alexrdclement.mediaplayground.data.track.TrackRepository
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
-import com.alexrdclement.mediaplayground.media.model.audio.Source
 import com.alexrdclement.mediaplayground.media.model.audio.TrackId
-import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -20,7 +18,7 @@ import dev.zacsweers.metro.Inject
 
 class PlaylistStateImpl @Inject constructor(
     private val mediaControllerHolder: MediaControllerHolder,
-    private val audioRepository: AudioRepository,
+    private val trackRepository: TrackRepository,
 ): PlaylistState {
 
     override fun getLoadedMediaItemId(): Flow<MediaItemId?> {
@@ -106,10 +104,6 @@ class PlaylistStateImpl @Inject constructor(
     }
 
     private suspend fun getMediaItem(mediaId: String): MediaItem? {
-        return audioRepository
-            .getTrack(id = TrackId(mediaId), source = Source.Local)
-            .guardSuccess {
-                return null
-            }
+        return trackRepository.getTrack(id = TrackId(mediaId))
     }
 }
