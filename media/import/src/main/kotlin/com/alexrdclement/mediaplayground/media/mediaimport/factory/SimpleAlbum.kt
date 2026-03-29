@@ -1,9 +1,11 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
+import com.alexrdclement.mediaplayground.media.mediaimport.imageExtension
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toImage
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.audio.Source
@@ -16,7 +18,7 @@ private const val UnknownAlbumName = "Unknown album"
 internal suspend fun makeSimpleAlbum(
     mediaMetadata: MediaMetadata,
     simpleArtist: SimpleArtist,
-    getImageFilePath: (AlbumId) -> Path,
+    getImageFilePath: (ImageId, extension: String) -> Path,
     getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
     source: Source,
 ): SimpleAlbum {
@@ -28,7 +30,9 @@ internal suspend fun makeSimpleAlbum(
     }
 
     val albumId = AlbumId(UUID.randomUUID().toString())
-    val image = mediaMetadata.toImage(getImageFilePath(albumId))
+    val imageId = ImageId(UUID.randomUUID().toString())
+    val extension = mediaMetadata.embeddedPicture?.imageExtension() ?: "jpg"
+    val image = mediaMetadata.toImage(id = imageId, imageFilePath = getImageFilePath(imageId, extension))
     return mediaMetadata.toSimpleAlbum(
         id = albumId,
         title = albumName,

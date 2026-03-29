@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.database.di
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
+import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
@@ -46,5 +47,10 @@ interface DaoModule {
         fun provideSimpleAlbumDao(
             database: MediaPlaygroundDatabase,
         ): SimpleAlbumDao = database.simpleAlbumDao()
+
+        @Provides
+        fun provideAlbumImageDao(
+            database: MediaPlaygroundDatabase,
+        ): AlbumImageDao = database.albumImageDao()
     }
 }

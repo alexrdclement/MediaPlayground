@@ -12,11 +12,13 @@ import com.alexrdclement.mediaplayground.data.track.local.mapper.toTrackEntity
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
+import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ImageDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
+import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.media.model.audio.Track
 import com.alexrdclement.mediaplayground.media.model.audio.TrackId
@@ -30,6 +32,7 @@ class LocalTrackDataStore @Inject constructor(
     private val artistDao: ArtistDao,
     private val albumDao: AlbumDao,
     private val imageDao: ImageDao,
+    private val albumImageDao: AlbumImageDao,
     private val trackDao: TrackDao,
     private val albumArtistDao: AlbumArtistDao,
     private val completeTrackDao: CompleteTrackDao,
@@ -48,9 +51,13 @@ class LocalTrackDataStore @Inject constructor(
             }
             albumArtistDao.insert(*albumArtistCrossRef.toTypedArray())
 
-            val images = track.simpleAlbum.images
-                .map { it.toImageEntity(albumId = track.simpleAlbum.id) }
+            val images = track.simpleAlbum.images.map { it.toImageEntity() }
             imageDao.insert(*images.toTypedArray())
+
+            val albumImageCrossRefs = track.simpleAlbum.images.map { image ->
+                AlbumImageCrossRef(albumId = track.simpleAlbum.id.value, imageId = image.id.value)
+            }
+            albumImageDao.insert(*albumImageCrossRefs.toTypedArray())
 
             trackDao.insert(track.toTrackEntity())
         }
@@ -73,8 +80,9 @@ class LocalTrackDataStore @Inject constructor(
                 }
             }
 
+            albumImageDao.deleteForAlbum(track.simpleAlbum.id.value)
             for (image in track.images) {
-                imageDao.deleteImagesForAlbum(track.simpleAlbum.id.value)
+                imageDao.delete(image.id.value)
             }
 
             albumDao.delete(album.id)
@@ -92,7 +100,10 @@ class LocalTrackDataStore @Inject constructor(
             completeTrackDao.getTracksPagingSource()
         }.flow.map { pagingData ->
             pagingData.map {
-                it.toTrack(albumDir = pathProvider.getAlbumDir(it.album.id))
+                it.toTrack(
+                    albumDir = pathProvider.getAlbumDir(it.album.id),
+                    imagesDir = pathProvider.getImagesDir(),
+                )
             }
         }
     }
@@ -101,12 +112,16 @@ class LocalTrackDataStore @Inject constructor(
         val completeTrack = completeTrackDao.getTrack(trackId.value)
         return completeTrack?.toTrack(
             albumDir = pathProvider.getAlbumDir(completeTrack.album.id),
+            imagesDir = pathProvider.getImagesDir(),
         )
     }
 
     fun getTrackFlow(trackId: TrackId): Flow<Track?> {
         return completeTrackDao.getTrackFlow(trackId.value).map { completeTrack ->
-            completeTrack?.toTrack(albumDir = pathProvider.getAlbumDir(completeTrack.album.id))
+            completeTrack?.toTrack(
+                albumDir = pathProvider.getAlbumDir(completeTrack.album.id),
+                imagesDir = pathProvider.getImagesDir(),
+            )
         }
     }
 

@@ -32,6 +32,7 @@ import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadat
 import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadataNavGraph
 import com.alexrdclement.mediaplayground.feature.image.navigation.ImageMetadataRoute
 import com.alexrdclement.mediaplayground.feature.image.navigation.imageMetadataEntryProvider
+import com.alexrdclement.mediaplayground.feature.image.navigation.imageMetadataNavGraph
 import com.alexrdclement.mediaplayground.feature.track.navigation.TrackMetadataRoute
 import com.alexrdclement.mediaplayground.feature.track.navigation.trackMetadataEntryProvider
 import com.alexrdclement.mediaplayground.feature.track.navigation.trackMetadataNavGraph
@@ -67,6 +68,7 @@ val MediaPlaygroundNavGraph = navGraph(
     albumNavGraph()
     trackMetadataNavGraph()
     artistMetadataNavGraph()
+    imageMetadataNavGraph()
     playerNavGraph()
     cameraNavGraph()
     errorNavGraph()
@@ -176,10 +178,8 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
         onNavigateToArtistMetadata = { artistId ->
             navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
         },
-        onNavigateToImageMetadata = { albumId, imageIndex ->
-            navController.navigate(
-                ImageMetadataRoute(albumIdValue = albumId.value, imageIndex = imageIndex)
-            )
+        onNavigateToImageMetadata = { imageId ->
+            navController.navigate(ImageMetadataRoute(imageIdValue = imageId.value))
         },
     )
     trackMetadataEntryProvider(

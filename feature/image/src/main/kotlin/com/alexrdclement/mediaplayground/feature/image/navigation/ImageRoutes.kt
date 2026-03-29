@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.image.navigation
 
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import com.alexrdclement.palette.navigation.NavKey
 import com.alexrdclement.palette.navigation.PathSegment
 import com.alexrdclement.palette.navigation.toPathSegment
@@ -12,9 +12,8 @@ sealed interface ImageNavRoute : NavKey
 @Serializable
 @SerialName("image-metadata")
 data class ImageMetadataRoute(
-    val albumIdValue: String,
-    val imageIndex: Int,
+    val imageIdValue: String,
 ) : ImageNavRoute {
-    override val pathSegment: PathSegment = "$albumIdValue-img$imageIndex".toPathSegment()
-    val albumId: AlbumId get() = AlbumId(albumIdValue)
+    override val pathSegment: PathSegment = imageIdValue.toPathSegment()
+    val imageId: ImageId get() = ImageId(imageIdValue)
 }

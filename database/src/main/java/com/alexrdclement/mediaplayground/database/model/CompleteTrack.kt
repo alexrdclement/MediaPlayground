@@ -24,7 +24,12 @@ data class CompleteTrack(
     val artists: List<Artist>,
     @Relation(
         parentColumn = "album_id",
-        entityColumn = "album_id"
+        entityColumn = "id",
+        associateBy = Junction(
+            value = AlbumImageCrossRef::class,
+            parentColumn = "album_id",
+            entityColumn = "image_id",
+        ),
     )
     val images: List<Image>,
 )

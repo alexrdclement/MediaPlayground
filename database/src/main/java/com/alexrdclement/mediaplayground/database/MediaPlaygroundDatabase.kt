@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import com.alexrdclement.mediaplayground.database.converter.InstantConverter
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
+import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
@@ -14,6 +15,7 @@ import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.Album
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
+import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.Artist
 import com.alexrdclement.mediaplayground.database.model.Image
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
@@ -26,8 +28,9 @@ import com.alexrdclement.mediaplayground.database.model.Track
         Artist::class,
         Image::class,
         AlbumArtistCrossRef::class,
+        AlbumImageCrossRef::class,
     ],
-    version = 1,
+    version = 2,
 )
 @TypeConverters(
     InstantConverter::class,
@@ -37,6 +40,7 @@ abstract class MediaPlaygroundDatabase : RoomDatabase() {
     abstract fun albumDao(): AlbumDao
     abstract fun imageDao(): ImageDao
     abstract fun artistDao(): ArtistDao
+    abstract fun albumImageDao(): AlbumImageDao
     abstract fun completeTrackDao(): CompleteTrackDao
     abstract fun completeAlbumDao(): CompleteAlbumDao
     abstract fun albumArtistDao(): AlbumArtistDao

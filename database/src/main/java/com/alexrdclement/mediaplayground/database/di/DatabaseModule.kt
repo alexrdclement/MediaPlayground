@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.database.di
 import android.app.Application
 import androidx.room.Room
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
+import com.alexrdclement.mediaplayground.database.migrations.MIGRATION_1_2
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunnerImpl
 import dev.zacsweers.metro.AppScope
@@ -21,7 +22,8 @@ interface DatabaseModule {
             application,
             MediaPlaygroundDatabase::class.java,
             "mediaplayground-database",
-        ).build()
+        ).addMigrations(MIGRATION_1_2)
+            .build()
 
         @Provides
         fun provideDatabaseTransactionRunner(

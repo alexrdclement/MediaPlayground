@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStore
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumArtistDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumDao
+import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumImageDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeArtistDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteTrackDao
@@ -26,6 +27,7 @@ class LocalTrackDataStoreFixture(
     val artistDao: FakeArtistDao = FakeArtistDao(),
     val albumDao: FakeAlbumDao = FakeAlbumDao(),
     val imageDao: FakeImageDao = FakeImageDao(),
+    val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
     val trackDao: FakeTrackDao = FakeTrackDao(),
     val albumArtistDao: FakeAlbumArtistDao = FakeAlbumArtistDao(),
     val completeTrackDao: FakeCompleteTrackDao = FakeCompleteTrackDao(
@@ -33,6 +35,7 @@ class LocalTrackDataStoreFixture(
         albumDao = albumDao,
         artistDao = artistDao,
         albumArtistDao = albumArtistDao,
+        albumImageDao = albumImageDao,
         imageDao = imageDao,
         trackDao = trackDao,
     ),
@@ -41,6 +44,7 @@ class LocalTrackDataStoreFixture(
         albumDao = albumDao,
         artistDao = artistDao,
         albumArtistDao = albumArtistDao,
+        albumImageDao = albumImageDao,
         imageDao = imageDao,
         trackDao = trackDao,
     ),
@@ -49,6 +53,7 @@ class LocalTrackDataStoreFixture(
         artistDao = artistDao,
         imageDao = imageDao,
         albumArtistDao = albumArtistDao,
+        albumImageDao = albumImageDao,
     ),
     val pathProvider: PathProvider = FakePathProvider(),
 ) {
@@ -76,6 +81,7 @@ class LocalTrackDataStoreFixture(
         artistDao = artistDao,
         albumDao = albumDao,
         imageDao = imageDao,
+        albumImageDao = albumImageDao,
         trackDao = trackDao,
         albumArtistDao = albumArtistDao,
         completeTrackDao = completeTrackDao,

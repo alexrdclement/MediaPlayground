@@ -55,24 +55,26 @@ fun AlbumEntity.toAlbum(
 
 fun SimpleAlbumEntity.toSimpleAlbum(
     mediaItemDir: Path,
+    imagesDir: Path,
 ): SimpleAlbum {
     return SimpleAlbum(
         id = AlbumId(album.id),
         name = album.title,
         artists = artists.map { it.toSimpleArtist() }.toPersistentList(),
-        images = images.map { it.toImage(albumDir = mediaItemDir) }.toPersistentList(),
+        images = images.map { it.toImage(imagesDir = imagesDir) }.toPersistentList(),
         source = album.source.toDomainSource(),
     )
 }
 
 fun CompleteAlbum.toAlbum(
     mediaItemDir: Path,
+    imagesDir: Path,
 ): Album {
     val simpleArtists = simpleAlbum.artists.map { it.toSimpleArtist() }.toPersistentList()
     return simpleAlbum.album.toAlbum(
         artists = simpleArtists,
         images = simpleAlbum.images
-            .map { it.toImage(albumDir = mediaItemDir) }
+            .map { it.toImage(imagesDir = imagesDir) }
             .toPersistentList(),
         simpleTracks = orderedTracks
             .map { it.toSimpleTrack(mediaItemDir, simpleArtists) }

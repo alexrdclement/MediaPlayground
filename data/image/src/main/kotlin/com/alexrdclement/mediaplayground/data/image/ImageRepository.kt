@@ -1,9 +1,9 @@
 package com.alexrdclement.mediaplayground.data.image
 
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import kotlinx.coroutines.flow.Flow
 
 interface ImageRepository {
-    fun getImagesForAlbumFlow(albumId: AlbumId): Flow<List<Image>>
+    fun getImageFlow(imageId: ImageId): Flow<Image?>
 }

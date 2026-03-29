@@ -12,18 +12,12 @@ interface ImageDao {
     @Query("SELECT * FROM images WHERE id = :id")
     suspend fun getImage(id: String): Image?
 
-    @Query("SELECT * FROM images WHERE album_id = :albumId")
-    suspend fun getImagesForAlbum(albumId: String): List<Image>
-
-    @Query("SELECT * FROM images WHERE album_id = :albumId")
-    fun getImagesForAlbumFlow(albumId: String): Flow<List<Image>>
+    @Query("SELECT * FROM images WHERE id = :id")
+    fun getImageFlow(id: String): Flow<Image?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg image: Image)
 
     @Query("DELETE FROM images WHERE id = :id")
     suspend fun delete(id: String)
-
-    @Query("DELETE FROM images WHERE album_id = :albumId")
-    suspend fun deleteImagesForAlbum(albumId: String)
 }

@@ -9,22 +9,31 @@ class PathProviderImpl @Inject constructor(
     private val application: Application,
 ) : PathProvider {
     private val audioImportDir: Path
-        get() {
-            val defaultPath = Path(application.filesDir.absolutePath)
+        get() = externalFilesDir(Environment.DIRECTORY_MUSIC)
 
-            if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
-                return defaultPath
-            }
+    private val imageImportDir: Path
+        get() = externalFilesDir(Environment.DIRECTORY_PICTURES)
 
-            val externalFilesDir = application.getExternalFilesDir(Environment.DIRECTORY_MUSIC)
-            if (externalFilesDir != null) {
-                return Path(externalFilesDir.absolutePath)
-            }
+    private fun externalFilesDir(type: String): Path {
+        val defaultPath = Path(application.filesDir.absolutePath)
 
+        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
             return defaultPath
         }
 
+        val externalFilesDir = application.getExternalFilesDir(type)
+        if (externalFilesDir != null) {
+            return Path(externalFilesDir.absolutePath)
+        }
+
+        return defaultPath
+    }
+
     override fun getAlbumDir(albumId: String): Path {
         return Path(audioImportDir, albumId)
+    }
+
+    override fun getImagesDir(): Path {
+        return Path(imageImportDir, "images")
     }
 }

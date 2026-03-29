@@ -14,12 +14,8 @@ class FakeImageDao : ImageDao {
         return images.value.find { it.id == id }
     }
 
-    override suspend fun getImagesForAlbum(albumId: String): List<Image> {
-        return images.value.filter { it.albumId == albumId }
-    }
-
-    override fun getImagesForAlbumFlow(albumId: String): Flow<List<Image>> {
-        return images.map { it.filter { image -> image.albumId == albumId } }
+    override fun getImageFlow(id: String): Flow<Image?> {
+        return images.map { it.find { image -> image.id == id } }
     }
 
     override suspend fun insert(vararg image: Image) {
@@ -28,9 +24,5 @@ class FakeImageDao : ImageDao {
 
     override suspend fun delete(id: String) {
         images.value = images.value.filterNot { it.id == id }.toSet()
-    }
-
-    override suspend fun deleteImagesForAlbum(albumId: String) {
-        images.value = images.value.filterNot { it.albumId == albumId }.toSet()
     }
 }

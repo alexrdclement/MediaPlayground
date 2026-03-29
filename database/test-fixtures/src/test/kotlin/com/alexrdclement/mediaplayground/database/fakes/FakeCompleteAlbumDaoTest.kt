@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
+import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
 import com.alexrdclement.mediaplayground.database.model.id
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +15,7 @@ class FakeCompleteAlbumDaoTest {
     private val albumDao =  FakeAlbumDao()
     private val artistDao =  FakeArtistDao()
     private val albumArtistDao =  FakeAlbumArtistDao()
+    private val albumImageDao = FakeAlbumImageDao()
     private val imageDao =  FakeImageDao()
     private val trackDao =  FakeTrackDao()
 
@@ -23,6 +25,7 @@ class FakeCompleteAlbumDaoTest {
             albumDao = albumDao,
             artistDao = artistDao,
             albumArtistDao = albumArtistDao,
+            albumImageDao = albumImageDao,
             imageDao = imageDao,
             trackDao = trackDao,
         )
@@ -36,6 +39,7 @@ class FakeCompleteAlbumDaoTest {
         }
         for (image in completeAlbum.simpleAlbum.images) {
             imageDao.insert(image)
+            albumImageDao.insert(AlbumImageCrossRef(albumId = completeAlbum.id, imageId = image.id))
         }
         for (track in completeAlbum.tracks) {
             trackDao.insert(track)

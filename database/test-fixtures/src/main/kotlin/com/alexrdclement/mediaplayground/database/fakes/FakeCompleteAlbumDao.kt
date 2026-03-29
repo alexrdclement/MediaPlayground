@@ -18,6 +18,7 @@ class FakeCompleteAlbumDao(
     val albumDao: FakeAlbumDao,
     val artistDao: FakeArtistDao,
     val albumArtistDao: FakeAlbumArtistDao,
+    val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
     val imageDao: FakeImageDao,
     val trackDao: FakeTrackDao,
 ) : CompleteAlbumDao {
@@ -29,13 +30,16 @@ class FakeCompleteAlbumDao(
     ) { albums, artists, tracks ->
         val albumArtists = albumArtistDao.albumArtists
         albums.map { album ->
+            val albumImageIds = albumImageDao.albumImages
+                .filter { it.albumId == album.id }
+                .map { it.imageId }
             CompleteAlbum(
                 simpleAlbum = SimpleAlbum(
                     album = album,
                     artists = artists.filter { artist ->
                         albumArtists.contains(AlbumArtistCrossRef(album.id, artist.id))
                     },
-                    images = imageDao.images.value.filter { it.albumId == album.id },
+                    images = imageDao.images.value.filter { it.id in albumImageIds },
                 ),
                 tracks = tracks.filter { it.albumId == album.id },
             )

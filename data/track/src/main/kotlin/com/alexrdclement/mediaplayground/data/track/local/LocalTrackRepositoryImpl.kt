@@ -10,6 +10,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.model.audio.Track
 import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import kotlinx.io.files.Path
 import com.alexrdclement.mediaplayground.model.result.Result
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -98,6 +99,7 @@ class LocalTrackRepositoryImpl @Inject constructor(
             mediaImporter.importTracksFromDisk(
                 uris = uris,
                 getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
+                getImagePath = { imageId, extension -> Path(pathProvider.getImagesDir(), "${imageId.value}.$extension") },
                 getArtistByName = { artistName ->
                     localArtistRepository.getArtistByName(artistName)
                 },
