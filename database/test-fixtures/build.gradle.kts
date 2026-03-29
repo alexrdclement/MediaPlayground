@@ -10,6 +10,7 @@ dependencies {
     api(projects.database)
 
     implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.io.core)
     implementation(libs.paging)
     implementation(libs.paging.testing)
 

@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 import androidx.paging.PagingConfig
 import app.cash.turbine.test
 import com.alexrdclement.media.ui.fakes.FakeMediaSessionState
-import com.alexrdclement.mediaplayground.data.audio.local.fixtures.LocalAudioRepositoryFixture
+import com.alexrdclement.mediaplayground.data.track.fixtures.LocalTrackRepositoryFixture
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracks1
 import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
@@ -19,17 +19,18 @@ class LocalContentStateProviderTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private lateinit var localAudioRepositoryFixture: LocalAudioRepositoryFixture
+    private lateinit var localTrackRepositoryFixture: LocalTrackRepositoryFixture
     private lateinit var mediaSessionState: FakeMediaSessionState
 
     private lateinit var localContentStateProvider: LocalContentStateProvider
 
     @BeforeTest
     fun setup() {
-        localAudioRepositoryFixture = LocalAudioRepositoryFixture()
+        localTrackRepositoryFixture = LocalTrackRepositoryFixture()
         mediaSessionState = FakeMediaSessionState()
         localContentStateProvider = LocalContentStateProvider(
-            localAudioRepository = localAudioRepositoryFixture.localAudioRepository,
+            localTrackRepository = localTrackRepositoryFixture.localTrackRepository,
+            albumRepository = localTrackRepositoryFixture.localAlbumRepository,
             mediaSessionState = mediaSessionState,
         )
     }
@@ -48,7 +49,7 @@ class LocalContentStateProviderTest {
     @Test
     fun nonEmptyTracksAndAlbums_returnsContent() = runTest {
         // Stubbing tracks also stubs albums
-        localAudioRepositoryFixture.putTracks(PreviewTracks1)
+        localTrackRepositoryFixture.putTracks(PreviewTracks1)
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
@@ -64,7 +65,7 @@ class LocalContentStateProviderTest {
         val tracks = PreviewTracks1
 
         // Stubbing tracks also stubs albums
-        localAudioRepositoryFixture.putTracks(tracks)
+        localTrackRepositoryFixture.putTracks(tracks)
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
@@ -73,10 +74,10 @@ class LocalContentStateProviderTest {
             val firstItem = awaitItem()
             assertTrue(firstItem is LocalContentState.Content)
 
-            localAudioRepositoryFixture.deleteTracks(tracks)
+            localTrackRepositoryFixture.deleteTracks(tracks)
             assertTrue(awaitItem() is LocalContentState.Empty)
 
-            localAudioRepositoryFixture.putTracks(tracks)
+            localTrackRepositoryFixture.putTracks(tracks)
 
             val lastItem = awaitItem()
             assertTrue(lastItem is LocalContentState.Content)

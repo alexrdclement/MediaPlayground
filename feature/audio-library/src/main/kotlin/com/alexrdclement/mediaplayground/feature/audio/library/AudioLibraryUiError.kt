@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.audio.library
 
 import android.net.Uri
-import com.alexrdclement.mediaplayground.data.audio.local.MediaImportResult
+import com.alexrdclement.mediaplayground.data.track.local.TrackImportResult
 import com.alexrdclement.logging.Loggable
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError as EnginePlaylistError
 
@@ -11,12 +11,12 @@ sealed class AudioLibraryUiError(
 ) : Loggable {
     data class ImportFailure(
         val uri: Uri,
-        val error: MediaImportResult.Error,
+        val error: TrackImportResult.Error,
     ) : AudioLibraryUiError(
         message = "Failed to import media from $uri: ${error.message}",
         throwable = when (error) {
-            is MediaImportResult.Error.Unknown -> error.throwable
-            is MediaImportResult.Error.ImportError -> null
+            is TrackImportResult.Error.Unknown -> error.throwable
+            is TrackImportResult.Error.ImportError -> null
         },
     )
 

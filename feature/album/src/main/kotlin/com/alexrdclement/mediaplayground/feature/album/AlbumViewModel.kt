@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.feature.album
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexrdclement.mediaplayground.data.audio.AudioRepository
+import com.alexrdclement.mediaplayground.data.album.AlbumRepository
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
@@ -14,7 +14,6 @@ import com.alexrdclement.mediaplayground.media.model.audio.Album
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.audio.Track
 import com.alexrdclement.mediaplayground.media.model.audio.largeImageUrl
-import com.alexrdclement.mediaplayground.model.result.successOrDefault
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.error
@@ -25,7 +24,6 @@ import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -33,7 +31,7 @@ import kotlinx.coroutines.launch
 class AlbumViewModel(
     @Assisted private val albumIdValue: String,
     private val logger: Logger,
-    audioRepository: AudioRepository,
+    albumRepository: AlbumRepository,
     private val mediaSessionControl: MediaSessionControl,
     private val mediaSessionState: MediaSessionState,
 ) : ViewModel() {
@@ -50,13 +48,12 @@ class AlbumViewModel(
         private fun tag(methodName: String) = "$tag#$methodName"
     }
 
-    private val album = flow {
-        emit(audioRepository.getAlbum(albumId).successOrDefault(null))
-    }.stateIn(
-        scope = viewModelScope,
-        started = WhileSubscribed(5_000L),
-        initialValue = null,
-    )
+    private val album = albumRepository.getAlbumFlow(albumId)
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5_000L),
+            initialValue = null,
+        )
 
     private val loadedMediaItem = mediaSessionState.loadedMediaItem
         .stateIn(

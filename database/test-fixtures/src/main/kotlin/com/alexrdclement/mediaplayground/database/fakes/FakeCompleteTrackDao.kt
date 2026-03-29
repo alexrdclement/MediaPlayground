@@ -7,8 +7,10 @@ import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 
 class FakeCompleteTrackDao(
     val coroutineScope: CoroutineScope,
@@ -33,7 +35,7 @@ class FakeCompleteTrackDao(
                 artists = artists.filter { artist ->
                     albumArtists.contains(AlbumArtistCrossRef(it.albumId, artist.id))
                 },
-                images = imageDao.images.filter { image -> image.albumId == it.albumId },
+                images = imageDao.images.value.filter { image -> image.albumId == it.albumId },
             )
         }
     }
@@ -45,5 +47,9 @@ class FakeCompleteTrackDao(
 
     override suspend fun getTrack(id: String): CompleteTrack? {
         return completeTracks.firstOrNull()?.find { it.track.id == id }
+    }
+
+    override fun getTrackFlow(id: String): Flow<CompleteTrack?> {
+        return completeTracks.map { tracks -> tracks.find { it.track.id == id } }
     }
 }

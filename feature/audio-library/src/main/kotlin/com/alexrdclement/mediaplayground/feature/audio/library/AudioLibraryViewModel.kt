@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
-import com.alexrdclement.mediaplayground.data.audio.local.LocalAudioRepository
-import com.alexrdclement.mediaplayground.data.audio.local.MediaImportResult
-import com.alexrdclement.mediaplayground.data.audio.local.MediaImportState
+import com.alexrdclement.mediaplayground.data.track.local.LocalTrackRepository
+import com.alexrdclement.mediaplayground.data.track.local.TrackImportResult
+import com.alexrdclement.mediaplayground.data.track.local.TrackImportState
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStateProvider
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 class AudioLibraryViewModel @Inject constructor(
     private val logger: Logger,
     localContentStateProvider: LocalContentStateProvider,
-    private val localAudioRepository: LocalAudioRepository,
+    private val localTrackRepository: LocalTrackRepository,
     private val mediaSessionControl: MediaSessionControl,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
@@ -123,7 +123,7 @@ class AudioLibraryViewModel @Inject constructor(
 
     private suspend fun importTracks(uris: List<Uri>) {
         val importedUris = mutableSetOf<Uri>()
-        localAudioRepository.importTracksFromDisk(uris)
+        localTrackRepository.importTracksFromDisk(uris)
             .map(::mapToResults)
             .takeWhile { resultsByUri ->
                 val failuresByUri = mapToFailures(resultsByUri)
@@ -148,25 +148,25 @@ class AudioLibraryViewModel @Inject constructor(
     }
 
     private fun mapToResults(
-        statesByUri: Map<Uri, MediaImportState>,
-    ): Map<Uri, MediaImportResult> {
+        statesByUri: Map<Uri, TrackImportState>,
+    ): Map<Uri, TrackImportResult> {
         return statesByUri.mapNotNull { (uri, state) ->
-            (state as? MediaImportState.Completed)?.result ?: return@mapNotNull null
+            (state as? TrackImportState.Completed)?.result ?: return@mapNotNull null
             uri to state.result
         }.toMap()
     }
 
     private fun mapToSuccess(
-        resultsByUri: Map<Uri, MediaImportResult>,
-    ): Map<Uri, MediaImportResult.Success> = resultsByUri.mapNotNull { (uri, result) ->
-        val mappedResult = result as? MediaImportResult.Success ?: return@mapNotNull null
+        resultsByUri: Map<Uri, TrackImportResult>,
+    ): Map<Uri, TrackImportResult.Success> = resultsByUri.mapNotNull { (uri, result) ->
+        val mappedResult = result as? TrackImportResult.Success ?: return@mapNotNull null
         uri to mappedResult
     }.toMap()
 
     private fun mapToFailures(
-        resultsByUri: Map<Uri, MediaImportResult>,
+        resultsByUri: Map<Uri, TrackImportResult>,
     ) = resultsByUri.mapNotNull { (uri, result) ->
-        val mappedResult = result as? MediaImportResult.Failure ?: return@mapNotNull null
+        val mappedResult = result as? TrackImportResult.Failure ?: return@mapNotNull null
         uri to mappedResult
     }.toMap()
 }

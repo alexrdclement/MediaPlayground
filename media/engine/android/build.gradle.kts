@@ -15,6 +15,6 @@ dependencies {
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.session)
 
-    implementation(projects.data.audio)
+    implementation(projects.data.track)
     implementation(projects.media.session.android.api)
 }

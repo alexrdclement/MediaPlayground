@@ -2,7 +2,9 @@ package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.model.Artist
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 
 class FakeArtistDao : ArtistDao {
 
@@ -10,6 +12,10 @@ class FakeArtistDao : ArtistDao {
 
     override suspend fun getArtist(id: String): Artist? {
         return artists.value.find { it.id == id }
+    }
+
+    override fun getArtistFlow(id: String): Flow<Artist?> {
+        return artists.map { it.find { artist -> artist.id == id } }
     }
 
     override suspend fun getArtistByName(name: String): Artist? {

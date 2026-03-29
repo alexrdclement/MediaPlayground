@@ -5,11 +5,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.alexrdclement.mediaplayground.database.model.Artist
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArtistDao {
     @Query("SELECT * FROM artists WHERE id = :id")
     suspend fun getArtist(id: String): Artist?
+
+    @Query("SELECT * FROM artists WHERE id = :id")
+    fun getArtistFlow(id: String): Flow<Artist?>
 
     @Query("SELECT * FROM artists WHERE name = :name")
     suspend fun getArtistByName(name: String): Artist?
