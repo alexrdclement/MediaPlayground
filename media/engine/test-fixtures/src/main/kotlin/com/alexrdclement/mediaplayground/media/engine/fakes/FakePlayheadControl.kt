@@ -13,6 +13,8 @@ class FakePlayheadControl : PlayheadControl {
 
     override fun getPlayheadState(): Flow<PlayheadState> = mutablePlayheadState
 
+    override suspend fun getPlayheadPosition(): Duration = Duration.ZERO
+
     override suspend fun seek(position: Duration) {
         seekPosition = position
     }
