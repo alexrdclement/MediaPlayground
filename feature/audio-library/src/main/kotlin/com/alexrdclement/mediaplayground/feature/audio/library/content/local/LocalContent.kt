@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
@@ -35,6 +33,7 @@ internal fun LocalContent(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     contentPadding: PaddingValues = PaddingValues(horizontal = PaletteTheme.spacing.medium),
+    onItemLongClick: ((MediaItemUi) -> Unit)? = null,
 ) {
     AudioLibraryContent(
         headerText = "Imported",
@@ -64,6 +63,7 @@ internal fun LocalContent(
                 localContentState = localContentState,
                 onItemClick = onItemClick,
                 onItemPlayPauseClick = onItemPlayPauseClick,
+                onItemLongClick = onItemLongClick,
                 contentPadding = contentPadding,
             )
         }
@@ -94,6 +94,7 @@ private fun Content(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     contentPadding: PaddingValues,
+    onItemLongClick: ((MediaItemUi) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
@@ -101,23 +102,14 @@ private fun Content(
             .fillMaxSize()
     ) {
         val albums = localContentState.albums.collectAsLazyPagingItems()
-        val albumsLazyListState = rememberLazyListState()
         val tracks = localContentState.tracks.collectAsLazyPagingItems()
-        val tracksLazyListState = rememberLazyListState()
-
-        LaunchedEffect(albums.itemCount) {
-            albumsLazyListState.scrollToItem(0)
-        }
-        LaunchedEffect(tracks.itemCount) {
-            tracksLazyListState.scrollToItem(0)
-        }
 
         MediaItemRow(
             mediaItems = albums,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
+            onItemLongClick = onItemLongClick,
             title = "Imported albums",
-            lazyListState = albumsLazyListState,
             itemWidth = MediaItemWidthCompact,
             contentPadding = contentPadding,
         )
@@ -125,8 +117,8 @@ private fun Content(
             mediaItems = tracks,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
+            onItemLongClick = onItemLongClick,
             title = "Imported tracks",
-            lazyListState = tracksLazyListState,
             itemWidth = MediaItemWidthCompact,
             contentPadding = contentPadding,
         )

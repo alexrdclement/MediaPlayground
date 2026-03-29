@@ -34,9 +34,11 @@ fun MediaItemCard(
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onLongClick: (() -> Unit)? = null,
 ) {
     Surface(
         onClick = onClick,
+        onLongClick = onLongClick,
         borderStyle = PaletteTheme.styles.border.surface,
         modifier = modifier,
     ) {

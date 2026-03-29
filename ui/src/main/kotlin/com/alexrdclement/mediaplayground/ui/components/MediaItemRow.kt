@@ -40,6 +40,7 @@ fun MediaItemRow(
     contentPadding: PaddingValues = PaddingValues(),
     itemWidth: Dp = MediaItemWidthDefault,
     title: String? = null,
+    onItemLongClick: ((MediaItemUi) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -70,6 +71,7 @@ fun MediaItemRow(
                     isPlaying = mediaItem.isPlaying,
                     onClick = { onItemClick(mediaItem) },
                     onPlayPauseClick = { onItemPlayPauseClick(mediaItem) },
+                    onLongClick = onItemLongClick?.let { { it(mediaItem) } },
                     modifier = Modifier
                         .width(itemWidth)
                 )

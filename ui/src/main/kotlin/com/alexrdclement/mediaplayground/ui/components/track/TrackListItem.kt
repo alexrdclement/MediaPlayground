@@ -1,7 +1,8 @@
 package com.alexrdclement.mediaplayground.ui.components.track
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.palette.theme.styles.copy
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackListItem(
     track: SimpleTrack,
@@ -38,6 +40,7 @@ fun TrackListItem(
     isPlaying: Boolean,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
+    onLongClick: (() -> Unit)? = null,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -45,7 +48,11 @@ fun TrackListItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .clickable(enabled = isPlayable) { onClick() }
+            .combinedClickable(
+                enabled = isPlayable || onLongClick != null,
+                onClick = { if (isPlayable) onClick() },
+                onLongClick = onLongClick,
+            )
             .padding(vertical = PaletteTheme.spacing.small)
             .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
     ) {

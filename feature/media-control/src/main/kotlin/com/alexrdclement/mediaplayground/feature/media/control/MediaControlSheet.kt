@@ -47,7 +47,8 @@ import com.alexrdclement.palette.components.media.model.MediaItem as UiMediaItem
 
 @Composable
 fun MediaControlSheet(
-    mediaControlSheetState: MediaControlSheetState
+    mediaControlSheetState: MediaControlSheetState,
+    onItemLongClick: (MediaItemUi) -> Unit = {},
 ) {
     val viewModel = metroViewModel<MediaControlSheetViewModel>()
     val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
@@ -69,6 +70,7 @@ fun MediaControlSheet(
         onSeek = viewModel::onSeek,
         onItemClick = viewModel::onItemClick,
         onItemPlayPauseClick = viewModel::onItemPlayPauseClick,
+        onItemLongClick = onItemLongClick,
     )
 }
 
@@ -86,6 +88,7 @@ fun MediaControlSheet(
     onSeek: (Duration) -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
+    onItemLongClick: (MediaItemUi) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isPlaying = transportState == TransportState.Playing
@@ -192,6 +195,7 @@ fun MediaControlSheet(
                             onSeek = onSeek,
                             onItemClick = onItemClick,
                             onItemPlayPauseClick = onItemPlayPauseClick,
+                            onItemLongClick = onItemLongClick,
                             contentPadding = contentPadding.copy(
                                 top = PaletteTheme.spacing.medium,
                             )
