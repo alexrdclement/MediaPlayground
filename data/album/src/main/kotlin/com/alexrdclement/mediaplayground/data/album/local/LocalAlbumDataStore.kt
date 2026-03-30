@@ -72,4 +72,9 @@ class LocalAlbumDataStore @Inject constructor(
         val album = albumDao.getAlbum(id.value) ?: return
         albumDao.insert(album.copy(title = title))
     }
+
+    suspend fun updateAlbumNotes(id: AlbumId, notes: String?) {
+        val album = albumDao.getAlbum(id.value) ?: return
+        albumDao.insert(album.copy(notes = notes))
+    }
 }

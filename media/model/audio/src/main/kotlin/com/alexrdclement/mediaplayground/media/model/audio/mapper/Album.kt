@@ -14,6 +14,7 @@ fun SimpleAlbum.toAlbum(
     images = images,
     tracks = tracks,
     source = source,
+    notes = null,
 )
 
 fun Album.toSimpleAlbum() = SimpleAlbum(

@@ -12,5 +12,6 @@ fun ImageEntity.toImage(imagesDir: Path): Image {
     return Image(
         id = ImageId(id),
         uri = uri,
+        notes = notes,
     )
 }

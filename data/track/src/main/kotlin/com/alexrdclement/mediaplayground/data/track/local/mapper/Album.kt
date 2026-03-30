@@ -16,6 +16,7 @@ fun SimpleAlbum.toAlbumEntity(source: Source): AlbumEntity {
         title = name,
         modifiedDate = Clock.System.now(),
         source = source.toEntitySource(),
+        notes = null,
     )
 }
 

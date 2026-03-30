@@ -29,4 +29,7 @@ class LocalAlbumRepositoryImpl @Inject constructor(
 
     override suspend fun updateAlbumTitle(id: AlbumId, title: String) =
         localAlbumDataStore.updateAlbumTitle(id, title)
+
+    override suspend fun updateAlbumNotes(id: AlbumId, notes: String?) =
+        localAlbumDataStore.updateAlbumNotes(id, notes)
 }

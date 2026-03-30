@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class SimpleArtist(
     val id: String,
     val name: String?,
+    val notes: String?,
 )

@@ -12,4 +12,5 @@ data class Image(
     val uri: String,
     val heightPx: Int? = null,
     val widthPx: Int? = null,
+    val notes: String? = null,
 )

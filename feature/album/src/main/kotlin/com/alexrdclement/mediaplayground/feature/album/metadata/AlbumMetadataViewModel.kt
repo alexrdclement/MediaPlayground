@@ -65,12 +65,16 @@ class AlbumMetadataViewModel(
         initialValue = AlbumMetadataUiState.Loading,
     )
 
-    fun onSaveClick(title: String) {
+    fun onSaveClick(
+        title: String,
+        notes: String?,
+    ) {
         if (_isSaving.value) return
         _isSaving.value = true
         viewModelScope.launch {
             try {
                 albumRepository.updateAlbumTitle(albumId, title)
+                albumRepository.updateAlbumNotes(albumId, notes)
                 savedEvent.fire()
             } finally {
                 _isSaving.value = false

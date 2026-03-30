@@ -7,5 +7,6 @@ fun ArtistEntity.toSimpleArtist(): SimpleArtist {
     return SimpleArtist(
         id = id,
         name = name,
+        notes = notes,
     )
 }

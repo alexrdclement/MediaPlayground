@@ -134,4 +134,9 @@ class LocalTrackDataStore @Inject constructor(
         val track = trackDao.getTrack(id.value) ?: return
         trackDao.insert(track.copy(trackNumber = trackNumber))
     }
+
+    suspend fun updateTrackNotes(id: TrackId, notes: String?) {
+        val track = trackDao.getTrack(id.value) ?: return
+        trackDao.insert(track.copy(notes = notes))
+    }
 }

@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.isImeVisible
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -66,18 +70,21 @@ fun AlbumMetadataScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AlbumMetadataScreen(
     uiState: AlbumMetadataUiState,
     onNavigateBack: () -> Unit,
-    onSaveClick: (title: String) -> Unit,
+    onSaveClick: (title: String, notes: String?) -> Unit,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
     onNavigateToImageMetadata: (imageId: ImageId) -> Unit,
 ) {
     val titleState = rememberTextFieldState()
+    val notesState = rememberTextFieldState()
     LaunchedEffect((uiState as? AlbumMetadataUiState.Loaded)?.album?.id) {
         val loaded = uiState as? AlbumMetadataUiState.Loaded ?: return@LaunchedEffect
         titleState.edit { replace(0, length, loaded.album.title) }
+        notesState.edit { replace(0, length, loaded.album.notes ?: "") }
     }
 
     Scaffold(
@@ -90,6 +97,7 @@ fun AlbumMetadataScreen(
         floatingAction = {
             when (uiState) {
                 is AlbumMetadataUiState.Loaded -> {
+                    if (WindowInsets.isImeVisible) return@Scaffold
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -97,7 +105,12 @@ fun AlbumMetadataScreen(
                     ) {
                         Button(
                             style = ButtonStyleToken.Primary,
-                            onClick = { onSaveClick(titleState.text.toString()) },
+                            onClick = {
+                                onSaveClick(
+                                    titleState.text.toString(),
+                                    notesState.text.toString().ifBlank { null },
+                                )
+                            },
                             enabled = !uiState.isSaving,
                             modifier = Modifier
                                 .padding(PaletteTheme.spacing.medium),
@@ -119,6 +132,7 @@ fun AlbumMetadataScreen(
             is AlbumMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 titleState = titleState,
+                notesState = notesState,
                 onNavigateToArtistMetadata = onNavigateToArtistMetadata,
                 onNavigateToImageMetadata = onNavigateToImageMetadata,
                 contentPadding = innerPadding,
@@ -132,6 +146,7 @@ fun AlbumMetadataScreen(
 private fun LoadedContent(
     state: AlbumMetadataUiState.Loaded,
     titleState: TextFieldState,
+    notesState: TextFieldState,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
     onNavigateToImageMetadata: (imageId: ImageId) -> Unit,
     contentPadding: PaddingValues,
@@ -171,6 +186,17 @@ private fun LoadedContent(
                 ImageRow(
                     image = image,
                     onClick = { onNavigateToImageMetadata(image.id) },
+                )
+            }
+        }
+        item {
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
+                Text("Notes", style = PaletteTheme.styles.text.titleMedium)
+                TextField(
+                    state = notesState,
+                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
@@ -233,7 +259,7 @@ private fun Preview() {
         AlbumMetadataScreen(
             uiState = uiState,
             onNavigateBack = {},
-            onSaveClick = {},
+            onSaveClick = { _, _ -> },
             onNavigateToArtistMetadata = {},
             onNavigateToImageMetadata = {},
         )

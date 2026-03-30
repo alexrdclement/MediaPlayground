@@ -10,4 +10,5 @@ data class Image(
     val id: String,
     @ColumnInfo(name = "file_name")
     val fileName: String,
+    val notes: String?,
 )

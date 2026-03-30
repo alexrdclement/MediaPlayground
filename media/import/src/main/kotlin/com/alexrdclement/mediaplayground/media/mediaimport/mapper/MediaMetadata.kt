@@ -17,6 +17,7 @@ fun MediaMetadata.toSimpleArtist(
     return SimpleArtist(
         id = UUID.randomUUID().toString(),
         name = name,
+        notes = null,
     )
 }
 

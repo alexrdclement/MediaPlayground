@@ -6,6 +6,7 @@ import com.alexrdclement.mediaplayground.database.model.Image
 val FakeImage1 = Image(
     id = "1",
     fileName = "1.jpg",
+    notes = null,
 )
 
 val FakeImage2 = FakeImage1.copy(

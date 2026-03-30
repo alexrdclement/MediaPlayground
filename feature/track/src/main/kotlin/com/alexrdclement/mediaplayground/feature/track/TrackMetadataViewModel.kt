@@ -64,13 +64,18 @@ class TrackMetadataViewModel(
         initialValue = TrackMetadataUiState.Loading,
     )
 
-    fun onSaveClick(title: String, trackNumber: Int?) {
+    fun onSaveClick(
+        title: String,
+        trackNumber: Int?,
+        notes: String?,
+    ) {
         if (_isSaving.value) return
         _isSaving.value = true
         viewModelScope.launch {
             try {
                 trackRepository.updateTrackTitle(trackId, title)
                 trackRepository.updateTrackNumber(trackId, trackNumber)
+                trackRepository.updateTrackNotes(trackId, notes)
                 savedEvent.fire()
             } finally {
                 _isSaving.value = false

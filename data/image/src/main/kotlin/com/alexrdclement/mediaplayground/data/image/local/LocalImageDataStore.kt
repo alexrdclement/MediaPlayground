@@ -34,7 +34,16 @@ class LocalImageDataStore @Inject constructor(
 
     fun getImageCountFlow(): Flow<Int> = imageDao.getImageCountFlow()
 
-    suspend fun put(imageId: ImageId, fileName: String) {
-        imageDao.insert(ImageEntity(id = imageId.value, fileName = fileName))
+    suspend fun put(
+        imageId: ImageId,
+        fileName: String,
+        notes: String? = null,
+    ) {
+        imageDao.insert(ImageEntity(id = imageId.value, fileName = fileName, notes = notes))
+    }
+
+    suspend fun updateImageNotes(imageId: ImageId, notes: String?) {
+        val image = imageDao.getImage(imageId.value) ?: return
+        imageDao.insert(image.copy(notes = notes))
     }
 }

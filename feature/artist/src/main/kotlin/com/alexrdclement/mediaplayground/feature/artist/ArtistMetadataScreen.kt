@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.isImeVisible
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -51,16 +55,19 @@ fun ArtistMetadataScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ArtistMetadataScreen(
     uiState: ArtistMetadataUiState,
     onNavigateBack: () -> Unit,
-    onSaveClick: (name: String) -> Unit,
+    onSaveClick: (name: String, notes: String?) -> Unit,
 ) {
     val nameState = rememberTextFieldState()
+    val notesState = rememberTextFieldState()
     LaunchedEffect((uiState as? ArtistMetadataUiState.Loaded)?.artist?.id) {
         val loaded = uiState as? ArtistMetadataUiState.Loaded ?: return@LaunchedEffect
         nameState.edit { replace(0, length, loaded.artist.name ?: "") }
+        notesState.edit { replace(0, length, loaded.artist.notes ?: "") }
     }
 
     Scaffold(
@@ -73,6 +80,7 @@ fun ArtistMetadataScreen(
         floatingAction = {
             when (uiState) {
                 is ArtistMetadataUiState.Loaded -> {
+                    if (WindowInsets.isImeVisible) return@Scaffold
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -80,7 +88,12 @@ fun ArtistMetadataScreen(
                     ) {
                         Button(
                             style = ButtonStyleToken.Primary,
-                            onClick = { onSaveClick(nameState.text.toString()) },
+                            onClick = {
+                                onSaveClick(
+                                    nameState.text.toString(),
+                                    notesState.text.toString().ifBlank { null },
+                                )
+                            },
                             enabled = !uiState.isSaving,
                             modifier = Modifier
                                 .padding(PaletteTheme.spacing.medium),
@@ -102,6 +115,7 @@ fun ArtistMetadataScreen(
             is ArtistMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 nameState = nameState,
+                notesState = notesState,
                 contentPadding = innerPadding,
                 modifier = Modifier.fillMaxSize(),
             )
@@ -113,6 +127,7 @@ fun ArtistMetadataScreen(
 private fun LoadedContent(
     state: ArtistMetadataUiState.Loaded,
     nameState: TextFieldState,
+    notesState: TextFieldState,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -131,6 +146,17 @@ private fun LoadedContent(
                 )
             }
         }
+        item {
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
+                Text("Notes", style = PaletteTheme.styles.text.titleMedium)
+                TextField(
+                    state = notesState,
+                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
     }
 }
 
@@ -143,7 +169,7 @@ private fun Preview() {
                 artist = PreviewSimpleArtist1,
             ),
             onNavigateBack = {},
-            onSaveClick = {},
+            onSaveClick = { _, _ -> },
         )
     }
 }

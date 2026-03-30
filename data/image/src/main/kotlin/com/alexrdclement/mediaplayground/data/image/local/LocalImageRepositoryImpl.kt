@@ -26,6 +26,9 @@ class LocalImageRepositoryImpl @Inject constructor(
     override fun getImageCountFlow(): Flow<Int> =
         localImageDataStore.getImageCountFlow()
 
+    override suspend fun updateImageNotes(id: ImageId, notes: String?) =
+        localImageDataStore.updateImageNotes(id, notes)
+
     override suspend fun importImages(uris: List<Uri>) {
         val imagesDir = pathProvider.getImagesDir()
         mediaImporter.importImagesFromDisk(

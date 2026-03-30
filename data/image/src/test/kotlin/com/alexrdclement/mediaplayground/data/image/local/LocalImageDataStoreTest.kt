@@ -41,7 +41,7 @@ class LocalImageDataStoreTest {
 
     @Test
     fun getImageFlow_returnsImage_afterInsert() = runTest {
-        fixture.imageDao.insert(ImageEntity(id = FakeImage1.id.value, fileName = "image-1.png"))
+        fixture.imageDao.insert(ImageEntity(id = FakeImage1.id.value, fileName = "image-1.png", notes = null))
 
         val result = fixture.localImageDataStore.getImageFlow(FakeImage1.id).first()
         assertNotNull(result)
