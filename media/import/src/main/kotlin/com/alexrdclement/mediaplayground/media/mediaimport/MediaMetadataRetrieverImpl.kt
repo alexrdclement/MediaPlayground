@@ -3,7 +3,9 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 import android.app.Application
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import androidx.exifinterface.media.ExifInterface
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
+import com.alexrdclement.mediaplayground.media.model.image.ImageMetadata
 import dev.zacsweers.metro.Inject
 import android.media.MediaMetadataRetriever as AndroidMediaMetadataRetriever
 
@@ -18,13 +20,8 @@ class MediaMetadataRetrieverImpl @Inject constructor(
             ?: "jpg"
 
         if (mimeType?.startsWith("image/") == true) {
-            return MediaMetadata(
-                title = null,
-                durationMs = null,
-                trackNumber = null,
-                artistName = null,
-                albumTitle = null,
-                embeddedPicture = null,
+            return MediaMetadata.Image(
+                imageMetadata = extractImageMetadata(contentUri),
                 mimeType = mimeType,
                 extension = extension,
             )
@@ -32,7 +29,7 @@ class MediaMetadataRetrieverImpl @Inject constructor(
 
         return AndroidMediaMetadataRetriever().use { retriever ->
             retriever.setDataSource(application, contentUri)
-            MediaMetadata(
+            MediaMetadata.Audio(
                 title = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_TITLE),
                 durationMs = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_DURATION)
                     ?.toLongOrNull(),
@@ -44,6 +41,25 @@ class MediaMetadataRetrieverImpl @Inject constructor(
                 mimeType = mimeType,
                 extension = extension,
             )
+        }
+    }
+
+    private fun extractImageMetadata(contentUri: Uri): ImageMetadata? {
+        val inputStream = application.contentResolver.openInputStream(contentUri) ?: return null
+        return inputStream.use { stream ->
+            val exif = ExifInterface(stream)
+            val latLong = exif.getLatLong()
+            ImageMetadata(
+                widthPx = exif.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0)
+                    .takeIf { it > 0 },
+                heightPx = exif.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0)
+                    .takeIf { it > 0 },
+                dateTimeOriginal = exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL),
+                gpsLatitude = latLong?.getOrNull(0),
+                gpsLongitude = latLong?.getOrNull(1),
+                cameraMake = exif.getAttribute(ExifInterface.TAG_MAKE),
+                cameraModel = exif.getAttribute(ExifInterface.TAG_MODEL),
+            ).takeUnless { it == ImageMetadata() }
         }
     }
 }

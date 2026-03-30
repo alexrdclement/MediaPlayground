@@ -14,6 +14,7 @@ dependencies {
     api(projects.model.result)
 
     implementation(libs.androidx.documentfile)
+    implementation(libs.androidx.exifinterface)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.loggable)

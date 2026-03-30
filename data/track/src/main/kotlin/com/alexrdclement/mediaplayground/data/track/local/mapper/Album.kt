@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.data.track.local.mapper
 
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.media.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.image.Image
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.audio.Source

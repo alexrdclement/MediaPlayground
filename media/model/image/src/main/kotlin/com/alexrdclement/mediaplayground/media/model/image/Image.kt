@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.media.model.audio
+package com.alexrdclement.mediaplayground.media.model.image
 
 import kotlinx.serialization.Serializable
 
@@ -10,7 +10,6 @@ value class ImageId(val value: String)
 data class Image(
     val id: ImageId,
     val uri: String,
-    val heightPx: Int? = null,
-    val widthPx: Int? = null,
+    val metadata: ImageMetadata? = null,
     val notes: String? = null,
 )

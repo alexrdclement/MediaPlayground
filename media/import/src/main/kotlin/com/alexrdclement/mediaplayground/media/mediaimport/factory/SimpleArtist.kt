@@ -7,7 +7,7 @@ import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 private const val UnknownArtistName = "Unknown artist"
 
 internal suspend fun makeSimpleArtist(
-    mediaMetadata: MediaMetadata,
+    mediaMetadata: MediaMetadata.Audio,
     getArtistByName: suspend (String) -> SimpleArtist?,
 ): SimpleArtist {
     val artistName = mediaMetadata.artistName ?: UnknownArtistName

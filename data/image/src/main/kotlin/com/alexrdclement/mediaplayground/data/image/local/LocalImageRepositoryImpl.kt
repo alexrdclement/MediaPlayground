@@ -5,8 +5,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
-import com.alexrdclement.mediaplayground.media.model.audio.Image
-import com.alexrdclement.mediaplayground.media.model.audio.ImageId
+import com.alexrdclement.mediaplayground.media.model.image.Image
+import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.io.files.Path
@@ -36,8 +36,8 @@ class LocalImageRepositoryImpl @Inject constructor(
             getDestination = { imageId, extension ->
                 Path(imagesDir, "${imageId.value}.$extension")
             },
-            saveImage = { imageId, fileName ->
-                localImageDataStore.put(imageId = imageId, fileName = fileName)
+            saveImage = { imageId, fileName, metadata ->
+                localImageDataStore.put(imageId = imageId, fileName = fileName, metadata = metadata)
             },
         )
     }

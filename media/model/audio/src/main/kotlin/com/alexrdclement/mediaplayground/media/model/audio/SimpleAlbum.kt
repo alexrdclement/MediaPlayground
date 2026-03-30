@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.media.model.audio
 
+import com.alexrdclement.mediaplayground.media.model.image.Image
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
 

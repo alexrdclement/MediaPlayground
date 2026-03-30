@@ -6,6 +6,13 @@ import com.alexrdclement.mediaplayground.database.model.Image
 val FakeImage1 = Image(
     id = "1",
     fileName = "1.jpg",
+    widthPx = null,
+    heightPx = null,
+    dateTimeOriginal = null,
+    gpsLatitude = null,
+    gpsLongitude = null,
+    cameraMake = null,
+    cameraModel = null,
     notes = null,
 )
 

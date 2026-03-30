@@ -26,8 +26,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
-import com.alexrdclement.mediaplayground.media.model.audio.Image
-import com.alexrdclement.mediaplayground.media.model.audio.ImageId
+import com.alexrdclement.mediaplayground.media.model.image.Image
+import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.ButtonDefaults
