@@ -7,6 +7,8 @@ data class MediaMetadata(
     val artistName: String?,
     val albumTitle: String?,
     val embeddedPicture: ByteArray?,
+    val mimeType: String?,
+    val extension: String,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -20,6 +22,8 @@ data class MediaMetadata(
         if (artistName != other.artistName) return false
         if (albumTitle != other.albumTitle) return false
         if (!embeddedPicture.contentEquals(other.embeddedPicture)) return false
+        if (mimeType != other.mimeType) return false
+        if (extension != other.extension) return false
 
         return true
     }
@@ -31,6 +35,8 @@ data class MediaMetadata(
         result = 31 * result + (artistName?.hashCode() ?: 0)
         result = 31 * result + (albumTitle?.hashCode() ?: 0)
         result = 31 * result + embeddedPicture.contentHashCode()
+        result = 31 * result + (mimeType?.hashCode() ?: 0)
+        result = 31 * result + extension.hashCode()
         return result
     }
 }

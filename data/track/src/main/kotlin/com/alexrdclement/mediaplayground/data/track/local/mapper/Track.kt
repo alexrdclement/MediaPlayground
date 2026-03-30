@@ -46,6 +46,7 @@ fun TrackEntity.toSimpleTrack(
 
 fun CompleteTrackEntity.toTrack(
     albumDir: Path,
+    imagesDir: Path,
 ): Track {
     val simpleArtists = artists.map { it.toSimpleArtist() }.toPersistentList()
     return Track(
@@ -59,7 +60,7 @@ fun CompleteTrackEntity.toTrack(
             id = AlbumId(album.id),
             name = album.title,
             artists = simpleArtists,
-            images = images.map { it.toImage(albumDir = albumDir) }.toPersistentList(),
+            images = images.map { it.toImage(imagesDir = imagesDir) }.toPersistentList(),
             source = album.source.toDomainSource(),
         ),
         source = track.source.toDomainSource(),

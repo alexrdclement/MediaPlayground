@@ -8,5 +8,8 @@ class LocalImageDataStoreFixture(
     val imageDao: FakeImageDao = FakeImageDao(),
     val pathProvider: FakePathProvider = FakePathProvider(),
 ) {
-    val localImageDataStore = LocalImageDataStore(imageDao = imageDao, pathProvider = pathProvider)
+    val localImageDataStore = LocalImageDataStore(
+        imageDao = imageDao,
+        pathProvider = pathProvider,
+    )
 }

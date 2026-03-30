@@ -1,11 +1,10 @@
 package com.alexrdclement.mediaplayground.data.image.local
 
 import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
-import com.alexrdclement.mediaplayground.data.image.local.mapper.toImageEntity
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
+import com.alexrdclement.mediaplayground.database.model.Image as ImageEntity
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalSimpleAlbum1
 import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -35,19 +34,17 @@ class LocalImageDataStoreTest {
     }
 
     @Test
-    fun getImagesForAlbumFlow_returnsEmpty_forUnknownAlbum() = runTest {
-        val result = fixture.localImageDataStore.getImagesForAlbumFlow(FakeLocalSimpleAlbum1.id).first()
-        assertTrue(result.isEmpty())
+    fun getImageFlow_returnsNull_forUnknownImage() = runTest {
+        val result = fixture.localImageDataStore.getImageFlow(FakeImage1.id).first()
+        assertTrue(result == null)
     }
 
     @Test
-    fun getImagesForAlbumFlow_returnsImages_afterInsert() = runTest {
-        val albumId = FakeLocalSimpleAlbum1.id
-        fixture.imageDao.insert(FakeImage1.toImageEntity(albumId))
+    fun getImageFlow_returnsImage_afterInsert() = runTest {
+        fixture.imageDao.insert(ImageEntity(id = FakeImage1.id.value, fileName = "image-1.png"))
 
-        val result = fixture.localImageDataStore.getImagesForAlbumFlow(albumId).first()
-        assertEquals(1, result.size)
-        val image = result.first()
-        assertNotNull(image.uri)
+        val result = fixture.localImageDataStore.getImageFlow(FakeImage1.id).first()
+        assertNotNull(result)
+        assertEquals(FakeImage1.id, result.id)
     }
 }

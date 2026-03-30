@@ -4,6 +4,7 @@ import androidx.navigation3.runtime.EntryProviderScope
 import com.alexrdclement.mediaplayground.feature.album.AlbumScreen
 import com.alexrdclement.mediaplayground.feature.album.metadata.AlbumMetadataScreen
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.navigation.NavGraphBuilder
 import com.alexrdclement.palette.navigation.NavKey
@@ -23,7 +24,7 @@ fun EntryProviderScope<NavKey>.albumEntryProvider(
     onNavigateToArtistEditor: (artistId: String) -> Unit = {},
     onNavigateToTrackEditor: (trackId: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
-    onNavigateToImageMetadata: (albumId: AlbumId, imageIndex: Int) -> Unit = { _, _ -> },
+    onNavigateToImageMetadata: (imageId: ImageId) -> Unit = {},
 ) {
     entry<AlbumRoute> { route ->
         AlbumScreen(
@@ -38,9 +39,7 @@ fun EntryProviderScope<NavKey>.albumEntryProvider(
             albumId = route.albumId,
             onNavigateBack = { navController.goBack() },
             onNavigateToArtistMetadata = onNavigateToArtistMetadata,
-            onNavigateToImageMetadata = { imageIndex ->
-                onNavigateToImageMetadata(route.albumId, imageIndex)
-            },
+            onNavigateToImageMetadata = onNavigateToImageMetadata,
         )
     }
 }

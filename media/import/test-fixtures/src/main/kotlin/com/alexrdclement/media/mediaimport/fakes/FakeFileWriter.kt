@@ -21,4 +21,11 @@ class FakeFileWriter : FileWriter {
     ): Result<Path, FileWriteError> {
         return Result.Success(value = destinationDir)
     }
+
+    override suspend fun writeFileToDisk(
+        contentUri: Uri,
+        destination: Path
+    ): Result<Path, FileWriteError> {
+        return Result.Success(value = destination)
+    }
 }

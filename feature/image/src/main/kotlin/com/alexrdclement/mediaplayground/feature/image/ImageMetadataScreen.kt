@@ -11,8 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
 import com.alexrdclement.palette.components.core.Text
@@ -25,14 +25,13 @@ import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
 fun ImageMetadataScreen(
-    albumId: AlbumId,
-    imageIndex: Int,
+    imageId: ImageId,
     onNavigateBack: () -> Unit,
 ) {
     val viewModel: ImageMetadataViewModel = assistedMetroViewModel<ImageMetadataViewModel, ImageMetadataViewModel.Factory>(
-        key = "${albumId.value}:${imageIndex}",
+        key = imageId.value,
     ) {
-        create(albumId.value, imageIndex)
+        create(imageId.value)
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(ImageMetadataUiState.Loading)
     ImageMetadataScreen(
@@ -110,7 +109,7 @@ private fun Preview() {
     PaletteTheme {
         ImageMetadataScreen(
             uiState = ImageMetadataUiState.Loaded(
-                image = Image(uri = "file:/1/1.jpg"),
+                image = Image(id = ImageId("1"), uri = "file:/images/1.jpg"),
             ),
             onNavigateBack = {},
         )

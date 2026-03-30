@@ -11,6 +11,7 @@ class FakeSimpleAlbumDao(
     private val artistDao: FakeArtistDao,
     private val imageDao: FakeImageDao,
     private val albumArtistDao: FakeAlbumArtistDao,
+    private val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
 ) : SimpleAlbumDao {
 
     val albums = combine(
@@ -19,6 +20,9 @@ class FakeSimpleAlbumDao(
     ) { albums, artists ->
         val albumArtists = albumArtistDao.albumArtists
         albums.map { album ->
+            val albumImageIds = albumImageDao.albumImages
+                .filter { it.albumId == album.id }
+                .map { it.imageId }
             SimpleAlbum(
                 album = album,
                 artists = artists.filter { artist ->
@@ -26,7 +30,7 @@ class FakeSimpleAlbumDao(
                         AlbumArtistCrossRef(album.id, artist.id)
                     )
                 },
-                images = imageDao.images.value.filter { it.albumId == album.id },
+                images = imageDao.images.value.filter { it.id in albumImageIds },
             )
         }
     }

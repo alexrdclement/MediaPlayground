@@ -8,4 +8,8 @@ class FakePathProvider : PathProvider {
         // Path de-dupes slashes, even in the scheme
         return Path("file:/", albumId)
     }
+
+    override fun getImagesDir(): Path {
+        return Path("file:/", "images")
+    }
 }

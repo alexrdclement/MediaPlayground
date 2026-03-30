@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.ui.components
 
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -18,7 +17,6 @@ fun MediaItemArtwork(
             model = imageUrl,
             contentDescription = null,
             modifier = modifier
-                .aspectRatio(1f)
                 .alpha(if (isEnabled) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
         )
     } else {

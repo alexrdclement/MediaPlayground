@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.media.mediaimport.mapper
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.audio.Source
@@ -36,12 +37,14 @@ fun MediaMetadata.toSimpleAlbum(
 }
 
 fun MediaMetadata.toImage(
+    id: ImageId,
     imageFilePath: Path,
 ): Image? {
     if (embeddedPicture == null) {
         return null
     }
     return Image(
+        id = id,
         uri = imageFilePath.toString(),
     )
 }

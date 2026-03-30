@@ -4,4 +4,5 @@ import kotlinx.io.files.Path
 
 interface PathProvider {
     fun getAlbumDir(albumId: String): Path
+    fun getImagesDir(): Path
 }

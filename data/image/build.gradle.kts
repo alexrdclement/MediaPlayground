@@ -12,9 +12,11 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.io.core)
+    implementation(libs.paging)
 
     implementation(projects.data.disk)
     implementation(projects.database)
+    implementation(projects.media.import)
 
     testImplementation(libs.maindispatcher.rule)
     testImplementation(projects.data.disk.testFixtures)

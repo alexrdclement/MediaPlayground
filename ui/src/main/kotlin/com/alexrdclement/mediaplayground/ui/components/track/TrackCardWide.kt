@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -49,7 +50,9 @@ fun TrackCardWide(
                 MediaItemArtwork(
                     imageUrl = track.thumbnailImageUrl,
                     isEnabled = isEnabled,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .fillMaxSize()
                 )
                 PlayPauseButton(
                     isEnabled = isEnabled,

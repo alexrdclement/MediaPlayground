@@ -34,19 +34,28 @@ class LocalAlbumDataStore @Inject constructor(
             completeAlbumDao.getAlbumsPagingSource()
         }.flow.map { pagingData ->
             pagingData.map {
-                it.toAlbum(mediaItemDir = pathProvider.getAlbumDir(it.id))
+                it.toAlbum(
+                    mediaItemDir = pathProvider.getAlbumDir(it.id),
+                    imagesDir = pathProvider.getImagesDir(),
+                )
             }
         }
     }
 
     suspend fun getAlbum(albumId: AlbumId): Album? {
         return completeAlbumDao.getAlbum(albumId.value)
-            ?.toAlbum(mediaItemDir = pathProvider.getAlbumDir(albumId.value))
+            ?.toAlbum(
+                mediaItemDir = pathProvider.getAlbumDir(albumId.value),
+                imagesDir = pathProvider.getImagesDir(),
+            )
     }
 
     fun getAlbumFlow(albumId: AlbumId): Flow<Album?> {
         return completeAlbumDao.getAlbumFlow(albumId.value).map { completeAlbum ->
-            completeAlbum?.toAlbum(mediaItemDir = pathProvider.getAlbumDir(albumId.value))
+            completeAlbum?.toAlbum(
+                mediaItemDir = pathProvider.getAlbumDir(albumId.value),
+                imagesDir = pathProvider.getImagesDir(),
+            )
         }
     }
 
@@ -55,6 +64,7 @@ class LocalAlbumDataStore @Inject constructor(
             ?: return null
         return simpleAlbumEntity.toSimpleAlbum(
             mediaItemDir = pathProvider.getAlbumDir(simpleAlbumEntity.album.id),
+            imagesDir = pathProvider.getImagesDir(),
         )
     }
 

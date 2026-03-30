@@ -185,7 +185,7 @@ class LocalTrackDataStoreTest {
         assertNull(fixture.localAlbumDataStore.getAlbum(simpleAlbum.id))
         assertNull(fixture.albumDao.getAlbum(simpleAlbum.id.value))
         assertTrue(fixture.trackDao.getTracksForAlbum(simpleAlbum.id.value).isEmpty())
-        assertTrue(fixture.imageDao.getImagesForAlbum(simpleAlbum.id.value).isEmpty())
+        assertTrue(fixture.imageDao.images.value.isEmpty())
     }
 
     @Test

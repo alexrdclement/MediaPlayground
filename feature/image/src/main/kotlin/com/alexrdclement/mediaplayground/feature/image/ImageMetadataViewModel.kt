@@ -3,8 +3,8 @@ package com.alexrdclement.mediaplayground.feature.image
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.image.ImageRepository
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
@@ -22,21 +22,19 @@ sealed class ImageMetadataUiState {
 
 @AssistedInject
 class ImageMetadataViewModel(
-    @Assisted val albumIdValue: String,
-    @Assisted val imageIndex: Int,
+    @Assisted private val imageIdValue: String,
     imageRepository: ImageRepository,
 ) : ViewModel() {
 
     @AssistedFactory
     fun interface Factory : ManualViewModelAssistedFactory {
-        fun create(albumIdValue: String, imageIndex: Int): ImageMetadataViewModel
+        fun create(imageIdValue: String): ImageMetadataViewModel
     }
 
-    private val albumId = AlbumId(albumIdValue)
+    private val imageId = ImageId(imageIdValue)
 
-    val uiState: StateFlow<ImageMetadataUiState> = imageRepository.getImagesForAlbumFlow(albumId)
-        .map { images ->
-            val image = images.getOrNull(imageIndex)
+    val uiState: StateFlow<ImageMetadataUiState> = imageRepository.getImageFlow(imageId)
+        .map { image ->
             if (image == null) ImageMetadataUiState.Error
             else ImageMetadataUiState.Loaded(image = image)
         }

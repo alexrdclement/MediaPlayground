@@ -13,6 +13,8 @@ class FakeMediaMetadataRetriever : MediaMetadataRetriever {
         artistName = null,
         albumTitle = null,
         embeddedPicture = null,
+        mimeType = null,
+        extension = "jpg",
     )
 
     override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata {

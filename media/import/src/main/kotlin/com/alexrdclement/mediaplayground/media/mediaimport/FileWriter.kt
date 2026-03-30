@@ -22,4 +22,9 @@ interface FileWriter {
         contentUri: Uri,
         destinationDir: Path
     ): Result<Path, FileWriteError>
+
+    suspend fun writeFileToDisk(
+        contentUri: Uri,
+        destination: Path,
+    ): Result<Path, FileWriteError>
 }

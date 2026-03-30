@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
@@ -46,7 +46,7 @@ fun AlbumMetadataScreen(
     albumId: AlbumId,
     onNavigateBack: () -> Unit,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
-    onNavigateToImageMetadata: (imageIndex: Int) -> Unit,
+    onNavigateToImageMetadata: (imageId: ImageId) -> Unit,
 ) {
     val viewModel: AlbumMetadataViewModel = assistedMetroViewModel<AlbumMetadataViewModel, AlbumMetadataViewModel.Factory>(
         key = albumId.value,
@@ -72,7 +72,7 @@ fun AlbumMetadataScreen(
     onNavigateBack: () -> Unit,
     onSaveClick: (title: String) -> Unit,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
-    onNavigateToImageMetadata: (imageIndex: Int) -> Unit,
+    onNavigateToImageMetadata: (imageId: ImageId) -> Unit,
 ) {
     val titleState = rememberTextFieldState()
     LaunchedEffect((uiState as? AlbumMetadataUiState.Loaded)?.album?.id) {
@@ -133,7 +133,7 @@ private fun LoadedContent(
     state: AlbumMetadataUiState.Loaded,
     titleState: TextFieldState,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
-    onNavigateToImageMetadata: (imageIndex: Int) -> Unit,
+    onNavigateToImageMetadata: (imageId: ImageId) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -167,10 +167,10 @@ private fun LoadedContent(
             item {
                 Text("Images", style = PaletteTheme.styles.text.titleMedium)
             }
-            itemsIndexed(state.album.images, key = { index, image -> image.uri + index }) { index, image ->
+            items(state.album.images, key = { it.id.value }) { image ->
                 ImageRow(
                     image = image,
-                    onClick = { onNavigateToImageMetadata(index) },
+                    onClick = { onNavigateToImageMetadata(image.id) },
                 )
             }
         }

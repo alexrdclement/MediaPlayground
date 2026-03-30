@@ -7,28 +7,25 @@ import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.audio.ImageId
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.audio.Source
 import com.alexrdclement.mediaplayground.media.model.audio.Track
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.mapFailure
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 import java.util.UUID
-import dev.zacsweers.metro.Inject
 
 class MediaImporter @Inject constructor(
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val fileWriter: FileWriter,
 ) {
-
-    private companion object {
-        const val MediaThumbnailFileName = "thumbnail.png"
-    }
 
     private data class ImportData(
         val uri: Uri,
@@ -43,6 +40,7 @@ class MediaImporter @Inject constructor(
     suspend fun importTrackFromDisk(
         uri: Uri,
         getImportDir: (AlbumId) -> Path,
+        getImagePath: (ImageId, extension: String) -> Path,
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
         saveTrack: suspend (Track) -> Unit,
@@ -51,6 +49,7 @@ class MediaImporter @Inject constructor(
             val importData = getImportData(
                 uri = uri,
                 getImportDir = getImportDir,
+                getImagePath = getImagePath,
                 getArtistByName = getArtistByName,
                 getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
             )
@@ -67,6 +66,7 @@ class MediaImporter @Inject constructor(
     suspend fun importTracksFromDisk(
         uris: List<Uri>,
         getImportDir: (AlbumId) -> Path,
+        getImagePath: (ImageId, extension: String) -> Path,
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
         saveTrack: suspend (Track) -> Unit,
@@ -76,6 +76,7 @@ class MediaImporter @Inject constructor(
             val importData = getImportData(
                 uri = uri,
                 getImportDir = getImportDir,
+                getImagePath = getImagePath,
                 getArtistByName = getArtistByName,
                 getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
             )
@@ -87,9 +88,49 @@ class MediaImporter @Inject constructor(
         }
     }
 
+    suspend fun importImagesFromDisk(
+        uris: List<Uri>,
+        getDestination: (ImageId, extension: String) -> Path,
+        saveImage: suspend (imageId: ImageId, fileName: String) -> Unit,
+    ): Map<Uri, Result<ImageId, FileWriteError>> {
+        return uris.associateWith { uri ->
+            importImageFromDisk(
+                contentUri = uri,
+                getDestination = getDestination,
+                saveImage = saveImage,
+            )
+        }
+    }
+
+    suspend fun importImageFromDisk(
+        contentUri: Uri,
+        getDestination: (ImageId, extension: String) -> Path,
+        saveImage: suspend (imageId: ImageId, fileName: String) -> Unit,
+    ): Result<ImageId, FileWriteError> = withContext(Dispatchers.IO) {
+        val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri)
+        val imageId = ImageId(UUID.randomUUID().toString())
+        val fileName = "${imageId.value}.${mediaMetadata.extension}"
+        val destination = getDestination(imageId, mediaMetadata.extension)
+
+        try {
+            destination.parent?.let { SystemFileSystem.createDirectories(it) }
+        } catch (e: IOException) {
+            // Directory may already exist
+        }
+
+        when (val result = fileWriter.writeFileToDisk(contentUri, destination)) {
+            is Result.Failure -> Result.Failure(result.failure)
+            is Result.Success -> {
+                saveImage(imageId, fileName)
+                Result.Success(imageId)
+            }
+        }
+    }
+
     private suspend fun getImportData(
         uri: Uri,
         getImportDir: (AlbumId) -> Path,
+        getImagePath: (ImageId, extension: String) -> Path,
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
     ): ImportData {
@@ -98,9 +139,7 @@ class MediaImporter @Inject constructor(
         val simpleAlbum = makeSimpleAlbum(
             mediaMetadata = mediaMetadata,
             simpleArtist = simpleArtist,
-            getImageFilePath = { albumId ->
-                Path(getImportDir(albumId), MediaThumbnailFileName)
-            },
+            getImageFilePath = getImagePath,
             getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
             source = Source.Local,
         )
@@ -116,9 +155,11 @@ class MediaImporter @Inject constructor(
         getImportDir: (AlbumId) -> Path,
         saveTrack: suspend (Track) -> Unit,
     ): Result<Track, MediaImportError> {
+        val imagePath = importData.simpleAlbum.images.firstOrNull()?.uri?.let { Path(it) }
         val fileWriteResult = writeToDisk(
             uri = importData.uri,
             embeddedPicture = importData.mediaMetadata.embeddedPicture,
+            imagePath = imagePath,
             importDir = getImportDir(importData.simpleAlbum.id),
         )
         return when (fileWriteResult) {
@@ -141,6 +182,7 @@ class MediaImporter @Inject constructor(
     private suspend fun writeToDisk(
         uri: Uri,
         embeddedPicture: ByteArray?,
+        imagePath: Path?,
         importDir: Path,
     ): Result<Path, MediaImportError> = withContext(Dispatchers.IO) {
         try {
@@ -150,9 +192,13 @@ class MediaImporter @Inject constructor(
                 return@withContext Result.Failure(MediaImportError.MkdirError)
             }
 
-            if (embeddedPicture != null) {
-                val path = Path(importDir, MediaThumbnailFileName)
-                when (fileWriter.writeBitmapToDisk(embeddedPicture, path)) {
+            if (embeddedPicture != null && imagePath != null) {
+                try {
+                    imagePath.parent?.let { SystemFileSystem.createDirectories(it) }
+                } catch (e: IOException) {
+                    // Fail silently — image write is best-effort
+                }
+                when (fileWriter.writeBitmapToDisk(embeddedPicture, imagePath)) {
                     is Result.Failure -> Unit // Fail silently for now
                     is Result.Success -> Unit
                 }
