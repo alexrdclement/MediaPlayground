@@ -18,6 +18,7 @@ data class Track(
     val uri: String?,
     val simpleAlbum: SimpleAlbum,
     override val source: Source,
+    val notes: String?,
 ) : MediaItem {
     override val images: PersistentList<Image>
         get() = simpleAlbum.images

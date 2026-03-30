@@ -16,6 +16,7 @@ fun SimpleTrack.toTrack(
     artists = artists,
     simpleAlbum = simpleAlbum,
     source = source,
+    notes = null,
 )
 
 fun SimpleTrack.toTrack(
@@ -29,6 +30,7 @@ fun SimpleTrack.toTrack(
     artists = artists,
     simpleAlbum = album.toSimpleAlbum(),
     source = source,
+    notes = null,
 )
 
 fun Track.toSimpleTrack() = SimpleTrack(

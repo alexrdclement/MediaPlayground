@@ -30,7 +30,7 @@ import com.alexrdclement.mediaplayground.database.model.Track
         AlbumArtistCrossRef::class,
         AlbumImageCrossRef::class,
     ],
-    version = 2,
+    version = 3,
 )
 @TypeConverters(
     InstantConverter::class,

@@ -71,6 +71,9 @@ class LocalTrackRepositoryImpl @Inject constructor(
     override suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?) =
         localTrackDataStore.updateTrackNumber(id, trackNumber)
 
+    override suspend fun updateTrackNotes(id: TrackId, notes: String?) =
+        localTrackDataStore.updateTrackNotes(id, notes)
+
     override suspend fun putTrack(track: Track) =
         localTrackDataStore.putTrack(track)
 

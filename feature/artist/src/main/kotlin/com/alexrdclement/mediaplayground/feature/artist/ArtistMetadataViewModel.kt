@@ -62,12 +62,16 @@ class ArtistMetadataViewModel(
         initialValue = ArtistMetadataUiState.Loading,
     )
 
-    fun onSaveClick(name: String) {
+    fun onSaveClick(
+        name: String,
+        notes: String?,
+    ) {
         if (_isSaving.value) return
         _isSaving.value = true
         viewModelScope.launch {
             try {
                 artistRepository.updateArtistName(artistId, name.ifBlank { null })
+                artistRepository.updateArtistNotes(artistId, notes)
                 savedEvent.fire()
             } finally {
                 _isSaving.value = false

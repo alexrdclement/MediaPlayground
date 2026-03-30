@@ -13,4 +13,5 @@ interface TrackRepository {
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>>
     suspend fun updateTrackTitle(id: TrackId, title: String)
     suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?)
+    suspend fun updateTrackNotes(id: TrackId, notes: String?)
 }

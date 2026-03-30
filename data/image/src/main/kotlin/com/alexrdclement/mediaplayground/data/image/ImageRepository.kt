@@ -10,4 +10,5 @@ interface ImageRepository {
     fun getImageFlow(imageId: ImageId): Flow<Image?>
     fun getImagePagingData(config: PagingConfig): Flow<PagingData<Image>>
     fun getImageCountFlow(): Flow<Int>
+    suspend fun updateImageNotes(id: ImageId, notes: String?)
 }

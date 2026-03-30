@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -64,19 +68,22 @@ fun TrackMetadataScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TrackMetadataScreen(
     uiState: TrackMetadataUiState,
     onNavigateBack: () -> Unit,
-    onSaveClick: (title: String, trackNumber: Int?) -> Unit,
+    onSaveClick: (title: String, trackNumber: Int?, notes: String?) -> Unit,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
 ) {
     val titleState = rememberTextFieldState()
     val trackNumberState = rememberTextFieldState()
+    val notesState = rememberTextFieldState()
     LaunchedEffect((uiState as? TrackMetadataUiState.Loaded)?.track?.id) {
         val loaded = uiState as? TrackMetadataUiState.Loaded ?: return@LaunchedEffect
         titleState.edit { replace(0, length, loaded.track.title) }
         trackNumberState.edit { replace(0, length, loaded.track.trackNumber?.toString() ?: "") }
+        notesState.edit { replace(0, length, loaded.track.notes ?: "") }
     }
 
     Scaffold(
@@ -89,6 +96,7 @@ fun TrackMetadataScreen(
         floatingAction = {
             when (uiState) {
                 is TrackMetadataUiState.Loaded -> {
+                    if (WindowInsets.isImeVisible) return@Scaffold
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -100,6 +108,7 @@ fun TrackMetadataScreen(
                                 onSaveClick(
                                     titleState.text.toString(),
                                     trackNumberState.text.toString().toIntOrNull(),
+                                    notesState.text.toString().ifBlank { null },
                                 )
                             },
                             enabled = !uiState.isSaving,
@@ -124,6 +133,7 @@ fun TrackMetadataScreen(
                 state = uiState,
                 titleState = titleState,
                 trackNumberState = trackNumberState,
+                notesState = notesState,
                 onNavigateToArtistMetadata = onNavigateToArtistMetadata,
                 contentPadding = innerPadding,
                 modifier = Modifier.fillMaxSize(),
@@ -137,6 +147,7 @@ private fun LoadedContent(
     state: TrackMetadataUiState.Loaded,
     titleState: TextFieldState,
     trackNumberState: TextFieldState,
+    notesState: TextFieldState,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -178,6 +189,17 @@ private fun LoadedContent(
                 )
             }
         }
+        item {
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
+                Text("Notes", style = PaletteTheme.styles.text.titleMedium)
+                TextField(
+                    state = notesState,
+                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
     }
 }
 
@@ -215,7 +237,7 @@ private fun Preview() {
                 track = PreviewTrack1,
             ),
             onNavigateBack = {},
-            onSaveClick = { _, _ -> },
+            onSaveClick = { _, _, _ -> },
             onNavigateToArtistMetadata = {},
         )
     }

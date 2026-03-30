@@ -26,6 +26,7 @@ fun Track.toTrackEntity(): TrackEntity {
         trackNumber = trackNumber,
         modifiedDate = Clock.System.now(),
         source = source.toEntitySource(),
+        notes = notes,
     )
 }
 
@@ -64,5 +65,6 @@ fun CompleteTrackEntity.toTrack(
             source = album.source.toDomainSource(),
         ),
         source = track.source.toDomainSource(),
+        notes = track.notes,
     )
 }

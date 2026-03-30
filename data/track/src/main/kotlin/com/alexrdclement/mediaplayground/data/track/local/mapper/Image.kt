@@ -13,6 +13,7 @@ fun Image.toImageEntity(): ImageEntity {
     return ImageEntity(
         id = id.value,
         fileName = fileName,
+        notes = notes,
     )
 }
 
@@ -22,5 +23,6 @@ fun ImageEntity.toImage(imagesDir: Path): Image {
     return Image(
         id = ImageId(id),
         uri = uri,
+        notes = notes,
     )
 }

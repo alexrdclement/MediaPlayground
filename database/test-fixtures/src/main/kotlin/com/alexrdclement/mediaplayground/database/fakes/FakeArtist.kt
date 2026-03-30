@@ -5,6 +5,7 @@ import com.alexrdclement.mediaplayground.database.model.Artist
 val FakeArtist1 = Artist(
     id = "1",
     name = "Artist 1",
+    notes = null,
 )
 
 val FakeArtist2 = FakeArtist1.copy(

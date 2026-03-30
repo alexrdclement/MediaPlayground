@@ -13,6 +13,7 @@ val FakeTrack1 = Track(
     fileName = "1.mp3",
     modifiedDate = Instant.DISTANT_PAST,
     source = Source.Local,
+    notes = null,
 )
 
 val FakeTrack2 = FakeTrack1.copy(

@@ -12,4 +12,5 @@ interface AlbumRepository {
     fun getAlbumCountFlow(): Flow<Int>
     fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>>
     suspend fun updateAlbumTitle(id: AlbumId, title: String)
+    suspend fun updateAlbumNotes(id: AlbumId, notes: String?)
 }

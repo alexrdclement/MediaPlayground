@@ -10,4 +10,5 @@ data class Artist(
     @PrimaryKey
     val id: String,
     val name: String?,
+    val notes: String?,
 )

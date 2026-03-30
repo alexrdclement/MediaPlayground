@@ -9,6 +9,7 @@ val FakeAlbum1 = Album(
     title = "Album 1",
     modifiedDate = Instant.DISTANT_PAST,
     source = Source.Local,
+    notes = null,
 )
 
 val FakeAlbum2 = FakeAlbum1.copy(

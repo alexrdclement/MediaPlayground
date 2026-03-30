@@ -109,12 +109,12 @@ private fun LoadedContent(
                 MediaItemArtwork(
                     imageUrl = state.imageUrl,
                     modifier = Modifier
-                        .aspectRatio(1f)
                         .heightIn(
                             max = with(LocalDensity.current) {
                                 (this@BoxWithConstraints.constraints.maxHeight / 2f).toDp()
                             }
                         )
+                        .aspectRatio(1f)
                 )
             }
             item {
