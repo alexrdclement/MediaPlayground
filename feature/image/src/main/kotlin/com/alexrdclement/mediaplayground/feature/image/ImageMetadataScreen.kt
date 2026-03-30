@@ -19,8 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.media.model.audio.Image
-import com.alexrdclement.mediaplayground.media.model.audio.ImageId
+import com.alexrdclement.mediaplayground.media.model.image.Image
+import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.palette.components.core.Button
@@ -118,6 +118,17 @@ fun ImageMetadataScreen(
 }
 
 @Composable
+private fun MetadataField(
+    label: String,
+    value: String?,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
+        Text(label, style = PaletteTheme.styles.text.titleMedium)
+        Text(value ?: "Unknown", style = PaletteTheme.styles.text.bodyMedium)
+    }
+}
+
+@Composable
 private fun LoadedContent(
     state: ImageMetadataUiState.Loaded,
     notesState: TextFieldState,
@@ -137,21 +148,38 @@ private fun LoadedContent(
             )
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("URI", style = PaletteTheme.styles.text.titleMedium)
-                Text(state.image.uri, style = PaletteTheme.styles.text.bodyMedium)
-            }
+            MetadataField(label = "URI", value = state.image.uri)
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Dimensions", style = PaletteTheme.styles.text.titleMedium)
-                val dimensions = when {
-                    state.image.widthPx != null && state.image.heightPx != null ->
-                        "${state.image.widthPx} \u00d7 ${state.image.heightPx}"
-                    else -> "Unknown"
-                }
-                Text(dimensions, style = PaletteTheme.styles.text.bodyMedium)
-            }
+            val metadata = state.image.metadata
+            MetadataField(
+                label = "Dimensions",
+                value = if (metadata?.widthPx != null && metadata.heightPx != null)
+                    "${metadata.widthPx} \u00d7 ${metadata.heightPx}"
+                else null,
+            )
+        }
+        item {
+            MetadataField(
+                label = "Date Taken",
+                value = state.image.metadata?.dateTimeOriginal,
+            )
+        }
+        item {
+            val cameraMake = state.image.metadata?.cameraMake
+            val cameraModel = state.image.metadata?.cameraModel
+            MetadataField(
+                label = "Camera",
+                value = listOfNotNull(cameraMake, cameraModel).joinToString(" ").ifEmpty { null },
+            )
+        }
+        item {
+            val lat = state.image.metadata?.gpsLatitude
+            val lon = state.image.metadata?.gpsLongitude
+            MetadataField(
+                label = "Location",
+                value = if (lat != null && lon != null) "%.6f, %.6f".format(lat, lon) else null,
+            )
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {

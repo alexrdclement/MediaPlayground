@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.image.library
 
 import androidx.paging.PagingData
-import com.alexrdclement.mediaplayground.media.model.audio.Image
+import com.alexrdclement.mediaplayground.media.model.image.Image
 import kotlinx.coroutines.flow.Flow
 
 sealed class ImageLibraryUiState {

@@ -3,8 +3,8 @@ package com.alexrdclement.mediaplayground.feature.image
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.image.ImageRepository
-import com.alexrdclement.mediaplayground.media.model.audio.Image
-import com.alexrdclement.mediaplayground.media.model.audio.ImageId
+import com.alexrdclement.mediaplayground.media.model.image.Image
+import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.uievent.UiEventState

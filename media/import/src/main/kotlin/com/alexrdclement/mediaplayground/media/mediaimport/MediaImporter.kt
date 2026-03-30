@@ -7,7 +7,8 @@ import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.media.model.audio.ImageId
+import com.alexrdclement.mediaplayground.media.model.image.ImageId
+import com.alexrdclement.mediaplayground.media.model.image.ImageMetadata
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.audio.Source
@@ -29,7 +30,7 @@ class MediaImporter @Inject constructor(
 
     private data class ImportData(
         val uri: Uri,
-        val mediaMetadata: MediaMetadata,
+        val mediaMetadata: MediaMetadata.Audio,
         val simpleAlbum: SimpleAlbum,
     )
 
@@ -91,7 +92,7 @@ class MediaImporter @Inject constructor(
     suspend fun importImagesFromDisk(
         uris: List<Uri>,
         getDestination: (ImageId, extension: String) -> Path,
-        saveImage: suspend (imageId: ImageId, fileName: String) -> Unit,
+        saveImage: suspend (imageId: ImageId, fileName: String, metadata: ImageMetadata?) -> Unit,
     ): Map<Uri, Result<ImageId, FileWriteError>> {
         return uris.associateWith { uri ->
             importImageFromDisk(
@@ -105,9 +106,9 @@ class MediaImporter @Inject constructor(
     suspend fun importImageFromDisk(
         contentUri: Uri,
         getDestination: (ImageId, extension: String) -> Path,
-        saveImage: suspend (imageId: ImageId, fileName: String) -> Unit,
+        saveImage: suspend (imageId: ImageId, fileName: String, metadata: ImageMetadata?) -> Unit,
     ): Result<ImageId, FileWriteError> = withContext(Dispatchers.IO) {
-        val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri)
+        val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri) as MediaMetadata.Image
         val imageId = ImageId(UUID.randomUUID().toString())
         val fileName = "${imageId.value}.${mediaMetadata.extension}"
         val destination = getDestination(imageId, mediaMetadata.extension)
@@ -121,7 +122,7 @@ class MediaImporter @Inject constructor(
         when (val result = fileWriter.writeFileToDisk(contentUri, destination)) {
             is Result.Failure -> Result.Failure(result.failure)
             is Result.Success -> {
-                saveImage(imageId, fileName)
+                saveImage(imageId, fileName, mediaMetadata.imageMetadata)
                 Result.Success(imageId)
             }
         }
@@ -134,7 +135,7 @@ class MediaImporter @Inject constructor(
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
     ): ImportData {
-        val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri)
+        val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri) as MediaMetadata.Audio
         val simpleArtist = makeSimpleArtist(mediaMetadata, getArtistByName)
         val simpleAlbum = makeSimpleAlbum(
             mediaMetadata = mediaMetadata,

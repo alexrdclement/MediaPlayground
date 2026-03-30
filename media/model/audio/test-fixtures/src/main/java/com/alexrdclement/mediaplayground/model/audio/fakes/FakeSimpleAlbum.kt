@@ -3,6 +3,8 @@ package com.alexrdclement.mediaplayground.model.audio.fakes
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.Source
+import com.alexrdclement.mediaplayground.media.model.image.fakes.FakeImage1
+import com.alexrdclement.mediaplayground.media.model.image.fakes.FakeImage2
 import kotlinx.collections.immutable.persistentListOf
 
 val FakeSimpleAlbum1 = SimpleAlbum(

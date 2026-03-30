@@ -6,7 +6,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 
 class FakeMediaMetadataRetriever : MediaMetadataRetriever {
 
-    var mediaMetadata = MediaMetadata(
+    var mediaMetadata: MediaMetadata = MediaMetadata.Audio(
         title = null,
         durationMs = null,
         trackNumber = null,
@@ -14,7 +14,7 @@ class FakeMediaMetadataRetriever : MediaMetadataRetriever {
         albumTitle = null,
         embeddedPicture = null,
         mimeType = null,
-        extension = "jpg",
+        extension = "mp3",
     )
 
     override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata {

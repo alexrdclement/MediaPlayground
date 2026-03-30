@@ -14,7 +14,7 @@ import kotlin.time.Duration.Companion.milliseconds
 internal fun makeTrack(
     id: UUID,
     filePath: Path,
-    mediaMetadata: MediaMetadata,
+    mediaMetadata: MediaMetadata.Audio,
     simpleArtists: PersistentList<SimpleArtist>,
     simpleAlbum: SimpleAlbum,
     source: Source,

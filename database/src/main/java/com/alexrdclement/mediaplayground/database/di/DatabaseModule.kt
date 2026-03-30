@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.migrations.MIGRATION_1_2
 import com.alexrdclement.mediaplayground.database.migrations.MIGRATION_2_3
+import com.alexrdclement.mediaplayground.database.migrations.MIGRATION_3_4
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunnerImpl
 import dev.zacsweers.metro.AppScope
@@ -26,6 +27,7 @@ interface DatabaseModule {
         ).addMigrations(
             MIGRATION_1_2,
             MIGRATION_2_3,
+            MIGRATION_3_4,
         ).build()
 
         @Provides

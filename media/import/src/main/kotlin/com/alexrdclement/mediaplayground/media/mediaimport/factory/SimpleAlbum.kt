@@ -5,7 +5,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toImage
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.media.model.audio.ImageId
+import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.audio.Source
@@ -16,7 +16,7 @@ import java.util.UUID
 private const val UnknownAlbumName = "Unknown album"
 
 internal suspend fun makeSimpleAlbum(
-    mediaMetadata: MediaMetadata,
+    mediaMetadata: MediaMetadata.Audio,
     simpleArtist: SimpleArtist,
     getImageFilePath: (ImageId, extension: String) -> Path,
     getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,

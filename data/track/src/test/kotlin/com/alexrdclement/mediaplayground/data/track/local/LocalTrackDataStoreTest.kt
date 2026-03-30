@@ -4,8 +4,8 @@ import com.alexrdclement.mediaplayground.data.track.fixtures.LocalTrackDataStore
 import com.alexrdclement.mediaplayground.media.model.audio.Source
 import com.alexrdclement.mediaplayground.media.model.audio.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.mapper.toSimpleTrack
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage2
+import com.alexrdclement.mediaplayground.media.model.image.fakes.FakeImage1
+import com.alexrdclement.mediaplayground.media.model.image.fakes.FakeImage2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalSimpleAlbum1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalSimpleAlbum2
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalTrack1

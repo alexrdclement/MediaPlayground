@@ -4,5 +4,6 @@ plugins {
 }
 
 dependencies {
+    api(projects.media.model.image.testFixtures)
     implementation(projects.media.model.audio)
 }

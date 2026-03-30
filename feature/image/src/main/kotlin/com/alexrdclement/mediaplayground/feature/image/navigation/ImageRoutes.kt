@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.image.navigation
 
-import com.alexrdclement.mediaplayground.media.model.audio.ImageId
+import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import com.alexrdclement.palette.navigation.NavKey
 import com.alexrdclement.palette.navigation.PathSegment
 import com.alexrdclement.palette.navigation.toPathSegment

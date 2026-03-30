@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.data.album.local
 import com.alexrdclement.mediaplayground.data.album.fixtures.LocalAlbumDataStoreFixture
 import com.alexrdclement.mediaplayground.media.model.audio.Source
 import com.alexrdclement.mediaplayground.media.model.audio.mapper.toSimpleTrack
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage1
+import com.alexrdclement.mediaplayground.media.model.image.fakes.FakeImage1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalSimpleAlbum1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeLocalTrack1
 import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleArtist1

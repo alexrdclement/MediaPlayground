@@ -1,10 +1,9 @@
 package com.alexrdclement.mediaplayground.data.image.local
 
-import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
+import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
-import com.alexrdclement.mediaplayground.database.model.Image as ImageEntity
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeImage1
+import com.alexrdclement.mediaplayground.media.model.image.fakes.FakeImage1
 import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -13,7 +12,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import kotlin.test.assertNull
+import com.alexrdclement.mediaplayground.database.model.Image as ImageEntity
 
 class LocalImageDataStoreTest {
 
@@ -36,12 +36,25 @@ class LocalImageDataStoreTest {
     @Test
     fun getImageFlow_returnsNull_forUnknownImage() = runTest {
         val result = fixture.localImageDataStore.getImageFlow(FakeImage1.id).first()
-        assertTrue(result == null)
+        assertNull(result)
     }
 
     @Test
     fun getImageFlow_returnsImage_afterInsert() = runTest {
-        fixture.imageDao.insert(ImageEntity(id = FakeImage1.id.value, fileName = "image-1.png", notes = null))
+        fixture.imageDao.insert(
+            ImageEntity(
+                id = FakeImage1.id.value,
+                fileName = "image-1.png",
+                widthPx = null,
+                heightPx = null,
+                dateTimeOriginal = null,
+                gpsLatitude = null,
+                gpsLongitude = null,
+                cameraMake = null,
+                cameraModel = null,
+                notes = null,
+            ),
+        )
 
         val result = fixture.localImageDataStore.getImageFlow(FakeImage1.id).first()
         assertNotNull(result)
