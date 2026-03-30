@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.database.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -14,6 +15,12 @@ interface ImageDao {
 
     @Query("SELECT * FROM images WHERE id = :id")
     fun getImageFlow(id: String): Flow<Image?>
+
+    @Query("SELECT * FROM images ORDER BY id")
+    fun getImagesPagingSource(): PagingSource<Int, Image>
+
+    @Query("SELECT COUNT(*) FROM images")
+    fun getImageCountFlow(): Flow<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg image: Image)

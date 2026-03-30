@@ -26,16 +26,23 @@ class FileWriterImpl @Inject constructor(
         return byteArray.writeToDisk(destination)
     }
 
+    override suspend fun writeFileToDisk(
+        contentUri: Uri,
+        destination: Path,
+    ): Result<Path, FileWriteError> {
+        return contentUri.writeToDisk(destination, application.contentResolver)
+    }
+
     override suspend fun writeToDisk(
         contentUri: Uri,
-        destinationDir: Path
+        destinationDir: Path,
     ): Result<Path, FileWriteError> {
         val documentFile = DocumentFile.fromSingleUri(application, contentUri)
             ?: return Result.Failure(FileWriteError.UnknownInputFileError)
         val documentFileName = documentFile.name
             ?: return Result.Failure(FileWriteError.UnknownInputFileError)
 
-        return documentFile.writeToDisk(
+        return documentFile.uri.writeToDisk(
             destination = Path(destinationDir, documentFileName),
             contentResolver = application.contentResolver,
         )
@@ -49,21 +56,21 @@ suspend fun ByteArray.writeToDisk(destination: Path): Result<Path, FileWriteErro
                 sink.write(this@writeToDisk)
             }
             Result.Success(destination)
-        } catch(e: FileNotFoundException) {
+        } catch (e: FileNotFoundException) {
             Result.Failure(FileWriteError.InputFileNotFound(e))
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             Result.Failure(FileWriteError.Unknown(e))
         } catch (e: Throwable) {
             Result.Failure(FileWriteError.Unknown(e))
         }
     }
 
-suspend fun DocumentFile.writeToDisk(
+private suspend fun Uri.writeToDisk(
     destination: Path,
     contentResolver: ContentResolver,
 ): Result<Path, FileWriteError> = withContext(Dispatchers.IO) {
     try {
-        val inputStream = contentResolver.openInputStream(this@writeToDisk.uri)
+        val inputStream = contentResolver.openInputStream(this@writeToDisk)
             ?: return@withContext Result.Failure(FileWriteError.InputStreamError)
         inputStream.asSource().buffered().use { source ->
             SystemFileSystem.sink(destination).buffered().use { sink ->
@@ -71,9 +78,9 @@ suspend fun DocumentFile.writeToDisk(
             }
         }
         Result.Success(destination)
-    } catch(e: FileNotFoundException) {
+    } catch (e: FileNotFoundException) {
         Result.Failure(FileWriteError.InputFileNotFound(e))
-    } catch(e: IOException) {
+    } catch (e: IOException) {
         Result.Failure(FileWriteError.Unknown(e))
     } catch (e: Throwable) {
         Result.Failure(FileWriteError.Unknown(e))

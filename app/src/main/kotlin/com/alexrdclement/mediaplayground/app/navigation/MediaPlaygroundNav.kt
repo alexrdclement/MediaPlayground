@@ -26,6 +26,9 @@ import com.alexrdclement.mediaplayground.feature.camera.navigation.cameraNavGrap
 import com.alexrdclement.mediaplayground.feature.error.navigation.ErrorGraph
 import com.alexrdclement.mediaplayground.feature.error.navigation.errorEntryProvider
 import com.alexrdclement.mediaplayground.feature.error.navigation.errorNavGraph
+import com.alexrdclement.mediaplayground.feature.image.library.navigation.ImageLibraryGraph
+import com.alexrdclement.mediaplayground.feature.image.library.navigation.imageLibraryEntryProvider
+import com.alexrdclement.mediaplayground.feature.image.library.navigation.imageLibraryNavGraph
 import com.alexrdclement.mediaplayground.feature.media.control.MediaControlSheet
 import com.alexrdclement.mediaplayground.feature.artist.navigation.ArtistMetadataRoute
 import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadataEntryProvider
@@ -68,6 +71,7 @@ val MediaPlaygroundNavGraph = navGraph(
     albumNavGraph()
     trackMetadataNavGraph()
     artistMetadataNavGraph()
+    imageLibraryNavGraph()
     imageMetadataNavGraph()
     playerNavGraph()
     cameraNavGraph()
@@ -143,6 +147,7 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
             when (item) {
                 MainCatalogItem.AudioLibrary -> navController.navigate(AudioLibraryGraph)
                 MainCatalogItem.Camera -> navController.navigate(CameraGraph)
+                MainCatalogItem.ImageLibrary -> navController.navigate(ImageLibraryGraph)
                 MainCatalogItem.Player -> navController.navigate(PlayerGraph)
             }
         },
@@ -189,6 +194,12 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
         },
     )
     artistMetadataEntryProvider(navController)
+    imageLibraryEntryProvider(
+        navController = navController,
+        onNavigateToImage = { imageId ->
+            navController.navigate(ImageMetadataRoute(imageIdValue = imageId.value))
+        },
+    )
     imageMetadataEntryProvider(navController)
     playerEntryProvider(navController)
     cameraEntryProvider(navController)

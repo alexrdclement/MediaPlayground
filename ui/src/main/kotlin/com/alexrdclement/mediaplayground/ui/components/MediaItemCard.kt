@@ -52,7 +52,9 @@ fun MediaItemCard(
             ) {
                 MediaItemArtwork(
                     imageUrl = mediaItem.thumbnailImageUrl,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .fillMaxSize()
                 )
                 PlayPauseButton(
                     isPlaying = isPlaying,
