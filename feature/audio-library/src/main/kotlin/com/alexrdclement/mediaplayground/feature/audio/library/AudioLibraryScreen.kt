@@ -25,10 +25,8 @@ import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
 import com.alexrdclement.mediaplayground.media.model.audio.Album
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
 import com.alexrdclement.mediaplayground.media.model.audio.Track
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
@@ -46,8 +44,10 @@ private const val MediaPickerAudioMimeType = "audio/*"
 fun AudioLibraryScreen(
     onNavigateToPlayer: (MediaItem) -> Unit,
     onNavigateToAlbum: (Album) -> Unit,
-    onNavigateToTrackEditor: (TrackId) -> Unit = {},
-    onNavigateToAlbumEditor: (AlbumId) -> Unit = {},
+    onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
+    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     viewModel: AudioLibraryViewModel = metroViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AudioLibraryUiState.InitialState)
@@ -77,12 +77,10 @@ fun AudioLibraryScreen(
             }
         },
         onItemPlayPauseClick = viewModel::onPlayPauseClick,
-        onItemLongClick = { mediaItemUi ->
-            when (val mediaItem = mediaItemUi.mediaItem) {
-                is Album -> onNavigateToAlbumEditor(mediaItem.id)
-                is Track -> onNavigateToTrackEditor(mediaItem.id)
-            }
-        },
+        onNavigateToAlbumMetadata = onNavigateToAlbumMetadata,
+        onNavigateToAlbumDelete = onNavigateToAlbumDelete,
+        onNavigateToTrackMetadata = onNavigateToTrackMetadata,
+        onNavigateToTrackDelete = onNavigateToTrackDelete,
     )
 }
 
@@ -92,7 +90,10 @@ fun AudioLibraryScreen(
     onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    onItemLongClick: ((MediaItemUi) -> Unit)? = null,
+    onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
+    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     Scaffold(
         topBar = {
@@ -113,7 +114,10 @@ fun AudioLibraryScreen(
                 onImportClick = onImportClick,
                 onItemClick = onItemClick,
                 onItemPlayPauseClick = onItemPlayPauseClick,
-                onItemLongClick = onItemLongClick,
+                onNavigateToAlbumMetadata = onNavigateToAlbumMetadata,
+                onNavigateToAlbumDelete = onNavigateToAlbumDelete,
+                onNavigateToTrackMetadata = onNavigateToTrackMetadata,
+                onNavigateToTrackDelete = onNavigateToTrackDelete,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
@@ -129,7 +133,10 @@ fun ContentReady(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
-    onItemLongClick: ((MediaItemUi) -> Unit)? = null,
+    onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
+    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     val contentPadding = PaddingValues(horizontal = PaletteTheme.spacing.medium)
         .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
@@ -146,7 +153,10 @@ fun ContentReady(
             onImportClick = onImportClick,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
-            onItemLongClick = onItemLongClick,
+            onNavigateToAlbumMetadata = onNavigateToAlbumMetadata,
+            onNavigateToAlbumDelete = onNavigateToAlbumDelete,
+            onNavigateToTrackMetadata = onNavigateToTrackMetadata,
+            onNavigateToTrackDelete = onNavigateToTrackDelete,
             contentPadding = contentPadding,
         )
         Spacer(

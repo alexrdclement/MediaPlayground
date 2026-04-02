@@ -2,13 +2,15 @@ package com.alexrdclement.mediaplayground.feature.image.library
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -17,15 +19,18 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil3.compose.AsyncImage
 import com.alexrdclement.mediaplayground.media.model.image.Image
 import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
@@ -44,7 +49,8 @@ private const val MediaPickerImageMimeType = "image/*"
 
 @Composable
 fun ImageLibraryScreen(
-    onNavigateToImage: (ImageId) -> Unit,
+    onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
+    onNavigateToImageDelete: (imageId: String, displayName: String) -> Unit = { _, _ -> },
     viewModel: ImageLibraryViewModel = metroViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(ImageLibraryUiState.Loading)
@@ -56,7 +62,8 @@ fun ImageLibraryScreen(
     ImageLibraryScreen(
         uiState = uiState,
         onImportClick = { mediaPickerLauncher.launch(MediaPickerImageMimeType) },
-        onImageClick = { image -> onNavigateToImage(image.id) },
+        onNavigateToImageMetadata = onNavigateToImageMetadata,
+        onNavigateToImageDelete = onNavigateToImageDelete,
     )
 }
 
@@ -64,7 +71,8 @@ fun ImageLibraryScreen(
 fun ImageLibraryScreen(
     uiState: ImageLibraryUiState,
     onImportClick: () -> Unit,
-    onImageClick: (Image) -> Unit,
+    onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
+    onNavigateToImageDelete: (imageId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     Scaffold(
         topBar = {
@@ -108,7 +116,8 @@ fun ImageLibraryScreen(
             )
             is ImageLibraryUiState.Content -> ImageGrid(
                 uiState = uiState,
-                onImageClick = onImageClick,
+                onNavigateToImageMetadata = onNavigateToImageMetadata,
+                onNavigateToImageDelete = onNavigateToImageDelete,
                 contentPadding = innerPadding,
                 modifier = Modifier
                     .fillMaxSize()
@@ -134,10 +143,12 @@ private fun EmptyContent(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ImageGrid(
     uiState: ImageLibraryUiState.Content,
-    onImageClick: (Image) -> Unit,
+    onNavigateToImageMetadata: (imageIdValue: String) -> Unit,
+    onNavigateToImageDelete: (imageId: String, displayName: String) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -151,11 +162,30 @@ private fun ImageGrid(
     ) {
         items(images.itemCount) { index ->
             val image = images[index] ?: return@items
-            MediaItemArtwork(
-                imageUrl = image.uri,
-                modifier = Modifier
-                    .clickable { onImageClick(image) },
-            )
+            var dropdownExpanded by remember { mutableStateOf(false) }
+            var touchOffset by remember { mutableStateOf(Offset.Zero) }
+            Box {
+                MediaItemArtwork(
+                    imageUrl = image.uri,
+                    modifier = Modifier
+                        .pointerInput(Unit) {
+                            awaitEachGesture {
+                                awaitFirstDown(requireUnconsumed = false).also { touchOffset = it.position }
+                            }
+                        }
+                        .combinedClickable(
+                            onClick = {},
+                            onLongClick = { dropdownExpanded = true },
+                        ),
+                )
+                ImageContextMenu(
+                    expanded = dropdownExpanded,
+                    offset = touchOffset,
+                    onDismissRequest = { dropdownExpanded = false },
+                    onNavigateToMetadata = { onNavigateToImageMetadata(image.id.value) },
+                    onNavigateToDelete = { onNavigateToImageDelete(image.id.value, image.uri) },
+                )
+            }
         }
     }
 }
@@ -167,7 +197,6 @@ private fun EmptyPreview() {
         ImageLibraryScreen(
             uiState = ImageLibraryUiState.Empty,
             onImportClick = {},
-            onImageClick = {},
         )
     }
 }
@@ -182,7 +211,6 @@ private fun ContentPreview() {
                 images = flowOf(PagingData.from(listOf(image))),
             ),
             onImportClick = {},
-            onImageClick = {},
         )
     }
 }

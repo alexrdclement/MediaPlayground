@@ -20,13 +20,17 @@ fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
     onNavigateToAlbum: (Album) -> Unit,
     onNavigateToTrackMetadata: (TrackId) -> Unit = {},
     onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},
+    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     entry<AudioLibraryGraph> {
         AudioLibraryScreen(
             onNavigateToPlayer = onNavigateToPlayer,
             onNavigateToAlbum = onNavigateToAlbum,
-            onNavigateToTrackEditor = onNavigateToTrackMetadata,
-            onNavigateToAlbumEditor = onNavigateToAlbumMetadata,
+            onNavigateToTrackMetadata = { onNavigateToTrackMetadata(TrackId(it)) },
+            onNavigateToAlbumMetadata = { onNavigateToAlbumMetadata(AlbumId(it)) },
+            onNavigateToAlbumDelete = onNavigateToAlbumDelete,
+            onNavigateToTrackDelete = onNavigateToTrackDelete,
         )
     }
 }

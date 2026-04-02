@@ -21,9 +21,11 @@ import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -48,7 +50,10 @@ class AlbumViewModel(
         private fun tag(methodName: String) = "$tag#$methodName"
     }
 
+    private val _hasLoadedAlbum = MutableStateFlow(false)
+
     private val album = albumRepository.getAlbumFlow(albumId)
+        .onEach { if (it != null) _hasLoadedAlbum.value = true }
         .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5_000L),
@@ -72,9 +77,10 @@ class AlbumViewModel(
         album,
         isPlaying,
         loadedMediaItem,
-    ) { album, isPlaying, loadedMediaItem ->
+        _hasLoadedAlbum,
+    ) { album, isPlaying, loadedMediaItem, hasLoadedAlbum ->
         if (album == null) {
-            return@combine AlbumUiState.Loading
+            return@combine if (hasLoadedAlbum) AlbumUiState.NotFound else AlbumUiState.Loading
         }
 
         val tracks = album.tracks.map { track ->

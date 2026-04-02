@@ -48,7 +48,10 @@ import com.alexrdclement.palette.components.media.model.MediaItem as UiMediaItem
 @Composable
 fun MediaControlSheet(
     mediaControlSheetState: MediaControlSheetState,
-    onItemLongClick: (MediaItemUi) -> Unit = {},
+    onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
+    onNavigateToArtistDelete: (artistId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     val viewModel = metroViewModel<MediaControlSheetViewModel>()
     val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
@@ -70,7 +73,10 @@ fun MediaControlSheet(
         onSeek = viewModel::onSeek,
         onItemClick = viewModel::onItemClick,
         onItemPlayPauseClick = viewModel::onItemPlayPauseClick,
-        onItemLongClick = onItemLongClick,
+        onNavigateToTrackMetadata = onNavigateToTrackMetadata,
+        onNavigateToTrackDelete = onNavigateToTrackDelete,
+        onNavigateToArtistMetadata = onNavigateToArtistMetadata,
+        onNavigateToArtistDelete = onNavigateToArtistDelete,
     )
 }
 
@@ -88,7 +94,10 @@ fun MediaControlSheet(
     onSeek: (Duration) -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    onItemLongClick: (MediaItemUi) -> Unit = {},
+    onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
+    onNavigateToArtistDelete: (artistId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isPlaying = transportState == TransportState.Playing
@@ -195,7 +204,12 @@ fun MediaControlSheet(
                             onSeek = onSeek,
                             onItemClick = onItemClick,
                             onItemPlayPauseClick = onItemPlayPauseClick,
-                            onItemLongClick = onItemLongClick,
+                            onNavigateToTrackMetadata = onNavigateToTrackMetadata,
+                            onNavigateToTrackDelete = onNavigateToTrackDelete,
+                            onNavigateToLoadedItemMetadata = { onNavigateToTrackMetadata(mediaItem.id.value) },
+                            onNavigateToLoadedItemDelete = { onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title) },
+                            onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) } },
+                            onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id, it.name ?: "") } },
                             contentPadding = contentPadding.copy(
                                 top = PaletteTheme.spacing.medium,
                             )

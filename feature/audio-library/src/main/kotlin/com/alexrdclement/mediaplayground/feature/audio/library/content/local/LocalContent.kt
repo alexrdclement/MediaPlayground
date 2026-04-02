@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.alexrdclement.mediaplayground.feature.audio.library.AlbumContextMenu
+import com.alexrdclement.mediaplayground.feature.audio.library.TrackContextMenu
 import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
@@ -33,7 +36,10 @@ internal fun LocalContent(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     contentPadding: PaddingValues = PaddingValues(horizontal = PaletteTheme.spacing.medium),
-    onItemLongClick: ((MediaItemUi) -> Unit)? = null,
+    onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
+    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     AudioLibraryContent(
         headerText = "Imported",
@@ -63,7 +69,10 @@ internal fun LocalContent(
                 localContentState = localContentState,
                 onItemClick = onItemClick,
                 onItemPlayPauseClick = onItemPlayPauseClick,
-                onItemLongClick = onItemLongClick,
+                onNavigateToAlbumMetadata = onNavigateToAlbumMetadata,
+                onNavigateToAlbumDelete = onNavigateToAlbumDelete,
+                onNavigateToTrackMetadata = onNavigateToTrackMetadata,
+                onNavigateToTrackDelete = onNavigateToTrackDelete,
                 contentPadding = contentPadding,
             )
         }
@@ -94,7 +103,10 @@ private fun Content(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     contentPadding: PaddingValues,
-    onItemLongClick: ((MediaItemUi) -> Unit)? = null,
+    onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
+    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
@@ -108,19 +120,35 @@ private fun Content(
             mediaItems = albums,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
-            onItemLongClick = onItemLongClick,
             title = "Imported albums",
             itemWidth = MediaItemWidthCompact,
             contentPadding = contentPadding,
+            itemOverlayContent = { mediaItemUi, expanded, offset, onDismiss ->
+                AlbumContextMenu(
+                    expanded = expanded,
+                    offset = offset,
+                    onDismissRequest = onDismiss,
+                    onNavigateToMetadata = { onNavigateToAlbumMetadata(mediaItemUi.mediaItem.id.value) },
+                    onNavigateToDelete = { onNavigateToAlbumDelete(mediaItemUi.mediaItem.id.value, mediaItemUi.mediaItem.title) },
+                )
+            },
         )
         MediaItemRow(
             mediaItems = tracks,
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
-            onItemLongClick = onItemLongClick,
             title = "Imported tracks",
             itemWidth = MediaItemWidthCompact,
             contentPadding = contentPadding,
+            itemOverlayContent = { mediaItemUi, expanded, offset, onDismiss ->
+                TrackContextMenu(
+                    expanded = expanded,
+                    offset = offset,
+                    onDismissRequest = onDismiss,
+                    onNavigateToMetadata = { onNavigateToTrackMetadata(mediaItemUi.mediaItem.id.value) },
+                    onNavigateToDelete = { onNavigateToTrackDelete(mediaItemUi.mediaItem.id.value, mediaItemUi.mediaItem.title) },
+                )
+            },
         )
     }
 }

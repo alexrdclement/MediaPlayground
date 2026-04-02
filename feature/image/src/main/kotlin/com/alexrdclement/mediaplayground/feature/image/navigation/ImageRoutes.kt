@@ -17,3 +17,14 @@ data class ImageMetadataRoute(
     override val pathSegment: PathSegment = imageIdValue.toPathSegment()
     val imageId: ImageId get() = ImageId(imageIdValue)
 }
+
+@Serializable
+@SerialName("image-delete")
+data class ImageDeleteRoute(
+    val imageIdValue: String,
+    val displayName: String = "",
+) : ImageNavRoute {
+    override val pathSegment: PathSegment = imageIdValue.toPathSegment()
+    val imageId: ImageId get() = ImageId(imageIdValue)
+}
+

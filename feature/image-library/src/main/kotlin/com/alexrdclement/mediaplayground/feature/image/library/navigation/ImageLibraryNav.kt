@@ -13,11 +13,13 @@ fun NavGraphBuilder.imageLibraryNavGraph() {
 
 fun EntryProviderScope<NavKey>.imageLibraryEntryProvider(
     navController: NavController,
-    onNavigateToImage: (ImageId) -> Unit = {},
+    onNavigateToImageMetadata: (ImageId) -> Unit = {},
+    onNavigateToImageDelete: (imageId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     entry<ImageLibraryGraph> {
         ImageLibraryScreen(
-            onNavigateToImage = onNavigateToImage,
+            onNavigateToImageMetadata = { onNavigateToImageMetadata(ImageId(it)) },
+            onNavigateToImageDelete = onNavigateToImageDelete,
         )
     }
 }

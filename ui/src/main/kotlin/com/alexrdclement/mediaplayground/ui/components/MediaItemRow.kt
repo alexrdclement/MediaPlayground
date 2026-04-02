@@ -1,6 +1,8 @@
 package com.alexrdclement.mediaplayground.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
@@ -10,7 +12,12 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -41,6 +48,7 @@ fun MediaItemRow(
     itemWidth: Dp = MediaItemWidthDefault,
     title: String? = null,
     onItemLongClick: ((MediaItemUi) -> Unit)? = null,
+    itemOverlayContent: (@Composable BoxScope.(MediaItemUi, Boolean, Offset, () -> Unit) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -65,16 +73,38 @@ fun MediaItemRow(
                 key = mediaItems.itemKey { it.mediaItem.id.value }
             ) { index ->
                 val mediaItem = mediaItems[index] ?: return@items
-                MediaItemCard(
-                    mediaItem = mediaItem.mediaItem,
-                    isPlaybackEnabled = mediaItem.mediaItem.isPlayable,
-                    isPlaying = mediaItem.isPlaying,
-                    onClick = { onItemClick(mediaItem) },
-                    onPlayPauseClick = { onItemPlayPauseClick(mediaItem) },
-                    onLongClick = onItemLongClick?.let { { it(mediaItem) } },
-                    modifier = Modifier
-                        .width(itemWidth)
-                )
+                if (itemOverlayContent != null) {
+                    var dropdownExpanded by remember { mutableStateOf(false) }
+                    var touchOffset by remember { mutableStateOf(Offset.Zero) }
+                    Box {
+                        MediaItemCard(
+                            mediaItem = mediaItem.mediaItem,
+                            isPlaybackEnabled = mediaItem.mediaItem.isPlayable,
+                            isPlaying = mediaItem.isPlaying,
+                            onClick = { onItemClick(mediaItem) },
+                            onPlayPauseClick = { onItemPlayPauseClick(mediaItem) },
+                            onLongClick = { offset: Offset ->
+                                touchOffset = offset
+                                dropdownExpanded = true
+                                onItemLongClick?.invoke(mediaItem)
+                            },
+                            modifier = Modifier.width(itemWidth),
+                        )
+                        if (dropdownExpanded) {
+                            itemOverlayContent(this, mediaItem, true, touchOffset) { dropdownExpanded = false }
+                        }
+                    }
+                } else {
+                    MediaItemCard(
+                        mediaItem = mediaItem.mediaItem,
+                        isPlaybackEnabled = mediaItem.mediaItem.isPlayable,
+                        isPlaying = mediaItem.isPlaying,
+                        onClick = { onItemClick(mediaItem) },
+                        onPlayPauseClick = { onItemPlayPauseClick(mediaItem) },
+                        onLongClick = onItemLongClick?.let { { it(mediaItem) } },
+                        modifier = Modifier.width(itemWidth),
+                    )
+                }
             }
 
             if (mediaItems.loadState.append == LoadState.Loading) {

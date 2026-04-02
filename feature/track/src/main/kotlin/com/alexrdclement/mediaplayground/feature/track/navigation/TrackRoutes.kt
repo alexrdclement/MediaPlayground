@@ -15,3 +15,12 @@ data class TrackMetadataRoute(
 ) : TrackNavRoute {
     override val pathSegment: PathSegment = trackIdValue.toPathSegment()
 }
+
+@Serializable
+@SerialName("track-delete")
+data class TrackDeleteRoute(
+    val trackIdValue: String,
+    val displayName: String = "",
+) : TrackNavRoute {
+    override val pathSegment: PathSegment = trackIdValue.toPathSegment()
+}

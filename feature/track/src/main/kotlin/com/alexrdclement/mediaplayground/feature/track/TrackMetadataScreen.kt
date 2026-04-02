@@ -49,7 +49,7 @@ import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 fun TrackMetadataScreen(
     trackId: TrackId,
     onNavigateBack: () -> Unit,
-    onNavigateToArtistMetadata: (artistId: String) -> Unit,
+    onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
     val viewModel = assistedMetroViewModel<TrackMetadataViewModel, TrackMetadataViewModel.Factory>(
         key = trackId.value,
@@ -74,7 +74,7 @@ fun TrackMetadataScreen(
     uiState: TrackMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (title: String, trackNumber: Int?, notes: String?) -> Unit,
-    onNavigateToArtistMetadata: (artistId: String) -> Unit,
+    onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
     val titleState = rememberTextFieldState()
     val trackNumberState = rememberTextFieldState()
@@ -185,7 +185,7 @@ private fun LoadedContent(
             items(state.track.artists, key = { it.id }) { artist ->
                 ArtistRow(
                     artist = artist,
-                    onClick = { onNavigateToArtistMetadata(artist.id) },
+                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id) },
                 )
             }
         }
@@ -206,14 +206,14 @@ private fun LoadedContent(
 @Composable
 private fun ArtistRow(
     artist: SimpleArtist,
-    onClick: () -> Unit,
+    onNavigateToMetadata: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable(onClick = onNavigateToMetadata)
             .padding(vertical = PaletteTheme.spacing.small),
     ) {
         Text(
@@ -238,7 +238,6 @@ private fun Preview() {
             ),
             onNavigateBack = {},
             onSaveClick = { _, _, _ -> },
-            onNavigateToArtistMetadata = {},
         )
     }
 }
