@@ -74,6 +74,11 @@ class LocalTrackRepositoryImpl @Inject constructor(
     override suspend fun updateTrackNotes(id: TrackId, notes: String?) =
         localTrackDataStore.updateTrackNotes(id, notes)
 
+    override suspend fun deleteTrack(id: TrackId) {
+        val track = localTrackDataStore.getTrack(id) ?: return
+        localTrackDataStore.deleteTrack(track)
+    }
+
     override suspend fun putTrack(track: Track) =
         localTrackDataStore.putTrack(track)
 

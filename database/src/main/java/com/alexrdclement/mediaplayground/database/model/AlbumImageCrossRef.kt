@@ -13,11 +13,13 @@ import androidx.room.Index
             entity = Album::class,
             parentColumns = ["id"],
             childColumns = ["album_id"],
+            onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
             entity = Image::class,
             parentColumns = ["id"],
             childColumns = ["image_id"],
+            onDelete = ForeignKey.CASCADE,
         ),
     ],
     indices = [

@@ -19,12 +19,13 @@ class FakeAlbumDao : AlbumDao {
     }
 
     override suspend fun insert(album: Album) {
-        val existingAlbum = albums.value.find { it.id == album.id }
-        val newAlbums = albums.value.toMutableSet()
-        if (existingAlbum != null) {
-            newAlbums -= existingAlbum
-        }
-        albums.value = newAlbums + album
+        if (albums.value.any { it.id == album.id }) return
+        albums.value = albums.value + album
+    }
+
+    override suspend fun update(album: Album) {
+        val existing = albums.value.find { it.id == album.id } ?: return
+        albums.value = albums.value - existing + album
     }
 
     override suspend fun delete(id: String) {

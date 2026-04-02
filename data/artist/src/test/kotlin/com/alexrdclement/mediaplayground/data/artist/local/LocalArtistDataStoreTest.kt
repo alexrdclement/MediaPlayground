@@ -82,4 +82,15 @@ class LocalArtistDataStoreTest {
         assertNotNull(result)
         assertEquals("New Name", result.name)
     }
+
+    @Test
+    fun updateArtistNotes_updatesNotes() = runTest {
+        fixture.artistDao.insert(FakeSimpleArtist1.toArtistEntity())
+
+        fixture.localArtistDataStore.updateArtistNotes(FakeSimpleArtist1.id, "New notes")
+
+        val result = fixture.localArtistDataStore.getArtist(FakeSimpleArtist1.id)
+        assertNotNull(result)
+        assertEquals("New notes", result.notes)
+    }
 }

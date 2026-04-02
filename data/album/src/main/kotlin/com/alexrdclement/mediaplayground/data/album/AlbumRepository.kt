@@ -13,4 +13,5 @@ interface AlbumRepository {
     fun getAlbumPagingData(config: PagingConfig): Flow<PagingData<Album>>
     suspend fun updateAlbumTitle(id: AlbumId, title: String)
     suspend fun updateAlbumNotes(id: AlbumId, notes: String?)
+    suspend fun deleteAlbum(id: AlbumId)
 }

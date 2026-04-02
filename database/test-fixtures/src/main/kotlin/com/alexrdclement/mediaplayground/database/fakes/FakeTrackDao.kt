@@ -24,12 +24,14 @@ class FakeTrackDao : TrackDao {
 
     override suspend fun insert(vararg track: Track) {
         for (newTrack in track) {
-            val existingTrack = tracks.value.find { it.id == newTrack.id }
-            if (existingTrack != null) {
-                tracks.value -= existingTrack
-            }
+            if (tracks.value.any { it.id == newTrack.id }) continue
             tracks.value += newTrack
         }
+    }
+
+    override suspend fun update(track: Track) {
+        val existing = tracks.value.find { it.id == track.id } ?: return
+        tracks.value = tracks.value - existing + track
     }
 
     override suspend fun delete(id: String) {

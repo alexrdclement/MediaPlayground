@@ -14,6 +14,7 @@ import kotlin.time.Instant
             entity = Album::class,
             parentColumns = ["id"],
             childColumns = ["album_id"],
+            onDelete = ForeignKey.CASCADE,
         ),
     ],
     indices = [

@@ -29,6 +29,9 @@ class LocalImageRepositoryImpl @Inject constructor(
     override suspend fun updateImageNotes(id: ImageId, notes: String?) =
         localImageDataStore.updateImageNotes(id, notes)
 
+    override suspend fun deleteImage(id: ImageId) =
+        localImageDataStore.deleteImage(id)
+
     override suspend fun importImages(uris: List<Uri>) {
         val imagesDir = pathProvider.getImagesDir()
         mediaImporter.importImagesFromDisk(

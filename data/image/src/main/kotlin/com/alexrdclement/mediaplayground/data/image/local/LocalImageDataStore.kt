@@ -59,6 +59,10 @@ class LocalImageDataStore @Inject constructor(
 
     suspend fun updateImageNotes(imageId: ImageId, notes: String?) {
         val image = imageDao.getImage(imageId.value) ?: return
-        imageDao.insert(image.copy(notes = notes))
+        imageDao.update(image.copy(notes = notes))
+    }
+
+    suspend fun deleteImage(imageId: ImageId) {
+        imageDao.delete(imageId.value)
     }
 }
