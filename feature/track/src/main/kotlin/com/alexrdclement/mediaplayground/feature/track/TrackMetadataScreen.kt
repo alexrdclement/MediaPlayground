@@ -49,6 +49,7 @@ import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 fun TrackMetadataScreen(
     trackId: TrackId,
     onNavigateBack: () -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
     val viewModel = assistedMetroViewModel<TrackMetadataViewModel, TrackMetadataViewModel.Factory>(
@@ -64,6 +65,7 @@ fun TrackMetadataScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onSaveClick = viewModel::onSaveClick,
+        onNavigateToDelete = onNavigateToDelete,
         onNavigateToArtistMetadata = onNavigateToArtistMetadata,
     )
 }
@@ -74,6 +76,7 @@ fun TrackMetadataScreen(
     uiState: TrackMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (title: String, trackNumber: Int?, notes: String?) -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
     val titleState = rememberTextFieldState()
@@ -91,6 +94,16 @@ fun TrackMetadataScreen(
             TopBar(
                 title = { Text("Track", style = PaletteTheme.styles.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                actions = if (uiState is TrackMetadataUiState.Loaded) {
+                    {
+                        Button(
+                            style = ButtonStyleToken.Secondary,
+                            onClick = { onNavigateToDelete(uiState.track.title) },
+                        ) {
+                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                        }
+                    }
+                } else null,
             )
         },
         floatingAction = {

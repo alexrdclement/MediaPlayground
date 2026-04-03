@@ -19,11 +19,13 @@ fun NavGraphBuilder.artistMetadataNavGraph() {
 
 fun EntryProviderScope<NavKey>.artistMetadataEntryProvider(
     navController: NavController,
+    onNavigateToArtistDelete: (artistId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     entry<ArtistMetadataRoute> { route ->
         ArtistMetadataScreen(
             artistId = route.artistIdValue,
             onNavigateBack = { navController.goBack() },
+            onNavigateToDelete = { displayName -> onNavigateToArtistDelete(route.artistIdValue, displayName) },
         )
     }
     entry<ArtistDeleteRoute>(metadata = DialogSceneStrategy.dialog()) { route ->

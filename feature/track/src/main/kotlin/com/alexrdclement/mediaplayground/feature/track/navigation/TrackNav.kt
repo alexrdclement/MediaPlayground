@@ -20,12 +20,14 @@ fun NavGraphBuilder.trackMetadataNavGraph() {
 
 fun EntryProviderScope<NavKey>.trackMetadataEntryProvider(
     navController: NavController,
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
     entry<TrackMetadataRoute> { route ->
         TrackMetadataScreen(
             trackId = TrackId(route.trackIdValue),
             onNavigateBack = { navController.goBack() },
+            onNavigateToDelete = { displayName -> onNavigateToTrackDelete(route.trackIdValue, displayName) },
             onNavigateToArtistMetadata = onNavigateToArtistMetadata,
         )
     }

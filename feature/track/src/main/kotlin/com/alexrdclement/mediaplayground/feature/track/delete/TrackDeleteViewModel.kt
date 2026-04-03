@@ -3,7 +3,9 @@ package com.alexrdclement.mediaplayground.feature.track.delete
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.track.TrackRepository
+import com.alexrdclement.mediaplayground.media.engine.deleteIfNecessary
 import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
@@ -24,6 +26,7 @@ sealed class DeleteState {
 class TrackDeleteViewModel(
     @Assisted val idValue: String,
     private val trackRepository: TrackRepository,
+    private val mediaSessionControl: MediaSessionControl,
 ) : ViewModel() {
 
     @AssistedFactory
@@ -37,7 +40,9 @@ class TrackDeleteViewModel(
     fun onDeleteConfirmed() {
         viewModelScope.launch {
             _deleteState.update { DeleteState.Deleting }
-            trackRepository.deleteTrack(TrackId(idValue))
+            val trackId = TrackId(idValue)
+            mediaSessionControl.getMediaEngineControl().playlistControl.deleteIfNecessary(trackId)
+            trackRepository.deleteTrack(trackId)
             _deleteState.update { DeleteState.Deleted }
         }
     }

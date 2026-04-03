@@ -38,6 +38,7 @@ import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 fun ArtistMetadataScreen(
     artistId: String,
     onNavigateBack: () -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
 ) {
     val viewModel: ArtistMetadataViewModel = assistedMetroViewModel<ArtistMetadataViewModel, ArtistMetadataViewModel.Factory>(
         key = artistId,
@@ -52,6 +53,7 @@ fun ArtistMetadataScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onSaveClick = viewModel::onSaveClick,
+        onNavigateToDelete = onNavigateToDelete,
     )
 }
 
@@ -61,6 +63,7 @@ fun ArtistMetadataScreen(
     uiState: ArtistMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (name: String, notes: String?) -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
 ) {
     val nameState = rememberTextFieldState()
     val notesState = rememberTextFieldState()
@@ -75,6 +78,16 @@ fun ArtistMetadataScreen(
             TopBar(
                 title = { Text("Artist", style = PaletteTheme.styles.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                actions = if (uiState is ArtistMetadataUiState.Loaded) {
+                    {
+                        Button(
+                            style = ButtonStyleToken.Secondary,
+                            onClick = { onNavigateToDelete(uiState.artist.name ?: "") },
+                        ) {
+                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                        }
+                    }
+                } else null,
             )
         },
         floatingAction = {

@@ -211,11 +211,19 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
     )
     trackMetadataEntryProvider(
         navController = navController,
+        onNavigateToTrackDelete = { trackId, displayName ->
+            navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
+        },
         onNavigateToArtistMetadata = { artistId ->
             navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
         },
     )
-    artistMetadataEntryProvider(navController)
+    artistMetadataEntryProvider(
+        navController = navController,
+        onNavigateToArtistDelete = { artistId, displayName ->
+            navController.navigate(ArtistDeleteRoute(artistIdValue = artistId, displayName = displayName))
+        },
+    )
     imageLibraryEntryProvider(
         navController = navController,
         onNavigateToImageMetadata = { imageId ->
@@ -225,7 +233,12 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
             navController.navigate(ImageDeleteRoute(imageIdValue = imageId, displayName = displayName))
         },
     )
-    imageMetadataEntryProvider(navController)
+    imageMetadataEntryProvider(
+        navController = navController,
+        onNavigateToImageDelete = { imageId, displayName ->
+            navController.navigate(ImageDeleteRoute(imageIdValue = imageId, displayName = displayName))
+        },
+    )
     playerEntryProvider(navController)
     cameraEntryProvider(navController)
     errorEntryProvider(navController)

@@ -49,6 +49,7 @@ fun EntryProviderScope<NavKey>.albumEntryProvider(
         AlbumMetadataScreen(
             albumId = route.albumId,
             onNavigateBack = { navController.goBack() },
+            onNavigateToDelete = { displayName -> onNavigateToAlbumDelete(route.albumId.value, displayName) },
             onNavigateToArtistMetadata = onNavigateToArtistMetadata,
             onNavigateToImageMetadata = { onNavigateToImageMetadata(ImageId(it)) },
         )

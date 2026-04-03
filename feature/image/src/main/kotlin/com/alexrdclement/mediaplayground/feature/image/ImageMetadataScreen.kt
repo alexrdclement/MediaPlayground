@@ -40,6 +40,7 @@ import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 fun ImageMetadataScreen(
     imageId: ImageId,
     onNavigateBack: () -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
 ) {
     val viewModel: ImageMetadataViewModel = assistedMetroViewModel<ImageMetadataViewModel, ImageMetadataViewModel.Factory>(
         key = imageId.value,
@@ -54,6 +55,7 @@ fun ImageMetadataScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onSaveClick = viewModel::onSaveClick,
+        onNavigateToDelete = onNavigateToDelete,
     )
 }
 
@@ -63,6 +65,7 @@ fun ImageMetadataScreen(
     uiState: ImageMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (notes: String?) -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
 ) {
     val notesState = rememberTextFieldState()
     LaunchedEffect((uiState as? ImageMetadataUiState.Loaded)?.image?.id) {
@@ -75,6 +78,16 @@ fun ImageMetadataScreen(
             TopBar(
                 title = { Text("Image", style = PaletteTheme.styles.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                actions = if (uiState is ImageMetadataUiState.Loaded) {
+                    {
+                        Button(
+                            style = ButtonStyleToken.Secondary,
+                            onClick = { onNavigateToDelete(uiState.image.uri) },
+                        ) {
+                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                        }
+                    }
+                } else null,
             )
         },
         floatingAction = {

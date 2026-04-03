@@ -19,11 +19,13 @@ fun NavGraphBuilder.imageMetadataNavGraph() {
 
 fun EntryProviderScope<NavKey>.imageMetadataEntryProvider(
     navController: NavController,
+    onNavigateToImageDelete: (imageId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     entry<ImageMetadataRoute> { route ->
         ImageMetadataScreen(
             imageId = route.imageId,
             onNavigateBack = { navController.goBack() },
+            onNavigateToDelete = { displayName -> onNavigateToImageDelete(route.imageId.value, displayName) },
         )
     }
     entry<ImageDeleteRoute>(metadata = DialogSceneStrategy.dialog()) { route ->

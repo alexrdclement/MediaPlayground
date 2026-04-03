@@ -48,6 +48,7 @@ import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 fun AlbumMetadataScreen(
     albumId: AlbumId,
     onNavigateBack: () -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
     onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
 ) {
@@ -64,6 +65,7 @@ fun AlbumMetadataScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onSaveClick = viewModel::onSaveClick,
+        onNavigateToDelete = onNavigateToDelete,
         onNavigateToArtistMetadata = onNavigateToArtistMetadata,
         onNavigateToImageMetadata = onNavigateToImageMetadata,
     )
@@ -75,6 +77,7 @@ fun AlbumMetadataScreen(
     uiState: AlbumMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (title: String, notes: String?) -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
     onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
 ) {
@@ -91,6 +94,16 @@ fun AlbumMetadataScreen(
             TopBar(
                 title = { Text("Album", style = PaletteTheme.styles.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                actions = if (uiState is AlbumMetadataUiState.Loaded) {
+                    {
+                        Button(
+                            style = ButtonStyleToken.Secondary,
+                            onClick = { onNavigateToDelete(uiState.album.title) },
+                        ) {
+                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                        }
+                    }
+                } else null,
             )
         },
         floatingAction = {
