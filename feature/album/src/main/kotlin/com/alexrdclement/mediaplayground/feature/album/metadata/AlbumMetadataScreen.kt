@@ -61,6 +61,9 @@ fun AlbumMetadataScreen(
     LaunchedEffect(Unit) {
         viewModel.savedEvent.collect { onNavigateBack() }
     }
+    LaunchedEffect(Unit) {
+        viewModel.deletedEvent.collect { onNavigateBack() }
+    }
     AlbumMetadataScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,

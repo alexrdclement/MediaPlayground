@@ -51,6 +51,9 @@ fun ImageMetadataScreen(
     LaunchedEffect(Unit) {
         viewModel.savedEvent.collect { onNavigateBack() }
     }
+    LaunchedEffect(Unit) {
+        viewModel.deletedEvent.collect { onNavigateBack() }
+    }
     ImageMetadataScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,

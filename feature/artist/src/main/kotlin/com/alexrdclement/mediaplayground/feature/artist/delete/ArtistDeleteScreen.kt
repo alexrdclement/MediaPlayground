@@ -15,7 +15,7 @@ fun ArtistDeleteScreen(
     onNavigateBack: () -> Unit,
 ) {
     val viewModel = assistedMetroViewModel<ArtistDeleteViewModel, ArtistDeleteViewModel.Factory>(
-        key = artistIdValue,
+        key = "delete_${artistIdValue}",
     ) { create(artistIdValue) }
     val deleteState by viewModel.deleteState.collectAsStateWithLifecycle()
 

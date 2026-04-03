@@ -58,8 +58,12 @@ fun TrackMetadataScreen(
         create(trackId.value)
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(TrackMetadataUiState.Loading)
+
     LaunchedEffect(Unit) {
         viewModel.savedEvent.collect { onNavigateBack() }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.deletedEvent.collect { onNavigateBack() }
     }
     TrackMetadataScreen(
         uiState = uiState,

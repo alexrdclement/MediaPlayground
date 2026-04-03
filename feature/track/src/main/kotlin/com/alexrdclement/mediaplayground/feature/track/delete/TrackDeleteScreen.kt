@@ -16,7 +16,7 @@ fun TrackDeleteScreen(
     onNavigateBack: () -> Unit,
 ) {
     val viewModel = assistedMetroViewModel<TrackDeleteViewModel, TrackDeleteViewModel.Factory>(
-        key = trackId.value,
+        key = "delete_${trackId.value}",
     ) { create(trackId.value) }
     val deleteState by viewModel.deleteState.collectAsStateWithLifecycle()
 

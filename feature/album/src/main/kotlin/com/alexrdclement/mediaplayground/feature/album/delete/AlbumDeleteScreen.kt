@@ -16,7 +16,7 @@ fun AlbumDeleteScreen(
     onNavigateBack: () -> Unit,
 ) {
     val viewModel = assistedMetroViewModel<AlbumDeleteViewModel, AlbumDeleteViewModel.Factory>(
-        key = albumId.value,
+        key = "delete_${albumId.value}",
     ) { create(albumId.value) }
     val deleteState by viewModel.deleteState.collectAsStateWithLifecycle()
 

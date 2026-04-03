@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -42,8 +43,10 @@ class ArtistMetadataViewModel(
     }
 
     val savedEvent = UiEventState<Unit?>()
+    val deletedEvent = UiEventState<Unit?>()
 
     private val _isSaving = MutableStateFlow(false)
+    private var hasLoaded = false
 
     val uiState: StateFlow<ArtistMetadataUiState> = combine(
         artistRepository.getArtistFlow(artistId),
@@ -56,6 +59,9 @@ class ArtistMetadataViewModel(
             isSaving = isSaving,
             isMediaItemLoaded = loadedMediaItem != null,
         )
+    }.onEach { state ->
+        if (state is ArtistMetadataUiState.Loaded) hasLoaded = true
+        else if (state is ArtistMetadataUiState.Error && hasLoaded) deletedEvent.fire()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

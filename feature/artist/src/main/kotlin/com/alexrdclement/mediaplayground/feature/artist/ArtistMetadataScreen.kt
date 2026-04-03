@@ -49,6 +49,9 @@ fun ArtistMetadataScreen(
     LaunchedEffect(Unit) {
         viewModel.savedEvent.collect { onNavigateBack() }
     }
+    LaunchedEffect(Unit) {
+        viewModel.deletedEvent.collect { onNavigateBack() }
+    }
     ArtistMetadataScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,

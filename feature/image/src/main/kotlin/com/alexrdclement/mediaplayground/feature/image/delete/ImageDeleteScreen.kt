@@ -16,7 +16,7 @@ fun ImageDeleteScreen(
     onNavigateBack: () -> Unit,
 ) {
     val viewModel = assistedMetroViewModel<ImageDeleteViewModel, ImageDeleteViewModel.Factory>(
-        key = imageId.value,
+        key = "delete_${imageId.value}",
     ) { create(imageId.value) }
     val deleteState by viewModel.deleteState.collectAsStateWithLifecycle()
 
