@@ -118,7 +118,10 @@ fun MediaPlaygroundNav(
 
     NavDisplay(
         backStack = navController.state.backStack,
-        sceneStrategy = DialogSceneStrategy<NavKey>() then SinglePaneSceneStrategy(),
+        sceneStrategies = listOf(
+            DialogSceneStrategy(),
+            SinglePaneSceneStrategy(),
+        ),
         entryProvider = entryProvider {
             mediaPlaygroundEntryProvider(
                 navController = navController,
