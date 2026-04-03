@@ -27,3 +27,14 @@ data class AlbumMetadataRoute(
     override val pathSegment: PathSegment = albumIdValue.toPathSegment()
     val albumId: AlbumId get() = AlbumId(albumIdValue)
 }
+
+@Serializable
+@SerialName("album-delete")
+data class AlbumDeleteRoute(
+    val albumIdValue: String,
+    val displayName: String = "",
+) : AlbumNavRoute {
+    override val pathSegment: PathSegment = albumIdValue.toPathSegment()
+    val albumId: AlbumId get() = AlbumId(albumIdValue)
+}
+

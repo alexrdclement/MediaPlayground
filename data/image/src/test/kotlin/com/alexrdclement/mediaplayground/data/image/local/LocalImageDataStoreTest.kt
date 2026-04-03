@@ -60,4 +60,28 @@ class LocalImageDataStoreTest {
         assertNotNull(result)
         assertEquals(FakeImage1.id, result.id)
     }
+
+    @Test
+    fun updateImageNotes_updatesNotes() = runTest {
+        fixture.imageDao.insert(
+            ImageEntity(
+                id = FakeImage1.id.value,
+                fileName = "image-1.png",
+                widthPx = null,
+                heightPx = null,
+                dateTimeOriginal = null,
+                gpsLatitude = null,
+                gpsLongitude = null,
+                cameraMake = null,
+                cameraModel = null,
+                notes = null,
+            ),
+        )
+
+        fixture.localImageDataStore.updateImageNotes(FakeImage1.id, "New notes")
+
+        val result = fixture.imageDao.getImage(FakeImage1.id.value)
+        assertNotNull(result)
+        assertEquals("New notes", result.notes)
+    }
 }

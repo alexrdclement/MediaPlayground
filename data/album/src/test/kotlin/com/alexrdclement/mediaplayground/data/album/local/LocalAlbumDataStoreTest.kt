@@ -158,4 +158,26 @@ class LocalAlbumDataStoreTest {
         assertNotNull(result)
         assertEquals("New Album Title", result.title)
     }
+
+    @Test
+    fun updateAlbumNotes_updatesNotes() = runTest {
+        val artists = persistentListOf(FakeSimpleArtist1)
+        val simpleAlbum = FakeLocalSimpleAlbum1.copy(
+            artists = artists,
+            images = persistentListOf(FakeImage1),
+            source = Source.Local,
+        )
+        val track = FakeLocalTrack1.copy(
+            artists = artists,
+            simpleAlbum = simpleAlbum,
+            source = Source.Local,
+        )
+
+        fixture.putTrack(track)
+        fixture.localAlbumDataStore.updateAlbumNotes(simpleAlbum.id, "New notes")
+
+        val result = fixture.localAlbumDataStore.getAlbum(simpleAlbum.id)
+        assertNotNull(result)
+        assertEquals("New notes", result.notes)
+    }
 }

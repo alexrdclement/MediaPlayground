@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
 import com.alexrdclement.mediaplayground.media.model.image.Image
-import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
@@ -49,8 +48,9 @@ import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 fun AlbumMetadataScreen(
     albumId: AlbumId,
     onNavigateBack: () -> Unit,
-    onNavigateToArtistMetadata: (artistId: String) -> Unit,
-    onNavigateToImageMetadata: (imageId: ImageId) -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
+    onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
+    onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
 ) {
     val viewModel: AlbumMetadataViewModel = assistedMetroViewModel<AlbumMetadataViewModel, AlbumMetadataViewModel.Factory>(
         key = albumId.value,
@@ -61,10 +61,14 @@ fun AlbumMetadataScreen(
     LaunchedEffect(Unit) {
         viewModel.savedEvent.collect { onNavigateBack() }
     }
+    LaunchedEffect(Unit) {
+        viewModel.deletedEvent.collect { onNavigateBack() }
+    }
     AlbumMetadataScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onSaveClick = viewModel::onSaveClick,
+        onNavigateToDelete = onNavigateToDelete,
         onNavigateToArtistMetadata = onNavigateToArtistMetadata,
         onNavigateToImageMetadata = onNavigateToImageMetadata,
     )
@@ -76,8 +80,9 @@ fun AlbumMetadataScreen(
     uiState: AlbumMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (title: String, notes: String?) -> Unit,
-    onNavigateToArtistMetadata: (artistId: String) -> Unit,
-    onNavigateToImageMetadata: (imageId: ImageId) -> Unit,
+    onNavigateToDelete: (displayName: String) -> Unit = {},
+    onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
+    onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
 ) {
     val titleState = rememberTextFieldState()
     val notesState = rememberTextFieldState()
@@ -92,6 +97,16 @@ fun AlbumMetadataScreen(
             TopBar(
                 title = { Text("Album", style = PaletteTheme.styles.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                actions = if (uiState is AlbumMetadataUiState.Loaded) {
+                    {
+                        Button(
+                            style = ButtonStyleToken.Secondary,
+                            onClick = { onNavigateToDelete(uiState.album.title) },
+                        ) {
+                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                        }
+                    }
+                } else null,
             )
         },
         floatingAction = {
@@ -148,7 +163,7 @@ private fun LoadedContent(
     titleState: TextFieldState,
     notesState: TextFieldState,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
-    onNavigateToImageMetadata: (imageId: ImageId) -> Unit,
+    onNavigateToImageMetadata: (imageIdValue: String) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -174,7 +189,7 @@ private fun LoadedContent(
             items(state.album.artists, key = { it.id }) { artist ->
                 ArtistRow(
                     artist = artist,
-                    onClick = { onNavigateToArtistMetadata(artist.id) },
+                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id) },
                 )
             }
         }
@@ -185,7 +200,7 @@ private fun LoadedContent(
             items(state.album.images, key = { it.id.value }) { image ->
                 ImageRow(
                     image = image,
-                    onClick = { onNavigateToImageMetadata(image.id) },
+                    onNavigateToMetadata = { onNavigateToImageMetadata(image.id.value) },
                 )
             }
         }
@@ -206,14 +221,14 @@ private fun LoadedContent(
 @Composable
 private fun ArtistRow(
     artist: SimpleArtist,
-    onClick: () -> Unit,
+    onNavigateToMetadata: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable(onClick = onNavigateToMetadata)
             .padding(vertical = PaletteTheme.spacing.small),
     ) {
         Text(
@@ -228,14 +243,14 @@ private fun ArtistRow(
 @Composable
 private fun ImageRow(
     image: Image,
-    onClick: () -> Unit,
+    onNavigateToMetadata: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable(onClick = onNavigateToMetadata)
             .padding(vertical = PaletteTheme.spacing.small),
     ) {
         Text(
@@ -260,8 +275,6 @@ private fun Preview() {
             uiState = uiState,
             onNavigateBack = {},
             onSaveClick = { _, _ -> },
-            onNavigateToArtistMetadata = {},
-            onNavigateToImageMetadata = {},
         )
     }
 }

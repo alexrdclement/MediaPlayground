@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.media.engine
 import com.alexrdclement.mediaplayground.media.engine.mapper.toMediaItem
 import com.alexrdclement.mediaplayground.media.model.audio.Album
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
+import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
 import com.alexrdclement.mediaplayground.media.model.audio.Track
 import com.alexrdclement.mediaplayground.media.model.audio.mapper.toSimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.audio.mapper.toTrack
@@ -18,6 +19,14 @@ class PlaylistControlImpl @Inject constructor(
             is Album -> loadAlbum(mediaItem)
             is Track -> loadTrack(mediaItem)
         }
+    }
+
+    override suspend fun delete(mediaItemId: MediaItemId) {
+        val mediaController = mediaControllerHolder.getMediaController()
+        val index = (0 until mediaController.mediaItemCount)
+            .firstOrNull { i -> mediaController.getMediaItemAt(i).mediaId == mediaItemId.value }
+            ?: return
+        mediaController.removeMediaItem(index)
     }
 
     override suspend fun seek(playlistItemIndex: Int) {

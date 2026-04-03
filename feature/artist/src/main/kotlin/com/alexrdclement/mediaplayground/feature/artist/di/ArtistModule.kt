@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.artist.di
 
 import com.alexrdclement.mediaplayground.feature.artist.ArtistMetadataViewModel
+import com.alexrdclement.mediaplayground.feature.artist.delete.ArtistDeleteViewModel
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.IntoMap
 import dev.zacsweers.metro.Provides
@@ -15,6 +16,13 @@ interface ArtistModule {
         @ManualViewModelAssistedFactoryKey(ArtistMetadataViewModel.Factory::class)
         fun provideArtistMetadataViewModelFactory(
             factory: ArtistMetadataViewModel.Factory,
+        ): ManualViewModelAssistedFactory = factory
+
+        @Provides
+        @IntoMap
+        @ManualViewModelAssistedFactoryKey(ArtistDeleteViewModel.Factory::class)
+        fun provideArtistDeleteViewModelFactory(
+            factory: ArtistDeleteViewModel.Factory,
         ): ManualViewModelAssistedFactory = factory
     }
 }

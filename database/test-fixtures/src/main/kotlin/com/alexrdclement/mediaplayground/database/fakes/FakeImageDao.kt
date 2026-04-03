@@ -21,7 +21,15 @@ class FakeImageDao : ImageDao {
     }
 
     override suspend fun insert(vararg image: Image) {
-        images.value = images.value + image.toSet()
+        for (newImage in image) {
+            if (images.value.any { it.id == newImage.id }) continue
+            images.value = images.value + newImage
+        }
+    }
+
+    override suspend fun update(image: Image) {
+        val existing = images.value.find { it.id == image.id } ?: return
+        images.value = images.value - existing + image
     }
 
     override fun getImagesPagingSource(): PagingSource<Int, Image> {

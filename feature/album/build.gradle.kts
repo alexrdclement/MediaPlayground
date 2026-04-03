@@ -18,6 +18,9 @@ dependencies {
     implementation(libs.palette.theme)
 
     implementation(projects.data.album)
+    implementation(projects.data.artist)
+    implementation(projects.data.image)
+    implementation(projects.data.track)
     implementation(projects.media.model.audio)
     implementation(projects.media.session.api)
     implementation(projects.model.result)

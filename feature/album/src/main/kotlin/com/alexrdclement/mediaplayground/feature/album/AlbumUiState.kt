@@ -5,6 +5,7 @@ import com.alexrdclement.mediaplayground.ui.model.TrackUi
 
 sealed class AlbumUiState {
     data object Loading : AlbumUiState()
+    data object NotFound : AlbumUiState()
 
     data class Success(
         val imageUrl: String?,

@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.app.di
 
 import com.alexrdclement.mediaplayground.data.album.di.AlbumBindingModule
+import com.alexrdclement.mediaplayground.data.media.di.MediaBindingModule
 import com.alexrdclement.mediaplayground.data.album.local.di.LocalAlbumBindingModule
 import com.alexrdclement.mediaplayground.data.artist.di.ArtistBindingModule
 import com.alexrdclement.mediaplayground.data.artist.local.di.LocalArtistBindingModule
@@ -24,6 +25,7 @@ interface DataModule :
     LocalImageBindingModule,
     TrackBindingModule,
     LocalTrackBindingModule,
+    MediaBindingModule,
     PathProviderModule,
     DatabaseModule,
     DaoModule

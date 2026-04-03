@@ -127,16 +127,16 @@ class LocalTrackDataStore @Inject constructor(
 
     suspend fun updateTrackTitle(id: TrackId, title: String) {
         val track = trackDao.getTrack(id.value) ?: return
-        trackDao.insert(track.copy(title = title))
+        trackDao.update(track.copy(title = title))
     }
 
     suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?) {
         val track = trackDao.getTrack(id.value) ?: return
-        trackDao.insert(track.copy(trackNumber = trackNumber))
+        trackDao.update(track.copy(trackNumber = trackNumber))
     }
 
     suspend fun updateTrackNotes(id: TrackId, notes: String?) {
         val track = trackDao.getTrack(id.value) ?: return
-        trackDao.insert(track.copy(notes = notes))
+        trackDao.update(track.copy(notes = notes))
     }
 }

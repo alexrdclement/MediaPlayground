@@ -17,6 +17,9 @@ class LocalArtistRepositoryImpl @Inject constructor(
     override suspend fun updateArtistNotes(id: String, notes: String?) =
         localArtistDataStore.updateArtistNotes(id, notes)
 
+    override suspend fun deleteArtist(id: String) =
+        localArtistDataStore.deleteArtist(id)
+
     override suspend fun getArtistByName(name: String): SimpleArtist? =
         localArtistDataStore.getArtistByName(name)
 }

@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.alexrdclement.mediaplayground.database.model.Image
 import kotlinx.coroutines.flow.Flow
 
@@ -22,8 +23,11 @@ interface ImageDao {
     @Query("SELECT COUNT(*) FROM images")
     fun getImageCountFlow(): Flow<Int>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg image: Image)
+
+    @Update
+    suspend fun update(image: Image)
 
     @Query("DELETE FROM images WHERE id = :id")
     suspend fun delete(id: String)

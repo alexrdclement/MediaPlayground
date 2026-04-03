@@ -1,12 +1,14 @@
 package com.alexrdclement.mediaplayground.media.engine
 
 import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
+import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
 import kotlinx.coroutines.flow.first
 
 interface PlaylistControl {
     val playlistState: PlaylistState
     suspend fun load(mediaItem: MediaItem)
     suspend fun seek(playlistItemIndex: Int)
+    suspend fun delete(mediaItemId: MediaItemId)
 }
 
 suspend fun PlaylistControl.loadIfNecessary(mediaItem: MediaItem) {
@@ -15,6 +17,12 @@ suspend fun PlaylistControl.loadIfNecessary(mediaItem: MediaItem) {
             load(mediaItem)
         }
     } ?: load(mediaItem)
+}
+
+suspend fun PlaylistControl.deleteIfNecessary(mediaItemId: MediaItemId) {
+    val playlist = playlistState.getPlaylist().first()
+    if (playlist.none { it.id == mediaItemId }) return
+    delete(mediaItemId)
 }
 
 suspend fun PlaylistControl.seekIfNecessary(playlistItemIndex: Int) {

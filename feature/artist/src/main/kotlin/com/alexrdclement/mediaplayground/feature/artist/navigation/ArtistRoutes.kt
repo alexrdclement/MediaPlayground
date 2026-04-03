@@ -15,3 +15,13 @@ data class ArtistMetadataRoute(
 ) : ArtistNavRoute {
     override val pathSegment: PathSegment = artistIdValue.toPathSegment()
 }
+
+@Serializable
+@SerialName("artist-delete")
+data class ArtistDeleteRoute(
+    val artistIdValue: String,
+    val displayName: String = "",
+) : ArtistNavRoute {
+    override val pathSegment: PathSegment = artistIdValue.toPathSegment()
+}
+

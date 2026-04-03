@@ -24,12 +24,14 @@ class FakeArtistDao : ArtistDao {
 
     override suspend fun insert(vararg artist: Artist) {
         for (newArtist in artist) {
-            val existingArtist = artists.value.find { it.id == newArtist.id }
-            if (existingArtist != null) {
-                artists.value -= existingArtist
-            }
+            if (artists.value.any { it.id == newArtist.id }) continue
             artists.value += newArtist
         }
+    }
+
+    override suspend fun update(artist: Artist) {
+        val existing = artists.value.find { it.id == artist.id } ?: return
+        artists.value = artists.value - existing + artist
     }
 
     override suspend fun delete(id: String) {

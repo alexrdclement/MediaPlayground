@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.palette.navigation)
     implementation(libs.palette.theme)
 
+    implementation(projects.data.artist)
     implementation(projects.data.track)
     implementation(projects.media.model.audio)
     implementation(projects.media.session.api)

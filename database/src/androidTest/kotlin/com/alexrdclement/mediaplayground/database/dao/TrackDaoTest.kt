@@ -17,6 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class TrackDaoTest {
@@ -120,6 +121,32 @@ class TrackDaoTest {
         trackDao.insert(track2, track3)
         val count2 = trackDao.getTrackCountFlow().first()
         assertEquals(3, count2)
+    }
+
+    @Test
+    fun insert_ignoresExistingTrack() = runTest {
+        val album = FakeAlbum1
+        albumDao.insert(album)
+        val track = FakeTrack1.copy(albumId = album.id)
+        trackDao.insert(track)
+        trackDao.insert(track.copy(title = "Updated Title"))
+
+        val result = trackDao.getTrack(track.id)
+        assertTrackEquals(track, result)
+    }
+
+    @Test
+    fun update_updatesTrack() = runTest {
+        val album = FakeAlbum1
+        albumDao.insert(album)
+        val track = FakeTrack1.copy(albumId = album.id)
+        trackDao.insert(track)
+
+        trackDao.update(track.copy(title = "Updated Title"))
+
+        val result = trackDao.getTrack(track.id)
+        assertNotNull(result)
+        assertEquals("Updated Title", result.title)
     }
 
     @Test
