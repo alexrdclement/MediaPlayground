@@ -132,12 +132,14 @@ fun MediaPlaygroundNav(
     MediaControlSheet(
         mediaControlSheetState = mediaControlSheetState,
         onNavigateToTrackMetadata = { trackId ->
+            coroutineScope.launch { mediaControlSheetState.partialExpand() }
             navController.navigate(TrackMetadataRoute(trackIdValue = trackId))
         },
         onNavigateToTrackDelete = { trackId, displayName ->
             navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
         },
         onNavigateToArtistMetadata = { artistId ->
+            coroutineScope.launch { mediaControlSheetState.partialExpand() }
             navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
         },
         onNavigateToArtistDelete = { artistId, displayName ->
