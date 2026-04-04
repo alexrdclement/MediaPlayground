@@ -111,7 +111,7 @@ fun MediaControlSheetContent(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = PaletteTheme.spacing.small)
+                        .padding(top = PaletteTheme.spacing.medium)
                 )
             }
             items(
