@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexrdclement.mediaplayground.media.engine.PlaybackState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
@@ -60,6 +61,7 @@ fun MediaControlSheet(
     val transportState by viewModel.transportState.collectAsStateWithLifecycle()
     val playheadState by viewModel.playheadState.collectAsStateWithLifecycle()
     val timelineState by viewModel.timelineState.collectAsStateWithLifecycle()
+    val playbackState by viewModel.playbackState.collectAsStateWithLifecycle()
 
     MediaControlSheet(
         mediaControlSheetState = mediaControlSheetState,
@@ -68,6 +70,7 @@ fun MediaControlSheet(
         transportState = transportState,
         playheadState = playheadState,
         timelineState = timelineState,
+        playbackState = playbackState,
         onPlayPauseClick = viewModel::onPlayPauseClick,
         onPlayPauseLongClick = onNavigateToPlaybackControl,
         onSkipClick = viewModel::onSkipClick,
@@ -90,6 +93,7 @@ fun MediaControlSheet(
     transportState: TransportState,
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
+    playbackState: PlaybackState? = null,
     onPlayPauseClick: () -> Unit,
     onPlayPauseLongClick: (() -> Unit)? = null,
     onSkipClick: () -> Unit,
@@ -201,6 +205,7 @@ fun MediaControlSheet(
                             transportState = transportState,
                             playheadState = playheadState,
                             timelineState = timelineState,
+                            playbackState = playbackState,
                             onPlayPauseClick = onPlayPauseClick,
                             onPlayPauseLongClick = onPlayPauseLongClick,
                             onSkipClick = onSkipClick,

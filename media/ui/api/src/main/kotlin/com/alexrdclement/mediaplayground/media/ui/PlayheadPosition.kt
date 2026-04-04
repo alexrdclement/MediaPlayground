@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.media.ui
 import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
+import com.alexrdclement.mediaplayground.media.engine.PlaybackState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.engine.isPlaying
@@ -13,19 +14,22 @@ import kotlin.time.Duration
 fun rememberPlayheadPosition(
     playheadState: PlayheadState?,
     transportState: TransportState,
+    playbackState: PlaybackState? = null,
 ) = produceState(
     initialValue = playheadState?.positionSnapshot ?: Duration.ZERO,
     key1 = playheadState,
     key2 = transportState.isPlaying,
+    key3 = playbackState?.speed,
 ) {
     val state = playheadState ?: return@produceState
     if (!transportState.isPlaying) {
         value = state.positionSnapshot
         return@produceState
     }
+    val speed = playbackState?.speed ?: 1f
     while (isActive) {
         withInfiniteAnimationFrameMillis {
-            value = state.positionSnapshot + state.capturedAt.elapsedNow()
+            value = state.positionSnapshot + state.capturedAt.elapsedNow() * speed.toDouble()
         }
     }
 }
