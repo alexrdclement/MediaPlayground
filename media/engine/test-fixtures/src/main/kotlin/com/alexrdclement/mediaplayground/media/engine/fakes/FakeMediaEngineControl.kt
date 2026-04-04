@@ -7,12 +7,14 @@ class FakeMediaEngineControl(
     override val transportControl: FakeTransportControl = FakeTransportControl(),
     override val playheadControl: FakePlayheadControl = FakePlayheadControl(),
     override val timelineControl: FakeTimelineControl = FakeTimelineControl(),
-    override val playbackControl: FakePlaybackControl = FakePlaybackControl(),
+    override val playbackRateControl: FakePlaybackRateControl = FakePlaybackRateControl(),
+    override val playbackPitchControl: FakePlaybackPitchControl = FakePlaybackPitchControl(),
     override val mediaEngineState: FakeMediaEngineState = FakeMediaEngineState(
         transportControl = transportControl,
         playlistControl = playlistControl,
         playheadControl = playheadControl,
         timelineControl = timelineControl,
-        playbackControl = playbackControl,
+        playbackRateControl = playbackRateControl,
+        playbackPitchControl = playbackPitchControl,
     ),
 ) : MediaEngineControl

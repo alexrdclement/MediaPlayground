@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
-import com.alexrdclement.mediaplayground.media.session.playbackState
+import com.alexrdclement.mediaplayground.media.session.playbackPitchState
+import com.alexrdclement.mediaplayground.media.session.playbackRateState
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -17,57 +18,58 @@ class PlaybackControlViewModel @Inject constructor(
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
 
-    private val playbackState = mediaSessionState.playbackState
+    private val playbackRateState = mediaSessionState.playbackRateState
+    private val playbackPitchState = mediaSessionState.playbackPitchState
 
-    val speedControl = playbackState
+    val rateControl = playbackRateState
         .map {
-            PlaybackControl.Speed(
+            PlaybackRateControl(
                 value = it.speed,
                 decrementEnabled = it.speed >= MIN_VALUE,
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = PlaybackControl.Speed(),
+            initialValue = PlaybackRateControl(),
         )
 
-    val pitchControl = playbackState
+    val pitchControl = playbackPitchState
         .map {
-            PlaybackControl.Pitch(
+            PlaybackPitchControl(
                 value = it.pitch,
                 decrementEnabled = it.pitch >= MIN_VALUE,
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = PlaybackControl.Pitch(),
+            initialValue = PlaybackPitchControl(),
         )
 
-    fun onSpeedDecrease() {
+    fun onRateDecrease() {
         viewModelScope.launch {
-            val newValue = speedControl.value.decrementValue()
-            mediaSessionControl.getMediaEngineControl().playbackControl.setSpeed(newValue)
+            val newValue = rateControl.value.decrementValue()
+            mediaSessionControl.getMediaEngineControl().playbackRateControl.setSpeed(newValue)
         }
     }
 
-    fun onSpeedIncrease() {
+    fun onRateIncrease() {
         viewModelScope.launch {
-            val newValue = speedControl.value.incrementValue()
-            mediaSessionControl.getMediaEngineControl().playbackControl.setSpeed(newValue)
+            val newValue = rateControl.value.incrementValue()
+            mediaSessionControl.getMediaEngineControl().playbackRateControl.setSpeed(newValue)
         }
     }
 
     fun onPitchDecrease() {
         viewModelScope.launch {
             val newValue = pitchControl.value.decrementValue()
-            mediaSessionControl.getMediaEngineControl().playbackControl.setPitch(newValue)
+            mediaSessionControl.getMediaEngineControl().playbackPitchControl.setPitch(newValue)
         }
     }
 
     fun onPitchIncrease() {
         viewModelScope.launch {
             val newValue = pitchControl.value.incrementValue()
-            mediaSessionControl.getMediaEngineControl().playbackControl.setPitch(newValue)
+            mediaSessionControl.getMediaEngineControl().playbackPitchControl.setPitch(newValue)
         }
     }
 

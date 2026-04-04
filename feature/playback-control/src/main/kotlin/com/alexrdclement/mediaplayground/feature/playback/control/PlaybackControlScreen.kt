@@ -19,15 +19,15 @@ fun PlaybackControlScreen(
     onDismissRequest: () -> Unit,
 ) {
     val viewModel = metroViewModel<PlaybackControlViewModel>()
-    val speedControl by viewModel.speedControl.collectAsStateWithLifecycle()
+    val rateControl by viewModel.rateControl.collectAsStateWithLifecycle()
     val pitchControl by viewModel.pitchControl.collectAsStateWithLifecycle()
 
     PlaybackControlDialogContent(
-        speedControl = speedControl,
+        rateControl = rateControl,
         pitchControl = pitchControl,
         onDismissRequest = onDismissRequest,
-        onSpeedDecrease = viewModel::onSpeedDecrease,
-        onSpeedIncrease = viewModel::onSpeedIncrease,
+        onRateDecrease = viewModel::onRateDecrease,
+        onRateIncrease = viewModel::onRateIncrease,
         onPitchDecrease = viewModel::onPitchDecrease,
         onPitchIncrease = viewModel::onPitchIncrease,
     )
@@ -35,11 +35,11 @@ fun PlaybackControlScreen(
 
 @Composable
 fun PlaybackControlDialogContent(
-    speedControl: PlaybackControl.Speed,
-    pitchControl: PlaybackControl.Pitch,
+    rateControl: PlaybackRateControl,
+    pitchControl: PlaybackPitchControl,
     onDismissRequest: () -> Unit,
-    onSpeedDecrease: () -> Unit,
-    onSpeedIncrease: () -> Unit,
+    onRateDecrease: () -> Unit,
+    onRateIncrease: () -> Unit,
     onPitchDecrease: () -> Unit,
     onPitchIncrease: () -> Unit,
     modifier: Modifier = Modifier,
@@ -50,9 +50,9 @@ fun PlaybackControlDialogContent(
     ) {
         NudgeControlRow(
             label = "Speed",
-            control = speedControl,
-            onDecrease = onSpeedDecrease,
-            onIncrease = onSpeedIncrease,
+            control = rateControl,
+            onDecrease = onRateDecrease,
+            onIncrease = onRateIncrease,
         )
         NudgeControlRow(
             label = "Pitch",

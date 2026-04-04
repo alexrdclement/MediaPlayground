@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.mediaplayground.media.engine.PlaybackState
+import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
@@ -30,14 +30,14 @@ fun TimeLabeledSeekbar(
     transportState: TransportState,
     onSeek: (Duration) -> Unit,
     modifier: Modifier = Modifier,
-    playbackState: PlaybackState? = null,
+    playbackRateState: PlaybackRateState? = null,
 ) {
     val timelineDuration = timelineState?.duration
 
     val currentPositionState = rememberPlayheadPosition(
         playheadState = playheadState,
         transportState = transportState,
-        playbackState = playbackState,
+        playbackRateState = playbackRateState,
     )
     val currentPosition by currentPositionState
 

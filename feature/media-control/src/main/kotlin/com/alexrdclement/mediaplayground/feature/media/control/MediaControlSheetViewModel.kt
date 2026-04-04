@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.error
-import com.alexrdclement.mediaplayground.media.engine.PlaybackState
+import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
@@ -14,7 +14,7 @@ import com.alexrdclement.mediaplayground.media.engine.seekIfNecessary
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
-import com.alexrdclement.mediaplayground.media.session.playbackState
+import com.alexrdclement.mediaplayground.media.session.playbackRateState
 import com.alexrdclement.mediaplayground.media.session.playheadState
 import com.alexrdclement.mediaplayground.media.session.playlistState
 import com.alexrdclement.mediaplayground.media.session.timelineState
@@ -58,8 +58,8 @@ class MediaControlSheetViewModel @Inject constructor(
     val timelineState = mediaSessionState.timelineState
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TimelineState(duration = null))
 
-    val playbackState = mediaSessionState.playbackState
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PlaybackState())
+    val playbackRateState = mediaSessionState.playbackRateState
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PlaybackRateState())
 
     val loadedMediaItem = mediaSessionState.loadedMediaItem
         .stateIn(
