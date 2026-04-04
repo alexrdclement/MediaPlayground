@@ -25,6 +25,7 @@ fun TransportControlBar(
     onPlayPauseClick: () -> Unit,
     onSkipClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onPlayPauseLongClick: (() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -44,6 +45,7 @@ fun TransportControlBar(
         PlayPauseButton(
             isPlaying = transportState.isPlaying,
             onClick = onPlayPauseClick,
+            onLongClick = onPlayPauseLongClick,
             modifier = Modifier
                 .size(72.dp)
         )

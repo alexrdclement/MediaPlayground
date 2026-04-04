@@ -4,14 +4,18 @@ import com.alexrdclement.mediaplayground.media.engine.AndroidMediaEngineControl
 import com.alexrdclement.mediaplayground.media.engine.AndroidMediaEngineState
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineControl
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineState
+import com.alexrdclement.mediaplayground.media.engine.PlaybackPitchControl
+import com.alexrdclement.mediaplayground.media.engine.PlaybackPitchControlImpl
+import com.alexrdclement.mediaplayground.media.engine.PlaybackRateControl
+import com.alexrdclement.mediaplayground.media.engine.PlaybackRateControlImpl
 import com.alexrdclement.mediaplayground.media.engine.PlayheadControl
 import com.alexrdclement.mediaplayground.media.engine.PlayheadControlImpl
-import com.alexrdclement.mediaplayground.media.engine.TimelineControl
-import com.alexrdclement.mediaplayground.media.engine.TimelineControlImpl
 import com.alexrdclement.mediaplayground.media.engine.PlaylistControl
 import com.alexrdclement.mediaplayground.media.engine.PlaylistControlImpl
 import com.alexrdclement.mediaplayground.media.engine.PlaylistState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistStateImpl
+import com.alexrdclement.mediaplayground.media.engine.TimelineControl
+import com.alexrdclement.mediaplayground.media.engine.TimelineControlImpl
 import com.alexrdclement.mediaplayground.media.engine.TransportControl
 import com.alexrdclement.mediaplayground.media.engine.TransportControlImpl
 import dev.zacsweers.metro.BindingContainer
@@ -39,4 +43,10 @@ interface MediaEngineBindingModule {
 
     @Binds
     val TimelineControlImpl.bind: TimelineControl
+
+    @Binds
+    val PlaybackRateControlImpl.bind: PlaybackRateControl
+
+    @Binds
+    val PlaybackPitchControlImpl.bind: PlaybackPitchControl
 }

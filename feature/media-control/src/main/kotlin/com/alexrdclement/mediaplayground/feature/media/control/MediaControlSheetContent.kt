@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
@@ -42,7 +43,9 @@ fun MediaControlSheetContent(
     transportState: TransportState,
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
+    playbackRateState: PlaybackRateState? = null,
     onPlayPauseClick: () -> Unit,
+    onPlayPauseLongClick: (() -> Unit)? = null,
     onSkipClick: () -> Unit,
     onSkipBackClick: () -> Unit,
     onSeek: (Duration) -> Unit,
@@ -107,6 +110,7 @@ fun MediaControlSheetContent(
             TransportControlBar(
                 transportState = transportState,
                 onPlayPauseClick = onPlayPauseClick,
+                onPlayPauseLongClick = onPlayPauseLongClick,
                 onSkipClick = onSkipClick,
                 onSkipBackClick = onSkipBackClick,
                 modifier = Modifier
@@ -121,6 +125,7 @@ fun MediaControlSheetContent(
                 playheadState = playheadState,
                 timelineState = timelineState,
                 transportState = transportState,
+                playbackRateState = playbackRateState,
                 onSeek = onSeek,
                 modifier = Modifier
                     .fillMaxWidth()

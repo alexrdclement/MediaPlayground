@@ -41,6 +41,7 @@ dependencies {
     implementation(projects.feature.image)
     implementation(projects.feature.imageLibrary)
     implementation(projects.feature.mediaControl)
+    implementation(projects.feature.playbackControl)
     implementation(projects.feature.player)
     implementation(projects.feature.track)
     implementation(projects.media.engine.android)

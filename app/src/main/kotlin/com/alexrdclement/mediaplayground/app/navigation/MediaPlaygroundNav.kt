@@ -39,6 +39,9 @@ import com.alexrdclement.mediaplayground.feature.image.navigation.ImageMetadataR
 import com.alexrdclement.mediaplayground.feature.image.navigation.imageMetadataEntryProvider
 import com.alexrdclement.mediaplayground.feature.image.navigation.imageMetadataNavGraph
 import com.alexrdclement.mediaplayground.feature.media.control.MediaControlSheet
+import com.alexrdclement.mediaplayground.feature.playback.control.navigation.PlaybackControlRoute
+import com.alexrdclement.mediaplayground.feature.playback.control.navigation.playbackControlEntryProvider
+import com.alexrdclement.mediaplayground.feature.playback.control.navigation.playbackControlNavGraph
 import com.alexrdclement.mediaplayground.feature.player.navigation.PlayerGraph
 import com.alexrdclement.mediaplayground.feature.player.navigation.playerEntryProvider
 import com.alexrdclement.mediaplayground.feature.player.navigation.playerNavGraph
@@ -77,6 +80,7 @@ val MediaPlaygroundNavGraph = navGraph(
     artistMetadataNavGraph()
     imageLibraryNavGraph()
     imageMetadataNavGraph()
+    playbackControlNavGraph()
     playerNavGraph()
     cameraNavGraph()
     errorNavGraph()
@@ -147,6 +151,9 @@ fun MediaPlaygroundNav(
         },
         onNavigateToArtistDelete = { artistId, displayName ->
             navController.navigate(ArtistDeleteRoute(artistIdValue = artistId, displayName = displayName))
+        },
+        onNavigateToPlaybackControl = {
+            navController.navigate(PlaybackControlRoute)
         },
     )
 }
@@ -244,6 +251,7 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
             navController.navigate(ImageDeleteRoute(imageIdValue = imageId, displayName = displayName))
         },
     )
+    playbackControlEntryProvider(navController)
     playerEntryProvider(navController)
     cameraEntryProvider(navController)
     errorEntryProvider(navController)

@@ -6,4 +6,6 @@ interface MediaEngineControl {
     val playheadControl: PlayheadControl
     val timelineControl: TimelineControl
     val playlistControl: PlaylistControl
+    val playbackRateControl: PlaybackRateControl
+    val playbackPitchControl: PlaybackPitchControl
 }

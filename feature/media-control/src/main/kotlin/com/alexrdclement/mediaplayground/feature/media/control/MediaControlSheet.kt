@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
@@ -52,6 +53,7 @@ fun MediaControlSheet(
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
     onNavigateToArtistDelete: (artistId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToPlaybackControl: () -> Unit = {},
 ) {
     val viewModel = metroViewModel<MediaControlSheetViewModel>()
     val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
@@ -59,6 +61,7 @@ fun MediaControlSheet(
     val transportState by viewModel.transportState.collectAsStateWithLifecycle()
     val playheadState by viewModel.playheadState.collectAsStateWithLifecycle()
     val timelineState by viewModel.timelineState.collectAsStateWithLifecycle()
+    val playbackRateState by viewModel.playbackRateState.collectAsStateWithLifecycle()
 
     MediaControlSheet(
         mediaControlSheetState = mediaControlSheetState,
@@ -67,7 +70,9 @@ fun MediaControlSheet(
         transportState = transportState,
         playheadState = playheadState,
         timelineState = timelineState,
+        playbackRateState = playbackRateState,
         onPlayPauseClick = viewModel::onPlayPauseClick,
+        onPlayPauseLongClick = onNavigateToPlaybackControl,
         onSkipClick = viewModel::onSkipClick,
         onSkipBackClick = viewModel::onSkipBackClick,
         onSeek = viewModel::onSeek,
@@ -88,7 +93,9 @@ fun MediaControlSheet(
     transportState: TransportState,
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
+    playbackRateState: PlaybackRateState? = null,
     onPlayPauseClick: () -> Unit,
+    onPlayPauseLongClick: (() -> Unit)? = null,
     onSkipClick: () -> Unit,
     onSkipBackClick: () -> Unit,
     onSeek: (Duration) -> Unit,
@@ -198,7 +205,9 @@ fun MediaControlSheet(
                             transportState = transportState,
                             playheadState = playheadState,
                             timelineState = timelineState,
+                            playbackRateState = playbackRateState,
                             onPlayPauseClick = onPlayPauseClick,
+                            onPlayPauseLongClick = onPlayPauseLongClick,
                             onSkipClick = onSkipClick,
                             onSkipBackClick = onSkipBackClick,
                             onSeek = onSeek,

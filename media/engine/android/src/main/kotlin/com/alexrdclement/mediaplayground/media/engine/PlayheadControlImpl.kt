@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.media.engine
 
+import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.channels.awaitClose
@@ -32,6 +33,10 @@ class PlayheadControlImpl @Inject constructor(
                 newPosition: Player.PositionInfo,
                 reason: Int,
             ) {
+                trySend(currentPlayheadState(mediaController))
+            }
+
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
                 trySend(currentPlayheadState(mediaController))
             }
         }
