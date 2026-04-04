@@ -12,6 +12,8 @@ import com.alexrdclement.mediaplayground.media.engine.PlaylistControl
 import com.alexrdclement.mediaplayground.media.engine.PlaylistControlImpl
 import com.alexrdclement.mediaplayground.media.engine.PlaylistState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistStateImpl
+import com.alexrdclement.mediaplayground.media.engine.PlaybackControl
+import com.alexrdclement.mediaplayground.media.engine.PlaybackControlImpl
 import com.alexrdclement.mediaplayground.media.engine.TransportControl
 import com.alexrdclement.mediaplayground.media.engine.TransportControlImpl
 import dev.zacsweers.metro.BindingContainer
@@ -39,4 +41,7 @@ interface MediaEngineBindingModule {
 
     @Binds
     val TimelineControlImpl.bind: TimelineControl
+
+    @Binds
+    val PlaybackControlImpl.bind: PlaybackControl
 }

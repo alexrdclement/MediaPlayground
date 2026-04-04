@@ -9,6 +9,7 @@ interface MediaEngineState {
     fun getTransportState(): Flow<TransportState>
     fun getPlayheadState(): Flow<PlayheadState>
     fun getTimelineState(): Flow<TimelineState>
+    fun getPlaybackState(): Flow<PlaybackState>
 }
 
 val MediaEngineState.isPlaying: Flow<Boolean>

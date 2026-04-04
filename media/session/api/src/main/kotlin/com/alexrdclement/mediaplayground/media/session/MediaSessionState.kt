@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.media.session
 
 import com.alexrdclement.mediaplayground.media.engine.MediaEngineState
+import com.alexrdclement.mediaplayground.media.engine.PlaybackState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
@@ -32,3 +33,6 @@ val MediaSessionState.playheadState: Flow<PlayheadState>
 
 val MediaSessionState.timelineState: Flow<TimelineState>
     get() = mediaEngineState.flatMapLatest { it.getTimelineState() }
+
+val MediaSessionState.playbackState: Flow<PlaybackState>
+    get() = mediaEngineState.flatMapLatest { it.getPlaybackState() }

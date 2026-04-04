@@ -9,10 +9,12 @@ class AndroidMediaEngineState @Inject constructor(
     private val transportControl: TransportControl,
     private val playheadControl: PlayheadControl,
     private val timelineControl: TimelineControl,
+    private val playbackControl: PlaybackControl,
 ) : MediaEngineState {
     override fun getTransportState() = transportControl.getTransportState()
     override fun getPlayheadState() = playheadControl.getPlayheadState()
     override fun getTimelineState() = timelineControl.getTimelineState()
+    override fun getPlaybackState() = playbackControl.getPlaybackState()
 }
 
 suspend fun AndroidMediaEngineState.getPlayer(): Player {

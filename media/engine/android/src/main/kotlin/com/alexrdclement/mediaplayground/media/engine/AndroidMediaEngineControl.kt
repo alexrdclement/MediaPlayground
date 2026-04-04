@@ -8,4 +8,5 @@ class AndroidMediaEngineControl @Inject constructor(
     override val playheadControl: PlayheadControl,
     override val timelineControl: TimelineControl,
     override val playlistControl: PlaylistControl,
+    override val playbackControl: PlaybackControl,
 ) : MediaEngineControl
