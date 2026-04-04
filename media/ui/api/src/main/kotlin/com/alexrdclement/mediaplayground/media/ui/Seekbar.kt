@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
@@ -26,12 +27,14 @@ fun Seekbar(
     transportState: TransportState,
     onSeek: (Duration) -> Unit,
     modifier: Modifier = Modifier,
+    playbackRateState: PlaybackRateState? = null,
 ) {
     val timelineDuration = timelineState?.duration
 
     val playheadPosition by rememberPlayheadPosition(
         playheadState = playheadState,
         transportState = transportState,
+        playbackRateState = playbackRateState,
     )
 
     Seekbar(

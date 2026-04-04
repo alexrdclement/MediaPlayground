@@ -80,10 +80,10 @@ val MediaPlaygroundNavGraph = navGraph(
     artistMetadataNavGraph()
     imageLibraryNavGraph()
     imageMetadataNavGraph()
+    playbackControlNavGraph()
     playerNavGraph()
     cameraNavGraph()
     errorNavGraph()
-    playbackControlNavGraph()
 }
 
 @Composable
