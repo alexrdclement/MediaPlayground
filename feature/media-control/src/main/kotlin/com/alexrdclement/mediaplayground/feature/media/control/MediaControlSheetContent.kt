@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,8 +30,10 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
+import com.alexrdclement.palette.components.core.HorizontalDivider
 import com.alexrdclement.palette.components.media.model.Artist
 import com.alexrdclement.palette.components.media.model.MediaItem
+import com.alexrdclement.palette.components.util.Spacer
 import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -60,67 +63,91 @@ fun MediaControlSheetContent(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = contentPadding,
+    Column(
         modifier = modifier
             .fillMaxSize()
+            .padding(contentPadding)
     ) {
-        item {
-            var titleMenuExpanded by remember { mutableStateOf(false) }
-            var titleMenuOffset by remember { mutableStateOf(Offset.Zero) }
-            var artistMenuExpanded by remember { mutableStateOf(false) }
-            var artistMenuOffset by remember { mutableStateOf(Offset.Zero) }
-            TitleArtistBlock(
-                title = loadedMediaItem.title,
-                artists = artistNamesOrDefault(artists = loadedMediaItem.artists),
-                onTitleLongClick = { offset ->
-                    titleMenuOffset = offset
-                    titleMenuExpanded = true
-                },
-                onArtistsLongClick = { offset ->
-                    artistMenuOffset = offset
-                    artistMenuExpanded = true
-                },
-                titleOverlay = {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            item {
+                var titleMenuExpanded by remember { mutableStateOf(false) }
+                var titleMenuOffset by remember { mutableStateOf(Offset.Zero) }
+                var artistMenuExpanded by remember { mutableStateOf(false) }
+                var artistMenuOffset by remember { mutableStateOf(Offset.Zero) }
+                TitleArtistBlock(
+                    title = loadedMediaItem.title,
+                    artists = artistNamesOrDefault(artists = loadedMediaItem.artists),
+                    onTitleLongClick = { offset ->
+                        titleMenuOffset = offset
+                        titleMenuExpanded = true
+                    },
+                    onArtistsLongClick = { offset ->
+                        artistMenuOffset = offset
+                        artistMenuExpanded = true
+                    },
+                    titleOverlay = {
+                        TrackContextMenu(
+                            expanded = titleMenuExpanded,
+                            offset = titleMenuOffset,
+                            onDismissRequest = { titleMenuExpanded = false },
+                            onNavigateToMetadata = onNavigateToLoadedItemMetadata,
+                            onNavigateToDelete = onNavigateToLoadedItemDelete,
+                        )
+                    },
+                    artistsOverlay = {
+                        ArtistContextMenu(
+                            expanded = artistMenuExpanded,
+                            offset = artistMenuOffset,
+                            onDismissRequest = { artistMenuExpanded = false },
+                            onNavigateToMetadata = onNavigateToArtistMetadata,
+                            onNavigateToDelete = onNavigateToArtistDelete,
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = PaletteTheme.spacing.small)
+                )
+            }
+            items(
+                items = playlist,
+                key = { item -> item.mediaItem.id.value },
+            ) { item ->
+                var menuExpanded by remember { mutableStateOf(false) }
+                var touchOffset by remember { mutableStateOf(Offset.Zero) }
+                Box {
+                    PlaylistItem(
+                        item = item,
+                        onClick = { onItemClick(item) },
+                        onPlayPauseClick = { onItemPlayPauseClick(item) },
+                        onLongClick = { offset ->
+                            touchOffset = offset
+                            menuExpanded = true
+                        },
+                    )
                     TrackContextMenu(
-                        expanded = titleMenuExpanded,
-                        offset = titleMenuOffset,
-                        onDismissRequest = { titleMenuExpanded = false },
-                        onNavigateToMetadata = onNavigateToLoadedItemMetadata,
-                        onNavigateToDelete = onNavigateToLoadedItemDelete,
+                        expanded = menuExpanded,
+                        offset = touchOffset,
+                        onDismissRequest = { menuExpanded = false },
+                        onNavigateToMetadata = { onNavigateToTrackMetadata(item.mediaItem.id.value) },
+                        onNavigateToDelete = { onNavigateToTrackDelete(item.mediaItem.id.value, item.mediaItem.title ?: "") },
                     )
-                },
-                artistsOverlay = {
-                    ArtistContextMenu(
-                        expanded = artistMenuExpanded,
-                        offset = artistMenuOffset,
-                        onDismissRequest = { artistMenuExpanded = false },
-                        onNavigateToMetadata = onNavigateToArtistMetadata,
-                        onNavigateToDelete = onNavigateToArtistDelete,
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = PaletteTheme.spacing.small)
-            )
+                }
+            }
         }
-        item {
-            TransportControlBar(
-                transportState = transportState,
-                onPlayPauseClick = onPlayPauseClick,
-                onPlayPauseLongClick = onPlayPauseLongClick,
-                onSkipClick = onSkipClick,
-                onSkipBackClick = onSkipBackClick,
-                modifier = Modifier
-                    .padding(
-                        top = PaletteTheme.spacing.medium,
-                        bottom = PaletteTheme.spacing.small,
-                    )
-            )
-        }
-        item {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = PaletteTheme.spacing.medium)
+        ) {
+            HorizontalDivider()
+            Spacer(height = PaletteTheme.spacing.medium)
             TimeLabeledSeekbar(
                 playheadState = playheadState,
                 timelineState = timelineState,
@@ -129,33 +156,15 @@ fun MediaControlSheetContent(
                 onSeek = onSeek,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = PaletteTheme.spacing.small)
             )
-        }
-        items(
-            items = playlist,
-            key = { item -> item.mediaItem.id.value },
-        ) { item ->
-            var menuExpanded by remember { mutableStateOf(false) }
-            var touchOffset by remember { mutableStateOf(Offset.Zero) }
-            Box {
-                PlaylistItem(
-                    item = item,
-                    onClick = { onItemClick(item) },
-                    onPlayPauseClick = { onItemPlayPauseClick(item) },
-                    onLongClick = { offset ->
-                        touchOffset = offset
-                        menuExpanded = true
-                    },
-                )
-                TrackContextMenu(
-                    expanded = menuExpanded,
-                    offset = touchOffset,
-                    onDismissRequest = { menuExpanded = false },
-                    onNavigateToMetadata = { onNavigateToTrackMetadata(item.mediaItem.id.value) },
-                    onNavigateToDelete = { onNavigateToTrackDelete(item.mediaItem.id.value, item.mediaItem.title ?: "") },
-                )
-            }
+            TransportControlBar(
+                transportState = transportState,
+                onPlayPauseClick = onPlayPauseClick,
+                onPlayPauseLongClick = onPlayPauseLongClick,
+                onSkipClick = onSkipClick,
+                onSkipBackClick = onSkipBackClick,
+                modifier = Modifier
+            )
         }
     }
 }
