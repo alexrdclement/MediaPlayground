@@ -33,7 +33,7 @@ import com.alexrdclement.mediaplayground.media.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.media.MediaControlSheetState
+import com.alexrdclement.palette.components.layout.PeekSheetState
 import com.alexrdclement.palette.components.media.model.Artist
 import com.alexrdclement.palette.components.util.calculateHorizontalPaddingValues
 import com.alexrdclement.palette.components.util.copy
@@ -49,7 +49,7 @@ import com.alexrdclement.palette.components.media.model.MediaItem as UiMediaItem
 
 @Composable
 fun MediaControlSheet(
-    mediaControlSheetState: MediaControlSheetState,
+    mediaControlSheetState: PeekSheetState,
     onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
@@ -88,7 +88,7 @@ fun MediaControlSheet(
 
 @Composable
 fun MediaControlSheet(
-    mediaControlSheetState: MediaControlSheetState,
+    mediaControlSheetState: PeekSheetState,
     loadedMediaItem: MediaItem?,
     playlist: PersistentList<MediaItemUi>,
     transportState: TransportState,
@@ -153,7 +153,7 @@ fun MediaControlSheet(
                     onControlBarClick = {
                         coroutineScope.launch {
                             if (mediaControlSheetState.isExpanded) {
-                                mediaControlSheetState.partialExpand()
+                                mediaControlSheetState.peek()
                             } else {
                                 mediaControlSheetState.expand()
                             }
@@ -193,7 +193,7 @@ fun MediaControlSheet(
                     modifier = Modifier
                         .graphicsLayer {
                             translationY = -yOffset.toPx()
-                        }
+                        },
                 ) {
                     Surface(
                         modifier = Modifier.graphicsLayer {

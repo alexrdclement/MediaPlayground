@@ -6,6 +6,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,10 +37,10 @@ import com.alexrdclement.mediaplayground.media.model.image.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.ButtonDefaults
-import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.layout.Scaffold
 import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import dev.zacsweers.metrox.viewmodel.metroViewModel
@@ -174,6 +175,8 @@ private fun ImageGrid(
                             }
                         }
                         .combinedClickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = PaletteTheme.indication,
                             onClick = {},
                             onLongClick = { dropdownExpanded = true },
                         ),

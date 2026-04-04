@@ -1,10 +1,10 @@
 package com.alexrdclement.mediaplayground.ui.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -24,7 +24,6 @@ import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.palette.theme.styles.copy
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TitleArtistBlock(
     title: String,
@@ -59,6 +58,8 @@ fun TitleArtistBlock(
                         }
                     }
                     .combinedClickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = PaletteTheme.indication,
                         onClick = {},
                         onLongClick = { onTitleLongClick(titleTouchPosition) },
                     )
@@ -85,6 +86,8 @@ fun TitleArtistBlock(
                             }
                         }
                         .combinedClickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = PaletteTheme.indication,
                             onClick = {},
                             onLongClick = { onArtistsLongClick(artistsTouchPosition) },
                         )
