@@ -52,6 +52,7 @@ fun MediaControlSheet(
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
     onNavigateToArtistDelete: (artistId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToPlaybackControl: () -> Unit = {},
 ) {
     val viewModel = metroViewModel<MediaControlSheetViewModel>()
     val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
@@ -68,6 +69,7 @@ fun MediaControlSheet(
         playheadState = playheadState,
         timelineState = timelineState,
         onPlayPauseClick = viewModel::onPlayPauseClick,
+        onPlayPauseLongClick = onNavigateToPlaybackControl,
         onSkipClick = viewModel::onSkipClick,
         onSkipBackClick = viewModel::onSkipBackClick,
         onSeek = viewModel::onSeek,
@@ -89,6 +91,7 @@ fun MediaControlSheet(
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
     onPlayPauseClick: () -> Unit,
+    onPlayPauseLongClick: (() -> Unit)? = null,
     onSkipClick: () -> Unit,
     onSkipBackClick: () -> Unit,
     onSeek: (Duration) -> Unit,
@@ -199,6 +202,7 @@ fun MediaControlSheet(
                             playheadState = playheadState,
                             timelineState = timelineState,
                             onPlayPauseClick = onPlayPauseClick,
+                            onPlayPauseLongClick = onPlayPauseLongClick,
                             onSkipClick = onSkipClick,
                             onSkipBackClick = onSkipBackClick,
                             onSeek = onSeek,

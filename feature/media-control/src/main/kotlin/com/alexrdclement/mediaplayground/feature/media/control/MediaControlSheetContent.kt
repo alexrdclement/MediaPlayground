@@ -43,6 +43,7 @@ fun MediaControlSheetContent(
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
     onPlayPauseClick: () -> Unit,
+    onPlayPauseLongClick: (() -> Unit)? = null,
     onSkipClick: () -> Unit,
     onSkipBackClick: () -> Unit,
     onSeek: (Duration) -> Unit,
@@ -107,6 +108,7 @@ fun MediaControlSheetContent(
             TransportControlBar(
                 transportState = transportState,
                 onPlayPauseClick = onPlayPauseClick,
+                onPlayPauseLongClick = onPlayPauseLongClick,
                 onSkipClick = onSkipClick,
                 onSkipBackClick = onSkipBackClick,
                 modifier = Modifier
