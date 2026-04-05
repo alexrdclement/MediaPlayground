@@ -1,8 +1,6 @@
 package com.alexrdclement.mediaplayground.ui.components.track
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
@@ -33,12 +31,12 @@ import com.alexrdclement.mediaplayground.media.model.audio.SimpleTrack
 import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
+import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.palette.theme.styles.copy
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackListItem(
     track: SimpleTrack,
@@ -50,9 +48,10 @@ fun TrackListItem(
     onLongClick: ((Offset) -> Unit)? = null,
 ) {
     var touchPosition by remember { mutableStateOf(Offset.Zero) }
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+    Surface(
+        onClick = { if (isPlayable) onClick() },
+        onLongClick = onLongClick?.let { { it(touchPosition) } },
+        enabled = isPlayable || onLongClick != null,
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
@@ -60,66 +59,67 @@ fun TrackListItem(
                 awaitEachGesture {
                     awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
                 }
-            }
-            .combinedClickable(
-                enabled = isPlayable || onLongClick != null,
-                onClick = { if (isPlayable) onClick() },
-                onLongClick = onLongClick?.let { { it(touchPosition) } },
-            )
-            .padding(vertical = PaletteTheme.spacing.small)
-            .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
+            },
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .size(52.dp)
+                .padding(vertical = PaletteTheme.spacing.small)
+                .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha),
         ) {
-            if (isLoaded) {
-                PlayPauseButton(
-                    onClick = onPlayPauseClick,
-                    isPlaying = isPlaying,
-                    isEnabled = isPlayable,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(12.dp)
-                )
-            } else {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(52.dp)
+            ) {
+                if (isLoaded) {
+                    PlayPauseButton(
+                        onClick = onPlayPauseClick,
+                        isPlaying = isPlaying,
+                        isEnabled = isPlayable,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(12.dp)
+                    )
+                } else {
+                    Text(
+                        text = track.trackNumber.toString(),
+                        style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
+                        modifier = Modifier
+                    )
+                }
+            }
+
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = PaletteTheme.spacing.small)
+            ) {
                 Text(
-                    text = track.trackNumber.toString(),
-                    style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
+                    text = track.name,
+                    style = PaletteTheme.styles.text.titleMedium,
+                    maxLines = 1,
                     modifier = Modifier
+                        .basicMarquee()
+                )
+                Text(
+                    text = artistNamesOrDefault(track.artists),
+                    style = PaletteTheme.styles.text.bodyMedium,
+                    maxLines = 1,
+                    modifier = Modifier
+                        .basicMarquee()
                 )
             }
-        }
-
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = PaletteTheme.spacing.small)
-        ) {
             Text(
-                text = track.name,
-                style = PaletteTheme.styles.text.titleMedium,
-                maxLines = 1,
+                text = remember { track.duration.formatShort() },
+                style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
                 modifier = Modifier
-                    .basicMarquee()
-            )
-            Text(
-                text = artistNamesOrDefault(track.artists),
-                style = PaletteTheme.styles.text.bodyMedium,
-                maxLines = 1,
-                modifier = Modifier
-                    .basicMarquee()
+                    .height(IntrinsicSize.Max)
+                    .width(64.dp),
             )
         }
-        Text(
-            text = remember { track.duration.formatShort() },
-            style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .width(64.dp),
-        )
     }
 }
 

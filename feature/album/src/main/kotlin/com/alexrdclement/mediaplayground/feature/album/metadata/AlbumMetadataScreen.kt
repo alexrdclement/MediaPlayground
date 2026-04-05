@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.feature.album.metadata
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,6 +31,7 @@ import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
 import com.alexrdclement.palette.components.core.Button
+import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.core.TextField
@@ -223,20 +223,22 @@ private fun ArtistRow(
     artist: SimpleArtist,
     onNavigateToMetadata: () -> Unit,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onNavigateToMetadata)
-            .padding(vertical = PaletteTheme.spacing.small),
+    Surface(
+        onClick = onNavigateToMetadata,
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Text(
-            text = artist.name ?: "Unknown Artist",
-            style = PaletteTheme.styles.text.bodyMedium,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text("Edit \u2192", style = PaletteTheme.styles.text.bodyMedium)
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = PaletteTheme.spacing.small),
+        ) {
+            Text(
+                text = artist.name ?: "Unknown Artist",
+                style = PaletteTheme.styles.text.bodyMedium,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Edit \u2192", style = PaletteTheme.styles.text.bodyMedium)
+        }
     }
 }
 
@@ -245,22 +247,24 @@ private fun ImageRow(
     image: Image,
     onNavigateToMetadata: () -> Unit,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onNavigateToMetadata)
-            .padding(vertical = PaletteTheme.spacing.small),
+    Surface(
+        onClick = onNavigateToMetadata,
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Text(
-            text = image.uri,
-            style = PaletteTheme.styles.text.bodyMedium,
-            maxLines = 1,
-            modifier = Modifier.weight(1f),
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text("View \u2192", style = PaletteTheme.styles.text.bodyMedium)
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = PaletteTheme.spacing.small),
+        ) {
+            Text(
+                text = image.uri,
+                style = PaletteTheme.styles.text.bodyMedium,
+                maxLines = 1,
+                modifier = Modifier.weight(1f),
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("View \u2192", style = PaletteTheme.styles.text.bodyMedium)
+        }
     }
 }
 

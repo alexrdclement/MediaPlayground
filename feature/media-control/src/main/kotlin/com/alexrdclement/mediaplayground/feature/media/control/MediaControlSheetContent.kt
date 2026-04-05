@@ -1,14 +1,11 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.Stable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,19 +14,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbar
-import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.components.TransportControlBar
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
-import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.palette.components.core.HorizontalDivider
 import com.alexrdclement.palette.components.media.model.Artist
 import com.alexrdclement.palette.components.media.model.MediaItem
@@ -38,6 +38,13 @@ import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.time.Duration
+
+@Stable
+class MediaControlOverlapState(val maxOverlapPx: Float) {
+    var overlapPx by mutableStateOf(0f)
+        internal set
+    val overlapFraction: Float get() = if (maxOverlapPx > 0f) overlapPx / maxOverlapPx else 0f
+}
 
 @Composable
 fun MediaControlSheetContent(
@@ -62,84 +69,71 @@ fun MediaControlSheetContent(
     onNavigateToArtistDelete: () -> Unit = {},
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
+    overlapState: MediaControlOverlapState? = null,
 ) {
+    val nestedScrollConnection = remember(overlapState) {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val state = overlapState ?: return Offset.Zero
+                if (available.y < 0f) {
+                    val canConsume = state.maxOverlapPx - state.overlapPx
+                    val toConsume = minOf(-available.y, canConsume)
+                    if (toConsume > 0f) {
+                        state.overlapPx += toConsume
+                        return Offset(0f, -toConsume)
+                    }
+                }
+                return Offset.Zero
+            }
+
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource,
+            ): Offset {
+                val state = overlapState ?: return Offset.Zero
+                if (available.y > 0f) {
+                    val toConsume = minOf(available.y, state.overlapPx)
+                    if (toConsume > 0f) {
+                        state.overlapPx -= toConsume
+                        return Offset(0f, toConsume)
+                    }
+                }
+                return Offset.Zero
+            }
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(contentPadding)
     ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Playlist(
+            loadedMediaItem = loadedMediaItem,
+            playlist = playlist,
+            onItemClick = onItemClick,
+            onItemPlayPauseClick = onItemPlayPauseClick,
+            onNavigateToTrackMetadata = onNavigateToTrackMetadata,
+            onNavigateToTrackDelete = onNavigateToTrackDelete,
+            onNavigateToLoadedItemMetadata = onNavigateToLoadedItemMetadata,
+            onNavigateToLoadedItemDelete = onNavigateToLoadedItemDelete,
+            onNavigateToArtistMetadata = onNavigateToArtistMetadata,
+            onNavigateToArtistDelete = onNavigateToArtistDelete,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-        ) {
-            item {
-                var titleMenuExpanded by remember { mutableStateOf(false) }
-                var titleMenuOffset by remember { mutableStateOf(Offset.Zero) }
-                var artistMenuExpanded by remember { mutableStateOf(false) }
-                var artistMenuOffset by remember { mutableStateOf(Offset.Zero) }
-                TitleArtistBlock(
-                    title = loadedMediaItem.title,
-                    artists = artistNamesOrDefault(artists = loadedMediaItem.artists),
-                    onTitleLongClick = { offset ->
-                        titleMenuOffset = offset
-                        titleMenuExpanded = true
-                    },
-                    onArtistsLongClick = { offset ->
-                        artistMenuOffset = offset
-                        artistMenuExpanded = true
-                    },
-                    titleOverlay = {
-                        TrackContextMenu(
-                            expanded = titleMenuExpanded,
-                            offset = titleMenuOffset,
-                            onDismissRequest = { titleMenuExpanded = false },
-                            onNavigateToMetadata = onNavigateToLoadedItemMetadata,
-                            onNavigateToDelete = onNavigateToLoadedItemDelete,
-                        )
-                    },
-                    artistsOverlay = {
-                        ArtistContextMenu(
-                            expanded = artistMenuExpanded,
-                            offset = artistMenuOffset,
-                            onDismissRequest = { artistMenuExpanded = false },
-                            onNavigateToMetadata = onNavigateToArtistMetadata,
-                            onNavigateToDelete = onNavigateToArtistDelete,
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = PaletteTheme.spacing.medium)
-                )
-            }
-            items(
-                items = playlist,
-                key = { item -> item.mediaItem.id.value },
-            ) { item ->
-                var menuExpanded by remember { mutableStateOf(false) }
-                var touchOffset by remember { mutableStateOf(Offset.Zero) }
-                Box {
-                    PlaylistItem(
-                        item = item,
-                        onClick = { onItemClick(item) },
-                        onPlayPauseClick = { onItemPlayPauseClick(item) },
-                        onLongClick = { offset ->
-                            touchOffset = offset
-                            menuExpanded = true
-                        },
+                .nestedScroll(nestedScrollConnection)
+                .layout { measurable, constraints ->
+                    val extraHeight = overlapState?.overlapPx?.roundToInt() ?: 0
+                    val placeable = measurable.measure(
+                        constraints.copy(maxHeight = constraints.maxHeight + extraHeight)
                     )
-                    TrackContextMenu(
-                        expanded = menuExpanded,
-                        offset = touchOffset,
-                        onDismissRequest = { menuExpanded = false },
-                        onNavigateToMetadata = { onNavigateToTrackMetadata(item.mediaItem.id.value) },
-                        onNavigateToDelete = { onNavigateToTrackDelete(item.mediaItem.id.value, item.mediaItem.title ?: "") },
-                    )
-                }
-            }
-        }
+                    layout(placeable.width, constraints.maxHeight) {
+                        placeable.place(0, -extraHeight)
+                    }
+                },
+        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -163,7 +157,6 @@ fun MediaControlSheetContent(
                 onPlayPauseLongClick = onPlayPauseLongClick,
                 onSkipClick = onSkipClick,
                 onSkipBackClick = onSkipBackClick,
-                modifier = Modifier
             )
         }
     }

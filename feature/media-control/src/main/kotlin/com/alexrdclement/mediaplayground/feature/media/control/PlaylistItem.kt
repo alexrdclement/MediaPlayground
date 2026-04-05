@@ -1,7 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +35,7 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
+import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.theme.PaletteTheme
@@ -73,9 +73,10 @@ fun PlaylistItem(
     modifier: Modifier = Modifier,
 ) {
     var touchPosition by remember { mutableStateOf(Offset.Zero) }
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+    Surface(
+        onClick = onClick,
+        onLongClick = onLongClick?.let { { it(touchPosition) } },
+        enabled = isPlayable,
         modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
@@ -83,67 +84,68 @@ fun PlaylistItem(
                 awaitEachGesture {
                     awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
                 }
-            }
-            .combinedClickable(
-                enabled = isPlayable,
-                onClick = onClick,
-                onLongClick = onLongClick?.let { { it(touchPosition) } },
-            )
-            .padding(vertical = PaletteTheme.spacing.small)
-            .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
+            },
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .size(52.dp)
+                .padding(vertical = PaletteTheme.spacing.small)
+                .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha),
         ) {
-            if (isLoaded) {
-                PlayPauseButton(
-                    onClick = onPlayPauseClick,
-                    isPlaying = isPlaying,
-                    isEnabled = isPlayable,
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(52.dp)
+            ) {
+                if (isLoaded) {
+                    PlayPauseButton(
+                        onClick = onPlayPauseClick,
+                        isPlaying = isPlaying,
+                        isEnabled = isPlayable,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(12.dp)
+                    )
+                } else {
+                    MediaItemArtwork(
+                        imageUrl = item.thumbnailImageUrl,
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .fillMaxSize()
+                    )
+                }
+            }
+
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = PaletteTheme.spacing.small)
+            ) {
+                Text(
+                    text = item.title,
+                    style = PaletteTheme.styles.text.titleMedium,
+                    maxLines = 1,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(12.dp)
+                        .basicMarquee()
                 )
-            } else {
-                MediaItemArtwork(
-                    imageUrl = item.thumbnailImageUrl,
+                Text(
+                    text = artistNamesOrDefault(item.artists),
+                    style = PaletteTheme.styles.text.bodyMedium,
+                    maxLines = 1,
                     modifier = Modifier
-                        .aspectRatio(1f)
-                        .fillMaxSize()
+                        .basicMarquee()
                 )
             }
-        }
-
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = PaletteTheme.spacing.small)
-        ) {
             Text(
-                text = item.title,
-                style = PaletteTheme.styles.text.titleMedium,
-                maxLines = 1,
+                text = remember { item.duration.formatShort() },
+                style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
                 modifier = Modifier
-                    .basicMarquee()
-            )
-            Text(
-                text = artistNamesOrDefault(item.artists),
-                style = PaletteTheme.styles.text.bodyMedium,
-                maxLines = 1,
-                modifier = Modifier
-                    .basicMarquee()
+                    .height(IntrinsicSize.Max)
+                    .width(64.dp),
             )
         }
-        Text(
-            text = remember { item.duration.formatShort() },
-            style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .width(64.dp),
-        )
     }
 }
 

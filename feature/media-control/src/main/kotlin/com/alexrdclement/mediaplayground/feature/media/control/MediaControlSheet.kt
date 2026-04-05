@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.safeDrawing
@@ -15,9 +16,12 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
@@ -32,8 +36,7 @@ import com.alexrdclement.mediaplayground.media.model.audio.largeImageUrl
 import com.alexrdclement.mediaplayground.media.model.audio.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.media.MediaControlSheetState
+import com.alexrdclement.palette.components.layout.PeekSheetState
 import com.alexrdclement.palette.components.media.model.Artist
 import com.alexrdclement.palette.components.util.calculateHorizontalPaddingValues
 import com.alexrdclement.palette.components.util.copy
@@ -49,7 +52,7 @@ import com.alexrdclement.palette.components.media.model.MediaItem as UiMediaItem
 
 @Composable
 fun MediaControlSheet(
-    mediaControlSheetState: MediaControlSheetState,
+    mediaControlSheetState: PeekSheetState,
     onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
@@ -88,7 +91,7 @@ fun MediaControlSheet(
 
 @Composable
 fun MediaControlSheet(
-    mediaControlSheetState: MediaControlSheetState,
+    mediaControlSheetState: PeekSheetState,
     loadedMediaItem: MediaItem?,
     playlist: PersistentList<MediaItemUi>,
     transportState: TransportState,
@@ -143,6 +146,19 @@ fun MediaControlSheet(
                 val maxHeight = this@BoxWithConstraints.maxHeight
                 val maxWidth = this@BoxWithConstraints.maxWidth
 
+                val maxContentSize = when {
+                    maxHeight < maxWidth -> DpSize(
+                        width = maxWidth,
+                        height = maxHeight / 2f,
+                    )
+                    else -> DpSize(
+                        width = maxWidth,
+                        height = maxWidth,
+                    )
+                }
+                val artworkHeightPx = with(LocalDensity.current) { maxContentSize.height.toPx() }
+                val overlapState = remember(artworkHeightPx) { MediaControlOverlapState(artworkHeightPx) }
+
                 val contentPadding = WindowInsets.safeDrawing.asPaddingValues()
                 MediaControlSheetComponent(
                     mediaItem = uiMediaItem,
@@ -153,7 +169,7 @@ fun MediaControlSheet(
                     onControlBarClick = {
                         coroutineScope.launch {
                             if (mediaControlSheetState.isExpanded) {
-                                mediaControlSheetState.partialExpand()
+                                mediaControlSheetState.peek()
                             } else {
                                 mediaControlSheetState.expand()
                             }
@@ -163,16 +179,7 @@ fun MediaControlSheet(
                         width = MediaControlSheetPartialExpandHeight,
                         height = MediaControlSheetPartialExpandHeight,
                     ),
-                    maxContentSize = when {
-                        maxHeight < maxWidth -> DpSize(
-                            width = maxWidth,
-                            height = maxHeight / 2f,
-                        )
-                        else -> DpSize(
-                            width = maxWidth,
-                            height = maxWidth, // Square for now
-                        )
-                    },
+                    maxContentSize = maxContentSize,
                     aboveControlBar = {
                         val statusBarsPadding = WindowInsets.statusBars.asPaddingValues()
                         val statusBarTopPadding = statusBarsPadding.calculateTopPadding()
@@ -193,14 +200,17 @@ fun MediaControlSheet(
                     modifier = Modifier
                         .graphicsLayer {
                             translationY = -yOffset.toPx()
-                        }
+                        },
                 ) {
-                    Surface(
-                        modifier = Modifier.graphicsLayer {
-                            alpha = mediaControlSheetState.partialToFullProgress
-                        }
+                    Box(
+                        modifier = Modifier
+                            .graphicsLayer {
+                                alpha = mediaControlSheetState.partialToFullProgress
+                            }
+                            .background(PaletteTheme.colorScheme.surface)
                     ) {
                         MediaControlSheetContent(
+                            overlapState = overlapState,
                             loadedMediaItem = uiMediaItem,
                             playlist = playlist,
                             transportState = transportState,
