@@ -10,7 +10,6 @@ import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
-import kotlinx.io.files.Path
 import com.alexrdclement.mediaplayground.model.result.Result
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +24,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
+import kotlinx.io.files.Path
 
 class LocalTrackRepositoryImpl @Inject constructor(
     private val pathProvider: PathProvider,
