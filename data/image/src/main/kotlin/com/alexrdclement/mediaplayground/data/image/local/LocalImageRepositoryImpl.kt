@@ -39,8 +39,8 @@ class LocalImageRepositoryImpl @Inject constructor(
             getDestination = { imageId, extension ->
                 Path(imagesDir, "${imageId.value}.$extension")
             },
-            saveImage = { imageId, fileName, metadata ->
-                localImageDataStore.put(imageId = imageId, fileName = fileName, metadata = metadata)
+            saveImage = { imageId, fileName, mediaMetadata ->
+                localImageDataStore.put(imageId = imageId, fileName = fileName, mediaMetadata = mediaMetadata)
             },
         )
     }

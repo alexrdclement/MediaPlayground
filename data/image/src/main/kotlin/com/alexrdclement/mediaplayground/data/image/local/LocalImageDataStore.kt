@@ -7,9 +7,9 @@ import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.data.image.local.mapper.toImage
 import com.alexrdclement.mediaplayground.database.dao.ImageDao
+import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
-import com.alexrdclement.mediaplayground.media.model.ImageMetadata
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -38,20 +38,20 @@ class LocalImageDataStore @Inject constructor(
     suspend fun put(
         imageId: ImageId,
         fileName: String,
-        metadata: ImageMetadata? = null,
+        mediaMetadata: MediaMetadata.Image? = null,
         notes: String? = null,
     ) {
         imageDao.insert(
             ImageEntity(
                 id = imageId.value,
                 fileName = fileName,
-                widthPx = metadata?.widthPx,
-                heightPx = metadata?.heightPx,
-                dateTimeOriginal = metadata?.dateTimeOriginal,
-                gpsLatitude = metadata?.gpsLatitude,
-                gpsLongitude = metadata?.gpsLongitude,
-                cameraMake = metadata?.cameraMake,
-                cameraModel = metadata?.cameraModel,
+                widthPx = mediaMetadata?.widthPx,
+                heightPx = mediaMetadata?.heightPx,
+                dateTimeOriginal = mediaMetadata?.dateTimeOriginal,
+                gpsLatitude = mediaMetadata?.gpsLatitude,
+                gpsLongitude = mediaMetadata?.gpsLongitude,
+                cameraMake = mediaMetadata?.cameraMake,
+                cameraModel = mediaMetadata?.cameraModel,
                 notes = notes,
             )
         )
