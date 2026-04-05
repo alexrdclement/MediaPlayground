@@ -49,8 +49,8 @@ import com.alexrdclement.mediaplayground.feature.track.navigation.TrackDeleteRou
 import com.alexrdclement.mediaplayground.feature.track.navigation.TrackMetadataRoute
 import com.alexrdclement.mediaplayground.feature.track.navigation.trackMetadataEntryProvider
 import com.alexrdclement.mediaplayground.feature.track.navigation.trackMetadataNavGraph
-import com.alexrdclement.palette.components.media.MediaControlSheetState
-import com.alexrdclement.palette.components.media.rememberMediaControlSheetState
+import com.alexrdclement.palette.components.layout.PeekSheetState
+import com.alexrdclement.palette.components.layout.rememberPeekSheetState
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.navigation.NavGraphRoute
 import com.alexrdclement.palette.navigation.NavKey
@@ -106,11 +106,11 @@ fun MediaPlaygroundNav(
     navController: NavController = rememberMediaPlaygroundNavController(),
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val mediaControlSheetState = rememberMediaControlSheetState()
+    val mediaControlSheetState = rememberPeekSheetState()
 
     BackHandler(enabled = mediaControlSheetState.isExpanded) {
         coroutineScope.launch {
-            mediaControlSheetState.partialExpand()
+            mediaControlSheetState.peek()
         }
     }
 
@@ -139,14 +139,14 @@ fun MediaPlaygroundNav(
     MediaControlSheet(
         mediaControlSheetState = mediaControlSheetState,
         onNavigateToTrackMetadata = { trackId ->
-            coroutineScope.launch { mediaControlSheetState.partialExpand() }
+            coroutineScope.launch { mediaControlSheetState.peek() }
             navController.navigate(TrackMetadataRoute(trackIdValue = trackId))
         },
         onNavigateToTrackDelete = { trackId, displayName ->
             navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
         },
         onNavigateToArtistMetadata = { artistId ->
-            coroutineScope.launch { mediaControlSheetState.partialExpand() }
+            coroutineScope.launch { mediaControlSheetState.peek() }
             navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
         },
         onNavigateToArtistDelete = { artistId, displayName ->
@@ -161,7 +161,7 @@ fun MediaPlaygroundNav(
 fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
     navController: NavController,
     coroutineScope: kotlinx.coroutines.CoroutineScope,
-    mediaControlSheetState: MediaControlSheetState,
+    mediaControlSheetState: PeekSheetState,
 ) {
     mainCatalogEntryProvider(
         navController = navController,
