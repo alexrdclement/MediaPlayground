@@ -14,8 +14,8 @@ import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
-import com.alexrdclement.mediaplayground.media.model.audio.Album
-import com.alexrdclement.mediaplayground.media.model.audio.Track
+import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.error

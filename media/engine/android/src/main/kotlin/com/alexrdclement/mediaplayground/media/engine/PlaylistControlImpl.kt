@@ -1,12 +1,12 @@
 package com.alexrdclement.mediaplayground.media.engine
 
 import com.alexrdclement.mediaplayground.media.engine.mapper.toMediaItem
-import com.alexrdclement.mediaplayground.media.model.audio.Album
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
-import com.alexrdclement.mediaplayground.media.model.audio.Track
-import com.alexrdclement.mediaplayground.media.model.audio.mapper.toSimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.audio.mapper.toTrack
+import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.MediaItemId
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.mapper.toSimpleAlbum
+import com.alexrdclement.mediaplayground.media.model.mapper.toTrack
 import dev.zacsweers.metro.Inject
 
 class PlaylistControlImpl @Inject constructor(

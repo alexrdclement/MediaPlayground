@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.feature.image.delete
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.image.ImageRepository
-import com.alexrdclement.mediaplayground.media.model.image.ImageId
+import com.alexrdclement.mediaplayground.media.model.ImageId
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject

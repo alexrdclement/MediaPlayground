@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.data.track.local
 
 import android.net.Uri
 import com.alexrdclement.mediaplayground.data.track.TrackRepository
-import com.alexrdclement.mediaplayground.media.model.audio.Track
+import com.alexrdclement.mediaplayground.media.model.Track
 import kotlinx.coroutines.flow.Flow
 
 interface LocalTrackRepository : TrackRepository {

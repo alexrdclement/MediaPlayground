@@ -7,9 +7,9 @@ import androidx.paging.map
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.data.image.local.mapper.toImage
 import com.alexrdclement.mediaplayground.database.dao.ImageDao
-import com.alexrdclement.mediaplayground.media.model.image.Image
-import com.alexrdclement.mediaplayground.media.model.image.ImageId
-import com.alexrdclement.mediaplayground.media.model.image.ImageMetadata
+import com.alexrdclement.mediaplayground.media.model.Image
+import com.alexrdclement.mediaplayground.media.model.ImageId
+import com.alexrdclement.mediaplayground.media.model.ImageMetadata
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

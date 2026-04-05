@@ -27,8 +27,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.palette.components.core.Button

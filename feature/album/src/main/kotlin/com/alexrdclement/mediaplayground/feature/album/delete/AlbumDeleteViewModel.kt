@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.album.AlbumRepository
 import com.alexrdclement.mediaplayground.media.engine.deleteIfNecessary
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
+import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory

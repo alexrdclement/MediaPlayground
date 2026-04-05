@@ -1,8 +1,8 @@
 package com.alexrdclement.mediaplayground.media.engine.fakes
 
 import com.alexrdclement.mediaplayground.media.engine.PlaylistState
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
+import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 

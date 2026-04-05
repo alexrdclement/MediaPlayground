@@ -27,7 +27,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleTrack
+import com.alexrdclement.mediaplayground.media.model.SimpleTrack
 import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort

@@ -20,8 +20,8 @@ import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
-import com.alexrdclement.mediaplayground.media.model.audio.Track
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged

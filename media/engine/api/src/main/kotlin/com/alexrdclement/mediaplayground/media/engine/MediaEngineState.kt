@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.media.engine
 
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
+import com.alexrdclement.mediaplayground.media.model.MediaItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

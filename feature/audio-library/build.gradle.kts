@@ -20,7 +20,7 @@ dependencies {
 
     implementation(projects.data.album)
     implementation(projects.data.track)
-    implementation(projects.media.model.audio)
+    implementation(projects.media.model)
     implementation(projects.media.session.api)
 
     testImplementation(libs.kotlinx.coroutines.test)

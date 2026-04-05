@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.data.artist.local
 
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 

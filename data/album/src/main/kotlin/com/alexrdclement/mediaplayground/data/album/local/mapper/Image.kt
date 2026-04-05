@@ -1,9 +1,9 @@
 package com.alexrdclement.mediaplayground.data.album.local.mapper
 
 import com.alexrdclement.mediaplayground.data.disk.mapper.uriFromFileName
-import com.alexrdclement.mediaplayground.media.model.image.Image
-import com.alexrdclement.mediaplayground.media.model.image.ImageId
-import com.alexrdclement.mediaplayground.media.model.image.ImageMetadata
+import com.alexrdclement.mediaplayground.media.model.Image
+import com.alexrdclement.mediaplayground.media.model.ImageId
+import com.alexrdclement.mediaplayground.media.model.ImageMetadata
 import kotlinx.io.files.Path
 import com.alexrdclement.mediaplayground.database.model.Image as ImageEntity
 

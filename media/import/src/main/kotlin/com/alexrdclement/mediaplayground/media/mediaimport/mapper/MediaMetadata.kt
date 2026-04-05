@@ -1,12 +1,12 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.mapper
 
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.media.model.image.Image
-import com.alexrdclement.mediaplayground.media.model.image.ImageId
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.media.model.audio.Source
+import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.Image
+import com.alexrdclement.mediaplayground.media.model.ImageId
+import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.Source
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.io.files.Path
 import java.util.UUID

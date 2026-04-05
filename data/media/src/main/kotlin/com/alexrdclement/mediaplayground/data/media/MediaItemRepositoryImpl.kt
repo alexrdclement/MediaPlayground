@@ -3,9 +3,9 @@ package com.alexrdclement.mediaplayground.data.media
 import com.alexrdclement.mediaplayground.data.album.AlbumRepository
 import com.alexrdclement.mediaplayground.data.track.TrackRepository
 import com.alexrdclement.mediaplayground.media.engine.MediaItemRepository
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

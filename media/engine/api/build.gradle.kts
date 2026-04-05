@@ -10,6 +10,6 @@ dependencies {
     api(libs.loggable)
     api(libs.kotlinx.coroutines.android)
 
-    api(projects.media.model.audio)
+    api(projects.media.model)
     api(projects.model.result)
 }

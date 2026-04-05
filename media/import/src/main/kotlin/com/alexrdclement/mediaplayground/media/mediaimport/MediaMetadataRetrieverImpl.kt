@@ -5,7 +5,7 @@ import android.net.Uri
 import android.webkit.MimeTypeMap
 import androidx.exifinterface.media.ExifInterface
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaMetadata
-import com.alexrdclement.mediaplayground.media.model.image.ImageMetadata
+import com.alexrdclement.mediaplayground.media.model.ImageMetadata
 import dev.zacsweers.metro.Inject
 import android.media.MediaMetadataRetriever as AndroidMediaMetadataRetriever
 

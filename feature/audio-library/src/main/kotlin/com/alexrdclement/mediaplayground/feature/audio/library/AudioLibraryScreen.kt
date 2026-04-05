@@ -24,9 +24,9 @@ import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
-import com.alexrdclement.mediaplayground.media.model.audio.Album
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
-import com.alexrdclement.mediaplayground.media.model.audio.Track
+import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1

@@ -3,8 +3,8 @@ package com.alexrdclement.mediaplayground.feature.track
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.track.TrackRepository
-import com.alexrdclement.mediaplayground.media.model.audio.Track
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.uievent.UiEventState

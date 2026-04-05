@@ -2,9 +2,9 @@ package com.alexrdclement.mediaplayground.media.engine
 
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.MediaItemId
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

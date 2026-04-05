@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.model
 
-import com.alexrdclement.mediaplayground.media.model.image.ImageMetadata
+import com.alexrdclement.mediaplayground.media.model.ImageMetadata
 
 sealed class MediaMetadata {
     abstract val mimeType: String?

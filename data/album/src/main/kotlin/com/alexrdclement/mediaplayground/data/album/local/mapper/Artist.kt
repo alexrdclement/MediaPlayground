@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.data.album.local.mapper
 
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.database.model.Artist as ArtistEntity
 
 fun ArtistEntity.toSimpleArtist(): SimpleArtist {

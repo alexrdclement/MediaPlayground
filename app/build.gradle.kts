@@ -32,7 +32,7 @@ dependencies {
     implementation(projects.data.image)
     implementation(projects.data.track)
     implementation(projects.media.import)
-    implementation(projects.media.model.audio)
+    implementation(projects.media.model)
     implementation(projects.feature.album)
     implementation(projects.feature.artist)
     implementation(projects.feature.audioLibrary)

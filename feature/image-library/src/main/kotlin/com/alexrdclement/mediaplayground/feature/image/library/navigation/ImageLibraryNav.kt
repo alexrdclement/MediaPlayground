@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.feature.image.library.navigation
 
 import androidx.navigation3.runtime.EntryProviderScope
 import com.alexrdclement.mediaplayground.feature.image.library.ImageLibraryScreen
-import com.alexrdclement.mediaplayground.media.model.image.ImageId
+import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.navigation.NavGraphBuilder
 import com.alexrdclement.palette.navigation.NavKey

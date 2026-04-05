@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.ui.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.R
 import com.alexrdclement.palette.components.media.model.Artist
 

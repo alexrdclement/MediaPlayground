@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.palette.components.layout.dialog.DeleteConfirmationDialogContent
 import com.alexrdclement.palette.components.layout.dialog.IndeterminateProgressDialogContent
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel

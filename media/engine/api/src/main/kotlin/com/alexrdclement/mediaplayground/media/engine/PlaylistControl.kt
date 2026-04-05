@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.media.engine
 
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItem
-import com.alexrdclement.mediaplayground.media.model.audio.MediaItemId
+import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import kotlinx.coroutines.flow.first
 
 interface PlaylistControl {

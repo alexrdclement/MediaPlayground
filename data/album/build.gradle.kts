@@ -8,7 +8,7 @@ android {
 }
 
 dependencies {
-    api(projects.media.model.audio)
+    api(projects.media.model)
 
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.io.core)
@@ -19,5 +19,5 @@ dependencies {
 
     testImplementation(libs.maindispatcher.rule)
     testImplementation(projects.data.album.testFixtures)
-    testImplementation(projects.media.model.audio.testFixtures)
+    testImplementation(projects.media.model.testFixtures)
 }

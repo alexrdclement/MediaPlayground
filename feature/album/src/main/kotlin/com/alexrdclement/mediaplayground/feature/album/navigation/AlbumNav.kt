@@ -5,8 +5,8 @@ import androidx.navigation3.scene.DialogSceneStrategy
 import com.alexrdclement.mediaplayground.feature.album.AlbumScreen
 import com.alexrdclement.mediaplayground.feature.album.delete.AlbumDeleteScreen
 import com.alexrdclement.mediaplayground.feature.album.metadata.AlbumMetadataScreen
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.media.model.image.ImageId
+import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.navigation.NavGraphBuilder
 import com.alexrdclement.palette.navigation.NavKey

@@ -1,5 +1,0 @@
-package com.alexrdclement.mediaplayground.model.audio.fakes
-
-import com.alexrdclement.mediaplayground.media.model.audio.Source
-
-val FakeSource1 = Source.Local

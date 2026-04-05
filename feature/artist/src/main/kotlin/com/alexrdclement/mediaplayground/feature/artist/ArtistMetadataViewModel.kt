@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.feature.artist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.artist.ArtistRepository
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.uievent.UiEventState

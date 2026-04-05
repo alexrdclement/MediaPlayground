@@ -8,7 +8,7 @@ android {
 
 dependencies {
     api(projects.media.engine.api)
-    api(projects.media.model.audio)
+    api(projects.media.model)
 
     implementation(libs.kotlinx.coroutines.android)
 }

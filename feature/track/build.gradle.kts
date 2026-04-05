@@ -17,6 +17,6 @@ dependencies {
 
     implementation(projects.data.artist)
     implementation(projects.data.track)
-    implementation(projects.media.model.audio)
+    implementation(projects.media.model)
     implementation(projects.media.session.api)
 }

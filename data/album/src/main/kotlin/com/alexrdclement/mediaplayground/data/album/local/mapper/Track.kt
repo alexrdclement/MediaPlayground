@@ -1,9 +1,9 @@
 package com.alexrdclement.mediaplayground.data.album.local.mapper
 
 import com.alexrdclement.mediaplayground.data.disk.mapper.uriFromFileName
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.SimpleTrack
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.io.files.Path
 import kotlin.time.Duration.Companion.milliseconds

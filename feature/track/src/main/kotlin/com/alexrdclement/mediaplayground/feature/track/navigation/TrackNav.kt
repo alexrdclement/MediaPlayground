@@ -4,7 +4,7 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.scene.DialogSceneStrategy
 import com.alexrdclement.mediaplayground.feature.track.TrackMetadataScreen
 import com.alexrdclement.mediaplayground.feature.track.delete.TrackDeleteScreen
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.navigation.NavGraphBuilder
 import com.alexrdclement.palette.navigation.NavKey

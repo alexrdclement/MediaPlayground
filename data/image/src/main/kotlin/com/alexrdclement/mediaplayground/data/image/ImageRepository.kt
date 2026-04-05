@@ -2,8 +2,8 @@ package com.alexrdclement.mediaplayground.data.image
 
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.alexrdclement.mediaplayground.media.model.image.Image
-import com.alexrdclement.mediaplayground.media.model.image.ImageId
+import com.alexrdclement.mediaplayground.media.model.Image
+import com.alexrdclement.mediaplayground.media.model.ImageId
 import kotlinx.coroutines.flow.Flow
 
 interface ImageRepository {

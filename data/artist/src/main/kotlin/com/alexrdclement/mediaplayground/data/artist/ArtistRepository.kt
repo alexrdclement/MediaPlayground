@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.data.artist
 
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import kotlinx.coroutines.flow.Flow
 
 interface ArtistRepository {

@@ -2,12 +2,12 @@ package com.alexrdclement.mediaplayground.data.track.local.mapper
 
 import com.alexrdclement.mediaplayground.data.disk.mapper.fileNameFromUri
 import com.alexrdclement.mediaplayground.data.disk.mapper.uriFromFileName
-import com.alexrdclement.mediaplayground.media.model.audio.AlbumId
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleArtist
-import com.alexrdclement.mediaplayground.media.model.audio.SimpleTrack
-import com.alexrdclement.mediaplayground.media.model.audio.Track
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
+import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.SimpleTrack
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.io.files.Path

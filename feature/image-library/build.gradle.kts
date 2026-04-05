@@ -18,6 +18,6 @@ dependencies {
     implementation(libs.palette.theme)
 
     implementation(projects.data.image)
-    implementation(projects.media.model.audio)
+    implementation(projects.media.model)
     implementation(projects.ui)
 }

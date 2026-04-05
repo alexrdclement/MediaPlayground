@@ -2,8 +2,8 @@ package com.alexrdclement.mediaplayground.data.track
 
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.alexrdclement.mediaplayground.media.model.audio.Track
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.coroutines.flow.Flow
 
 interface TrackRepository {

@@ -1,19 +1,19 @@
 package com.alexrdclement.mediaplayground.ui.util
 
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbum1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbum2
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbum3
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeAlbums1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleAlbum1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleArtist1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleTrack1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleTrack2
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleTrack3
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeSimpleTracks1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack1
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack2
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTrack3
-import com.alexrdclement.mediaplayground.model.audio.fakes.FakeTracks1
+import com.alexrdclement.mediaplayground.media.model.FakeAlbum1
+import com.alexrdclement.mediaplayground.media.model.FakeAlbum2
+import com.alexrdclement.mediaplayground.media.model.FakeAlbum3
+import com.alexrdclement.mediaplayground.media.model.FakeAlbums1
+import com.alexrdclement.mediaplayground.media.model.FakeSimpleAlbum1
+import com.alexrdclement.mediaplayground.media.model.FakeSimpleArtist1
+import com.alexrdclement.mediaplayground.media.model.FakeSimpleTrack1
+import com.alexrdclement.mediaplayground.media.model.FakeSimpleTrack2
+import com.alexrdclement.mediaplayground.media.model.FakeSimpleTrack3
+import com.alexrdclement.mediaplayground.media.model.FakeSimpleTracks1
+import com.alexrdclement.mediaplayground.media.model.FakeTrack1
+import com.alexrdclement.mediaplayground.media.model.FakeTrack2
+import com.alexrdclement.mediaplayground.media.model.FakeTrack3
+import com.alexrdclement.mediaplayground.media.model.FakeTracks1
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 
 

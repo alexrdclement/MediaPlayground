@@ -8,8 +8,8 @@ import com.alexrdclement.mediaplayground.data.artist.local.LocalArtistRepository
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.model.audio.Track
-import com.alexrdclement.mediaplayground.media.model.audio.TrackId
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.io.files.Path
 import com.alexrdclement.mediaplayground.model.result.Result
 import dev.zacsweers.metro.Inject

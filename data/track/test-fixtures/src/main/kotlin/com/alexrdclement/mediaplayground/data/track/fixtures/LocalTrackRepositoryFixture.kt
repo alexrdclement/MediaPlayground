@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.data.track.fixtures
 import com.alexrdclement.media.mediaimport.fixtures.MediaImporterFixture
 import com.alexrdclement.mediaplayground.data.track.local.LocalTrackRepositoryImpl
 import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
-import com.alexrdclement.mediaplayground.media.model.audio.Track
+import com.alexrdclement.mediaplayground.media.model.Track
 
 class LocalTrackRepositoryFixture(
     val pathProvider: FakePathProvider = FakePathProvider(),
