@@ -20,7 +20,7 @@ dependencies {
     implementation(projects.data.artist)
     implementation(projects.data.disk)
     implementation(projects.database)
-    implementation(projects.media.import)
+    implementation(projects.media.import.api)
     implementation(projects.model.result)
 
     testImplementation(libs.maindispatcher.rule)

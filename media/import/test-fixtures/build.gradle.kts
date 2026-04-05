@@ -7,5 +7,7 @@ android {
 }
 
 dependencies {
-    api(projects.media.import)
+    api(projects.media.import.impl)
+    implementation(projects.media.metadata.testFixtures)
+    implementation(projects.media.store.testFixtures)
 }
