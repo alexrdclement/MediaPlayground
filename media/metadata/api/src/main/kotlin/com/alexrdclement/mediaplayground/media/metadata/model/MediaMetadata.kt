@@ -1,7 +1,5 @@
 package com.alexrdclement.mediaplayground.media.metadata.model
 
-import com.alexrdclement.mediaplayground.media.model.ImageMetadata
-
 sealed class MediaMetadata {
     abstract val mimeType: String?
     abstract val extension: String
@@ -60,7 +58,13 @@ sealed class MediaMetadata {
     }
 
     data class Image(
-        val imageMetadata: ImageMetadata?,
+        val widthPx: Int?,
+        val heightPx: Int?,
+        val dateTimeOriginal: String?,
+        val gpsLatitude: Double?,
+        val gpsLongitude: Double?,
+        val cameraMake: String?,
+        val cameraModel: String?,
         override val mimeType: String?,
         override val extension: String,
     ) : MediaMetadata()

@@ -167,31 +167,30 @@ private fun LoadedContent(
             MetadataField(label = "URI", value = state.image.uri)
         }
         item {
-            val metadata = state.image.metadata
             MetadataField(
                 label = "Dimensions",
-                value = if (metadata?.widthPx != null && metadata.heightPx != null)
-                    "${metadata.widthPx} \u00d7 ${metadata.heightPx}"
+                value = if (state.image.widthPx != null && state.image.heightPx != null)
+                    "${state.image.widthPx} \u00d7 ${state.image.heightPx}"
                 else null,
             )
         }
         item {
             MetadataField(
                 label = "Date Taken",
-                value = state.image.metadata?.dateTimeOriginal,
+                value = state.image.dateTimeOriginal,
             )
         }
         item {
-            val cameraMake = state.image.metadata?.cameraMake
-            val cameraModel = state.image.metadata?.cameraModel
+            val cameraMake = state.image.cameraMake
+            val cameraModel = state.image.cameraModel
             MetadataField(
                 label = "Camera",
                 value = listOfNotNull(cameraMake, cameraModel).joinToString(" ").ifEmpty { null },
             )
         }
         item {
-            val lat = state.image.metadata?.gpsLatitude
-            val lon = state.image.metadata?.gpsLongitude
+            val lat = state.image.gpsLatitude
+            val lon = state.image.gpsLongitude
             MetadataField(
                 label = "Location",
                 value = if (lat != null && lon != null) "%.6f, %.6f".format(lat, lon) else null,

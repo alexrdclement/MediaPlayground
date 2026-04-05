@@ -12,6 +12,7 @@ dependencies {
     api(libs.kotlinx.coroutines.android)
     api(libs.loggable)
 
+    api(projects.media.metadata.api)
     api(projects.media.model)
     api(projects.model.result)
 }

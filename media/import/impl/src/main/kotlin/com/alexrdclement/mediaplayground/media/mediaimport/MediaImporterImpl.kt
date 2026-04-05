@@ -9,7 +9,6 @@ import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.ImageId
-import com.alexrdclement.mediaplayground.media.model.ImageMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.Source
@@ -91,7 +90,7 @@ class MediaImporterImpl @Inject constructor(
     override suspend fun importImagesFromDisk(
         uris: List<Uri>,
         getDestination: (ImageId, extension: String) -> Path,
-        saveImage: suspend (imageId: ImageId, fileName: String, metadata: ImageMetadata?) -> Unit,
+        saveImage: suspend (imageId: ImageId, fileName: String, mediaMetadata: MediaMetadata.Image) -> Unit,
     ): Map<Uri, Result<ImageId, MediaImportError>> {
         return uris.associateWith { uri ->
             importImageFromDisk(
@@ -105,7 +104,7 @@ class MediaImporterImpl @Inject constructor(
     override suspend fun importImageFromDisk(
         contentUri: Uri,
         getDestination: (ImageId, extension: String) -> Path,
-        saveImage: suspend (imageId: ImageId, fileName: String, metadata: ImageMetadata?) -> Unit,
+        saveImage: suspend (imageId: ImageId, fileName: String, mediaMetadata: MediaMetadata.Image) -> Unit,
     ): Result<ImageId, MediaImportError> = withContext(Dispatchers.IO) {
         val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri) as MediaMetadata.Image
         val imageId = ImageId(UUID.randomUUID().toString())
@@ -121,7 +120,7 @@ class MediaImporterImpl @Inject constructor(
         when (val result = fileWriter.writeFileToDisk(contentUri, destination)) {
             is Result.Failure -> Result.Failure(result.failure.toMediaImportError())
             is Result.Success -> {
-                saveImage(imageId, fileName, mediaMetadata.imageMetadata)
+                saveImage(imageId, fileName, mediaMetadata)
                 Result.Success(imageId)
             }
         }
