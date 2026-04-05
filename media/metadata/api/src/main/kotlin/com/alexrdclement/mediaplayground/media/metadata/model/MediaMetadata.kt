@@ -8,7 +8,11 @@ sealed class MediaMetadata {
 
     data class Audio(
         val title: String?,
-        val durationMs: Long?,
+        val durationUs: Long?,
+        val sampleRate: Int?,
+        val channelCount: Int?,
+        val bitRate: Int?,
+        val bitDepth: Int?,
         val trackNumber: Int?,
         val artistName: String?,
         val albumTitle: String?,
@@ -22,7 +26,11 @@ sealed class MediaMetadata {
 
             other as Audio
 
-            if (durationMs != other.durationMs) return false
+            if (durationUs != other.durationUs) return false
+            if (sampleRate != other.sampleRate) return false
+            if (channelCount != other.channelCount) return false
+            if (bitRate != other.bitRate) return false
+            if (bitDepth != other.bitDepth) return false
             if (trackNumber != other.trackNumber) return false
             if (title != other.title) return false
             if (artistName != other.artistName) return false
@@ -35,7 +43,11 @@ sealed class MediaMetadata {
         }
 
         override fun hashCode(): Int {
-            var result = durationMs?.hashCode() ?: 0
+            var result = durationUs?.hashCode() ?: 0
+            result = 31 * result + (sampleRate ?: 0)
+            result = 31 * result + (channelCount ?: 0)
+            result = 31 * result + (bitRate ?: 0)
+            result = 31 * result + (bitDepth ?: 0)
             result = 31 * result + (trackNumber ?: 0)
             result = 31 * result + (title?.hashCode() ?: 0)
             result = 31 * result + (artistName?.hashCode() ?: 0)

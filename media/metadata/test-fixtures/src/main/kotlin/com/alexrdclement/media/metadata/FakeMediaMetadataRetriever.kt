@@ -8,7 +8,11 @@ class FakeMediaMetadataRetriever : MediaMetadataRetriever {
 
     var mediaMetadata: MediaMetadata = MediaMetadata.Audio(
         title = null,
-        durationMs = null,
+        durationUs = null,
+        sampleRate = null,
+        channelCount = null,
+        bitRate = null,
+        bitDepth = null,
         trackNumber = null,
         artistName = null,
         albumTitle = null,

@@ -9,7 +9,7 @@ import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.io.files.Path
 import java.util.UUID
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.microseconds
 
 internal fun makeTrack(
     id: UUID,
@@ -23,7 +23,7 @@ internal fun makeTrack(
         id = TrackId(id.toString()),
         title = mediaMetadata.title ?: filePath.name,
         artists = simpleArtists,
-        duration = mediaMetadata.durationMs?.milliseconds ?: 0.milliseconds,
+        duration = mediaMetadata.durationUs?.microseconds ?: 0.microseconds,
         trackNumber = mediaMetadata.trackNumber,
         uri = filePath.toString(),
         simpleAlbum = simpleAlbum,
