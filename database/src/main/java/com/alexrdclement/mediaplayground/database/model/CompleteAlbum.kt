@@ -7,13 +7,14 @@ data class CompleteAlbum(
     @Embedded
     val simpleAlbum: SimpleAlbum,
     @Relation(
+        entity = Track::class,
         parentColumn = "id",
-        entityColumn = "album_id"
+        entityColumn = "album_id",
     )
-    val tracks: List<Track>,
+    val tracks: List<CompleteTrack>,
 ) {
-    val orderedTracks: List<Track>
-        get() = tracks.sortedBy { it.trackNumber }
+    val orderedTracks: List<CompleteTrack>
+        get() = tracks.sortedBy { it.track.trackNumber }
 }
 
 val CompleteAlbum.id: String

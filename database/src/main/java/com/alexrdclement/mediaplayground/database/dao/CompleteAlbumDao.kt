@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CompleteAlbumDao {
+    @Query("SELECT COUNT(*) FROM albums")
+    fun getAlbumCountFlow(): Flow<Int>
+
     @Transaction
     @Query("SELECT * FROM albums ORDER BY modified_date DESC")
     fun getAlbumsPagingSource(): PagingSource<Int, CompleteAlbum>

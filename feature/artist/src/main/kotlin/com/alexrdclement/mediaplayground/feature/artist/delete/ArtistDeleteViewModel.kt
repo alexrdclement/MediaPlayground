@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.feature.artist.delete
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.artist.ArtistRepository
+import com.alexrdclement.mediaplayground.media.model.ArtistId
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
@@ -25,6 +26,8 @@ class ArtistDeleteViewModel(
     private val artistRepository: ArtistRepository,
 ) : ViewModel() {
 
+    private val artistId = ArtistId(idValue)
+
     @AssistedFactory
     fun interface Factory : ManualViewModelAssistedFactory {
         fun create(idValue: String): ArtistDeleteViewModel
@@ -36,7 +39,7 @@ class ArtistDeleteViewModel(
     fun onDeleteConfirmed() {
         viewModelScope.launch {
             _deleteState.update { DeleteState.Deleting }
-            artistRepository.deleteArtist(idValue)
+            artistRepository.delete(artistId)
             _deleteState.update { DeleteState.Deleted }
         }
     }

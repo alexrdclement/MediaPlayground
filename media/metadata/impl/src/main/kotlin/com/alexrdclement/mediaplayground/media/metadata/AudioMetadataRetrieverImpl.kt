@@ -6,7 +6,7 @@ import android.media.MediaExtractor
 import android.media.MediaFormat
 import android.net.Uri
 import android.os.Build
-import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
+import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import dev.zacsweers.metro.Inject
 import android.media.MediaMetadataRetriever as AndroidMediaMetadataRetriever
 
@@ -14,7 +14,7 @@ class AudioMetadataRetrieverImpl @Inject constructor(
     private val application: Application,
 ) {
     private data class FormatInfo(
-        val sampleRate: Int?,
+        val sampleRate: Int,
         val durationUs: Long?,
         val channelCount: Int?,
         val bitRate: Int?,
@@ -29,7 +29,7 @@ class AudioMetadataRetrieverImpl @Inject constructor(
         val formatInfo = useMediaExtractor(contentUri) {
             val format = extractFormat()
             FormatInfo(
-                sampleRate = extractSampleRate(format),
+                sampleRate = extractSampleRate(format) ?: 44100,
                 durationUs = extractDurationUs(format),
                 channelCount = extractChannelCount(format),
                 bitRate = extractBitRate(format),

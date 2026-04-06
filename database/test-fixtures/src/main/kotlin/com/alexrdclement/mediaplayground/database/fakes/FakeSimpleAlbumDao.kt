@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.firstOrNull
 class FakeSimpleAlbumDao(
     private val albumDao: FakeAlbumDao,
     private val artistDao: FakeArtistDao,
-    private val imageDao: FakeImageDao,
+    private val imageDao: FakeImageFileDao,
     private val albumArtistDao: FakeAlbumArtistDao,
     private val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
 ) : SimpleAlbumDao {

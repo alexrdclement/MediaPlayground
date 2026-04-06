@@ -1,15 +1,19 @@
 package com.alexrdclement.mediaplayground.app.di
 
-import com.alexrdclement.mediaplayground.data.album.di.AlbumBindingModule
-import com.alexrdclement.mediaplayground.data.media.di.MediaBindingModule
-import com.alexrdclement.mediaplayground.data.album.local.di.LocalAlbumBindingModule
-import com.alexrdclement.mediaplayground.data.artist.di.ArtistBindingModule
-import com.alexrdclement.mediaplayground.data.artist.local.di.LocalArtistBindingModule
+import com.alexrdclement.mediaplayground.data.album.di.AlbumMediaStoreModule
+import com.alexrdclement.mediaplayground.data.album.di.AlbumModule
+import com.alexrdclement.mediaplayground.data.artist.di.ArtistMediaStoreModule
+import com.alexrdclement.mediaplayground.data.artist.di.ArtistModule
+import com.alexrdclement.mediaplayground.data.clip.di.ClipMediaStoreModule
+import com.alexrdclement.mediaplayground.data.clip.di.ClipModule
 import com.alexrdclement.mediaplayground.data.disk.di.PathProviderModule
-import com.alexrdclement.mediaplayground.data.image.di.ImageBindingModule
-import com.alexrdclement.mediaplayground.data.image.local.di.LocalImageBindingModule
-import com.alexrdclement.mediaplayground.data.track.di.TrackBindingModule
-import com.alexrdclement.mediaplayground.data.track.local.di.LocalTrackBindingModule
+import com.alexrdclement.mediaplayground.data.image.di.ImageMediaStoreModule
+import com.alexrdclement.mediaplayground.data.image.di.ImageModule
+import com.alexrdclement.mediaplayground.data.media.di.MediaBindingModule
+import com.alexrdclement.mediaplayground.data.mediaasset.di.MediaAssetModule
+import com.alexrdclement.mediaplayground.data.mediaasset.di.MediaAssetStoreModule
+import com.alexrdclement.mediaplayground.data.track.di.TrackMediaStoreModule
+import com.alexrdclement.mediaplayground.data.track.di.TrackModule
 import com.alexrdclement.mediaplayground.database.di.DaoModule
 import com.alexrdclement.mediaplayground.database.di.DatabaseModule
 import dev.zacsweers.metro.AppScope
@@ -17,15 +21,19 @@ import dev.zacsweers.metro.ContributesTo
 
 @ContributesTo(AppScope::class)
 interface DataModule :
-    AlbumBindingModule,
-    LocalAlbumBindingModule,
-    ArtistBindingModule,
-    LocalArtistBindingModule,
-    ImageBindingModule,
-    LocalImageBindingModule,
-    TrackBindingModule,
-    LocalTrackBindingModule,
-    MediaBindingModule,
-    PathProviderModule,
+    AlbumModule,
+    AlbumMediaStoreModule,
+    ArtistModule,
+    ArtistMediaStoreModule,
+    ClipModule,
+    ClipMediaStoreModule,
     DatabaseModule,
-    DaoModule
+    DaoModule,
+    ImageModule,
+    ImageMediaStoreModule,
+    MediaAssetModule,
+    MediaAssetStoreModule,
+    MediaBindingModule,
+    TrackModule,
+    TrackMediaStoreModule,
+    PathProviderModule

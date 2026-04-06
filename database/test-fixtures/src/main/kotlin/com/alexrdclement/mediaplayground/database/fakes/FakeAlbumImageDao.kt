@@ -2,13 +2,13 @@ package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
-import com.alexrdclement.mediaplayground.database.model.Image
+import com.alexrdclement.mediaplayground.database.model.ImageFile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
 class FakeAlbumImageDao(
-    private val imageDao: FakeImageDao = FakeImageDao(),
+    private val imageDao: FakeImageFileDao = FakeImageFileDao(),
 ) : AlbumImageDao {
 
     val albumImages = mutableSetOf<AlbumImageCrossRef>()
@@ -29,7 +29,7 @@ class FakeAlbumImageDao(
         albumImagesFlow.value = albumImagesFlow.value.filterNot { it.albumId == albumId }.toSet()
     }
 
-    override fun getImagesForAlbumFlow(albumId: String): Flow<List<Image>> {
+    override fun getImagesForAlbumFlow(albumId: String): Flow<List<ImageFile>> {
         return combine(albumImagesFlow, imageDao.images) { albumImages, images ->
             val imageIds = albumImages.filter { it.albumId == albumId }.map { it.imageId }.toSet()
             images.filter { it.id in imageIds }

@@ -45,7 +45,7 @@ class AlbumDeleteViewModel(
             albumRepository.getAlbum(albumId)?.tracks?.forEach { track ->
                 playlistControl.deleteIfNecessary(track.id)
             }
-            albumRepository.deleteAlbum(albumId)
+            albumRepository.delete(albumId)
             _deleteState.update { DeleteState.Deleted }
         }
     }

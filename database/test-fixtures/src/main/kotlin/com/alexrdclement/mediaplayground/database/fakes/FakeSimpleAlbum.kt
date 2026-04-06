@@ -5,7 +5,7 @@ import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
 val FakeSimpleAlbum1 = SimpleAlbum(
     album = FakeAlbum1,
     artists = listOf(FakeArtist1),
-    images = listOf(FakeImage1),
+    images = listOf(FakeImageFile1),
 )
 
 val FakeSimpleAlbum2 = FakeSimpleAlbum1.copy(

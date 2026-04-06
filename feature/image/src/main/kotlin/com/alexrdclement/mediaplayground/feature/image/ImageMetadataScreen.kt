@@ -2,13 +2,13 @@ package com.alexrdclement.mediaplayground.feature.image
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.isImeVisible
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -19,10 +19,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
+import com.alexrdclement.mediaplayground.ui.util.PreviewImage1
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
 import com.alexrdclement.palette.components.core.Text
@@ -216,7 +216,7 @@ private fun Preview() {
     PaletteTheme {
         ImageMetadataScreen(
             uiState = ImageMetadataUiState.Loaded(
-                image = Image(id = ImageId("1"), uri = "file:/images/1.jpg"),
+                image = PreviewImage1,
             ),
             onNavigateBack = {},
             onSaveClick = {},

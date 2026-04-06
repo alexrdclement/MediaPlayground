@@ -16,6 +16,8 @@ dependencies {
 
     implementation(projects.data.disk)
     implementation(projects.database)
+    implementation(projects.database.mapping)
+    implementation(projects.media.store.api)
 
     testImplementation(libs.maindispatcher.rule)
     testImplementation(projects.data.album.testFixtures)

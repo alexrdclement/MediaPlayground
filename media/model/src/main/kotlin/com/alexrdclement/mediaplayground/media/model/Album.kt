@@ -12,14 +12,14 @@ value class AlbumId(override val value: String) : MediaItemId
 data class Album(
     override val id: AlbumId,
     override val title: String,
-    override val artists: PersistentList<SimpleArtist>,
+    override val artists: PersistentList<Artist>,
     override val images: PersistentList<Image>,
     val tracks: PersistentList<SimpleTrack>,
     override val source: Source,
     val notes: String?,
 ) : MediaItem {
     override val isPlayable: Boolean
-        get() = tracks.any { it.uri != null }
+        get() = tracks.any { it.isPlayable }
 
     override val duration: Duration
         get() = tracks.sumOf { it.duration.inWholeSeconds }.seconds

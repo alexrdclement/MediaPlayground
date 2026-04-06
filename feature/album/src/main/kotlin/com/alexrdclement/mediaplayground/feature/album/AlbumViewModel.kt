@@ -2,21 +2,22 @@ package com.alexrdclement.mediaplayground.feature.album
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alexrdclement.logging.Logger
+import com.alexrdclement.logging.error
 import com.alexrdclement.mediaplayground.data.album.AlbumRepository
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.playPause
+import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.largeImageUrl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.media.session.playlistState
-import com.alexrdclement.mediaplayground.media.model.Album
-import com.alexrdclement.mediaplayground.media.model.AlbumId
-import com.alexrdclement.mediaplayground.media.model.Track
-import com.alexrdclement.mediaplayground.media.model.largeImageUrl
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
-import com.alexrdclement.logging.Logger
-import com.alexrdclement.logging.error
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
@@ -98,9 +99,10 @@ class AlbumViewModel(
             artists = album.artists,
             tracks = tracks,
             isAlbumPlayable = album.isPlayable,
-            isAlbumPlaying = isPlaying && when (val mediaItem = loadedMediaItem) {
-                is Album -> mediaItem.id == album.id
-                is Track -> mediaItem.simpleAlbum.id == album.id
+            isAlbumPlaying = isPlaying && when (loadedMediaItem) {
+                is Album -> loadedMediaItem.id == album.id
+                is Track -> loadedMediaItem.simpleAlbum.id == album.id
+                is Clip -> false
                 null -> false
             },
             isMediaItemLoaded = loadedMediaItem != null,
@@ -180,6 +182,7 @@ class AlbumViewModel(
         val loadedMediaItem = loadedMediaItem.value ?: return false
         return when (val mediaItem = loadedMediaItem) {
             is Album -> mediaItem.id == album.id
+            is Clip -> false
             is Track -> playlist.all {
                 val asTrack = it as? Track ?: return@all false
                 asTrack.simpleAlbum.id == album.id

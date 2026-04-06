@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.database.fakes
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
+import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.database.model.id
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
@@ -12,12 +13,15 @@ import kotlin.test.assertNotNull
 
 class FakeCompleteTrackDaoTest {
 
-    private val albumDao =  FakeAlbumDao()
-    private val artistDao =  FakeArtistDao()
-    private val albumArtistDao =  FakeAlbumArtistDao()
+    private val albumDao = FakeAlbumDao()
+    private val artistDao = FakeArtistDao()
+    private val albumArtistDao = FakeAlbumArtistDao()
     private val albumImageDao = FakeAlbumImageDao()
-    private val imageDao =  FakeImageDao()
-    private val trackDao =  FakeTrackDao()
+    private val imageDao = FakeImageFileDao()
+    private val trackDao = FakeTrackDao()
+    private val clipDao = FakeClipDao()
+    private val audioFileDao = FakeAudioFileDao()
+    private val trackClipDao = FakeTrackClipDao()
 
     private fun makeCompleteTrackDao(coroutineScope: CoroutineScope): FakeCompleteTrackDao {
         return FakeCompleteTrackDao(
@@ -28,6 +32,9 @@ class FakeCompleteTrackDaoTest {
             albumImageDao = albumImageDao,
             imageDao = imageDao,
             trackDao = trackDao,
+            clipDao = clipDao,
+            audioFileDao = audioFileDao,
+            trackClipDao = trackClipDao,
         )
     }
 
@@ -42,6 +49,11 @@ class FakeCompleteTrackDaoTest {
             albumImageDao.insert(AlbumImageCrossRef(albumId = completeTrack.album.id, imageId = image.id))
         }
         trackDao.insert(completeTrack.track)
+        for (completeTrackClip in completeTrack.clips) {
+            audioFileDao.insert(completeTrackClip.completeAudioClip.audioFile)
+            clipDao.insert(completeTrackClip.completeAudioClip.clip)
+            trackClipDao.insert(TrackClipCrossRef(completeTrack.track.id, completeTrackClip.completeAudioClip.clip.id, completeTrackClip.trackClipCrossRef.startFrameInTrack))
+        }
     }
 
     @Test

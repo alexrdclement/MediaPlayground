@@ -2,7 +2,10 @@ package com.alexrdclement.mediaplayground.data.image.local
 
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
-import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
+import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionRunner
+import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
 import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.coroutines.flow.first
@@ -13,7 +16,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
-import com.alexrdclement.mediaplayground.database.model.Image as ImageEntity
+import com.alexrdclement.mediaplayground.database.model.ImageFile as ImageEntity
 
 class LocalImageDataStoreTest {
 
@@ -28,9 +31,15 @@ class LocalImageDataStoreTest {
     }
 
     private class Fixture {
-        val imageDao = FakeImageDao()
+        val transactionScope = FakeDatabaseTransactionScope(CoroutineScope(Dispatchers.Unconfined))
+        val databaseTransactionRunner = FakeDatabaseTransactionRunner(transactionScope)
+        val imageDao get() = transactionScope.imageFileDao
         val pathProvider: PathProvider = FakePathProvider()
-        val localImageDataStore = LocalImageDataStore(imageDao, pathProvider)
+        val localImageDataStore = LocalImageDataStore(
+            imageFileDao = transactionScope.imageFileDao,
+            databaseTransactionRunner = databaseTransactionRunner,
+            pathProvider = pathProvider,
+        )
     }
 
     @Test
@@ -45,6 +54,8 @@ class LocalImageDataStoreTest {
             ImageEntity(
                 id = FakeImage1.id.value,
                 fileName = "image-1.png",
+                mimeType = "image/png",
+                extension = "png",
                 widthPx = null,
                 heightPx = null,
                 dateTimeOriginal = null,
@@ -67,6 +78,8 @@ class LocalImageDataStoreTest {
             ImageEntity(
                 id = FakeImage1.id.value,
                 fileName = "image-1.png",
+                mimeType = "image/png",
+                extension = "png",
                 widthPx = null,
                 heightPx = null,
                 dateTimeOriginal = null,

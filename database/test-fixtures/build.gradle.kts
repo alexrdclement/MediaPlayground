@@ -8,6 +8,7 @@ android {
 
 dependencies {
     api(projects.database)
+    api(projects.media.store.api)
 
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.io.core)

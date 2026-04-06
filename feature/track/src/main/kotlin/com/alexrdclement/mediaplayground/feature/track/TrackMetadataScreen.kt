@@ -2,18 +2,18 @@ package com.alexrdclement.mediaplayground.feature.track
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -27,13 +27,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
+import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.core.TextField
 import com.alexrdclement.palette.components.layout.FloatingAction
@@ -199,10 +199,10 @@ private fun LoadedContent(
             item {
                 Text("Artists", style = PaletteTheme.styles.text.titleMedium)
             }
-            items(state.track.artists, key = { it.id }) { artist ->
+            items(state.track.artists, key = { it.id.value }) { artist ->
                 ArtistRow(
                     artist = artist,
-                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id) },
+                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id.value) },
                 )
             }
         }
@@ -222,7 +222,7 @@ private fun LoadedContent(
 
 @Composable
 private fun ArtistRow(
-    artist: SimpleArtist,
+    artist: Artist,
     onNavigateToMetadata: () -> Unit,
 ) {
     Surface(

@@ -20,7 +20,7 @@ class CompleteAlbumDaoTest {
     private lateinit var albumDao: AlbumDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
-    private lateinit var imageDao: ImageDao
+    private lateinit var imageFileDao: ImageFileDao
     private lateinit var trackDao: TrackDao
     private lateinit var completeAlbumDao: CompleteAlbumDao
 
@@ -33,7 +33,7 @@ class CompleteAlbumDaoTest {
         albumDao = db.albumDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
-        imageDao = db.imageDao()
+        imageFileDao = db.imageDao()
         trackDao = db.trackDao()
         completeAlbumDao = db.completeAlbumDao()
     }
@@ -54,8 +54,8 @@ class CompleteAlbumDaoTest {
         albumDao.insert(simpleAlbum.album)
         artistDao.insert(*simpleAlbum.artists.toTypedArray())
         albumArtistDao.insert(*albumArtists.toTypedArray())
-        imageDao.insert(*simpleAlbum.images.toTypedArray())
-        trackDao.insert(*completeAlbum.tracks.toTypedArray())
+        imageFileDao.insert(*simpleAlbum.images.toTypedArray())
+        trackDao.insert(*completeAlbum.tracks.map { it.track }.toTypedArray())
     }
 
     @Test

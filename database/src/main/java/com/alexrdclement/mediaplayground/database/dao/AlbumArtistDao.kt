@@ -20,4 +20,7 @@ interface AlbumArtistDao {
 
     @Delete
     suspend fun delete(albumArtist: AlbumArtistCrossRef)
+
+    @Query("DELETE FROM album_artists WHERE album_id = :albumId")
+    suspend fun deleteForAlbum(albumId: String)
 }

@@ -24,7 +24,9 @@ class TrackDaoTest {
 
     private lateinit var db: MediaPlaygroundDatabase
     private lateinit var albumDao: AlbumDao
+    private lateinit var completeAlbumDao: CompleteAlbumDao
     private lateinit var trackDao: TrackDao
+    private lateinit var completeTrackDao: CompleteTrackDao
 
     @Before
     fun create() {
@@ -33,7 +35,9 @@ class TrackDaoTest {
             .inMemoryDatabaseBuilder(context, MediaPlaygroundDatabase::class.java)
             .build()
         albumDao = db.albumDao()
+        completeAlbumDao = db.completeAlbumDao()
         trackDao = db.trackDao()
+        completeTrackDao = db.completeTrackDao()
     }
 
     @After
@@ -115,11 +119,11 @@ class TrackDaoTest {
         val track3 = FakeTrack3.copy(albumId = album2.id)
 
         trackDao.insert(track1)
-        val count = trackDao.getTrackCountFlow().first()
+        val count = completeTrackDao.getTrackCountFlow().first()
         assertEquals(1, count)
 
         trackDao.insert(track2, track3)
-        val count2 = trackDao.getTrackCountFlow().first()
+        val count2 = completeTrackDao.getTrackCountFlow().first()
         assertEquals(3, count2)
     }
 
@@ -162,7 +166,7 @@ class TrackDaoTest {
 
         trackDao.delete(track1.id)
 
-        val count = albumDao.getAlbumCountFlow().first()
+        val count = completeAlbumDao.getAlbumCountFlow().first()
         assertEquals(2, count)
     }
 }

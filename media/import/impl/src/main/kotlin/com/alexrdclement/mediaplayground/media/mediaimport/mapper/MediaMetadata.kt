@@ -1,21 +1,22 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.mapper
 
-import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.ArtistId
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
+import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.Source
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.io.files.Path
 import java.util.UUID
 
-fun MediaMetadata.Audio.toSimpleArtist(
+fun MediaMetadata.Audio.toArtist(
     name: String,
-): SimpleArtist {
-    return SimpleArtist(
-        id = UUID.randomUUID().toString(),
+): Artist {
+    return Artist(
+        id = ArtistId(UUID.randomUUID().toString()),
         name = name,
         notes = null,
     )
@@ -24,7 +25,7 @@ fun MediaMetadata.Audio.toSimpleArtist(
 fun MediaMetadata.Audio.toSimpleAlbum(
     id: AlbumId,
     title: String,
-    artists: PersistentList<SimpleArtist>,
+    artists: PersistentList<Artist>,
     images: PersistentList<Image>,
     source: Source,
 ): SimpleAlbum {
@@ -40,6 +41,8 @@ fun MediaMetadata.Audio.toSimpleAlbum(
 fun MediaMetadata.Audio.toImage(
     id: ImageId,
     imageFilePath: Path,
+    mimeType: String,
+    extension: String,
 ): Image? {
     if (embeddedPicture == null) {
         return null
@@ -47,5 +50,7 @@ fun MediaMetadata.Audio.toImage(
     return Image(
         id = id,
         uri = imageFilePath.toString(),
+        mimeType = mimeType,
+        extension = extension,
     )
 }

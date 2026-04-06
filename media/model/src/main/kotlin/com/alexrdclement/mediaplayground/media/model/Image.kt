@@ -10,6 +10,8 @@ value class ImageId(val value: String)
 data class Image(
     val id: ImageId,
     val uri: String,
+    val mimeType: String,
+    val extension: String,
     val widthPx: Int? = null,
     val heightPx: Int? = null,
     val dateTimeOriginal: String? = null,

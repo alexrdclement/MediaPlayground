@@ -226,8 +226,8 @@ fun MediaControlSheet(
                             onNavigateToTrackDelete = onNavigateToTrackDelete,
                             onNavigateToLoadedItemMetadata = { onNavigateToTrackMetadata(mediaItem.id.value) },
                             onNavigateToLoadedItemDelete = { onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title) },
-                            onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) } },
-                            onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id, it.name ?: "") } },
+                            onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id.value) } },
+                            onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id.value, it.name ?: "") } },
                             contentPadding = contentPadding.copy(
                                 top = 0.dp,
                             )

@@ -3,8 +3,8 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 import androidx.paging.PagingConfig
 import app.cash.turbine.test
 import com.alexrdclement.media.ui.fakes.FakeMediaSessionState
-import com.alexrdclement.mediaplayground.data.track.fixtures.LocalTrackRepositoryFixture
-import com.alexrdclement.mediaplayground.ui.util.PreviewTracks1
+import com.alexrdclement.mediaplayground.data.track.LocalTrackRepositoryFixture
+import com.alexrdclement.mediaplayground.media.model.FakeLocalTracks1
 import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
@@ -29,8 +29,8 @@ class LocalContentStateProviderTest {
         localTrackRepositoryFixture = LocalTrackRepositoryFixture()
         mediaSessionState = FakeMediaSessionState()
         localContentStateProvider = LocalContentStateProvider(
-            localTrackRepository = localTrackRepositoryFixture.localTrackRepository,
-            albumRepository = localTrackRepositoryFixture.localAlbumRepository,
+            trackRepository = localTrackRepositoryFixture.trackRepository,
+            albumRepository = localTrackRepositoryFixture.albumRepository,
             mediaSessionState = mediaSessionState,
         )
     }
@@ -49,7 +49,7 @@ class LocalContentStateProviderTest {
     @Test
     fun nonEmptyTracksAndAlbums_returnsContent() = runTest {
         // Stubbing tracks also stubs albums
-        localTrackRepositoryFixture.putTracks(PreviewTracks1)
+        localTrackRepositoryFixture.putTracks(FakeLocalTracks1)
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
@@ -62,7 +62,7 @@ class LocalContentStateProviderTest {
 
     @Test
     fun doesNotRecreatePagingDataFlowsOnStateChange() = runTest {
-        val tracks = PreviewTracks1
+        val tracks = FakeLocalTracks1
 
         // Stubbing tracks also stubs albums
         localTrackRepositoryFixture.putTracks(tracks)

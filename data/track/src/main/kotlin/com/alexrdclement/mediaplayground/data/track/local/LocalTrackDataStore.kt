@@ -4,22 +4,17 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.alexrdclement.mediaplayground.data.track.local.mapper.toAlbumEntity
-import com.alexrdclement.mediaplayground.data.track.local.mapper.toArtistEntity
-import com.alexrdclement.mediaplayground.data.track.local.mapper.toImageEntity
-import com.alexrdclement.mediaplayground.data.track.local.mapper.toTrack
-import com.alexrdclement.mediaplayground.data.track.local.mapper.toTrackEntity
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
-import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
-import com.alexrdclement.mediaplayground.database.dao.AlbumDao
-import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
-import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
-import com.alexrdclement.mediaplayground.database.dao.ImageDao
-import com.alexrdclement.mediaplayground.database.dao.TrackDao
-import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.mapping.toAudioFileEntity
+import com.alexrdclement.mediaplayground.database.mapping.toClipEntity
+import com.alexrdclement.mediaplayground.database.mapping.toTrack
+import com.alexrdclement.mediaplayground.database.mapping.toTrackEntity
+import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
+import com.alexrdclement.mediaplayground.database.transaction.deleteTrack
+import com.alexrdclement.mediaplayground.database.transaction.insertTrack
+import com.alexrdclement.mediaplayground.database.transaction.updateTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import dev.zacsweers.metro.Inject
@@ -28,71 +23,13 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class LocalTrackDataStore @Inject constructor(
-    private val transactionRunner: DatabaseTransactionRunner,
-    private val artistDao: ArtistDao,
-    private val albumDao: AlbumDao,
-    private val imageDao: ImageDao,
-    private val albumImageDao: AlbumImageDao,
-    private val trackDao: TrackDao,
-    private val albumArtistDao: AlbumArtistDao,
     private val completeTrackDao: CompleteTrackDao,
+    private val databaseTransactionRunner: DatabaseTransactionRunner,
     private val pathProvider: PathProvider,
 ) {
-    suspend fun putTrack(track: Track) {
-        transactionRunner.run {
-            track.artists.forEach {
-                artistDao.insert(it.toArtistEntity())
-            }
-
-            albumDao.insert(track.simpleAlbum.toAlbumEntity(source = track.source))
-
-            val albumArtistCrossRef = track.artists.map { artist ->
-                AlbumArtistCrossRef(albumId = track.simpleAlbum.id.value, artistId = artist.id)
-            }
-            albumArtistDao.insert(*albumArtistCrossRef.toTypedArray())
-
-            val images = track.simpleAlbum.images.map { it.toImageEntity() }
-            imageDao.insert(*images.toTypedArray())
-
-            val albumImageCrossRefs = track.simpleAlbum.images.map { image ->
-                AlbumImageCrossRef(albumId = track.simpleAlbum.id.value, imageId = image.id.value)
-            }
-            albumImageDao.insert(*albumImageCrossRefs.toTypedArray())
-
-            trackDao.insert(track.toTrackEntity())
-        }
-    }
-
-    suspend fun deleteTrack(track: Track) {
-        transactionRunner.run {
-            val album = albumDao.getAlbum(track.simpleAlbum.id.value)
-            if (album == null || trackDao.getTracksForAlbum(album.id).size > 1) {
-                trackDao.delete(track.id.value)
-                return@run
-            }
-
-            for (artist in track.artists) {
-                albumArtistDao.delete(AlbumArtistCrossRef(album.id, artist.id))
-                albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
-                    if (artistAlbums.isEmpty()) {
-                        artistDao.delete(artist.id)
-                    }
-                }
-            }
-
-            albumImageDao.deleteForAlbum(track.simpleAlbum.id.value)
-            for (image in track.images) {
-                imageDao.delete(image.id.value)
-            }
-
-            albumDao.delete(album.id)
-
-            trackDao.delete(track.id.value)
-        }
-    }
 
     fun getTrackCountFlow(): Flow<Int> {
-        return trackDao.getTrackCountFlow().distinctUntilChanged()
+        return completeTrackDao.getTrackCountFlow().distinctUntilChanged()
     }
 
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> {
@@ -101,7 +38,7 @@ class LocalTrackDataStore @Inject constructor(
         }.flow.map { pagingData ->
             pagingData.map {
                 it.toTrack(
-                    albumDir = pathProvider.getAlbumDir(it.album.id),
+                    mediaItemDir = pathProvider.getAlbumDir(it.album.id),
                     imagesDir = pathProvider.getImagesDir(),
                 )
             }
@@ -109,9 +46,9 @@ class LocalTrackDataStore @Inject constructor(
     }
 
     suspend fun getTrack(trackId: TrackId): Track? {
-        val completeTrack = completeTrackDao.getTrack(trackId.value)
-        return completeTrack?.toTrack(
-            albumDir = pathProvider.getAlbumDir(completeTrack.album.id),
+        val entity = completeTrackDao.getTrack(trackId.value) ?: return null
+        return entity.toTrack(
+            mediaItemDir = pathProvider.getAlbumDir(entity.album.id),
             imagesDir = pathProvider.getImagesDir(),
         )
     }
@@ -119,24 +56,56 @@ class LocalTrackDataStore @Inject constructor(
     fun getTrackFlow(trackId: TrackId): Flow<Track?> {
         return completeTrackDao.getTrackFlow(trackId.value).map { completeTrack ->
             completeTrack?.toTrack(
-                albumDir = pathProvider.getAlbumDir(completeTrack.album.id),
+                mediaItemDir = pathProvider.getAlbumDir(completeTrack.album.id),
                 imagesDir = pathProvider.getImagesDir(),
             )
         }
     }
 
     suspend fun updateTrackTitle(id: TrackId, title: String) {
-        val track = trackDao.getTrack(id.value) ?: return
-        trackDao.update(track.copy(title = title))
+        databaseTransactionRunner.run {
+            updateTrack(id.value, title)
+        }
+    }
+
+    suspend fun put(track: Track) {
+        val trackEntity = track.toTrackEntity()
+        val clipsAndAudioFiles = track.clips.map { trackClip ->
+            trackClip.clip.toClipEntity() to trackClip.clip.mediaAsset.toAudioFileEntity()
+        }
+        val crossRefs = track.clips.map { trackClip ->
+            TrackClipCrossRef(
+                trackId = track.id.value,
+                clipId = trackClip.clip.id.value,
+                startFrameInTrack = trackClip.startFrameInTrack,
+            )
+        }
+        databaseTransactionRunner.run {
+            insertTrack(
+                track = trackEntity,
+                clips = clipsAndAudioFiles,
+                trackClipCrossRefs = crossRefs,
+            )
+        }
     }
 
     suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?) {
-        val track = trackDao.getTrack(id.value) ?: return
-        trackDao.update(track.copy(trackNumber = trackNumber))
+        databaseTransactionRunner.run {
+            val track = trackDao.getTrack(id.value) ?: return@run
+            trackDao.update(track.copy(trackNumber = trackNumber))
+        }
     }
 
     suspend fun updateTrackNotes(id: TrackId, notes: String?) {
-        val track = trackDao.getTrack(id.value) ?: return
-        trackDao.update(track.copy(notes = notes))
+        databaseTransactionRunner.run {
+            val track = trackDao.getTrack(id.value) ?: return@run
+            trackDao.update(track.copy(notes = notes))
+        }
+    }
+
+    suspend fun delete(id: TrackId) {
+        databaseTransactionRunner.run {
+            deleteTrack(id.value)
+        }
     }
 }

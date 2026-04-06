@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.data.album.fixtures
 
 import com.alexrdclement.mediaplayground.data.album.local.LocalAlbumDataStore
-import com.alexrdclement.mediaplayground.data.track.fixtures.LocalTrackDataStoreFixture
+import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStoreFixture
 import com.alexrdclement.mediaplayground.media.model.Track
 
 class LocalAlbumDataStoreFixture(

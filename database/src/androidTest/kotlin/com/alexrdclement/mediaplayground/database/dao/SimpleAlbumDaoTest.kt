@@ -19,7 +19,7 @@ class SimpleAlbumDaoTest {
     private lateinit var albumDao: AlbumDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
-    private lateinit var imageDao: ImageDao
+    private lateinit var imageFileDao: ImageFileDao
     private lateinit var simpleAlbumDao: SimpleAlbumDao
 
     @Before
@@ -31,7 +31,7 @@ class SimpleAlbumDaoTest {
         albumDao = db.albumDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
-        imageDao = db.imageDao()
+        imageFileDao = db.imageDao()
         simpleAlbumDao = db.simpleAlbumDao()
     }
 
@@ -53,7 +53,7 @@ class SimpleAlbumDaoTest {
         }
         albumArtistDao.insert(*albumArtist.toTypedArray())
         for (images in simpleAlbum.images) {
-            imageDao.insert(images)
+            imageFileDao.insert(images)
         }
     }
 
