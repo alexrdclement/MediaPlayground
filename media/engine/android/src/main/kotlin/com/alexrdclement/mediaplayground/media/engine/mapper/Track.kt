@@ -10,7 +10,7 @@ fun Track.toMediaItem(): MediaItem {
     val trackClip = clips.firstOrNull() ?: return MediaItem.Builder().build()
     val clip = trackClip.clip
     return MediaItem.Builder()
-        .setMediaId(clip.id.value)
+        .setMediaId(id.value)
         .setUri(clip.mediaAsset.uri)
         .setMediaMetadata(this.toMediaMetadata())
         .build()
