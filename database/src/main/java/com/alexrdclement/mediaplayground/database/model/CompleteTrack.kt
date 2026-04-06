@@ -31,7 +31,13 @@ data class CompleteTrack(
             entityColumn = "image_id",
         ),
     )
-    val images: List<Image>,
+    val images: List<ImageFile>,
+    @Relation(
+        entity = TrackClipCrossRef::class,
+        parentColumn = "id",
+        entityColumn = "track_id",
+    )
+    val clips: List<CompleteTrackClip>,
 )
 
 val CompleteTrack.id: String

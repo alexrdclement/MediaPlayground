@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.persistentListOf
 val FakeSimpleAlbum1 = SimpleAlbum(
     id = AlbumId("1"),
     name = "Major Arcana",
-    artists = persistentListOf(FakeSimpleArtist1),
+    artists = persistentListOf(FakeArtist1),
     images = persistentListOf(FakeImage1),
     source = FakeSource1,
 )
@@ -13,7 +13,7 @@ val FakeSimpleAlbum1 = SimpleAlbum(
 val FakeSimpleAlbum2 = SimpleAlbum(
     id = AlbumId("2"),
     name = "TANGK",
-    artists = persistentListOf(FakeSimpleArtist2),
+    artists = persistentListOf(FakeArtist2),
     images = persistentListOf(FakeImage2),
     source = FakeSource1,
 )

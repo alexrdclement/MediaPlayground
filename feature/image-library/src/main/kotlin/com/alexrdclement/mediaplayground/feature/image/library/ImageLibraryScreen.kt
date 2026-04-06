@@ -39,15 +39,15 @@ import com.alexrdclement.mediaplayground.feature.image.library.theme.component.m
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
-import com.embarrasdf.palette.components.core.Button
-import com.embarrasdf.palette.components.core.ButtonStyle
-import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.components.core.TextStyle
-import com.embarrasdf.palette.components.core.copy
-import com.embarrasdf.palette.components.util.plus
-import com.embarrasdf.palette.theme.PaletteTheme
-import com.embarrasdf.palette.theme.components.layout.Scaffold
-import com.embarrasdf.palette.theme.components.layout.TopBar
+import com.alexrdclement.mediaplayground.ui.util.PreviewImage1
+import com.alexrdclement.palette.components.core.Button
+import com.alexrdclement.palette.components.core.ButtonDefaults
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.layout.Scaffold
+import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.components.util.plus
+import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
@@ -235,10 +235,9 @@ private fun EmptyPreview() {
 @Composable
 private fun ContentPreview() {
     PaletteTheme {
-        val image = Image(id = ImageId("1"), uri = "file:/images/1.jpg")
         ImageLibraryScreen(
             uiState = ImageLibraryUiState.Content(
-                images = flowOf(PagingData.from(listOf(image))),
+                images = flowOf(PagingData.from(listOf(PreviewImage1))),
             ),
             onImportClick = {},
         )

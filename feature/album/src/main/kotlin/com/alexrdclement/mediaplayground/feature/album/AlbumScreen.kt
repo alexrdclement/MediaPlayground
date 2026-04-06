@@ -168,7 +168,7 @@ private fun LoadedContent(
                     onArtistsLongClick = { offset ->
                         state.artists.firstOrNull()?.let { artist ->
                             artistOptionsTouchOffset = offset
-                            artistOptionsItem = Pair(artist.id, artist.name.orEmpty())
+                            artistOptionsItem = Pair(artist.id.value, artist.name ?: "")
                         }
                     },
                     style = PaletteTheme.component.media.titleArtistBlock,

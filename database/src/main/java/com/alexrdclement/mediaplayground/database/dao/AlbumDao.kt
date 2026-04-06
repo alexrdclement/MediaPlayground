@@ -6,13 +6,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.alexrdclement.mediaplayground.database.model.Album
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AlbumDao {
-    @Query("SELECT COUNT(*) FROM albums")
-    fun getAlbumCountFlow(): Flow<Int>
-
     @Query("SELECT * FROM albums WHERE id = :id")
     suspend fun getAlbum(id: String): Album?
 

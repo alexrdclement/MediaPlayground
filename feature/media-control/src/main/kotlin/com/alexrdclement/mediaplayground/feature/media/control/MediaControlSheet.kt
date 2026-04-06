@@ -237,28 +237,11 @@ fun MediaControlSheet(
                             onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                             onNavigateToTrackDelete = onNavigateToTrackDelete,
                             onNavigateToLoadedItemMetadata = { onNavigateToTrackMetadata(mediaItem.id.value) },
-                            onNavigateToLoadedItemDelete = {
-                                onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title)
-                            },
-                            onNavigateToArtistMetadata = {
-                                mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) }
-                            },
-                            onNavigateToArtistDelete = {
-                                mediaItem.artists.firstOrNull()?.let {
-                                    onNavigateToArtistDelete(
-                                        it.id,
-                                        it.name.orEmpty(),
-                                    )
-                                }
-                            },
-                            // The sheet's own top edge is the control bar, so drop the top inset
-                            // before laying it over the style's padding.
-                            style = sheetContentStyle.copy(
-                                contentPadding = sheetContentStyle.contentPadding.plus(
-                                    contentPadding.copy(
-                                        top = PaletteTheme.semantic.dimension.spacing.none,
-                                    ),
-                                ),
+                            onNavigateToLoadedItemDelete = { onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title) },
+                            onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id.value) } },
+                            onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id.value, it.name ?: "") } },
+                            contentPadding = contentPadding.copy(
+                                top = 0.dp,
                             ),
                         )
                     }

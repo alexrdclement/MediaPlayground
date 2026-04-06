@@ -7,9 +7,11 @@ import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.largeImageUrl
 
 fun Track.toMediaItem(): MediaItem {
+    val trackClip = clips.firstOrNull() ?: return MediaItem.Builder().build()
+    val clip = trackClip.clip
     return MediaItem.Builder()
-        .setMediaId(id.value)
-        .setUri(uri)
+        .setMediaId(clip.id.value)
+        .setUri(clip.mediaAsset.uri)
         .setMediaMetadata(this.toMediaMetadata())
         .build()
 }

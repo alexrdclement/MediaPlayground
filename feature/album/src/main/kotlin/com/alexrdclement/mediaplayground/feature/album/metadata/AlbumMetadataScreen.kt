@@ -25,8 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.Image
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
-import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
+import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.theme.component.layout.metadataContent
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
@@ -208,10 +207,10 @@ private fun LoadedContent(
             item {
                 Text(text = "Artists", style = style.labelStyle)
             }
-            items(items = state.album.artists, key = { it.id }) { artist ->
+            items(state.album.artists, key = { it.id.value }) { artist ->
                 ArtistRow(
                     artist = artist,
-                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id) },
+                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id.value) },
                 )
             }
         }
@@ -242,7 +241,7 @@ private fun LoadedContent(
 
 @Composable
 private fun ArtistRow(
-    artist: SimpleArtist,
+    artist: Artist,
     onNavigateToMetadata: () -> Unit,
 ) {
     Surface(

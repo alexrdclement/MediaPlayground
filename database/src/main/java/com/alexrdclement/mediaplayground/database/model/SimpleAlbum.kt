@@ -26,5 +26,5 @@ data class SimpleAlbum(
             entityColumn = "image_id",
         ),
     )
-    val images: List<Image>,
+    val images: List<ImageFile>,
 )

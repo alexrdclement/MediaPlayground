@@ -22,19 +22,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
-import com.alexrdclement.mediaplayground.ui.theme.component.layout.metadataContent
-import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleArtist1
-import com.embarrasdf.palette.components.core.Button
-import com.embarrasdf.palette.components.core.IndeterminateProgressIndicator
-import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.components.core.TextField
-import com.embarrasdf.palette.components.core.copy
-import com.embarrasdf.palette.components.layout.FloatingAction
-import com.embarrasdf.palette.components.util.plus
-import com.embarrasdf.palette.theme.PaletteTheme
-import com.embarrasdf.palette.theme.components.layout.Scaffold
-import com.embarrasdf.palette.theme.components.layout.TopBar
-import com.embarrasdf.palette.theme.components.navigation.BackNavigationButton
+import com.alexrdclement.mediaplayground.ui.util.PreviewArtist1
+import com.alexrdclement.palette.components.core.Button
+import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.core.TextField
+import com.alexrdclement.palette.components.layout.FloatingAction
+import com.alexrdclement.palette.components.layout.Scaffold
+import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.components.navigation.BackNavigationButton
+import com.alexrdclement.palette.components.util.plus
+import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
@@ -205,7 +204,7 @@ private fun Preview() {
     PaletteTheme {
         ArtistMetadataScreen(
             uiState = ArtistMetadataUiState.Loaded(
-                artist = PreviewSimpleArtist1,
+                artist = PreviewArtist1,
             ),
             onNavigateBack = {},
             onSaveClick = { _, _ -> },

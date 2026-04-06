@@ -22,4 +22,8 @@ class FakeAlbumArtistDao : AlbumArtistDao {
     override suspend fun delete(albumArtist: AlbumArtistCrossRef) {
         albumArtists.remove(albumArtist)
     }
+
+    override suspend fun deleteForAlbum(albumId: String) {
+        albumArtists.removeAll { it.albumId == albumId }
+    }
 }

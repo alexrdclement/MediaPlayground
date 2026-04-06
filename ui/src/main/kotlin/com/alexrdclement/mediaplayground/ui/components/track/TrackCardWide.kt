@@ -50,8 +50,7 @@ fun TrackCardWide(
     track: Track,
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
-    style: TrackCardWideStyle = TrackCardWideStyle(),
-    isEnabled: Boolean = remember(track) { track.uri != null },
+    isEnabled: Boolean = remember(track) { track.isPlayable }
 ) {
     Surface(
         modifier = modifier,

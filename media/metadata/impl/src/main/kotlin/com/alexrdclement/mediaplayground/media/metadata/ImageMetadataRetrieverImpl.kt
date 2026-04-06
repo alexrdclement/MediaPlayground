@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.media.metadata
 import android.app.Application
 import android.net.Uri
 import androidx.exifinterface.media.ExifInterface
-import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
+import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import dev.zacsweers.metro.Inject
 
 class ImageMetadataRetrieverImpl @Inject constructor(
@@ -12,7 +12,7 @@ class ImageMetadataRetrieverImpl @Inject constructor(
 
     fun getImageMetadata(
         contentUri: Uri,
-        mimeType: String?,
+        mimeType: String,
         extension: String,
     ): MediaMetadata.Image {
         val inputStream = application.contentResolver.openInputStream(contentUri)

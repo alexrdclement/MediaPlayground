@@ -3,7 +3,8 @@ package com.alexrdclement.mediaplayground.feature.artist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.artist.ArtistRepository
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.ArtistId
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.embarrasdf.uievent.UiEventState
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 sealed interface ArtistMetadataUiState {
     data object Loading : ArtistMetadataUiState
     data class Loaded(
-        val artist: SimpleArtist,
+        val artist: Artist,
         val isSaving: Boolean = false,
         val isMediaItemLoaded: Boolean = false,
     ) : ArtistMetadataUiState
@@ -32,15 +33,17 @@ sealed interface ArtistMetadataUiState {
 
 @AssistedInject
 class ArtistMetadataViewModel(
-    @Assisted private val artistId: String,
+    @Assisted private val artistIdValue: String,
     private val artistRepository: ArtistRepository,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
 
     @AssistedFactory
     fun interface Factory : ManualViewModelAssistedFactory {
-        fun create(artistId: String): ArtistMetadataViewModel
+        fun create(artistIdValue: String): ArtistMetadataViewModel
     }
+
+    private val artistId = ArtistId(artistIdValue)
 
     val savedEvent = UiEventState<Unit?>()
     val deletedEvent = UiEventState<Unit?>()

@@ -1,36 +1,30 @@
 package com.alexrdclement.mediaplayground.media.model
 
 import kotlinx.collections.immutable.persistentListOf
-import kotlin.time.Duration.Companion.seconds
+import kotlinx.collections.immutable.persistentSetOf
 
 val FakeSimpleTrack1 = SimpleTrack(
     id = TrackId("1"),
     name = "Pioneer Spine",
-    artists = persistentListOf(FakeSimpleArtist1),
-    duration = 217.seconds,
+    artists = persistentListOf(FakeArtist1),
     trackNumber = 1,
-    uri = null,
-    source = FakeSource1,
+    clips = persistentSetOf(FakeTrackClip1),
 )
 
 val FakeSimpleTrack2 = SimpleTrack(
     id = TrackId("2"),
     name = "Tiger Tank",
-    artists = persistentListOf(FakeSimpleArtist1),
-    duration = 166.seconds,
+    artists = persistentListOf(FakeArtist1),
     trackNumber = 2,
-    uri = null,
-    source = FakeSource1,
+    clips = persistentSetOf(FakeTrackClip2),
 )
 
 val FakeSimpleTrack3 = SimpleTrack(
     id = TrackId("3"),
     name = "Hitch",
-    artists = persistentListOf(FakeSimpleArtist1),
-    duration = 155.seconds,
+    artists = persistentListOf(FakeArtist1),
     trackNumber = 3,
-    uri = null,
-    source = FakeSource1,
+    clips = persistentSetOf(FakeTrackClip3),
 )
 
 val FakeSimpleTracks1 = persistentListOf(

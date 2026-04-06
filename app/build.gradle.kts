@@ -26,10 +26,12 @@ dependencies {
 
     implementation(projects.database)
     implementation(projects.data.album)
+    implementation(projects.data.clip)
     implementation(projects.data.media)
     implementation(projects.data.artist)
     implementation(projects.data.disk)
     implementation(projects.data.image)
+    implementation(projects.data.mediaAsset)
     implementation(projects.data.track)
     implementation(projects.feature.album)
     implementation(projects.feature.artist)

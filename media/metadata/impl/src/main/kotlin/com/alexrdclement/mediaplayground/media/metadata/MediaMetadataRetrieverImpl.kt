@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.media.metadata
 import android.app.Application
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
+import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import dev.zacsweers.metro.Inject
 
 class MediaMetadataRetrieverImpl @Inject constructor(

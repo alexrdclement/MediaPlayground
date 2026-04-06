@@ -10,7 +10,7 @@ sealed interface MediaItemId {
 sealed interface MediaItem {
     val id: MediaItemId
     val title: String
-    val artists: PersistentList<SimpleArtist>
+    val artists: PersistentList<Artist>
     val images: PersistentList<Image>
     val isPlayable: Boolean
     val duration: Duration

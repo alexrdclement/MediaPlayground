@@ -6,6 +6,7 @@ import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.database.model.Track
+import com.alexrdclement.mediaplayground.database.model.id
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -35,9 +36,7 @@ internal fun assertTrackEquals(
     assertEquals(expected.id, actual.id)
     assertEquals(expected.albumId, actual.albumId)
     assertEquals(expected.title, actual.title)
-    assertEquals(expected.durationMs, actual.durationMs)
     assertEquals(expected.trackNumber, actual.trackNumber)
-    assertEquals(expected.fileName, actual.fileName)
     assertEquals(expected.modifiedDate.epochSeconds, actual.modifiedDate.epochSeconds)
 }
 

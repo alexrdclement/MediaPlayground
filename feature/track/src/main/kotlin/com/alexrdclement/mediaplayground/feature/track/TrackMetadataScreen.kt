@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
@@ -221,10 +221,10 @@ private fun LoadedContent(
             item {
                 Text(text = "Artists", style = style.labelStyle)
             }
-            items(items = state.track.artists, key = { it.id }) { artist ->
+            items(state.track.artists, key = { it.id.value }) { artist ->
                 ArtistRow(
                     artist = artist,
-                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id) },
+                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id.value) },
                 )
             }
         }
@@ -244,7 +244,7 @@ private fun LoadedContent(
 
 @Composable
 private fun ArtistRow(
-    artist: SimpleArtist,
+    artist: Artist,
     onNavigateToMetadata: () -> Unit,
 ) {
     Surface(

@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 
 class FakeSimpleAlbumDao(
-    albumDao: FakeAlbumDao,
-    artistDao: FakeArtistDao,
-    imageDao: FakeImageDao,
-    albumArtistDao: FakeAlbumArtistDao,
-    albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
+    private val albumDao: FakeAlbumDao,
+    private val artistDao: FakeArtistDao,
+    private val imageDao: FakeImageFileDao,
+    private val albumArtistDao: FakeAlbumArtistDao,
+    private val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
 ) : SimpleAlbumDao {
 
     val albums = combine(

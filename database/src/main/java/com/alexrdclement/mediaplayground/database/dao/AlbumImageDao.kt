@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
-import com.alexrdclement.mediaplayground.database.model.Image
+import com.alexrdclement.mediaplayground.database.model.ImageFile
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,12 +20,10 @@ interface AlbumImageDao {
     @Query("DELETE FROM album_images WHERE album_id = :albumId")
     suspend fun deleteForAlbum(albumId: String)
 
-    @Query(
-        """
-        SELECT images.* FROM images
-        INNER JOIN album_images ON images.id = album_images.image_id
+    @Query("""
+        SELECT image_files.* FROM image_files
+        INNER JOIN album_images ON image_files.id = album_images.image_id
         WHERE album_images.album_id = :albumId
-    """,
-    )
-    fun getImagesForAlbumFlow(albumId: String): Flow<List<Image>>
+    """)
+    fun getImagesForAlbumFlow(albumId: String): Flow<List<ImageFile>>
 }
