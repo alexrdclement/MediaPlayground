@@ -1,8 +1,5 @@
 package com.alexrdclement.mediaplayground.data.disk
 
-import kotlinx.io.files.Path
+import com.alexrdclement.mediaplayground.media.store.PathProvider as MediaStorePathProvider
 
-interface PathProvider {
-    fun getAlbumDir(albumId: String): Path
-    fun getImagesDir(): Path
-}
+interface PathProvider : MediaStorePathProvider

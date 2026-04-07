@@ -3,7 +3,6 @@ package com.alexrdclement.mediaplayground.data.track
 import android.net.Uri
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStore
 import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
@@ -24,10 +23,8 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import kotlinx.io.files.Path
 
 class TrackRepositoryImpl @Inject constructor(
-    private val pathProvider: PathProvider,
     private val mediaImporter: ImageImporter,
     private val localTrackDataStore: LocalTrackDataStore,
     private val trackImporter: TrackImporter,
@@ -98,11 +95,7 @@ class TrackRepositoryImpl @Inject constructor(
 
     private suspend fun importTracksFromDiskSuspend(uris: List<Uri>): Map<Uri, TrackImportResult> {
         return try {
-            trackImporter.importTracksFromDisk(
-                uris = uris,
-                getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
-                getImagePath = { imageId, extension -> Path(pathProvider.getImagesDir(), "${imageId.value}.$extension") },
-            ).map { (uri, result) ->
+            trackImporter.import(uris = uris).map { (uri, result) ->
                 uri to mapMediaImportResult(result)
             }.toMap()
         } catch (e: Throwable) {

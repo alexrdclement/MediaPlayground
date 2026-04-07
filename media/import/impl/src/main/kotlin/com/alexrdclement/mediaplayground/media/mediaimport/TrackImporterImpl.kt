@@ -7,10 +7,8 @@ import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toMediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
-import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.media.model.ArtistId
-import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.Source
@@ -22,6 +20,7 @@ import com.alexrdclement.mediaplayground.media.store.FileWriter
 import com.alexrdclement.mediaplayground.media.store.ImageMediaStore
 import com.alexrdclement.mediaplayground.media.store.MediaAssetStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
+import com.alexrdclement.mediaplayground.media.store.PathProvider
 import com.alexrdclement.mediaplayground.media.store.TrackMediaStore
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.mapFailure
@@ -43,6 +42,7 @@ class TrackImporterImpl @Inject constructor(
     private val trackMediaStore: TrackMediaStore,
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val fileWriter: FileWriter,
+    private val pathProvider: PathProvider,
 ) : TrackImporter {
 
     private data class ImportData(
@@ -51,21 +51,17 @@ class TrackImporterImpl @Inject constructor(
         val simpleAlbum: SimpleAlbum,
     )
 
-    override suspend fun importTrackFromDisk(
+    override suspend fun import(
         uri: Uri,
-        getImportDir: (AlbumId) -> Path,
-        getImagePath: (ImageId, extension: String) -> Path,
     ): Result<Track, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val importData = getImportData(
                 uri = uri,
-                getImagePath = getImagePath,
                 getArtistByName = artistMediaStore::getArtistByName,
                 getAlbumByTitleAndArtistId = albumMediaStore::getAlbumByTitleAndArtistId,
             )
             import(
                 importData = importData,
-                getImportDir = getImportDir,
                 saveTrack = ::save,
             )
         } catch (e: Throwable) {
@@ -73,22 +69,18 @@ class TrackImporterImpl @Inject constructor(
         }
     }
 
-    override suspend fun importTracksFromDisk(
+    override suspend fun import(
         uris: List<Uri>,
-        getImportDir: (AlbumId) -> Path,
-        getImagePath: (ImageId, extension: String) -> Path,
     ): Map<Uri, Result<Track, MediaImportError>> {
         // Album directory is only correct after a track has been saved. Import sequentially.
         return uris.associateWith { uri ->
             val importData = getImportData(
                 uri = uri,
-                getImagePath = getImagePath,
                 getArtistByName = artistMediaStore::getArtistByName,
                 getAlbumByTitleAndArtistId = albumMediaStore::getAlbumByTitleAndArtistId,
             )
             import(
                 importData = importData,
-                getImportDir = getImportDir,
                 saveTrack = ::save,
             )
         }
@@ -96,7 +88,6 @@ class TrackImporterImpl @Inject constructor(
 
     private suspend fun getImportData(
         uri: Uri,
-        getImagePath: (ImageId, extension: String) -> Path,
         getArtistByName: suspend (String) -> Artist?,
         getAlbumByTitleAndArtistId: suspend (String, ArtistId) -> SimpleAlbum?,
     ): ImportData {
@@ -105,7 +96,7 @@ class TrackImporterImpl @Inject constructor(
         val simpleAlbum = makeSimpleAlbum(
             mediaMetadata = mediaMetadata,
             artist = artist,
-            getImageFilePath = getImagePath,
+            getImageFilePath = pathProvider::getImagePath,
             getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
             source = Source.Local,
         )
@@ -118,7 +109,6 @@ class TrackImporterImpl @Inject constructor(
 
     private suspend fun import(
         importData: ImportData,
-        getImportDir: (AlbumId) -> Path,
         saveTrack: suspend (Track) -> Unit,
     ): Result<Track, MediaImportError> {
         val imagePath = importData.simpleAlbum.images.firstOrNull()?.uri?.let { Path(it) }
@@ -126,7 +116,7 @@ class TrackImporterImpl @Inject constructor(
             uri = importData.uri,
             embeddedPicture = importData.mediaMetadata.embeddedPicture,
             imagePath = imagePath,
-            importDir = getImportDir(importData.simpleAlbum.id),
+            importDir = pathProvider.getAlbumDir(importData.simpleAlbum.id),
         )
         return when (fileWriteResult) {
             is Result.Failure -> Result.Failure(fileWriteResult.failure)
