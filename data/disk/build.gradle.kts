@@ -9,4 +9,5 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.io.core)
+    implementation(projects.media.store.api)
 }
