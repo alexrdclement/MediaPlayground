@@ -36,7 +36,7 @@ class ClipImporterImpl(
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
 
             val assetImportResult = mediaAssetImporter.value.importAudio(
-                uri,
+                uri = uri,
                 mediaMetadata = metadata,
                 source = source,
             ).guardSuccess { return@withContext Result.Failure(it) }
