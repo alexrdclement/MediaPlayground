@@ -8,7 +8,7 @@ import android.net.Uri
 import android.os.Build
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import dev.zacsweers.metro.Inject
-import java.io.IOException
+import kotlinx.io.files.Path
 import android.media.MediaMetadataRetriever as AndroidMediaMetadataRetriever
 
 private const val PcmBitDepth8 = 8
@@ -19,53 +19,80 @@ private const val PcmBitDepth32 = 32
 class AudioMetadataRetrieverImpl @Inject constructor(
     private val application: Application,
 ) {
-    private data class FormatInfo(
-        val sampleRate: Int,
-        val durationUs: Long?,
-        val channelCount: Int?,
-        val bitRate: Int?,
-        val bitDepth: Int?,
-    )
 
     fun getAudioMetadata(
-        contentUri: Uri,
+        filePath: Path,
         mimeType: String?,
         extension: String,
     ): MediaMetadata.Audio {
-        val formatInfo = useMediaExtractor(contentUri) {
-            val format = extractFormat()
-            FormatInfo(
-                sampleRate = extractSampleRate(format) ?: 44100,
-                durationUs = extractDurationUs(format),
-                channelCount = extractChannelCount(format),
-                bitRate = extractBitRate(format),
-                bitDepth = extractBitDepth(format),
-            )
+        val path = filePath.toString()
+        val mediaFormat = useMediaExtractor(path) {
+            extractFormat()
         }
         return AndroidMediaMetadataRetriever().use { retriever ->
-            retriever.setDataSource(application, contentUri)
-            MediaMetadata.Audio(
-                title = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_TITLE),
-                durationUs = formatInfo.durationUs,
-                sampleRate = formatInfo.sampleRate,
-                channelCount = formatInfo.channelCount,
-                bitRate = formatInfo.bitRate,
-                bitDepth = formatInfo.bitDepth,
-                trackNumber = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_CD_TRACK_NUMBER)
-                    ?.toIntOrNull(),
-                artistName = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_ARTIST),
-                albumTitle = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_ALBUM),
-                embeddedPicture = retriever.embeddedPicture,
+            retriever.setDataSource(path)
+            buildAudioMetadata(
+                retriever = retriever,
+                mediaFormat = mediaFormat,
                 mimeType = mimeType,
                 extension = extension,
             )
         }
     }
 
-    private fun <T> useMediaExtractor(
+    fun getAudioMetadata(
         contentUri: Uri,
-        block: MediaExtractor.() -> T,
-    ): T {
+        mimeType: String?,
+        extension: String,
+    ): MediaMetadata.Audio {
+        val mediaFormat = useMediaExtractor(contentUri) {
+            extractFormat()
+        }
+        return AndroidMediaMetadataRetriever().use { retriever ->
+            retriever.setDataSource(application, contentUri)
+            buildAudioMetadata(
+                retriever = retriever,
+                mediaFormat = mediaFormat,
+                mimeType = mimeType,
+                extension = extension,
+            )
+        }
+    }
+
+    private fun buildAudioMetadata(
+        retriever: AndroidMediaMetadataRetriever,
+        mediaFormat: MediaFormat,
+        mimeType: String?,
+        extension: String,
+    ): MediaMetadata.Audio = MediaMetadata.Audio(
+        title = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_TITLE),
+        durationUs = mediaFormat.getLongOrNull(MediaFormat.KEY_DURATION),
+        sampleRate = mediaFormat.getIntOrNull(MediaFormat.KEY_SAMPLE_RATE) ?: 44100,
+        channelCount = mediaFormat.getIntOrNull(MediaFormat.KEY_CHANNEL_COUNT),
+        bitRate = mediaFormat.getIntOrNull(MediaFormat.KEY_BIT_RATE),
+        bitDepth = mediaFormat.getBitDepthOrNull(),
+        trackNumber = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_CD_TRACK_NUMBER)
+            ?.toIntOrNull(),
+        artistName = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_ARTIST),
+        albumTitle = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_ALBUM),
+        embeddedPicture = retriever.embeddedPicture,
+        mimeType = mimeType,
+        extension = extension,
+    )
+
+    private fun <T> useMediaExtractor(path: String, block: MediaExtractor.() -> T): T {
+        val mediaExtractor = MediaExtractor()
+        try {
+            mediaExtractor.setDataSource(path)
+            return block(mediaExtractor)
+        } catch (e: Exception) {
+            error("Failed to extract audio metadata for $path: $e")
+        } finally {
+            mediaExtractor.release()
+        }
+    }
+
+    private fun <T> useMediaExtractor(contentUri: Uri, block: MediaExtractor.() -> T): T {
         val mediaExtractor = MediaExtractor()
         try {
             mediaExtractor.setDataSource(application, contentUri, null)
@@ -98,45 +125,12 @@ class AudioMetadataRetrieverImpl @Inject constructor(
             ?: error("No audio track found")
     }
 
-    private fun MediaExtractor.extractSampleRate(format: MediaFormat): Int? {
-        return if (format.containsKey(MediaFormat.KEY_SAMPLE_RATE)) {
-            format.getInteger(MediaFormat.KEY_SAMPLE_RATE)
-        } else {
-            null
-        }
-    }
-
-    private fun MediaExtractor.extractDurationUs(format: MediaFormat): Long? {
-        return if (format.containsKey(MediaFormat.KEY_DURATION)) {
-            format.getLong(MediaFormat.KEY_DURATION)
-        } else {
-            null
-        }
-    }
-
-    private fun MediaExtractor.extractChannelCount(format: MediaFormat): Int? {
-        return if (format.containsKey(MediaFormat.KEY_CHANNEL_COUNT)) {
-            format.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
-        } else {
-            null
-        }
-    }
-
-    private fun MediaExtractor.extractBitRate(format: MediaFormat): Int? {
-        return if (format.containsKey(MediaFormat.KEY_BIT_RATE)) {
-            format.getInteger(MediaFormat.KEY_BIT_RATE)
-        } else {
-            null
-        }
-    }
-
-    private fun MediaExtractor.extractBitDepth(format: MediaFormat): Int? {
-        if (!format.containsKey(MediaFormat.KEY_PCM_ENCODING)) return null
-        return when (val encoding = format.getInteger(MediaFormat.KEY_PCM_ENCODING)) {
-            AudioFormat.ENCODING_PCM_8BIT -> PcmBitDepth8
-            AudioFormat.ENCODING_PCM_16BIT -> PcmBitDepth16
-            AudioFormat.ENCODING_PCM_32BIT -> PcmBitDepth32
-            AudioFormat.ENCODING_PCM_FLOAT -> PcmBitDepth32
+    private fun MediaFormat.getBitDepthOrNull(): Int? {
+        return when (val encoding = this.getIntOrNull(MediaFormat.KEY_PCM_ENCODING)) {
+            AudioFormat.ENCODING_PCM_8BIT -> 8
+            AudioFormat.ENCODING_PCM_16BIT -> 16
+            AudioFormat.ENCODING_PCM_32BIT -> 32
+            AudioFormat.ENCODING_PCM_FLOAT -> 32
             else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 encoding == AudioFormat.ENCODING_PCM_24BIT_PACKED
             ) {
@@ -145,5 +139,13 @@ class AudioMetadataRetrieverImpl @Inject constructor(
                 null
             }
         }
+    }
+
+    private fun MediaFormat.getIntOrNull(key: String): Int? {
+        return if (containsKey(key)) getInteger(key) else null
+    }
+
+    private fun MediaFormat.getLongOrNull(key: String): Long? {
+        return if (containsKey(key)) getLong(key) else null
     }
 }

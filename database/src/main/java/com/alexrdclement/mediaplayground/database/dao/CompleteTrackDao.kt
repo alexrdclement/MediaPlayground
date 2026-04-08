@@ -23,4 +23,8 @@ interface CompleteTrackDao {
     @Transaction
     @Query("SELECT * FROM tracks WHERE id = :id")
     fun getTrackFlow(id: String): Flow<CompleteTrack?>
+
+    @Transaction
+    @Query("SELECT tracks.* FROM tracks INNER JOIN track_clips ON tracks.id = track_clips.track_id WHERE track_clips.clip_id = :clipId LIMIT 1")
+    suspend fun getTrackByClipId(clipId: String): CompleteTrack?
 }

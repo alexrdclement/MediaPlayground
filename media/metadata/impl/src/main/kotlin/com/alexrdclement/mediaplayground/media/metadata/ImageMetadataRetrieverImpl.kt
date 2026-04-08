@@ -5,10 +5,20 @@ import android.net.Uri
 import androidx.exifinterface.media.ExifInterface
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import dev.zacsweers.metro.Inject
+import kotlinx.io.files.Path
 
 class ImageMetadataRetrieverImpl @Inject constructor(
     private val application: Application,
 ) {
+
+    fun getImageMetadata(
+        filePath: Path,
+        mimeType: String,
+        extension: String,
+    ): MediaMetadata.Image {
+        val exif = runCatching { ExifInterface(filePath.toString()) }.getOrNull()
+        return buildImageMetadata(exif, mimeType, extension)
+    }
 
     fun getImageMetadata(
         contentUri: Uri,
@@ -17,6 +27,14 @@ class ImageMetadataRetrieverImpl @Inject constructor(
     ): MediaMetadata.Image {
         val inputStream = application.contentResolver.openInputStream(contentUri)
         val exif = inputStream?.use { ExifInterface(it) }
+        return buildImageMetadata(exif, mimeType, extension)
+    }
+
+    private fun buildImageMetadata(
+        exif: ExifInterface?,
+        mimeType: String,
+        extension: String,
+    ): MediaMetadata.Image {
         val latLong = exif?.getLatLong()
         return MediaMetadata.Image(
             widthPx = exif?.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0)?.takeIf { it > 0 },

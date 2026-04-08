@@ -11,6 +11,10 @@ class MediaAssetStoreImpl @Inject constructor(
     private val localMediaAssetDataStore: LocalMediaAssetDataStore,
 ) : MediaAssetStore {
 
+    override suspend fun getByFileName(fileName: String): MediaAsset? {
+        return localMediaAssetDataStore.getByFileName(fileName)
+    }
+
     context(scope: MediaStoreTransactionScope)
     override suspend fun put(mediaAsset: MediaAsset) {
         localMediaAssetDataStore.put(mediaAsset)

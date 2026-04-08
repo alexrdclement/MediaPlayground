@@ -4,6 +4,8 @@ import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaAssetId
 
 interface MediaAssetStore {
+    suspend fun getByFileName(fileName: String): MediaAsset?
+
     context(scope: MediaStoreTransactionScope)
     suspend fun put(mediaAsset: MediaAsset)
 

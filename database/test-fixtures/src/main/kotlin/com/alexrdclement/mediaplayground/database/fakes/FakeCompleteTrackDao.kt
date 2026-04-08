@@ -78,4 +78,10 @@ class FakeCompleteTrackDao(
     override fun getTrackFlow(id: String): Flow<CompleteTrack?> {
         return completeTracks.map { tracks -> tracks.find { it.track.id == id } }
     }
+
+    override suspend fun getTrackByClipId(clipId: String): CompleteTrack? {
+        return completeTracks.firstOrNull()?.find { track ->
+            track.clips.any { it.completeAudioClip.clip.id == clipId }
+        }
+    }
 }

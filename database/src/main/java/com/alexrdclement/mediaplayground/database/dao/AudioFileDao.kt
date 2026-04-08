@@ -14,6 +14,9 @@ interface AudioFileDao {
     @Query("SELECT * FROM audio_files WHERE id = :id")
     suspend fun getAudioFile(id: String): AudioFile?
 
+    @Query("SELECT * FROM audio_files WHERE file_name = :fileName LIMIT 1")
+    suspend fun getAudioFileByFileName(fileName: String): AudioFile?
+
     @Query("SELECT * FROM audio_files WHERE id = :id")
     fun getAudioFileFlow(id: String): Flow<AudioFile?>
 

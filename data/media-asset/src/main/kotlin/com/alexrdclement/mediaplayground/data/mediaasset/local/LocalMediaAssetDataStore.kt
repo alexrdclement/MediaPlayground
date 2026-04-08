@@ -24,6 +24,10 @@ class LocalMediaAssetDataStore @Inject constructor(
         return audioFileDao.getAudioFile(id.value)?.toMediaAsset()
     }
 
+    suspend fun getByFileName(fileName: String): MediaAsset? {
+        return audioFileDao.getAudioFileByFileName(fileName)?.toMediaAsset()
+    }
+
     fun getMediaAssetFlow(id: MediaAssetId): Flow<MediaAsset?> {
         return audioFileDao.getAudioFileFlow(id.value).map { it?.toMediaAsset() }
     }
