@@ -1,42 +1,100 @@
 package com.alexrdclement.media.mediaimport.fixtures
 
 import com.alexrdclement.media.metadata.FakeMediaMetadataRetriever
+import com.alexrdclement.media.store.FakeAlbumMediaStore
+import com.alexrdclement.media.store.FakeArtistMediaStore
+import com.alexrdclement.media.store.FakeClipMediaStore
 import com.alexrdclement.media.store.FakeFileWriter
+import com.alexrdclement.media.store.FakeImageMediaStore
+import com.alexrdclement.media.store.FakeMediaAssetStore
+import com.alexrdclement.media.store.FakeMediaStoreTransactionRunner
+import com.alexrdclement.media.store.FakePathProvider
+import com.alexrdclement.media.store.FakeTrackMediaStore
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.ArtistImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.AudioFileImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporterImpl
-import com.alexrdclement.mediaplayground.media.model.AlbumId
-import com.alexrdclement.mediaplayground.media.model.Image
-import com.alexrdclement.mediaplayground.media.model.ImageId
-import com.alexrdclement.mediaplayground.media.store.ImageMediaStore
-import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
-import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
-import com.alexrdclement.mediaplayground.media.store.PathProvider
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.io.files.Path
+import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporterImpl
 
 class MediaImporterFixture(
     val mediaMetadataRetriever: FakeMediaMetadataRetriever = FakeMediaMetadataRetriever(),
-    val fileWriter: FakeFileWriter = FakeFileWriter()
+    val fileWriter: FakeFileWriter = FakeFileWriter(),
 ) {
+    val artistMediaStore = FakeArtistMediaStore()
+    val albumMediaStore = FakeAlbumMediaStore()
+    val clipMediaStore = FakeClipMediaStore()
+    val trackMediaStore = FakeTrackMediaStore()
+    val imageMediaStore = FakeImageMediaStore()
+    val mediaAssetStore = FakeMediaAssetStore()
+    val transactionRunner = FakeMediaStoreTransactionRunner()
+    val pathProvider = FakePathProvider()
+
+    val artistImporter = ArtistImporterImpl(
+        artistMediaStore = artistMediaStore,
+        mediaMetadataRetriever = mediaMetadataRetriever,
+        transactionRunner = transactionRunner,
+    )
+
     val imageImporter = ImageImporterImpl(
         mediaMetadataRetriever = mediaMetadataRetriever,
+        pathProvider = pathProvider,
+        imageMediaStore = imageMediaStore,
+        transactionRunner = transactionRunner,
         fileWriter = fileWriter,
-        pathProvider = object : PathProvider {
-            override fun getAlbumDir(albumId: AlbumId): Path = Path("/tmp/albums/${albumId.value}")
-            override fun getImagesDir(): Path = Path("/tmp/images")
-            override fun getImagePath(imageId: ImageId, extension: String): Path =
-                Path("/tmp/images/${imageId.value}.$extension")
-        },
-        imageMediaStore = object : ImageMediaStore {
-            override fun getImageFlow(imageId: ImageId): Flow<Image?> = flowOf(null)
-            context(scope: MediaStoreTransactionScope)
-            override suspend fun put(images: Set<Image>) {}
-        },
-        transactionRunner = object : MediaStoreTransactionRunner {
-            override suspend fun <T> run(block: suspend MediaStoreTransactionScope.() -> T): T {
-                val scope = object : MediaStoreTransactionScope {}
-                return block(scope)
-            }
-        },
     )
+
+    val albumImporter: AlbumImporterImpl by lazy {
+        AlbumImporterImpl(
+            albumMediaStore = albumMediaStore,
+            mediaAssetImporter = lazy { mediaAssetImporter },
+            transactionRunner = transactionRunner,
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            trackImporter = lazy { trackImporter },
+        )
+    }
+
+    val clipImporter: ClipImporterImpl by lazy {
+        ClipImporterImpl(
+            clipDataStore = clipMediaStore,
+            mediaAssetImporter = lazy { mediaAssetImporter },
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            transactionRunner = transactionRunner,
+        )
+    }
+
+    val audioFileImporter: AudioFileImporterImpl by lazy {
+        AudioFileImporterImpl(
+            mediaAssetStore = mediaAssetStore,
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            artistImporter = artistImporter,
+            albumImporter = albumImporter,
+            pathProvider = pathProvider,
+            fileWriter = fileWriter,
+            imageImporter = imageImporter,
+            transactionRunner = transactionRunner,
+        )
+    }
+
+    val trackImporter: TrackImporterImpl by lazy {
+        TrackImporterImpl(
+            trackMediaStore = trackMediaStore,
+            mediaAssetImporter = lazy { mediaAssetImporter },
+            clipImporter = lazy { clipImporter },
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            transactionRunner = transactionRunner,
+        )
+    }
+
+    val mediaAssetImporter: MediaAssetImporterImpl by lazy {
+        MediaAssetImporterImpl(
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            transactionRunner = transactionRunner,
+            albumImporter = lazy { albumImporter },
+            artistImporter = lazy { artistImporter },
+            audioFileImporter = lazy { audioFileImporter },
+            imageImporter = lazy { imageImporter },
+        )
+    }
 }

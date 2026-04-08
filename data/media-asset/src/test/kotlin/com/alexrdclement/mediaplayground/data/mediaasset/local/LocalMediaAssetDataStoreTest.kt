@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.data.mediaasset.local
 
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionScope
-import com.alexrdclement.mediaplayground.database.fakes.FakeMediaStoreTransactionRunner
+import com.alexrdclement.media.store.FakeMediaStoreTransactionRunner
 import com.alexrdclement.mediaplayground.media.model.FakeLocalMediaAsset1
 import com.alexrdclement.mediaplayground.media.model.FakeMediaAsset1
 import com.alexrdclement.testing.MainDispatcherRule

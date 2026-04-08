@@ -6,7 +6,7 @@ import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
 import com.alexrdclement.mediaplayground.data.mediaasset.fixtures.LocalMediaAssetDataStoreFixture
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionScope
-import com.alexrdclement.mediaplayground.database.fakes.FakeMediaStoreTransactionRunner
+import com.alexrdclement.media.store.FakeMediaStoreTransactionRunner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
