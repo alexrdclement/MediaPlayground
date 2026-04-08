@@ -8,4 +8,6 @@ android {
 
 dependencies {
     api(projects.media.store.impl)
+
+    implementation(libs.kotlinx.coroutines.android)
 }

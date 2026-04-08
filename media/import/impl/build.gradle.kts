@@ -15,4 +15,7 @@ dependencies {
 
     implementation(projects.media.metadata.api)
     implementation(projects.media.store.api)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(projects.media.import.testFixtures)
 }
