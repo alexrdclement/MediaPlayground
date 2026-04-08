@@ -3,6 +3,7 @@ package com.alexrdclement.media.metadata
 import android.net.Uri
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
+import kotlinx.io.files.Path
 
 class FakeMediaMetadataRetriever : MediaMetadataRetriever {
 
@@ -20,6 +21,10 @@ class FakeMediaMetadataRetriever : MediaMetadataRetriever {
         mimeType = null,
         extension = "mp3",
     )
+
+    override suspend fun getMediaMetadata(filePath: Path): MediaMetadata {
+        return mediaMetadata
+    }
 
     override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata {
         return mediaMetadata

@@ -14,6 +14,7 @@ import com.alexrdclement.mediaplayground.database.transaction.insertClip
 import com.alexrdclement.mediaplayground.database.transaction.updateClip
 import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.ClipId
+import com.alexrdclement.mediaplayground.media.model.MediaAssetId
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -24,6 +25,10 @@ class LocalClipDataStore @Inject constructor(
 ) {
     suspend fun get(id: ClipId): Clip? {
         return completeAudioClipDao.getClip(id.value)?.toClip()
+    }
+
+    suspend fun getByMediaAssetId(id: MediaAssetId): Clip? {
+        return completeAudioClipDao.getClipByAudioFileId(id.value)?.toClip()
     }
 
     fun getClipFlow(id: ClipId): Flow<Clip?> {

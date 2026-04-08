@@ -1,58 +1,56 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
 import android.net.Uri
-import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
+import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeSimpleAlbum
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
-import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.SimpleTrack
 import com.alexrdclement.mediaplayground.media.model.Source
-import com.alexrdclement.mediaplayground.media.model.Track
-import com.alexrdclement.mediaplayground.media.model.TrackClip
-import com.alexrdclement.mediaplayground.media.model.mapper.toSimpleTrack
-import com.alexrdclement.mediaplayground.media.model.mapper.toTrack
+import com.alexrdclement.mediaplayground.media.store.AlbumMediaStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
-import com.alexrdclement.mediaplayground.media.store.TrackMediaStore
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.guardSuccess
-import com.alexrdclement.mediaplayground.model.result.map
 import dev.zacsweers.metro.Inject
-import kotlinx.collections.immutable.toPersistentSet
+import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import kotlinx.io.files.Path
-import java.util.UUID
 
 @Inject
-class TrackImporterImpl(
-    private val trackMediaStore: TrackMediaStore,
+class AlbumImporterImpl(
+    private val albumMediaStore: AlbumMediaStore,
     private val mediaAssetImporter: Lazy<MediaAssetImporterImpl>,
-    private val clipImporter: Lazy<ClipImporterImpl>,
-    private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val transactionRunner: MediaStoreTransactionRunner,
-) : TrackImporter {
+    private val mediaMetadataRetriever: MediaMetadataRetriever,
+    private val trackImporter: Lazy<TrackImporterImpl>,
+) : AlbumImporter {
 
     override suspend fun import(
         uri: Uri,
         source: Source,
-    ): Result<Track, MediaImportError> = withContext(Dispatchers.IO) {
+    ): Result<Album, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val metadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri) as? MediaMetadata.Audio
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
 
+            // NOTE: SimpleAlbum is imported during asset import to find or create the directory
+
             val assetImportResult = mediaAssetImporter.value.importAudio(
-                uri,
+                uri = uri,
                 mediaMetadata = metadata,
                 source = source,
             ).guardSuccess { return@withContext Result.Failure(it) }
 
             transactionRunner.run {
-                importToAlbum(
+                importAlbum(
                     filePath = assetImportResult.filePath,
                     mediaMetadata = metadata,
                     mediaAsset = assetImportResult.mediaAsset,
@@ -68,8 +66,7 @@ class TrackImporterImpl(
     override suspend fun import(
         uris: List<Uri>,
         source: Source,
-    ): Map<Uri, Result<Track, MediaImportError>> {
-        // Album directory is only correct after a track has been saved. Import sequentially.
+    ): Map<Uri, Result<Album, MediaImportError>> {
         return uris.associateWith {
             import(
                 uri = it,
@@ -79,41 +76,47 @@ class TrackImporterImpl(
     }
 
     context(scope: MediaStoreTransactionScope)
-    internal suspend fun importToAlbum(
+    internal suspend fun importAlbum(
         filePath: Path,
         mediaMetadata: MediaMetadata.Audio,
         mediaAsset: MediaAsset,
         simpleAlbum: SimpleAlbum,
-    ): Result<Track, MediaImportError> {
-        val clip = clipImporter.value.importTransaction(
+    ): Result<Album, MediaImportError> {
+        trackImporter.value.importToAlbum(
             filePath = filePath,
-            metadata = mediaMetadata,
+            mediaMetadata = mediaMetadata,
             mediaAsset = mediaAsset,
-        ).guardSuccess { return Result.Failure(it) }
-        return importSimpleTrack(
-            metadata = mediaMetadata,
             simpleAlbum = simpleAlbum,
-            clips = setOf(clip),
-        ).map { it.toTrack(simpleAlbum = simpleAlbum) }
+        ).guardSuccess { return Result.Failure(it) }
+
+        // Get Album with newly imported track
+        return albumMediaStore.getAlbum(simpleAlbum.id)
+            ?.let { Result.Success(it) }
+            ?: Result.Failure(MediaImportError.Unknown(null))
     }
 
     context(scope: MediaStoreTransactionScope)
-    internal suspend fun importSimpleTrack(
+    internal suspend fun importSimpleAlbum(
         metadata: MediaMetadata.Audio,
-        simpleAlbum: SimpleAlbum,
-        clips: Set<Clip>,
-    ): Result<SimpleTrack, MediaImportError> {
-        val trackClips = clips.map {
-            TrackClip(clip = it, startFrameInTrack = 0L)
-        }.toPersistentSet()
-        val track = makeTrack(
-            id = UUID.randomUUID(),
-            trackClips = trackClips,
-            mediaMetadata = metadata,
-            artists = simpleAlbum.artists,
-            simpleAlbum = simpleAlbum,
+        source: Source,
+        artist: Artist,
+        images: PersistentSet<Image> = persistentSetOf(),
+    ): Result<SimpleAlbum, MediaImportError> {
+        val albumName = metadata.albumTitle ?: "Unknown album"
+        val existing = albumMediaStore.getAlbumByTitleAndArtistId(
+            albumTitle = albumName,
+            artistId = artist.id,
         )
-        trackMediaStore.put(track)
-        return Result.Success(track.toSimpleTrack())
+        if (existing != null) return Result.Success(existing)
+
+        val album = makeSimpleAlbum(
+            mediaMetadata = metadata,
+            source = source,
+            artist = artist,
+            images = images,
+            getAlbumByTitleAndArtistId = albumMediaStore::getAlbumByTitleAndArtistId,
+        )
+        albumMediaStore.put(album)
+        return Result.Success(album)
     }
 }

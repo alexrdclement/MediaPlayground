@@ -2,18 +2,21 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 
 import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
+import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.Source
-import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.model.result.Result
+import kotlinx.io.files.Path
 
-interface TrackImporter {
+interface AudioFileImporter {
     suspend fun import(
         uri: Uri,
+        destinationDir: Path,
         source: Source = Source.Local,
-    ): Result<Track, MediaImportError>
+    ): Result<MediaAsset, MediaImportError>
 
     suspend fun import(
         uris: List<Uri>,
+        destinationDir: Path,
         source: Source = Source.Local,
-    ): Map<Uri, Result<Track, MediaImportError>>
+    ): Map<Uri, Result<MediaAsset, MediaImportError>>
 }

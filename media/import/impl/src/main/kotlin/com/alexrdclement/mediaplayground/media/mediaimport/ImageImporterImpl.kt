@@ -1,62 +1,161 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
 import android.net.Uri
+import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeImage
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toMediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
+import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.store.FileWriter
+import com.alexrdclement.mediaplayground.media.store.ImageMediaStore
+import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
+import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
+import com.alexrdclement.mediaplayground.media.store.PathProvider
 import com.alexrdclement.mediaplayground.model.result.Result
+import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 import java.util.UUID
 
-class ImageImporterImpl @Inject constructor(
+@Inject
+class ImageImporterImpl(
     private val mediaMetadataRetriever: MediaMetadataRetriever,
+    private val pathProvider: PathProvider,
+    private val imageMediaStore: ImageMediaStore,
+    private val transactionRunner: MediaStoreTransactionRunner,
     private val fileWriter: FileWriter,
 ) : ImageImporter {
 
-    override suspend fun importImageFromDisk(
-        contentUri: Uri,
-        getDestination: (ImageId, extension: String) -> Path,
-        saveImage: suspend (imageId: ImageId, fileName: String, mediaMetadata: MediaMetadata.Image) -> Unit,
-    ): Result<ImageId, MediaImportError> = withContext(Dispatchers.IO) {
-        val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri) as MediaMetadata.Image
-        val imageId = ImageId(UUID.randomUUID().toString())
-        val fileName = "${imageId.value}.${mediaMetadata.extension}"
-        val destination = getDestination(imageId, mediaMetadata.extension)
-
+    override suspend fun import(uri: Uri): Result<Image, MediaImportError> = withContext(Dispatchers.IO) {
         try {
-            destination.parent?.let { SystemFileSystem.createDirectories(it) }
-        } catch (e: IOException) {
-            // Directory may already exist
-        }
+            val metadata = mediaMetadataRetriever.getMediaMetadata(uri) as? MediaMetadata.Image
+                ?: return@withContext Result.Failure(MediaImportError.InputFileError)
 
-        when (val result = fileWriter.writeFileToDisk(contentUri, destination)) {
-            is Result.Failure -> Result.Failure(result.failure.toMediaImportError())
-            is Result.Success -> {
-                saveImage(imageId, fileName, mediaMetadata)
-                Result.Success(imageId)
+            val (filePath, imageId) = copyFile(
+                uri = uri,
+                mediaMetadata = metadata,
+            ).guardSuccess { return@withContext Result.Failure(it) }
+
+            transactionRunner.run {
+                importImageTransaction(
+                    filePath = filePath,
+                    imageId = imageId,
+                    mediaMetadata = metadata,
+                )
             }
+        } catch (e: Throwable) {
+            ensureActive()
+            Result.Failure(MediaImportError.Unknown(throwable = e))
         }
     }
 
-    override suspend fun importImagesFromDisk(
-        uris: List<Uri>,
-        getDestination: (ImageId, extension: String) -> Path,
-        saveImage: suspend (imageId: ImageId, fileName: String, mediaMetadata: MediaMetadata.Image) -> Unit,
-    ): Map<Uri, Result<ImageId, MediaImportError>> {
-        return uris.associateWith { uri ->
-            importImageFromDisk(
-                contentUri = uri,
-                getDestination = getDestination,
-                saveImage = saveImage,
-            )
+    override suspend fun import(uris: List<Uri>): Map<Uri, Result<Image, MediaImportError>> =
+        uris.associateWith { import(it) }
+
+    internal suspend fun import(
+        byteArray: ByteArray,
+    ): Result<Image, MediaImportError> = withContext(Dispatchers.IO) {
+        try {
+            val (filePath, imageId) = copyBitmap(
+                byteArray = byteArray,
+            ).guardSuccess { return@withContext Result.Failure(it) }
+
+            val metadata = mediaMetadataRetriever.getMediaMetadata(filePath = filePath) as? MediaMetadata.Image
+                ?: return@withContext Result.Failure(MediaImportError.InputFileError)
+
+            transactionRunner.run {
+                importImageTransaction(
+                    mediaMetadata = metadata,
+                    filePath = filePath,
+                    imageId = imageId,
+                )
+            }
+        } catch (e: Throwable) {
+            ensureActive()
+            Result.Failure(MediaImportError.Unknown(throwable = e))
         }
     }
+
+    internal suspend fun copyFile(
+        uri: Uri,
+        mediaMetadata: MediaMetadata.Image,
+        imageId: ImageId = ImageId(UUID.randomUUID().toString()),
+    ): Result<Pair<Path, ImageId>, MediaImportError> = withContext(Dispatchers.IO) {
+        try {
+            val destination = pathProvider.getImagePath(imageId, mediaMetadata.extension)
+            if (SystemFileSystem.exists(destination)) {
+                return@withContext Result.Success(destination to imageId)
+            }
+            try {
+                destination.parent?.let { SystemFileSystem.createDirectories(it) }
+            } catch (e: IOException) {
+                return@withContext Result.Failure(MediaImportError.MkdirError)
+            }
+            val path = fileWriter.writeFileToDisk(
+                contentUri = uri,
+                destination = destination,
+            ).guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
+
+            Result.Success(path to imageId)
+        } catch (e: Throwable) {
+            ensureActive()
+            Result.Failure(MediaImportError.Unknown(throwable = e))
+        }
+    }
+
+    internal suspend fun copyBitmap(
+        byteArray: ByteArray,
+        imageId: ImageId = ImageId(UUID.randomUUID().toString()),
+    ): Result<Pair<Path, ImageId>, MediaImportError> = withContext(Dispatchers.IO) {
+        try {
+            val destination = pathProvider.getImagePath(
+                imageId = imageId,
+                extension = "png",
+            )
+            if (SystemFileSystem.exists(destination)) {
+                return@withContext Result.Success(destination to imageId)
+            }
+            try {
+                destination.parent?.let { SystemFileSystem.createDirectories(it) }
+            } catch (e: IOException) {
+                return@withContext Result.Failure(MediaImportError.MkdirError)
+            }
+            val path = fileWriter.writeBitmapToDisk(
+                byteArray = byteArray,
+                destination = destination,
+            ).guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
+
+            Result.Success(path to imageId)
+        } catch (e: Throwable) {
+            ensureActive()
+            Result.Failure(MediaImportError.Unknown(throwable = e))
+        }
+    }
+
+    context(context: MediaStoreTransactionScope)
+    internal suspend fun importImageTransaction(
+        filePath: Path,
+        imageId: ImageId,
+        mediaMetadata: MediaMetadata.Image,
+    ): Result<Image, MediaImportError> {
+        val image = makeImage(
+            id = imageId,
+            mediaMetadata = mediaMetadata,
+            filePath = filePath,
+        )
+        imageMediaStore.put(setOf(image))
+        return Result.Success(image)
+    }
+
+    context(context: MediaStoreTransactionScope)
+    internal suspend fun importImagesTransaction(
+        image: Set<Image>,
+    ) = imageMediaStore.put(image)
 }

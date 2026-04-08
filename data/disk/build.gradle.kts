@@ -8,6 +8,8 @@ android {
 }
 
 dependencies {
+    api(projects.media.store.api)
+
     implementation(libs.kotlinx.io.core)
-    implementation(projects.media.store.api)
+    implementation(libs.androidx.documentfile)
 }

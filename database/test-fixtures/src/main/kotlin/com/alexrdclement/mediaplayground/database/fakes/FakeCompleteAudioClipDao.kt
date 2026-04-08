@@ -33,6 +33,14 @@ class FakeCompleteAudioClipDao(
         return CompleteAudioClip(clip = clip, audioFile = audioFile)
     }
 
+    override suspend fun getClipByAudioFileId(audioFileId: String): CompleteAudioClip? {
+        val clips = clipDao.clips.value
+        val audioFiles = audioFileDao.audioFiles.value
+        val clip = clips.find { it.assetId == audioFileId } ?: return null
+        val audioFile = audioFiles.find { it.id == clip.assetId } ?: return null
+        return CompleteAudioClip(clip = clip, audioFile = audioFile)
+    }
+
     override fun getClipFlow(id: String): Flow<CompleteAudioClip?> {
         return completeClips.map { it.find { completeClip -> completeClip.clip.id == id } }
     }

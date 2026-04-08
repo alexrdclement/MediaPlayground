@@ -15,6 +15,8 @@ import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactio
 import com.alexrdclement.mediaplayground.database.transaction.deleteTrack
 import com.alexrdclement.mediaplayground.database.transaction.insertTrack
 import com.alexrdclement.mediaplayground.database.transaction.updateTrack
+import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.ClipId
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import dev.zacsweers.metro.Inject
@@ -38,7 +40,7 @@ class LocalTrackDataStore @Inject constructor(
         }.flow.map { pagingData ->
             pagingData.map {
                 it.toTrack(
-                    mediaItemDir = pathProvider.getAlbumDir(it.album.id),
+                    mediaItemDir = pathProvider.getAlbumDir(AlbumId(it.album.id)),
                     imagesDir = pathProvider.getImagesDir(),
                 )
             }
@@ -48,7 +50,15 @@ class LocalTrackDataStore @Inject constructor(
     suspend fun getTrack(trackId: TrackId): Track? {
         val entity = completeTrackDao.getTrack(trackId.value) ?: return null
         return entity.toTrack(
-            mediaItemDir = pathProvider.getAlbumDir(entity.album.id),
+            mediaItemDir = pathProvider.getAlbumDir(AlbumId(entity.album.id)),
+            imagesDir = pathProvider.getImagesDir(),
+        )
+    }
+
+    suspend fun getByClipId(clipId: ClipId): Track? {
+        val entity = completeTrackDao.getTrackByClipId(clipId.value) ?: return null
+        return entity.toTrack(
+            mediaItemDir = pathProvider.getAlbumDir(AlbumId(entity.album.id)),
             imagesDir = pathProvider.getImagesDir(),
         )
     }
@@ -56,7 +66,7 @@ class LocalTrackDataStore @Inject constructor(
     fun getTrackFlow(trackId: TrackId): Flow<Track?> {
         return completeTrackDao.getTrackFlow(trackId.value).map { completeTrack ->
             completeTrack?.toTrack(
-                mediaItemDir = pathProvider.getAlbumDir(completeTrack.album.id),
+                mediaItemDir = pathProvider.getAlbumDir(AlbumId(completeTrack.album.id)),
                 imagesDir = pathProvider.getImagesDir(),
             )
         }

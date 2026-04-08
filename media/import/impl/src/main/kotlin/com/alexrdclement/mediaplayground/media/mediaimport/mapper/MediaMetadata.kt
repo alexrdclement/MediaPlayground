@@ -12,6 +12,25 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.io.files.Path
 import java.util.UUID
 
+fun MediaMetadata.Image.toImage(
+    id: ImageId,
+    uri: Path,
+): Image {
+    return Image(
+        id = id,
+        uri = uri.toString(),
+        mimeType = mimeType,
+        extension = extension,
+        widthPx = widthPx,
+        heightPx = heightPx,
+        dateTimeOriginal = dateTimeOriginal,
+        gpsLatitude = gpsLatitude,
+        gpsLongitude = gpsLongitude,
+        cameraMake = cameraMake,
+        cameraModel = cameraModel,
+    )
+}
+
 fun MediaMetadata.Audio.toArtist(
     name: String,
 ): Artist {

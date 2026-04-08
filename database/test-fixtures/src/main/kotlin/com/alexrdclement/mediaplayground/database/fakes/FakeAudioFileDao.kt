@@ -16,6 +16,10 @@ class FakeAudioFileDao : AudioFileDao {
         return audioFiles.value.find { it.id == id }
     }
 
+    override suspend fun getAudioFileByFileName(fileName: String): AudioFile? {
+        return audioFiles.value.find { it.fileName == fileName }
+    }
+
     override fun getAudioFileFlow(id: String): Flow<AudioFile?> {
         return audioFiles.map { it.find { audioFile -> audioFile.id == id } }
     }
