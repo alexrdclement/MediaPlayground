@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
-import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toArtist
+import com.alexrdclement.mediaplayground.media.model.mapper.toArtist
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.Artist
 

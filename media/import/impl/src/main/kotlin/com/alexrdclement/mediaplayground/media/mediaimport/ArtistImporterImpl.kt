@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.media.mediaimport
 
 import android.net.Uri
-import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toArtist
+import com.alexrdclement.mediaplayground.media.model.mapper.toArtist
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.model.Artist
