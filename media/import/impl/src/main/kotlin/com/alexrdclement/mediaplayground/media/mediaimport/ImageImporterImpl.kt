@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
+import com.alexrdclement.mediaplayground.media.store.FileReader
 import com.alexrdclement.mediaplayground.media.store.FileWriter
 import com.alexrdclement.mediaplayground.media.store.ImageMediaStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
@@ -22,7 +23,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
-import java.util.UUID
+import com.alexrdclement.mediaplayground.media.mediaimport.util.sha256
 
 @Inject
 class ImageImporterImpl(
@@ -30,6 +31,7 @@ class ImageImporterImpl(
     private val pathProvider: PathProvider,
     private val imageMediaStore: ImageMediaStore,
     private val transactionRunner: MediaStoreTransactionRunner,
+    private val fileReader: FileReader,
     private val fileWriter: FileWriter,
 ) : ImageImporter {
 
@@ -86,9 +88,11 @@ class ImageImporterImpl(
     internal suspend fun copyFile(
         uri: Uri,
         mediaMetadata: MediaMetadata.Image,
-        imageId: ImageId = ImageId(UUID.randomUUID().toString()),
     ): Result<Pair<Path, ImageId>, MediaImportError> = withContext(Dispatchers.IO) {
         try {
+            val bytes = fileReader.readBytes(uri)
+                .guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
+            val imageId = ImageId(bytes.sha256())
             val destination = pathProvider.getImagePath(imageId, mediaMetadata.extension)
             if (SystemFileSystem.exists(destination)) {
                 return@withContext Result.Success(destination to imageId)
@@ -112,7 +116,7 @@ class ImageImporterImpl(
 
     internal suspend fun copyBitmap(
         byteArray: ByteArray,
-        imageId: ImageId = ImageId(UUID.randomUUID().toString()),
+        imageId: ImageId = ImageId(byteArray.sha256()),
     ): Result<Pair<Path, ImageId>, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val destination = pathProvider.getImagePath(
