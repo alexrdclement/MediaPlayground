@@ -10,6 +10,7 @@ import kotlinx.io.files.Path
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotEquals
 
 class ImageImporterImplTest {
 
@@ -45,6 +46,44 @@ class ImageImporterImplTest {
         val result = imageImporter.import(FakeUri)
 
         assertIs<Result.Failure<*, *>>(result)
+    }
+
+    @Test
+    fun copyBitmap_returnsSameImageId_forSameBytes() = runTest {
+        val bytes = byteArrayOf(1, 2, 3)
+        val first = imageImporter.copyBitmap(bytes)
+        val second = imageImporter.copyBitmap(bytes)
+        assertIs<Result.Success<*, *>>(first)
+        assertIs<Result.Success<*, *>>(second)
+        assertEquals(
+            (first as Result.Success).value.second,
+            (second as Result.Success).value.second,
+        )
+    }
+
+    @Test
+    fun copyBitmap_returnsDifferentImageId_forDifferentBytes() = runTest {
+        val first = imageImporter.copyBitmap(byteArrayOf(1, 2, 3))
+        val second = imageImporter.copyBitmap(byteArrayOf(4, 5, 6))
+        assertIs<Result.Success<*, *>>(first)
+        assertIs<Result.Success<*, *>>(second)
+        assertNotEquals(
+            (first as Result.Success).value.second,
+            (second as Result.Success).value.second,
+        )
+    }
+
+    @Test
+    fun copyFile_returnsSameImageId_forSameUri() = runTest {
+        fixture.mediaMetadataRetriever.mediaMetadata = imageMetadata
+        val first = imageImporter.copyFile(FakeUri, imageMetadata)
+        val second = imageImporter.copyFile(FakeUri, imageMetadata)
+        assertIs<Result.Success<*, *>>(first)
+        assertIs<Result.Success<*, *>>(second)
+        assertEquals(
+            (first as Result.Success).value.second,
+            (second as Result.Success).value.second,
+        )
     }
 
     @Test
