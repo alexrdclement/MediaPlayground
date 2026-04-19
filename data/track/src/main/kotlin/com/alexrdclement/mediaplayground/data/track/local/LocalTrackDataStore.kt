@@ -4,22 +4,24 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
-import com.alexrdclement.mediaplayground.database.mapping.toAudioFileEntity
+import com.alexrdclement.mediaplayground.database.mapping.toAudioAssetEntity
+import com.alexrdclement.mediaplayground.database.mapping.toAudioTrack
 import com.alexrdclement.mediaplayground.database.mapping.toClipEntity
-import com.alexrdclement.mediaplayground.database.mapping.toTrack
+import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
 import com.alexrdclement.mediaplayground.database.mapping.toTrackEntity
+import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.deleteTrack
 import com.alexrdclement.mediaplayground.database.transaction.insertTrack
 import com.alexrdclement.mediaplayground.database.transaction.updateTrack
-import com.alexrdclement.mediaplayground.media.model.AlbumId
-import com.alexrdclement.mediaplayground.media.model.ClipId
+import com.alexrdclement.mediaplayground.media.model.AudioAsset
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import dev.zacsweers.metro.Inject
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -27,7 +29,6 @@ import kotlinx.coroutines.flow.map
 class LocalTrackDataStore @Inject constructor(
     private val completeTrackDao: CompleteTrackDao,
     private val databaseTransactionRunner: DatabaseTransactionRunner,
-    private val pathProvider: PathProvider,
 ) {
 
     fun getTrackCountFlow(): Flow<Int> {
@@ -38,37 +39,18 @@ class LocalTrackDataStore @Inject constructor(
         return Pager(config = config) {
             completeTrackDao.getTracksPagingSource()
         }.flow.map { pagingData ->
-            pagingData.map {
-                it.toTrack(
-                    mediaItemDir = pathProvider.getAlbumDir(AlbumId(it.album.id)),
-                    imagesDir = pathProvider.getImagesDir(),
-                )
-            }
+            pagingData.map { it.toAudioTrack() }
         }
     }
 
     suspend fun getTrack(trackId: TrackId): Track? {
         val entity = completeTrackDao.getTrack(trackId.value) ?: return null
-        return entity.toTrack(
-            mediaItemDir = pathProvider.getAlbumDir(AlbumId(entity.album.id)),
-            imagesDir = pathProvider.getImagesDir(),
-        )
-    }
-
-    suspend fun getByClipId(clipId: ClipId): Track? {
-        val entity = completeTrackDao.getTrackByClipId(clipId.value) ?: return null
-        return entity.toTrack(
-            mediaItemDir = pathProvider.getAlbumDir(AlbumId(entity.album.id)),
-            imagesDir = pathProvider.getImagesDir(),
-        )
+        return entity.toAudioTrack()
     }
 
     fun getTrackFlow(trackId: TrackId): Flow<Track?> {
         return completeTrackDao.getTrackFlow(trackId.value).map { completeTrack ->
-            completeTrack?.toTrack(
-                mediaItemDir = pathProvider.getAlbumDir(AlbumId(completeTrack.album.id)),
-                imagesDir = pathProvider.getImagesDir(),
-            )
+            completeTrack?.toAudioTrack()
         }
     }
 
@@ -79,21 +61,38 @@ class LocalTrackDataStore @Inject constructor(
     }
 
     suspend fun put(track: Track) {
+        when (track) {
+            is AudioTrack -> putAudioTrack(track)
+        }
+    }
+
+    private suspend fun putAudioTrack(track: AudioTrack) {
         val trackEntity = track.toTrackEntity()
-        val clipsAndAudioFiles = track.clips.map { trackClip ->
-            trackClip.clip.toClipEntity() to trackClip.clip.mediaAsset.toAudioFileEntity()
+        val albumTrackCrossRef = AlbumTrackCrossRef(
+            albumId = track.simpleAlbum.id.value,
+            trackId = track.id.value,
+            trackNumber = track.trackNumber,
+        )
+        val clipsAndAudioAssets = track.clips.mapNotNull { trackClip ->
+            val audioAsset = trackClip.clip.mediaAsset as? AudioAsset ?: return@mapNotNull null
+            Triple(
+                trackClip.clip.toClipEntity(),
+                audioAsset.toMediaAssetRecord(),
+                audioAsset.toAudioAssetEntity(),
+            )
         }
         val crossRefs = track.clips.map { trackClip ->
             TrackClipCrossRef(
                 trackId = track.id.value,
                 clipId = trackClip.clip.id.value,
-                startFrameInTrack = trackClip.startFrameInTrack,
+                startFrameInTrack = trackClip.trackOffset.samples,
             )
         }
         databaseTransactionRunner.run {
             insertTrack(
                 track = trackEntity,
-                clips = clipsAndAudioFiles,
+                albumTrackCrossRef = albumTrackCrossRef,
+                clips = clipsAndAudioAssets,
                 trackClipCrossRefs = crossRefs,
             )
         }
@@ -101,21 +100,20 @@ class LocalTrackDataStore @Inject constructor(
 
     suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?) {
         databaseTransactionRunner.run {
-            val track = trackDao.getTrack(id.value) ?: return@run
-            trackDao.update(track.copy(trackNumber = trackNumber))
+            albumTrackDao.updateTrackNumber(id.value, trackNumber)
         }
     }
 
     suspend fun updateTrackNotes(id: TrackId, notes: String?) {
         databaseTransactionRunner.run {
             val track = trackDao.getTrack(id.value) ?: return@run
-            trackDao.update(track.copy(notes = notes))
+            trackDao.update(track.copy(notes = notes, modifiedAt = Clock.System.now()))
         }
     }
 
-    suspend fun delete(id: TrackId) {
+    suspend fun delete(id: TrackId, deleteOrphanedClips: Boolean = true) {
         databaseTransactionRunner.run {
-            deleteTrack(id.value)
+            deleteTrack(id.value, deleteOrphanedClips)
         }
     }
 }

@@ -16,7 +16,10 @@ import com.alexrdclement.mediaplayground.media.model.FakeTrack3
 import com.alexrdclement.mediaplayground.media.model.FakeTracks1
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
+import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
+import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import kotlin.time.Instant
 
 
 val PreviewArtist1 = FakeArtist1
@@ -97,7 +100,11 @@ val PreviewAlbumsUi1 = listOf(
 
 val PreviewImage1 = Image(
     id = ImageId("image-1"),
+    uri = MediaAssetUri.Shared("image-1.png"),
+    originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image-1"),
+    createdAt = Instant.DISTANT_PAST,
     mimeType = "image/png",
     extension = "png",
-    uri = "file:/images/image-1.png",
+    widthPx = 1024,
+    heightPx = 768,
 )

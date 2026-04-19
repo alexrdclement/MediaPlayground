@@ -1,25 +1,30 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
 import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.Image
-import com.alexrdclement.mediaplayground.media.model.MediaAsset
-import com.alexrdclement.mediaplayground.media.model.MediaAssetId
+import com.alexrdclement.mediaplayground.media.model.AudioAssetId
+import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
+import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
-import com.alexrdclement.mediaplayground.media.model.Source
 import kotlinx.collections.immutable.PersistentList
-import java.util.UUID
+import kotlin.time.Clock
+import kotlin.time.Instant
 
-internal fun makeMediaAsset(
-    uri: String,
+internal fun makeAudioAsset(
+    id: AudioAssetId,
+    uri: MediaAssetUri,
+    originUri: MediaAssetOriginUri,
     mediaMetadata: MediaMetadata.Audio,
-    source: Source,
     artists: PersistentList<Artist>,
     images: PersistentList<Image>,
-): MediaAsset {
-    return MediaAsset(
-        id = MediaAssetId(UUID.randomUUID().toString()),
+    createdAt: Instant = Clock.System.now(),
+): AudioAsset {
+    return AudioAsset(
+        id = id,
         uri = uri,
-        source = source,
+        originUri = originUri,
+        createdAt = createdAt,
         artists = artists,
         images = images,
         metadata = mediaMetadata,

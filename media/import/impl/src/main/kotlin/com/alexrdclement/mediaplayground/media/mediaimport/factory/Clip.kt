@@ -1,20 +1,21 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
+import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.ClipId
-import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
+import com.alexrdclement.mediaplayground.media.model.TimeUnit
 import kotlinx.io.files.Path
 import java.util.UUID
 
 internal fun makeClip(
     filePath: Path,
     mediaMetadata: MediaMetadata.Audio,
-    mediaAsset: MediaAsset,
+    audioFile: AudioAsset,
 ): Clip {
     val durationUs = mediaMetadata.durationUs ?: 0L
     val sampleRate = mediaMetadata.sampleRate
-    val totalFrames = if (durationUs > 0L && sampleRate > 0) {
+    val totalSamples = if (durationUs > 0L && sampleRate > 0) {
         durationUs * sampleRate / 1_000_000L
     } else {
         0L
@@ -23,8 +24,8 @@ internal fun makeClip(
     return Clip(
         id = ClipId(UUID.randomUUID().toString()),
         title = title,
-        mediaAsset = mediaAsset,
-        startFrameInFile = 0L,
-        endFrameInFile = totalFrames,
+        mediaAsset = audioFile,
+        assetOffset = TimeUnit.Samples(0L, sampleRate),
+        duration = TimeUnit.Samples(totalSamples, sampleRate),
     )
 }

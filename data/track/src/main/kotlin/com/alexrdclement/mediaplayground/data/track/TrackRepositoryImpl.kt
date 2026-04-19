@@ -7,6 +7,7 @@ import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStore
 import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
@@ -105,7 +106,7 @@ class TrackRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun mapMediaImportResult(result: Result<Track, MediaImportError>): TrackImportResult {
+    private fun mapMediaImportResult(result: Result<AudioTrack, MediaImportError>): TrackImportResult {
         return when (result) {
             is Result.Failure -> {
                 val error = TrackImportResult.Error.ImportError(result.failure)

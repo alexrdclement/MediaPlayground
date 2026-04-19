@@ -16,7 +16,7 @@ import androidx.room.Index
             onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
-            entity = ImageFile::class,
+            entity = ImageAsset::class,
             parentColumns = ["id"],
             childColumns = ["image_id"],
             onDelete = ForeignKey.CASCADE,

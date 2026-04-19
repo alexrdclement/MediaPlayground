@@ -4,13 +4,17 @@ import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
+import com.alexrdclement.mediaplayground.database.dao.AlbumTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
-import com.alexrdclement.mediaplayground.database.dao.AudioFileDao
+import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
 import com.alexrdclement.mediaplayground.database.dao.ClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAudioClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
-import com.alexrdclement.mediaplayground.database.dao.ImageFileDao
+import com.alexrdclement.mediaplayground.database.dao.ImageAssetDao
+import com.alexrdclement.mediaplayground.database.dao.MediaAssetDao
+import com.alexrdclement.mediaplayground.database.dao.MediaAssetSyncStateDao
+import com.alexrdclement.mediaplayground.database.dao.MediaCollectionDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackClipDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
@@ -27,7 +31,10 @@ interface DaoModule {
         fun provideAlbumDao(database: MediaPlaygroundDatabase): AlbumDao = database.albumDao()
 
         @Provides
-        fun provideImageDao(database: MediaPlaygroundDatabase): ImageFileDao = database.imageDao()
+        fun provideAlbumTrackDao(database: MediaPlaygroundDatabase): AlbumTrackDao = database.albumTrackDao()
+
+        @Provides
+        fun provideImageAssetDao(database: MediaPlaygroundDatabase): ImageAssetDao = database.imageAssetDao()
 
         @Provides
         fun provideArtistDao(database: MediaPlaygroundDatabase): ArtistDao = database.artistDao()
@@ -58,7 +65,7 @@ interface DaoModule {
         ): AlbumImageDao = database.albumImageDao()
 
         @Provides
-        fun provideAudioFileDao(database: MediaPlaygroundDatabase): AudioFileDao = database.audioFileDao()
+        fun provideAudioAssetDao(database: MediaPlaygroundDatabase): AudioAssetDao = database.audioAssetDao()
 
         @Provides
         fun provideClipDao(database: MediaPlaygroundDatabase): ClipDao = database.clipDao()
@@ -70,5 +77,14 @@ interface DaoModule {
 
         @Provides
         fun provideTrackClipDao(database: MediaPlaygroundDatabase): TrackClipDao = database.trackClipDao()
+
+        @Provides
+        fun provideMediaAssetDao(database: MediaPlaygroundDatabase): MediaAssetDao = database.mediaAssetDao()
+
+        @Provides
+        fun provideMediaAssetSyncStateDao(database: MediaPlaygroundDatabase): MediaAssetSyncStateDao = database.mediaAssetSyncStateDao()
+
+        @Provides
+        fun provideMediaCollectionDao(database: MediaPlaygroundDatabase): MediaCollectionDao = database.mediaCollectionDao()
     }
 }

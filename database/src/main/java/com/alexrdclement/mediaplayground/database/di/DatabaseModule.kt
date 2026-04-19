@@ -6,13 +6,16 @@ import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
+import com.alexrdclement.mediaplayground.database.dao.AlbumTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
-import com.alexrdclement.mediaplayground.database.dao.AudioFileDao
+import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
 import com.alexrdclement.mediaplayground.database.dao.ClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAudioClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
-import com.alexrdclement.mediaplayground.database.dao.ImageFileDao
+import com.alexrdclement.mediaplayground.database.dao.ImageAssetDao
+import com.alexrdclement.mediaplayground.database.dao.MediaAssetDao
+import com.alexrdclement.mediaplayground.database.dao.MediaCollectionDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackClipDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
@@ -37,7 +40,6 @@ interface DatabaseModule {
             application,
             MediaPlaygroundDatabase::class.java,
             "mediaplayground-database",
-        ).addMigrations(
         ).fallbackToDestructiveMigration(dropAllTables = true).build()
 
         @Provides
@@ -46,13 +48,16 @@ interface DatabaseModule {
             albumDao: AlbumDao,
             albumArtistDao: AlbumArtistDao,
             albumImageDao: AlbumImageDao,
+            albumTrackDao: AlbumTrackDao,
             artistDao: ArtistDao,
-            audioFileDao: AudioFileDao,
+            audioAssetDao: AudioAssetDao,
             clipDao: ClipDao,
             completeAlbumDao: CompleteAlbumDao,
             completeAudioClipDao: CompleteAudioClipDao,
             completeTrackDao: CompleteTrackDao,
-            imageDao: ImageFileDao,
+            imageAssetDao: ImageAssetDao,
+            mediaAssetDao: MediaAssetDao,
+            mediaCollectionDao: MediaCollectionDao,
             simpleAlbumDao: SimpleAlbumDao,
             trackClipDao: TrackClipDao,
             trackDao: TrackDao,
@@ -60,13 +65,16 @@ interface DatabaseModule {
             override val albumDao = albumDao
             override val albumArtistDao = albumArtistDao
             override val albumImageDao = albumImageDao
+            override val albumTrackDao = albumTrackDao
             override val artistDao = artistDao
-            override val audioFileDao = audioFileDao
+            override val audioAssetDao = audioAssetDao
             override val clipDao = clipDao
             override val completeAlbumDao = completeAlbumDao
             override val completeAudioClipDao = completeAudioClipDao
             override val completeTrackDao = completeTrackDao
-            override val imageFileDao = imageDao
+            override val imageAssetDao = imageAssetDao
+            override val mediaAssetDao = mediaAssetDao
+            override val mediaCollectionDao = mediaCollectionDao
             override val simpleAlbumDao = simpleAlbumDao
             override val trackClipDao = trackClipDao
             override val trackDao = trackDao

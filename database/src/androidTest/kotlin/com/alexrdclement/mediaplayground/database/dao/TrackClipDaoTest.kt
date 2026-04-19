@@ -5,10 +5,13 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbum1
-import com.alexrdclement.mediaplayground.database.fakes.FakeAudioFile1
-import com.alexrdclement.mediaplayground.database.fakes.FakeAudioFile2
+import com.alexrdclement.mediaplayground.database.fakes.FakeAudioAsset1
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaCollection1
+import com.alexrdclement.mediaplayground.database.fakes.FakeAudioAsset2
 import com.alexrdclement.mediaplayground.database.fakes.FakeClip1
 import com.alexrdclement.mediaplayground.database.fakes.FakeClip2
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaAssetRecord1
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaAssetRecord2
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrack1
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrack2
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
@@ -24,9 +27,11 @@ class TrackClipDaoTest {
     private lateinit var db: MediaPlaygroundDatabase
     private lateinit var albumDao: AlbumDao
     private lateinit var trackDao: TrackDao
-    private lateinit var audioFileDao: AudioFileDao
+    private lateinit var audioAssetDao: AudioAssetDao
     private lateinit var clipDao: ClipDao
     private lateinit var trackClipDao: TrackClipDao
+    private lateinit var mediaAssetDao: MediaAssetDao
+    private lateinit var mediaCollectionDao: MediaCollectionDao
 
     @Before
     fun create() {
@@ -36,9 +41,11 @@ class TrackClipDaoTest {
             .build()
         albumDao = db.albumDao()
         trackDao = db.trackDao()
-        audioFileDao = db.audioFileDao()
+        audioAssetDao = db.audioAssetDao()
         clipDao = db.clipDao()
         trackClipDao = db.trackClipDao()
+        mediaAssetDao = db.mediaAssetDao()
+        mediaCollectionDao = db.mediaCollectionDao()
     }
 
     @After
@@ -47,8 +54,10 @@ class TrackClipDaoTest {
     }
 
     private suspend fun insertPrerequisites() {
+        mediaCollectionDao.insert(FakeMediaCollection1)
         albumDao.insert(FakeAlbum1)
-        audioFileDao.insert(FakeAudioFile1, FakeAudioFile2)
+        mediaAssetDao.insert(FakeMediaAssetRecord1, FakeMediaAssetRecord2)
+        audioAssetDao.insert(FakeAudioAsset1, FakeAudioAsset2)
         clipDao.insert(FakeClip1, FakeClip2)
         trackDao.insert(FakeTrack1, FakeTrack2)
     }

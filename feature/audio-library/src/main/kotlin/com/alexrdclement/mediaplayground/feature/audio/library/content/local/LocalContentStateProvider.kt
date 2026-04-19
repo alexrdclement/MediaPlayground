@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.alexrdclement.mediaplayground.data.album.AlbumRepository
+import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepository
 import com.alexrdclement.mediaplayground.data.track.TrackRepository
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
@@ -17,7 +17,7 @@ import dev.zacsweers.metro.Inject
 
 class LocalContentStateProvider @Inject constructor(
     private val trackRepository: TrackRepository,
-    private val albumRepository: AlbumRepository,
+    private val albumRepository: AudioAlbumRepository,
     private val mediaSessionState: MediaSessionState,
 ) {
 

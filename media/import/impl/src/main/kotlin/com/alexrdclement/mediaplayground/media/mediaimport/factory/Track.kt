@@ -1,9 +1,10 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
 import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.TimeUnit
 import com.alexrdclement.mediaplayground.media.model.TrackClip
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.PersistentList
@@ -13,14 +14,14 @@ import java.util.UUID
 
 internal fun makeTrack(
     id: UUID,
-    trackClips: PersistentSet<TrackClip>,
+    trackClips: PersistentSet<TrackClip<TimeUnit.Samples>>,
     mediaMetadata: MediaMetadata.Audio,
     artists: PersistentList<Artist>,
     simpleAlbum: SimpleAlbum,
-): Track {
+): AudioTrack {
     val title = mediaMetadata.title ?: "Unknown track"
 
-    return Track(
+    return AudioTrack(
         id = TrackId(id.toString()),
         title = title,
         artists = artists,

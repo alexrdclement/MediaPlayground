@@ -62,8 +62,8 @@ sealed class MediaMetadata {
     data class Image(
         override val mimeType: String,
         override val extension: String,
-        val widthPx: Int?,
-        val heightPx: Int?,
+        val widthPx: Int,
+        val heightPx: Int,
         val dateTimeOriginal: String?,
         val gpsLatitude: Double?,
         val gpsLongitude: Double?,

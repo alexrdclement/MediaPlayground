@@ -225,7 +225,7 @@ private fun LoadedContent(
                         offset = trackOptionsTouchOffset,
                         onDismissRequest = { trackOptionsExpanded = false },
                         onNavigateToMetadata = { onNavigateToTrackMetadata(trackUi.track.id.value) },
-                        onNavigateToDelete = { onNavigateToTrackDelete(trackUi.track.id.value, trackUi.track.name) },
+                        onNavigateToDelete = { onNavigateToTrackDelete(trackUi.track.id.value, trackUi.track.title) },
                     )
                 }
             }
@@ -238,7 +238,7 @@ private fun LoadedContent(
 private fun Preview() {
     PaletteTheme {
         val album = PreviewAlbum1
-        val tracks = album.tracks.mapIndexed { index, track ->
+        val tracks = album.items.mapIndexed { index, track ->
             TrackUi(
                 track = track,
                 isLoaded = index == 1,

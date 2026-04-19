@@ -12,33 +12,39 @@ import kotlinx.coroutines.flow.map
 class FakeCompleteAudioClipDao(
     val coroutineScope: CoroutineScope,
     val clipDao: FakeClipDao,
-    val audioFileDao: FakeAudioFileDao,
+    val audioAssetDao: FakeAudioAssetDao,
 ) : CompleteAudioClipDao {
 
     val completeClips = combine(
         clipDao.clips,
-        audioFileDao.audioFiles,
-    ) { clips, audioFiles ->
+        audioAssetDao.audioAssets,
+        audioAssetDao.mediaAssetDao.mediaAssetsFlow,
+    ) { clips, audioFiles, mediaAssets ->
         clips.mapNotNull { clip ->
             val audioFile = audioFiles.find { it.id == clip.assetId } ?: return@mapNotNull null
-            CompleteAudioClip(clip = clip, audioFile = audioFile)
+            val mediaAsset = mediaAssets[clip.assetId] ?: return@mapNotNull null
+            CompleteAudioClip(clip = clip, audioAsset = audioFile, mediaAsset = mediaAsset)
         }
     }
 
     override suspend fun getClip(id: String): CompleteAudioClip? {
         val clips = clipDao.clips.value
-        val audioFiles = audioFileDao.audioFiles.value
+        val audioAssets = audioAssetDao.audioAssets.value
+        val mediaAssets = audioAssetDao.mediaAssetDao.mediaAssets
         val clip = clips.find { it.id == id } ?: return null
-        val audioFile = audioFiles.find { it.id == clip.assetId } ?: return null
-        return CompleteAudioClip(clip = clip, audioFile = audioFile)
+        val audioFile = audioAssets.find { it.id == clip.assetId } ?: return null
+        val mediaAsset = mediaAssets[clip.assetId] ?: return null
+        return CompleteAudioClip(clip = clip, audioAsset = audioFile, mediaAsset = mediaAsset)
     }
 
-    override suspend fun getClipByAudioFileId(audioFileId: String): CompleteAudioClip? {
+    override suspend fun getClipByMediaAssetId(assetId: String): CompleteAudioClip? {
         val clips = clipDao.clips.value
-        val audioFiles = audioFileDao.audioFiles.value
-        val clip = clips.find { it.assetId == audioFileId } ?: return null
-        val audioFile = audioFiles.find { it.id == clip.assetId } ?: return null
-        return CompleteAudioClip(clip = clip, audioFile = audioFile)
+        val audioAssets = audioAssetDao.audioAssets.value
+        val mediaAssets = audioAssetDao.mediaAssetDao.mediaAssets
+        val clip = clips.find { it.assetId == assetId } ?: return null
+        val audioFile = audioAssets.find { it.id == clip.assetId } ?: return null
+        val mediaAsset = mediaAssets[clip.assetId] ?: return null
+        return CompleteAudioClip(clip = clip, audioAsset = audioFile, mediaAsset = mediaAsset)
     }
 
     override fun getClipFlow(id: String): Flow<CompleteAudioClip?> {

@@ -9,6 +9,8 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeAlbum1
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbum2
 import com.alexrdclement.mediaplayground.database.fakes.FakeArtist1
 import com.alexrdclement.mediaplayground.database.fakes.FakeArtist2
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaCollection1
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaCollection2
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -22,6 +24,7 @@ class AlbumArtistDaoTest {
 
     private lateinit var db: MediaPlaygroundDatabase
     private lateinit var albumDao: AlbumDao
+    private lateinit var mediaCollectionDao: MediaCollectionDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
 
@@ -32,6 +35,7 @@ class AlbumArtistDaoTest {
             .inMemoryDatabaseBuilder(context, MediaPlaygroundDatabase::class.java)
             .build()
         albumDao = db.albumDao()
+        mediaCollectionDao = db.mediaCollectionDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
     }
@@ -44,6 +48,7 @@ class AlbumArtistDaoTest {
     @Test
     fun insert_withoutArtist_throws() = runTest {
         val album = FakeAlbum1
+        mediaCollectionDao.insert(FakeMediaCollection1)
         albumDao.insert(album)
         val artist = FakeArtist1
 
@@ -66,8 +71,10 @@ class AlbumArtistDaoTest {
     @Test
     fun getAlbumArtists_returnsInserted() = runTest {
         val album1 = FakeAlbum1
+        mediaCollectionDao.insert(FakeMediaCollection1)
         albumDao.insert(album1)
         val album2 = FakeAlbum2
+        mediaCollectionDao.insert(FakeMediaCollection2)
         albumDao.insert(album2)
         val artist1 = FakeArtist1
         artistDao.insert(artist1)
@@ -106,8 +113,10 @@ class AlbumArtistDaoTest {
     @Test
     fun delete_removesEntity() = runTest {
         val album1 = FakeAlbum1
+        mediaCollectionDao.insert(FakeMediaCollection1)
         albumDao.insert(album1)
         val album2 = FakeAlbum2
+        mediaCollectionDao.insert(FakeMediaCollection2)
         albumDao.insert(album2)
         val artist1 = FakeArtist1
         artistDao.insert(artist1)

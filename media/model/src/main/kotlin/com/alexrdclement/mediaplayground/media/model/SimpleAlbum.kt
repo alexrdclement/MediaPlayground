@@ -9,15 +9,14 @@ data class SimpleAlbum(
     val name: String,
     val artists: PersistentList<Artist>,
     val images: PersistentList<Image>,
-    val source: Source,
 )
 
 val SimpleAlbum.thumbnailImageUrl: String?
     get() {
         // Third image is typically too low-res
         val image = images.getOrNull(1) ?: images.firstOrNull()
-        return image?.uri
+        return image?.uri?.toUriString()
     }
 
 val SimpleAlbum.largeImageUrl: String?
-    get() = images.firstOrNull()?.uri
+    get() = images.firstOrNull()?.uri?.toUriString()

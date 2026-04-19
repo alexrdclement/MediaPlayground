@@ -6,7 +6,9 @@ import androidx.paging.testing.asPagingSourceFactory
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
+import com.alexrdclement.mediaplayground.database.model.CompleteAlbumRef
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioClip
+import com.alexrdclement.mediaplayground.database.model.CompleteImageAsset
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 import com.alexrdclement.mediaplayground.database.model.CompleteTrackClip
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
@@ -19,58 +21,97 @@ import kotlinx.coroutines.flow.map
 class FakeCompleteAlbumDao(
     val coroutineScope: CoroutineScope,
     val albumDao: FakeAlbumDao,
+    val mediaCollectionDao: FakeMediaCollectionDao = FakeMediaCollectionDao(),
     val artistDao: FakeArtistDao,
     val albumArtistDao: FakeAlbumArtistDao,
     val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
-    val imageDao: FakeImageFileDao,
+    val albumTrackDao: FakeAlbumTrackDao = FakeAlbumTrackDao(),
+    val imageDao: FakeImageAssetDao,
+    val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
     val trackDao: FakeTrackDao,
     val clipDao: FakeClipDao = FakeClipDao(),
-    val audioFileDao: FakeAudioFileDao = FakeAudioFileDao(),
+    val audioAssetDao: FakeAudioAssetDao = FakeAudioAssetDao(mediaAssetDao),
     val trackClipDao: FakeTrackClipDao = FakeTrackClipDao(),
 ) : CompleteAlbumDao {
 
     val completeAlbums = combine(
-        albumDao.albums,
+        combine(albumDao.albums, mediaCollectionDao.mediaCollections) { albums, mediaCollections -> Pair(albums, mediaCollections) },
         artistDao.artists,
+        combine(albumTrackDao.albumTrackRefs, audioAssetDao.audioAssets) { refs, assets -> Pair(refs, assets) },
         trackDao.tracks,
         clipDao.clips,
-        audioFileDao.audioFiles,
-    ) { albums, artists, tracks, clips, audioFiles ->
+    ) { (albums, mediaCollections), artists, (albumTrackRefs, audioAssets), tracks, clips ->
         val albumArtists = albumArtistDao.albumArtists
-        albums.map { album ->
+        val mediaAssets = mediaAssetDao.mediaAssets
+        albums.mapNotNull { album ->
+            val mediaCollection = mediaCollections.find { it.id == album.id }
+                ?: return@mapNotNull null
             val albumImageIds = albumImageDao.albumImages
                 .filter { it.albumId == album.id }
                 .map { it.imageId }
-            val albumTracks = tracks.filter { it.albumId == album.id }.map { track ->
+            val albumImages = imageDao.images.value
+                .filter { it.id in albumImageIds }
+                .mapNotNull { imageAsset ->
+                    val mediaAsset = mediaAssets[imageAsset.id] ?: return@mapNotNull null
+                    CompleteImageAsset(imageAsset = imageAsset, mediaAsset = mediaAsset)
+                }
+            val albumCrossRefs = albumTrackRefs.filter { it.albumId == album.id }
+            val albumTracks = albumCrossRefs.mapNotNull { crossRef ->
+                val track = tracks.find { it.id == crossRef.trackId } ?: return@mapNotNull null
+                val trackAlbumRefs = albumTrackRefs.filter { it.trackId == track.id }
+                val albumRefsList = trackAlbumRefs.mapNotNull { trackCrossRef ->
+                    val refAlbum = albums.find { it.id == trackCrossRef.albumId } ?: return@mapNotNull null
+                    val refMediaCollection = mediaCollections.find { it.id == trackCrossRef.albumId }
+                        ?: return@mapNotNull null
+                    val refAlbumImageIds = albumImageDao.albumImages
+                        .filter { it.albumId == trackCrossRef.albumId }
+                        .map { it.imageId }
+                    val refAlbumImages = imageDao.images.value
+                        .filter { it.id in refAlbumImageIds }
+                        .mapNotNull { imageAsset ->
+                            val mediaAsset = mediaAssets[imageAsset.id] ?: return@mapNotNull null
+                            CompleteImageAsset(imageAsset = imageAsset, mediaAsset = mediaAsset)
+                        }
+                    CompleteAlbumRef(
+                        albumTrackCrossRef = trackCrossRef,
+                        simpleAlbum = SimpleAlbum(
+                            album = refAlbum,
+                            mediaCollection = refMediaCollection,
+                            artists = artists.filter { artist ->
+                                albumArtists.contains(AlbumArtistCrossRef(trackCrossRef.albumId, artist.id))
+                            },
+                            images = refAlbumImages,
+                        ),
+                    )
+                }
                 val trackClipCrossRefs = trackClipDao.trackClips.filter { it.trackId == track.id }
-                val completeTrackClips = trackClipCrossRefs.mapNotNull { crossRef ->
-                    val clip = clips.find { it.id == crossRef.clipId } ?: return@mapNotNull null
-                    val audioFile = audioFiles.find { it.id == clip.assetId } ?: return@mapNotNull null
+                val completeTrackClips = trackClipCrossRefs.mapNotNull { clipCrossRef ->
+                    val clip = clips.find { it.id == clipCrossRef.clipId } ?: return@mapNotNull null
+                    val audioFile = audioAssets.find { it.id == clip.assetId } ?: return@mapNotNull null
+                    val mediaAsset = mediaAssets[clip.assetId] ?: return@mapNotNull null
                     CompleteTrackClip(
-                        trackClipCrossRef = crossRef,
+                        trackClipCrossRef = clipCrossRef,
                         completeAudioClip = CompleteAudioClip(
                             clip = clip,
-                            audioFile = audioFile,
+                            audioAsset = audioFile,
+                            mediaAsset = mediaAsset,
                         ),
                     )
                 }
                 CompleteTrack(
                     track = track,
-                    album = album,
-                    artists = artists.filter { artist ->
-                        albumArtists.contains(AlbumArtistCrossRef(album.id, artist.id))
-                    },
-                    images = imageDao.images.value.filter { it.id in albumImageIds },
+                    albumRefs = albumRefsList,
                     clips = completeTrackClips,
                 )
             }
             CompleteAlbum(
                 simpleAlbum = SimpleAlbum(
                     album = album,
+                    mediaCollection = mediaCollection,
                     artists = artists.filter { artist ->
                         albumArtists.contains(AlbumArtistCrossRef(album.id, artist.id))
                     },
-                    images = imageDao.images.value.filter { it.id in albumImageIds },
+                    images = albumImages,
                 ),
                 tracks = albumTracks,
             )

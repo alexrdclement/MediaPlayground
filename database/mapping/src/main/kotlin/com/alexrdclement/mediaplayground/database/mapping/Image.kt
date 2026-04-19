@@ -1,20 +1,16 @@
 package com.alexrdclement.mediaplayground.database.mapping
 
-import com.alexrdclement.mediaplayground.data.disk.mapper.fileNameFromUri
-import com.alexrdclement.mediaplayground.data.disk.mapper.uriFromFileName
+import com.alexrdclement.mediaplayground.database.model.MediaAssetType
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
-import kotlinx.io.files.Path
-import com.alexrdclement.mediaplayground.database.model.ImageFile as ImageEntity
+import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
+import com.alexrdclement.mediaplayground.database.model.CompleteImageAsset as CompleteImageEntity
+import com.alexrdclement.mediaplayground.database.model.ImageAsset as ImageEntity
+import com.alexrdclement.mediaplayground.database.model.MediaAsset as MediaAssetRecord
 
 fun Image.toImageEntity(): ImageEntity {
-    val fileName = fileNameFromUri(uri)
-    require(fileName != null) { "Image uri must be a file uri" }
     return ImageEntity(
         id = id.value,
-        mimeType = mimeType,
-        extension = extension,
-        fileName = fileName,
         widthPx = widthPx,
         heightPx = heightPx,
         dateTimeOriginal = dateTimeOriginal,
@@ -26,21 +22,39 @@ fun Image.toImageEntity(): ImageEntity {
     )
 }
 
-fun ImageEntity.toImage(imagesDir: Path): Image {
-    val uri = uriFromFileName(imagesDir, fileName)
-    require(uri != null) { "Image fileName must be a file name" }
-    return Image(
-        id = ImageId(id),
+fun Image.toMediaAssetRecord(): MediaAssetRecord {
+    val fileName = when (val uri = uri) {
+        is MediaAssetUri.Shared -> uri.fileName
+        is MediaAssetUri.Album -> uri.fileName
+    }
+    return MediaAssetRecord(
+        id = id.value,
         uri = uri,
+        mediaAssetType = MediaAssetType.IMAGE,
+        fileName = fileName,
         mimeType = mimeType,
         extension = extension,
-        widthPx = widthPx,
-        heightPx = heightPx,
-        dateTimeOriginal = dateTimeOriginal,
-        gpsLatitude = gpsLatitude,
-        gpsLongitude = gpsLongitude,
-        cameraMake = cameraMake,
-        cameraModel = cameraModel,
-        notes = notes,
+        createdAt = createdAt,
+        modifiedAt = createdAt,
+        originUri = originUri,
+    )
+}
+
+fun CompleteImageEntity.toImage(): Image {
+    return Image(
+        id = ImageId(imageAsset.id),
+        uri = mediaAsset.uri,
+        originUri = mediaAsset.originUri,
+        mimeType = mediaAsset.mimeType,
+        extension = mediaAsset.extension,
+        widthPx = imageAsset.widthPx,
+        heightPx = imageAsset.heightPx,
+        dateTimeOriginal = imageAsset.dateTimeOriginal,
+        gpsLatitude = imageAsset.gpsLatitude,
+        gpsLongitude = imageAsset.gpsLongitude,
+        cameraMake = imageAsset.cameraMake,
+        cameraModel = imageAsset.cameraModel,
+        notes = imageAsset.notes,
+        createdAt = mediaAsset.createdAt,
     )
 }

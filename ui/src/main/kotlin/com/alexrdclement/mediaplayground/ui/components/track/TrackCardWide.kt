@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
@@ -29,7 +29,7 @@ import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun TrackCardWide(
-    track: Track,
+    track: AudioTrack,
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = remember(track) { track.isPlayable }

@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
@@ -139,7 +140,7 @@ fun PlaylistItem(
                 )
             }
             Text(
-                text = remember { item.duration.formatShort() },
+                text = remember { item.duration.toKotlinDuration().formatShort() },
                 style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
                 modifier = Modifier
                     .height(IntrinsicSize.Max)

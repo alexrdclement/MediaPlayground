@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
-import com.alexrdclement.mediaplayground.database.fakes.FakeAudioFile1
-import com.alexrdclement.mediaplayground.database.fakes.FakeAudioFile2
+import com.alexrdclement.mediaplayground.database.fakes.FakeAudioAsset1
+import com.alexrdclement.mediaplayground.database.fakes.FakeAudioAsset2
 import com.alexrdclement.mediaplayground.database.fakes.FakeClip1
 import com.alexrdclement.mediaplayground.database.fakes.FakeClip2
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaAssetRecord1
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaAssetRecord2
 import com.alexrdclement.mediaplayground.database.model.Clip
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -21,8 +23,9 @@ import kotlin.test.assertNull
 class ClipDaoTest {
 
     private lateinit var db: MediaPlaygroundDatabase
-    private lateinit var audioFileDao: AudioFileDao
+    private lateinit var audioAssetDao: AudioAssetDao
     private lateinit var clipDao: ClipDao
+    private lateinit var mediaAssetDao: MediaAssetDao
 
     @Before
     fun create() {
@@ -30,8 +33,9 @@ class ClipDaoTest {
         db = Room
             .inMemoryDatabaseBuilder(context, MediaPlaygroundDatabase::class.java)
             .build()
-        audioFileDao = db.audioFileDao()
+        audioAssetDao = db.audioAssetDao()
         clipDao = db.clipDao()
+        mediaAssetDao = db.mediaAssetDao()
     }
 
     @After
@@ -46,7 +50,8 @@ class ClipDaoTest {
 
     @Test
     fun getClip_returnsInserted() = runTest {
-        audioFileDao.insert(FakeAudioFile1)
+        mediaAssetDao.insert(FakeMediaAssetRecord1)
+        audioAssetDao.insert(FakeAudioAsset1)
         clipDao.insert(FakeClip1)
 
         val result = clipDao.getClip(FakeClip1.id)
@@ -62,7 +67,8 @@ class ClipDaoTest {
 
     @Test
     fun getClipFlow_emitsInserted() = runTest {
-        audioFileDao.insert(FakeAudioFile1)
+        mediaAssetDao.insert(FakeMediaAssetRecord1)
+        audioAssetDao.insert(FakeAudioAsset1)
         clipDao.insert(FakeClip1)
 
         val result = clipDao.getClipFlow(FakeClip1.id).first()
@@ -78,7 +84,8 @@ class ClipDaoTest {
 
     @Test
     fun getClipCountFlow_incrementsOnInsert() = runTest {
-        audioFileDao.insert(FakeAudioFile1, FakeAudioFile2)
+        mediaAssetDao.insert(FakeMediaAssetRecord1, FakeMediaAssetRecord2)
+        audioAssetDao.insert(FakeAudioAsset1, FakeAudioAsset2)
         clipDao.insert(FakeClip1, FakeClip2)
 
         val count = clipDao.getClipCountFlow().first()
@@ -87,7 +94,8 @@ class ClipDaoTest {
 
     @Test
     fun delete_removesClip() = runTest {
-        audioFileDao.insert(FakeAudioFile1)
+        mediaAssetDao.insert(FakeMediaAssetRecord1)
+        audioAssetDao.insert(FakeAudioAsset1)
         clipDao.insert(FakeClip1)
 
         clipDao.delete(FakeClip1.id)
@@ -97,7 +105,8 @@ class ClipDaoTest {
 
     @Test
     fun insert_ignoresExisting() = runTest {
-        audioFileDao.insert(FakeAudioFile1)
+        mediaAssetDao.insert(FakeMediaAssetRecord1)
+        audioAssetDao.insert(FakeAudioAsset1)
         clipDao.insert(FakeClip1)
         clipDao.insert(FakeClip1.copy(title = "Updated Title"))
 
@@ -107,7 +116,8 @@ class ClipDaoTest {
 
     @Test
     fun update_updatesClip() = runTest {
-        audioFileDao.insert(FakeAudioFile1)
+        mediaAssetDao.insert(FakeMediaAssetRecord1)
+        audioAssetDao.insert(FakeAudioAsset1)
         clipDao.insert(FakeClip1)
 
         clipDao.update(FakeClip1.copy(title = "Updated Title"))

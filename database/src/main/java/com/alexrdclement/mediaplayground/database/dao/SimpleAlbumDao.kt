@@ -11,8 +11,9 @@ interface SimpleAlbumDao {
     @Query(
         """
         SELECT albums.* FROM albums
+        JOIN media_collections ON albums.id = media_collections.id
         JOIN album_artists ON albums.id = album_artists.album_id
-        WHERE albums.title = :title AND album_artists.artist_id = :artistId
+        WHERE media_collections.title = :title AND album_artists.artist_id = :artistId
         """,
     )
     suspend fun getAlbumByTitleAndArtistId(title: String, artistId: String): SimpleAlbum?

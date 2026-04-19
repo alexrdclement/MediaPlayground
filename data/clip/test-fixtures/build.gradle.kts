@@ -7,8 +7,8 @@ android {
 }
 
 dependencies {
+    api(projects.data.audioAsset.testFixtures)
     api(projects.data.clip)
     api(projects.data.disk.testFixtures)
-    api(projects.data.mediaAsset.testFixtures)
     api(projects.database.testFixtures)
 }

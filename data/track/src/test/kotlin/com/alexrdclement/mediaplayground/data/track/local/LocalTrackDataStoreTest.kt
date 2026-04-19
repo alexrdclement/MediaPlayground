@@ -1,11 +1,14 @@
 package com.alexrdclement.mediaplayground.data.track.local
 
+import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
 import com.alexrdclement.mediaplayground.media.model.FakeImage2
+import com.alexrdclement.mediaplayground.media.model.FakeLocalClip1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum2
 import com.alexrdclement.mediaplayground.media.model.FakeLocalTrack1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalTrack2
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.FakeArtist1
 import com.alexrdclement.mediaplayground.media.model.FakeArtist2
 import com.alexrdclement.testing.MainDispatcherRule
@@ -53,7 +56,7 @@ class LocalTrackDataStoreTest {
         assertEquals(track.artists, result.artists)
         assertEquals(track.trackNumber, result.trackNumber)
         assertEquals(track.simpleAlbum.id, result.simpleAlbum.id)
-        assertEquals(track.clips.size, result.clips.size)
+        assertEquals(track.clips.size, (result as AudioTrack).clips.size)
     }
 
     @Test
@@ -170,6 +173,62 @@ class LocalTrackDataStoreTest {
     }
 
     @Test
+    fun deleteTrack_deletesOrphanedClips() = runTest {
+        val artists = persistentListOf(FakeArtist1)
+        val simpleAlbum = FakeLocalSimpleAlbum1.copy(
+            artists = artists,
+            images = persistentListOf(FakeImage1),
+        )
+        val track = FakeLocalTrack1.copy(artists = artists, simpleAlbum = simpleAlbum)
+
+        fixture.putTrack(track)
+        fixture.localTrackDataStore.delete(track.id)
+
+        assertNull(fixture.clipDao.getClip(FakeLocalClip1.id.value))
+    }
+
+    @Test
+    fun deleteTrack_doesNotDeleteClipsSharedWithOtherTrack() = runTest {
+        val artists = persistentListOf(FakeArtist1)
+        val simpleAlbum = FakeLocalSimpleAlbum1.copy(
+            artists = artists,
+            images = persistentListOf(FakeImage1),
+        )
+        val track1 = FakeLocalTrack1.copy(artists = artists, simpleAlbum = simpleAlbum)
+        val track2 = FakeLocalTrack2.copy(artists = artists, simpleAlbum = simpleAlbum)
+
+        fixture.putTrack(track1)
+        fixture.putTrack(track2)
+        // Share clip-1 with track2 as well
+        fixture.trackClipDao.insert(
+            TrackClipCrossRef(
+                trackId = track2.id.value,
+                clipId = FakeLocalClip1.id.value,
+                startFrameInTrack = 0L,
+            )
+        )
+
+        fixture.localTrackDataStore.delete(track1.id)
+
+        assertNotNull(fixture.clipDao.getClip(FakeLocalClip1.id.value))
+    }
+
+    @Test
+    fun deleteTrack_withDeleteOrphanedClipsFalse_keepsClips() = runTest {
+        val artists = persistentListOf(FakeArtist1)
+        val simpleAlbum = FakeLocalSimpleAlbum1.copy(
+            artists = artists,
+            images = persistentListOf(FakeImage1),
+        )
+        val track = FakeLocalTrack1.copy(artists = artists, simpleAlbum = simpleAlbum)
+
+        fixture.putTrack(track)
+        fixture.localTrackDataStore.delete(track.id, deleteOrphanedClips = false)
+
+        assertNotNull(fixture.clipDao.getClip(FakeLocalClip1.id.value))
+    }
+
+    @Test
     fun deleteTrack_notOnlyTrackInAlbum_doesNotDeleteAlbum() = runTest {
         val artists = persistentListOf(FakeArtist1)
         val simpleAlbum = FakeLocalSimpleAlbum1.copy(
@@ -192,12 +251,12 @@ class LocalTrackDataStoreTest {
 
         val result = fixture.localTrackDataStore.getTrack(track1.id)
         assertNull(result)
-        val albumResult = fixture.localAlbumDataStore.getAlbum(simpleAlbum.id)
+        val albumResult = fixture.localAudioAlbumDataStore.getAlbum(simpleAlbum.id)
         assertNotNull(albumResult)
         assertEquals(simpleAlbum.id, albumResult.id)
-        assertEquals(1, albumResult.tracks.size)
-        assertEquals(track2.id, albumResult.tracks[0].id)
-        assertEquals(track2.clips.size, albumResult.tracks[0].clips.size)
+        assertEquals(1, albumResult.items.size)
+        assertEquals(track2.id, albumResult.items[0].id)
+        assertEquals(track2.clips.size, albumResult.items[0].clips.size)
     }
 
     @Test
@@ -217,7 +276,7 @@ class LocalTrackDataStoreTest {
         fixture.deleteTrack(track1)
 
         assertNull(fixture.localTrackDataStore.getTrack(track1.id))
-        assertNull(fixture.localAlbumDataStore.getAlbum(simpleAlbum.id))
+        assertNull(fixture.localAudioAlbumDataStore.getAlbum(simpleAlbum.id))
         assertNull(fixture.albumDao.getAlbum(simpleAlbum.id.value))
         assertTrue(fixture.trackDao.getTracksForAlbum(simpleAlbum.id.value).isEmpty())
         assertTrue(fixture.imageDao.images.value.isEmpty())

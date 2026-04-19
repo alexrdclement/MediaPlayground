@@ -1,80 +1,78 @@
 package com.alexrdclement.mediaplayground.database.mapping
 
-import com.alexrdclement.mediaplayground.data.disk.mapper.fileNameFromUri
-import com.alexrdclement.mediaplayground.data.disk.mapper.uriFromFileName
-import com.alexrdclement.mediaplayground.media.model.Image
-import com.alexrdclement.mediaplayground.media.model.MediaAsset
-import com.alexrdclement.mediaplayground.media.model.MediaAssetId
-import com.alexrdclement.mediaplayground.media.model.MediaMetadata
+import com.alexrdclement.mediaplayground.database.model.MediaAssetType
 import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.AudioAsset
+import com.alexrdclement.mediaplayground.media.model.Image
+import com.alexrdclement.mediaplayground.media.model.AudioAssetId
+import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
+import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.io.files.Path
-import com.alexrdclement.mediaplayground.database.model.AudioFile as AudioFileEntity
+import com.alexrdclement.mediaplayground.database.model.AudioAsset as AudioAssetEntity
+import com.alexrdclement.mediaplayground.database.model.CompleteAudioAsset as CompleteAudioAssetEntity
+import com.alexrdclement.mediaplayground.database.model.MediaAsset as MediaAssetRecord
 
-fun MediaAsset.toAudioFileEntity(): AudioFileEntity {
-    val metadata = metadata as? MediaMetadata.Audio
-        ?: error("MediaAsset metadata must be Audio")
-    val fileName = fileNameFromUri(uri)
-    require(fileName != null) { "MediaAsset uri must be a file uri" }
-    return AudioFileEntity(
+fun AudioAsset.toAudioAssetEntity(): AudioAssetEntity {
+    return AudioAssetEntity(
         id = id.value,
-        fileName = fileName,
-        source = source.toEntitySource(),
         durationUs = metadata.durationUs ?: 0L,
-        sampleRate = metadata.sampleRate ?: 0,
+        sampleRate = metadata.sampleRate,
         channelCount = metadata.channelCount ?: 0,
         bitRate = metadata.bitRate ?: 0,
         bitDepth = metadata.bitDepth ?: 0,
-        mimeType = metadata.mimeType ?: "",
-        extension = metadata.extension,
     )
 }
 
-fun AudioFileEntity.toMediaAsset(): MediaAsset {
-    return toMediaAsset(
-        uri = null,
+fun AudioAsset.toMediaAssetRecord(): MediaAssetRecord {
+    val fileName = when (val uri = uri) {
+        is MediaAssetUri.Shared -> uri.fileName
+        is MediaAssetUri.Album -> uri.fileName
+    }
+    return MediaAssetRecord(
+        id = id.value,
+        uri = uri,
+        mediaAssetType = MediaAssetType.AUDIO,
+        fileName = fileName,
+        mimeType = metadata.mimeType ?: "",
+        extension = metadata.extension,
+        createdAt = createdAt,
+        modifiedAt = createdAt,
+        originUri = originUri,
+    )
+}
+
+fun CompleteAudioAssetEntity.toAudioAsset(): AudioAsset {
+    return toAudioAsset(
         artists = persistentListOf(),
         images = persistentListOf(),
     )
 }
 
-fun AudioFileEntity.toMediaAsset(
-    albumDir: Path,
+fun CompleteAudioAssetEntity.toAudioAsset(
     artists: PersistentList<Artist>,
     images: PersistentList<Image>,
-): MediaAsset {
-    return toMediaAsset(
-        uri = uriFromFileName(albumDir, fileName),
-        artists = artists,
-        images = images,
-    )
-}
-
-private fun AudioFileEntity.toMediaAsset(
-    uri: String?,
-    artists: PersistentList<Artist>,
-    images: PersistentList<Image>,
-): MediaAsset {
-    return MediaAsset(
-        id = MediaAssetId(id),
-        uri = uri,
-        source = source.toDomainSource(),
+): AudioAsset {
+    return AudioAsset(
+        id = AudioAssetId(audioAsset.id),
+        uri = mediaAsset.uri,
+        originUri = mediaAsset.originUri,
+        createdAt = mediaAsset.createdAt,
         artists = artists,
         images = images,
         metadata = MediaMetadata.Audio(
             title = null,
-            durationUs = durationUs,
-            sampleRate = sampleRate,
-            channelCount = channelCount,
-            bitRate = bitRate,
-            bitDepth = bitDepth,
+            durationUs = audioAsset.durationUs,
+            sampleRate = audioAsset.sampleRate,
+            channelCount = audioAsset.channelCount,
+            bitRate = audioAsset.bitRate,
+            bitDepth = audioAsset.bitDepth,
             trackNumber = null,
             artistName = null,
             albumTitle = null,
             embeddedPicture = null,
-            mimeType = mimeType,
-            extension = extension,
+            mimeType = mediaAsset.mimeType,
+            extension = mediaAsset.extension,
         ),
     )
 }

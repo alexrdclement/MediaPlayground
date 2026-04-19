@@ -1,5 +1,7 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
+import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
+import com.alexrdclement.mediaplayground.database.model.CompleteAlbumRef
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioClip
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 import com.alexrdclement.mediaplayground.database.model.CompleteTrackClip
@@ -7,17 +9,20 @@ import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 
 val FakeCompleteAudioClip1 = CompleteAudioClip(
     clip = FakeClip1,
-    audioFile = FakeAudioFile1,
+    audioAsset = FakeAudioAsset1,
+    mediaAsset = FakeMediaAssetRecord1,
 )
 
 val FakeCompleteAudioClip2 = CompleteAudioClip(
     clip = FakeClip2,
-    audioFile = FakeAudioFile2,
+    audioAsset = FakeAudioAsset2,
+    mediaAsset = FakeMediaAssetRecord2,
 )
 
 val FakeCompleteAudioClip3 = CompleteAudioClip(
     clip = FakeClip3,
-    audioFile = FakeAudioFile3,
+    audioAsset = FakeAudioAsset3,
+    mediaAsset = FakeMediaAssetRecord3,
 )
 
 val FakeCompleteTrackClip1 = CompleteTrackClip(
@@ -47,29 +52,53 @@ val FakeCompleteTrackClip3 = CompleteTrackClip(
     completeAudioClip = FakeCompleteAudioClip3,
 )
 
+val FakeAlbumTrackCrossRef1 = AlbumTrackCrossRef(
+    albumId = FakeAlbum1.id,
+    trackId = FakeTrack1.id,
+    trackNumber = 1,
+)
+
+val FakeAlbumTrackCrossRef2 = AlbumTrackCrossRef(
+    albumId = FakeAlbum1.id,
+    trackId = FakeTrack2.id,
+    trackNumber = 2,
+)
+
+val FakeAlbumTrackCrossRef3 = AlbumTrackCrossRef(
+    albumId = FakeAlbum2.id,
+    trackId = FakeTrack3.id,
+    trackNumber = 1,
+)
+
 val FakeCompleteTrack1 = CompleteTrack(
-    track = FakeTrack1.copy(
-        albumId = FakeAlbum1.id,
+    track = FakeTrack1,
+    albumRefs = listOf(
+        CompleteAlbumRef(
+            albumTrackCrossRef = FakeAlbumTrackCrossRef1,
+            simpleAlbum = FakeSimpleAlbum1,
+        )
     ),
-    album = FakeAlbum1,
-    artists = listOf(FakeArtist1),
-    images = listOf(FakeImageFile1),
     clips = listOf(FakeCompleteTrackClip1),
 )
 
-val FakeCompleteTrack2 = FakeCompleteTrack1.copy(
-    track = FakeTrack2.copy(
-        albumId = FakeAlbum1.id,
+val FakeCompleteTrack2 = CompleteTrack(
+    track = FakeTrack2,
+    albumRefs = listOf(
+        CompleteAlbumRef(
+            albumTrackCrossRef = FakeAlbumTrackCrossRef2,
+            simpleAlbum = FakeSimpleAlbum1,
+        )
     ),
     clips = listOf(FakeCompleteTrackClip2),
 )
 
-val FakeCompleteTrack3 = FakeCompleteTrack1.copy(
-    track = FakeTrack3.copy(
-        albumId = FakeAlbum2.id,
+val FakeCompleteTrack3 = CompleteTrack(
+    track = FakeTrack3,
+    albumRefs = listOf(
+        CompleteAlbumRef(
+            albumTrackCrossRef = FakeAlbumTrackCrossRef3,
+            simpleAlbum = FakeSimpleAlbum2,
+        )
     ),
-    album = FakeAlbum2,
-    artists = listOf(FakeArtist2),
-    images = listOf(FakeImage2),
     clips = listOf(FakeCompleteTrackClip3),
 )

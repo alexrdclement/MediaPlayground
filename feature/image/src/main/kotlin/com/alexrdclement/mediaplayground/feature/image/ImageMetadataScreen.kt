@@ -85,7 +85,7 @@ fun ImageMetadataScreen(
                     {
                         Button(
                             style = ButtonStyleToken.Secondary,
-                            onClick = { onNavigateToDelete(uiState.image.uri) },
+                            onClick = { onNavigateToDelete(uiState.image.uri.toUriString()) },
                         ) {
                             Text("Delete", style = PaletteTheme.styles.text.labelLarge)
                         }
@@ -158,20 +158,18 @@ private fun LoadedContent(
     ) {
         item {
             MediaItemArtwork(
-                imageUrl = state.image.uri,
+                imageUrl = state.image.uri.toUriString(),
                 modifier = Modifier
                     .fillMaxWidth()
             )
         }
         item {
-            MetadataField(label = "URI", value = state.image.uri)
+            MetadataField(label = "URI", value = state.image.uri.toUriString())
         }
         item {
             MetadataField(
                 label = "Dimensions",
-                value = if (state.image.widthPx != null && state.image.heightPx != null)
-                    "${state.image.widthPx} \u00d7 ${state.image.heightPx}"
-                else null,
+                value = "${state.image.widthPx} \u00d7 ${state.image.heightPx}",
             )
         }
         item {

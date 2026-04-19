@@ -14,8 +14,8 @@ interface CompleteAudioClipDao {
     suspend fun getClip(id: String): CompleteAudioClip?
 
     @Transaction
-    @Query("SELECT * FROM clips WHERE audio_file_id = :audioFileId LIMIT 1")
-    suspend fun getClipByAudioFileId(audioFileId: String): CompleteAudioClip?
+    @Query("SELECT * FROM clips WHERE asset_id = :assetId LIMIT 1")
+    suspend fun getClipByMediaAssetId(assetId: String): CompleteAudioClip?
 
     @Transaction
     @Query("SELECT * FROM clips WHERE id = :id")

@@ -34,8 +34,8 @@ class ArtistImporterImplTest {
         fixture.mediaMetadataRetriever.mediaMetadata = MediaMetadata.Image(
             mimeType = "image/png",
             extension = "png",
-            widthPx = null,
-            heightPx = null,
+            widthPx = 1024,
+            heightPx = 768,
             dateTimeOriginal = null,
             gpsLatitude = null,
             gpsLongitude = null,

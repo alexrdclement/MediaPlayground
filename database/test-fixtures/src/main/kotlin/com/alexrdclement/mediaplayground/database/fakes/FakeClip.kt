@@ -1,25 +1,28 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.model.Clip
+import kotlin.time.Instant
 
 val FakeClip1 = Clip(
     id = "clip-1",
     title = "Track 1",
-    assetId = FakeAudioFile1.id,
-    startFrameInFile = 0L,
-    endFrameInFile = 9569700L,
+    assetId = FakeAudioAsset1.id,
+    startFrameInAsset = 0L,
+    durationFrames = 9569700L,
+    createdAt = Instant.fromEpochMilliseconds(0),
+    modifiedAt = Instant.fromEpochMilliseconds(0),
 )
 
 val FakeClip2 = FakeClip1.copy(
     id = "clip-2",
     title = "Track 2",
-    assetId = FakeAudioFile2.id,
-    endFrameInFile = 7320600L,
+    assetId = FakeAudioAsset2.id,
+    durationFrames = 7320600L,
 )
 
 val FakeClip3 = FakeClip1.copy(
     id = "clip-3",
     title = "Track 3",
-    assetId = FakeAudioFile3.id,
-    endFrameInFile = 6835500L,
+    assetId = FakeAudioAsset3.id,
+    durationFrames = 6835500L,
 )

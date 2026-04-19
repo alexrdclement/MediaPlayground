@@ -13,7 +13,7 @@ interface CompleteTrackDao {
     fun getTrackCountFlow(): Flow<Int>
 
     @Transaction
-    @Query("SELECT * FROM tracks ORDER BY modified_date DESC")
+    @Query("SELECT * FROM tracks ORDER BY modified_at DESC")
     fun getTracksPagingSource(): PagingSource<Int, CompleteTrack>
 
     @Transaction

@@ -2,9 +2,9 @@ package com.alexrdclement.mediaplayground.feature.album.delete
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexrdclement.mediaplayground.data.album.AlbumRepository
+import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepository
 import com.alexrdclement.mediaplayground.media.engine.deleteIfNecessary
-import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -25,7 +25,7 @@ sealed class DeleteState {
 @AssistedInject
 class AlbumDeleteViewModel(
     @Assisted val idValue: String,
-    private val albumRepository: AlbumRepository,
+    private val albumRepository: AudioAlbumRepository,
     private val mediaSessionControl: MediaSessionControl,
 ) : ViewModel() {
 
@@ -40,9 +40,9 @@ class AlbumDeleteViewModel(
     fun onDeleteConfirmed() {
         viewModelScope.launch {
             _deleteState.update { DeleteState.Deleting }
-            val albumId = AlbumId(idValue)
+            val albumId: AudioAlbumId = AudioAlbumId(idValue)
             val playlistControl = mediaSessionControl.getMediaEngineControl().playlistControl
-            albumRepository.getAlbum(albumId)?.tracks?.forEach { track ->
+            albumRepository.getAlbum(albumId)?.items?.forEach { track ->
                 playlistControl.deleteIfNecessary(track.id)
             }
             albumRepository.delete(albumId)

@@ -33,7 +33,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.media.model.Image
-import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.util.PreviewImage1
 import com.alexrdclement.palette.components.core.Button
@@ -168,7 +167,7 @@ private fun ImageGrid(
             var touchOffset by remember { mutableStateOf(Offset.Zero) }
             Box {
                 MediaItemArtwork(
-                    imageUrl = image.uri,
+                    imageUrl = image.uri.toUriString(),
                     modifier = Modifier
                         .pointerInput(Unit) {
                             awaitEachGesture {
@@ -187,7 +186,7 @@ private fun ImageGrid(
                     offset = touchOffset,
                     onDismissRequest = { dropdownExpanded = false },
                     onNavigateToMetadata = { onNavigateToImageMetadata(image.id.value) },
-                    onNavigateToDelete = { onNavigateToImageDelete(image.id.value, image.uri) },
+                    onNavigateToDelete = { onNavigateToImageDelete(image.id.value, image.uri.toUriString()) },
                 )
             }
         }

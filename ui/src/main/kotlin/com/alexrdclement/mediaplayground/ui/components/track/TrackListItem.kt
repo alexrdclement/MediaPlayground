@@ -27,8 +27,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.media.model.SimpleTrack
-import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
+import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
 import com.alexrdclement.palette.components.core.Surface
@@ -39,7 +40,7 @@ import com.alexrdclement.palette.theme.styles.copy
 
 @Composable
 fun TrackListItem(
-    track: SimpleTrack,
+    track: Track,
     isLoaded: Boolean,
     isPlayable: Boolean,
     isPlaying: Boolean,
@@ -98,7 +99,7 @@ fun TrackListItem(
                     .padding(horizontal = PaletteTheme.spacing.small)
             ) {
                 Text(
-                    text = track.name,
+                    text = track.title,
                     style = PaletteTheme.styles.text.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
@@ -113,7 +114,7 @@ fun TrackListItem(
                 )
             }
             Text(
-                text = remember { track.duration.formatShort() },
+                text = remember { track.duration.toKotlinDuration().formatShort() },
                 style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
                 modifier = Modifier
                     .height(IntrinsicSize.Max)
@@ -128,7 +129,7 @@ fun TrackListItem(
 private fun Preview() {
     PaletteTheme {
         TrackListItem(
-            track = PreviewSimpleTrack1,
+            track = PreviewTrack1,
             isLoaded = true,
             isPlayable = false,
             isPlaying = false,

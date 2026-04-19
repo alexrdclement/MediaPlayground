@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.error
-import com.alexrdclement.mediaplayground.data.album.AlbumRepository
+import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepository
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.playPause
-import com.alexrdclement.mediaplayground.media.model.Album
-import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.largeImageUrl
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 class AlbumViewModel(
     @Assisted private val albumIdValue: String,
     private val logger: Logger,
-    albumRepository: AlbumRepository,
+    albumRepository: AudioAlbumRepository,
     private val mediaSessionControl: MediaSessionControl,
     private val mediaSessionState: MediaSessionState,
 ) : ViewModel() {
@@ -44,7 +44,7 @@ class AlbumViewModel(
         fun create(albumIdValue: String): AlbumViewModel
     }
 
-    private val albumId = AlbumId(albumIdValue)
+    private val albumId: AudioAlbumId = AudioAlbumId(albumIdValue)
 
     private companion object {
         private const val tag = "AlbumViewModel"
@@ -84,11 +84,11 @@ class AlbumViewModel(
             return@combine if (hasLoadedAlbum) AlbumUiState.NotFound else AlbumUiState.Loading
         }
 
-        val tracks = album.tracks.map { track ->
+        val tracks = album.items.map { track ->
             TrackUi(
                 track = track,
                 isLoaded = track.id == loadedMediaItem?.id,
-                isPlayable = track.uri != null,
+                isPlayable = track.isPlayable,
                 isPlaying = isPlaying && track.id == loadedMediaItem?.id
             )
         }
@@ -100,10 +100,9 @@ class AlbumViewModel(
             tracks = tracks,
             isAlbumPlayable = album.isPlayable,
             isAlbumPlaying = isPlaying && when (loadedMediaItem) {
-                is Album -> loadedMediaItem.id == album.id
+                is AudioAlbum -> loadedMediaItem.id == album.id
                 is Track -> loadedMediaItem.simpleAlbum.id == album.id
-                is Clip -> false
-                null -> false
+                is Clip, null -> false
             },
             isMediaItemLoaded = loadedMediaItem != null,
         )
@@ -114,7 +113,7 @@ class AlbumViewModel(
             logger.error { AlbumUiError.AlbumNotFound }
             return
         }
-        val simpleTrack = trackUi.track
+        val track = trackUi.track
 
         viewModelScope.launch {
             try {
@@ -124,7 +123,7 @@ class AlbumViewModel(
                     engineControl.playlistControl.load(album)
                 }
 
-                val trackIndex = album.tracks.indexOf(simpleTrack)
+                val trackIndex = album.items.indexOfFirst { it.id == track.id }
                 engineControl.playlistControl.seek(trackIndex)
 
                 engineControl.transportControl.play()
@@ -180,13 +179,13 @@ class AlbumViewModel(
         if (playlist.isEmpty()) return false
 
         val loadedMediaItem = loadedMediaItem.value ?: return false
-        return when (val mediaItem = loadedMediaItem) {
-            is Album -> mediaItem.id == album.id
-            is Clip -> false
+        return when (loadedMediaItem) {
+            is AudioAlbum -> loadedMediaItem.id == album.id
             is Track -> playlist.all {
                 val asTrack = it as? Track ?: return@all false
                 asTrack.simpleAlbum.id == album.id
             }
+            else -> false
         }
     }
 }

@@ -1,11 +1,13 @@
 package com.alexrdclement.mediaplayground.media.model
 
 import kotlinx.collections.immutable.persistentListOf
+import kotlin.time.Instant
 
-val FakeMediaAsset1 = MediaAsset(
-    id = MediaAssetId("audio-1"),
-    uri = null,
-    source = Source.Local,
+val FakeAudioAsset1 = AudioAsset(
+    id = AudioAssetId("audio-1"),
+    uri = MediaAssetUri.Shared("audio-1.mp3"),
+    originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio-1"),
+    createdAt = Instant.DISTANT_PAST,
     artists = persistentListOf(FakeArtist1),
     images = persistentListOf(FakeImage1),
     metadata = MediaMetadata.Audio(
@@ -24,16 +26,26 @@ val FakeMediaAsset1 = MediaAsset(
     ),
 )
 
-val FakeMediaAsset2 = FakeMediaAsset1.copy(
-    id = MediaAssetId("audio-2"),
-    metadata = (FakeMediaAsset1.metadata as MediaMetadata.Audio).copy(durationUs = 166_000_000L),
+val FakeAudioAsset2 = FakeAudioAsset1.copy(
+    id = AudioAssetId("audio-2"),
+    uri = MediaAssetUri.Shared("audio-2.mp3"),
+    metadata = FakeAudioAsset1.metadata.copy(durationUs = 166_000_000L),
 )
 
-val FakeMediaAsset3 = FakeMediaAsset1.copy(
-    id = MediaAssetId("audio-3"),
-    metadata = (FakeMediaAsset1.metadata as MediaMetadata.Audio).copy(durationUs = 155_000_000L),
+val FakeAudioAsset3 = FakeAudioAsset1.copy(
+    id = AudioAssetId("audio-3"),
+    uri = MediaAssetUri.Shared("audio-3.mp3"),
+    metadata = FakeAudioAsset1.metadata.copy(durationUs = 155_000_000L),
 )
 
-val FakeLocalMediaAsset1 = FakeMediaAsset1.copy(uri = "/local/1.mp3")
-val FakeLocalMediaAsset2 = FakeMediaAsset2.copy(uri = "/local/2.mp3")
-val FakeLocalMediaAsset3 = FakeMediaAsset3.copy(uri = "/local/3.mp3")
+val FakeLocalAudioAsset1 = FakeAudioAsset1.copy(uri = MediaAssetUri.Shared("1.mp3"))
+val FakeLocalAudioAsset2 = FakeAudioAsset2.copy(uri = MediaAssetUri.Shared("2.mp3"))
+val FakeLocalAudioAsset3 = FakeAudioAsset3.copy(uri = MediaAssetUri.Shared("3.mp3"))
+
+// Legacy aliases — prefer FakeAudioAsset* in new code
+val FakeMediaAsset1 = FakeAudioAsset1
+val FakeMediaAsset2 = FakeAudioAsset2
+val FakeMediaAsset3 = FakeAudioAsset3
+val FakeLocalMediaAsset1 = FakeLocalAudioAsset1
+val FakeLocalMediaAsset2 = FakeLocalAudioAsset2
+val FakeLocalMediaAsset3 = FakeLocalAudioAsset3

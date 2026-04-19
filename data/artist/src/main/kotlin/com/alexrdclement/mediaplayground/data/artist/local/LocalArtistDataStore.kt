@@ -11,6 +11,7 @@ import com.alexrdclement.mediaplayground.database.transaction.updateArtist
 import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.media.model.ArtistId
 import dev.zacsweers.metro.Inject
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -46,7 +47,7 @@ class LocalArtistDataStore @Inject constructor(
         name: String?,
     ) = databaseTransactionRunner.run {
         val artist = artistDao.getArtist(artistId.value) ?: return@run
-        updateArtist(artist = artist.copy(name = name))
+        updateArtist(artist = artist.copy(name = name, modifiedAt = Clock.System.now()))
     }
 
     suspend fun updateArtistNotes(
@@ -54,7 +55,7 @@ class LocalArtistDataStore @Inject constructor(
         notes: String?
     ) = databaseTransactionRunner.run {
         val artist = artistDao.getArtist(artistId.value) ?: return@run
-        updateArtist(artist = artist.copy(notes = notes))
+        updateArtist(artist = artist.copy(notes = notes, modifiedAt = Clock.System.now()))
     }
 
     suspend fun delete(artistId: ArtistId) = databaseTransactionRunner.run {

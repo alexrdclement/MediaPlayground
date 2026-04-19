@@ -257,7 +257,7 @@ private fun ImageRow(
             modifier = Modifier.padding(vertical = PaletteTheme.spacing.small),
         ) {
             Text(
-                text = image.uri,
+                text = image.uri.toUriString(),
                 style = PaletteTheme.styles.text.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier.weight(1f),
