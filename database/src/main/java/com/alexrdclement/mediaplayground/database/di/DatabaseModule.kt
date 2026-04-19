@@ -22,8 +22,6 @@ import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunnerImpl
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionScope
-import com.alexrdclement.mediaplayground.database.transaction.MediaStoreTransactionRunnerImpl
-import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Provides
@@ -85,10 +83,5 @@ interface DatabaseModule {
             database: MediaPlaygroundDatabase,
             scope: DatabaseTransactionScope,
         ): DatabaseTransactionRunner = DatabaseTransactionRunnerImpl(database, scope)
-
-        @Provides
-        fun provideMediaStoreTransactionRunner(
-            database: MediaPlaygroundDatabase,
-        ): MediaStoreTransactionRunner = MediaStoreTransactionRunnerImpl(database)
     }
 }
