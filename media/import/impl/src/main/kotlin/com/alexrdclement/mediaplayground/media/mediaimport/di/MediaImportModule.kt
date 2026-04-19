@@ -4,8 +4,8 @@ import com.alexrdclement.mediaplayground.media.mediaimport.AlbumImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.AlbumImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.ArtistImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.ArtistImporterImpl
-import com.alexrdclement.mediaplayground.media.mediaimport.AudioFileImporter
-import com.alexrdclement.mediaplayground.media.mediaimport.AudioFileImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.AudioAssetImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.AudioAssetImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporter
@@ -24,7 +24,7 @@ interface MediaImportModule {
     val ArtistImporterImpl.bind: ArtistImporter
 
     @Binds
-    val AudioFileImporterImpl.bind: AudioFileImporter
+    val AudioAssetImporterImpl.bind: AudioAssetImporter
 
     @Binds
     val ClipImporterImpl.bind: ClipImporter

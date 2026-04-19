@@ -10,6 +10,11 @@ data class SimpleAlbum(
     @Relation(
         parentColumn = "id",
         entityColumn = "id",
+    )
+    val mediaCollection: MediaCollection,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
         associateBy = Junction(
             value = AlbumArtistCrossRef::class,
             parentColumn = "album_id",
@@ -18,6 +23,7 @@ data class SimpleAlbum(
     )
     val artists: List<Artist>,
     @Relation(
+        entity = ImageAsset::class,
         parentColumn = "id",
         entityColumn = "id",
         associateBy = Junction(
@@ -26,5 +32,5 @@ data class SimpleAlbum(
             entityColumn = "image_id",
         ),
     )
-    val images: List<ImageFile>,
+    val images: List<CompleteImageAsset>,
 )

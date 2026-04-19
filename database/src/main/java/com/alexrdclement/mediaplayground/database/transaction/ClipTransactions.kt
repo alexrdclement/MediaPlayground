@@ -1,14 +1,17 @@
 package com.alexrdclement.mediaplayground.database.transaction
 
-import com.alexrdclement.mediaplayground.database.model.AudioFile
+import com.alexrdclement.mediaplayground.database.model.AudioAsset
 import com.alexrdclement.mediaplayground.database.model.Clip
+import com.alexrdclement.mediaplayground.database.model.MediaAsset
+import kotlin.time.Clock
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertClip(
     clip: Clip,
-    audioFile: AudioFile,
+    mediaAsset: MediaAsset,
+    audioAsset: AudioAsset,
 ) {
-    insertAudioFile(audioFile)
+    insertAudioAsset(mediaAsset, audioAsset)
     scope.clipDao.insert(clip)
 }
 
@@ -19,7 +22,7 @@ suspend fun updateClip(
 ) {
     val clip = scope.clipDao.getClip(id) ?: error("Clip $id not found")
     scope.clipDao.update(
-        clip = clip.copy(title = title),
+        clip = clip.copy(title = title, modifiedAt = Clock.System.now()),
     )
 }
 

@@ -13,4 +13,10 @@ interface TrackClipDao {
 
     @Query("SELECT clip_id FROM track_clips WHERE track_id = :trackId")
     suspend fun getClipIdsForTrack(trackId: String): List<String>
+
+    @Query("SELECT track_id FROM track_clips WHERE clip_id = :clipId")
+    suspend fun getTrackIdsForClip(clipId: String): List<String>
+
+    @Query("DELETE FROM track_clips WHERE track_id = :trackId")
+    suspend fun deleteForTrack(trackId: String)
 }

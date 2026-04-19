@@ -4,13 +4,12 @@ import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeSimpleAlbum
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
-import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.media.model.Image
-import com.alexrdclement.mediaplayground.media.model.MediaAsset
+import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.Source
 import com.alexrdclement.mediaplayground.media.store.AlbumMediaStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
@@ -35,8 +34,7 @@ class AlbumImporterImpl(
 
     override suspend fun import(
         uri: Uri,
-        source: Source,
-    ): Result<Album, MediaImportError> = withContext(Dispatchers.IO) {
+    ): Result<AudioAlbum, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val metadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri) as? MediaMetadata.Audio
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
@@ -46,14 +44,13 @@ class AlbumImporterImpl(
             val assetImportResult = mediaAssetImporter.value.importAudio(
                 uri = uri,
                 mediaMetadata = metadata,
-                source = source,
             ).guardSuccess { return@withContext Result.Failure(it) }
 
             transactionRunner.run {
                 importAlbum(
                     filePath = assetImportResult.filePath,
                     mediaMetadata = metadata,
-                    mediaAsset = assetImportResult.mediaAsset,
+                    audioAsset = assetImportResult.audioAsset,
                     simpleAlbum = assetImportResult.simpleAlbum,
                 )
             }
@@ -65,27 +62,20 @@ class AlbumImporterImpl(
 
     override suspend fun import(
         uris: List<Uri>,
-        source: Source,
-    ): Map<Uri, Result<Album, MediaImportError>> {
-        return uris.associateWith {
-            import(
-                uri = it,
-                source = source,
-            )
-        }
-    }
+    ): Map<Uri, Result<AudioAlbum, MediaImportError>> =
+        uris.associateWith { import(uri = it) }
 
     context(scope: MediaStoreTransactionScope)
     internal suspend fun importAlbum(
         filePath: Path,
         mediaMetadata: MediaMetadata.Audio,
-        mediaAsset: MediaAsset,
+        audioAsset: AudioAsset,
         simpleAlbum: SimpleAlbum,
-    ): Result<Album, MediaImportError> {
+    ): Result<AudioAlbum, MediaImportError> {
         trackImporter.value.importToAlbum(
             filePath = filePath,
             mediaMetadata = mediaMetadata,
-            mediaAsset = mediaAsset,
+            audioAsset = audioAsset,
             simpleAlbum = simpleAlbum,
         ).guardSuccess { return Result.Failure(it) }
 
@@ -98,7 +88,6 @@ class AlbumImporterImpl(
     context(scope: MediaStoreTransactionScope)
     internal suspend fun importSimpleAlbum(
         metadata: MediaMetadata.Audio,
-        source: Source,
         artist: Artist,
         images: PersistentSet<Image> = persistentSetOf(),
     ): Result<SimpleAlbum, MediaImportError> {
@@ -111,7 +100,6 @@ class AlbumImporterImpl(
 
         val album = makeSimpleAlbum(
             mediaMetadata = metadata,
-            source = source,
             artist = artist,
             images = images,
             getAlbumByTitleAndArtistId = albumMediaStore::getAlbumByTitleAndArtistId,

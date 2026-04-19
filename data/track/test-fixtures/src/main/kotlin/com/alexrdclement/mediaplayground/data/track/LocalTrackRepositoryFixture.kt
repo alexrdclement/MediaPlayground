@@ -2,33 +2,27 @@ package com.alexrdclement.mediaplayground.data.track
 
 import android.net.Uri
 import com.alexrdclement.media.mediaimport.fixtures.MediaImporterFixture
-import com.alexrdclement.mediaplayground.data.album.AlbumRepositoryImpl
-import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
+import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepositoryImpl
 import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStoreFixture
 import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.model.Source
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.model.result.Result
 
 class LocalTrackRepositoryFixture(
-    val pathProvider: FakePathProvider = FakePathProvider(),
     val mediaImporterFixture: MediaImporterFixture = MediaImporterFixture(),
-    val trackDataStoreFixture: LocalTrackDataStoreFixture = LocalTrackDataStoreFixture(
-        pathProvider = pathProvider,
-    ),
+    val trackDataStoreFixture: LocalTrackDataStoreFixture = LocalTrackDataStoreFixture(),
 ) {
     private val trackImporter = object : TrackImporter {
         override suspend fun import(
             uri: Uri,
-            source: Source,
-        ): Result<Track, MediaImportError> =
+        ): Result<AudioTrack, MediaImportError> =
             TODO("Not implemented in fixture")
 
         override suspend fun import(
             uris: List<Uri>,
-            source: Source,
-        ): Map<Uri, Result<Track, MediaImportError>> =
+        ): Map<Uri, Result<AudioTrack, MediaImportError>> =
             TODO("Not implemented in fixture")
     }
 
@@ -38,10 +32,10 @@ class LocalTrackRepositoryFixture(
         trackImporter = trackImporter,
     )
 
-    val localAlbumDataStore get() = trackDataStoreFixture.localAlbumDataStore
+    val localAlbumDataStore get() = trackDataStoreFixture.localAudioAlbumDataStore
 
-    val albumRepository = AlbumRepositoryImpl(
-        localAlbumDataStore = trackDataStoreFixture.localAlbumDataStore,
+    val albumRepository = AudioAlbumRepositoryImpl(
+        localAudioAlbumDataStore = trackDataStoreFixture.localAudioAlbumDataStore,
     )
 
     suspend fun putTrack(track: Track) {

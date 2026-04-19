@@ -3,13 +3,16 @@ package com.alexrdclement.mediaplayground.database.transaction
 import com.alexrdclement.mediaplayground.database.model.Album
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaCollection
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertAlbum(
+    mediaCollection: MediaCollection,
     album: Album,
     artistIds: Set<String>,
     imageIds: Set<String>,
 ) = with(scope) {
+    mediaCollectionDao.insert(mediaCollection)
     albumDao.insert(album)
     val albumArtistCrossRefs = artistIds.map { AlbumArtistCrossRef(album.id, it) }
     albumArtistDao.insert(*albumArtistCrossRefs.toTypedArray())
@@ -25,8 +28,24 @@ suspend fun updateAlbum(
 }
 
 context(scope: DatabaseTransactionScope)
-suspend fun deleteAlbum(id: String) = with(scope) {
+suspend fun deleteAlbum(
+    id: String,
+    deleteOrphanedTracks: Boolean = true,
+) = with(scope) {
+    val orphanedTrackIds = if (deleteOrphanedTracks) {
+        val trackIds = albumTrackDao.getTrackIdsForAlbum(id)
+        trackIds.filter { trackId ->
+            albumTrackDao.getAlbumIdsForTrack(trackId) == listOf(id)
+        }
+    } else {
+        emptyList()
+    }
     albumImageDao.deleteForAlbum(id)
     albumArtistDao.deleteForAlbum(id)
+    albumTrackDao.deleteForAlbum(id)
     albumDao.delete(id)
+    mediaCollectionDao.delete(id)
+    for (trackId in orphanedTrackIds) {
+        trackDao.delete(trackId)
+    }
 }

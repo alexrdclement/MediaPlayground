@@ -9,7 +9,7 @@ class FakeTrackDao : TrackDao {
     val tracks = MutableStateFlow(emptySet<Track>())
 
     override suspend fun getTracksForAlbum(albumId: String): List<Track> {
-        return tracks.value.filter { it.albumId == albumId }
+        return emptyList()
     }
 
     override suspend fun getTrack(id: String): Track? {

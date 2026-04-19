@@ -1,22 +1,23 @@
 package com.alexrdclement.mediaplayground.database.dao
 
 import android.content.Context
-import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbum1
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbum2
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaCollection1
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaCollection2
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrack1
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrack2
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrack3
+import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -24,9 +25,11 @@ class TrackDaoTest {
 
     private lateinit var db: MediaPlaygroundDatabase
     private lateinit var albumDao: AlbumDao
+    private lateinit var albumTrackDao: AlbumTrackDao
     private lateinit var completeAlbumDao: CompleteAlbumDao
     private lateinit var trackDao: TrackDao
     private lateinit var completeTrackDao: CompleteTrackDao
+    private lateinit var mediaCollectionDao: MediaCollectionDao
 
     @Before
     fun create() {
@@ -35,9 +38,11 @@ class TrackDaoTest {
             .inMemoryDatabaseBuilder(context, MediaPlaygroundDatabase::class.java)
             .build()
         albumDao = db.albumDao()
+        albumTrackDao = db.albumTrackDao()
         completeAlbumDao = db.completeAlbumDao()
         trackDao = db.trackDao()
         completeTrackDao = db.completeTrackDao()
+        mediaCollectionDao = db.mediaCollectionDao()
     }
 
     @After
@@ -46,23 +51,12 @@ class TrackDaoTest {
     }
 
     @Test
-    fun insert_withoutAlbum_throws() = runTest {
-        val track = FakeTrack1
-        assertFailsWith<SQLiteConstraintException> {
-            trackDao.insert(track)
-        }
-    }
-
-    @Test
     fun getTrack_returnsInserted() = runTest {
-        val album = FakeAlbum1
-        albumDao.insert(album)
-        val track = FakeTrack1.copy(albumId = album.id)
-        trackDao.insert(track)
+        trackDao.insert(FakeTrack1)
 
-        val result = trackDao.getTrack(track.id)
+        val result = trackDao.getTrack(FakeTrack1.id)
 
-        assertTrackEquals(track, result)
+        assertTrackEquals(FakeTrack1, result)
     }
 
     @Test
@@ -73,98 +67,82 @@ class TrackDaoTest {
 
     @Test
     fun getTracksForAlbum_returnsInserted() = runTest {
-        val album1 = FakeAlbum1
-        albumDao.insert(album1)
-        val album2 = FakeAlbum2
-        albumDao.insert(album2)
-        val track1 = FakeTrack1.copy(albumId = album1.id)
-        val track2 = FakeTrack2.copy(albumId = album1.id)
-        val track3 = FakeTrack3.copy(albumId = album2.id)
-        trackDao.insert(track1, track2, track3)
-        val expectedAlbum1Tracks = listOf(track1, track2)
-        val expectedAlbum2Tracks = listOf(track3)
+        mediaCollectionDao.insert(FakeMediaCollection1)
+        albumDao.insert(FakeAlbum1)
+        mediaCollectionDao.insert(FakeMediaCollection2)
+        albumDao.insert(FakeAlbum2)
+        trackDao.insert(FakeTrack1, FakeTrack2, FakeTrack3)
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum1.id, FakeTrack1.id, 1))
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum1.id, FakeTrack2.id, 2))
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum2.id, FakeTrack3.id, 1))
 
-        val actualAlbum1Tracks = trackDao.getTracksForAlbum(album1.id)
-        val actualAlbum2Tracks = trackDao.getTracksForAlbum(album2.id)
+        val album1Tracks = trackDao.getTracksForAlbum(FakeAlbum1.id)
+        val album2Tracks = trackDao.getTracksForAlbum(FakeAlbum2.id)
 
-        for (track in expectedAlbum1Tracks) {
-            assertTrackEquals(track, actualAlbum1Tracks.find { it.id == track.id })
-        }
-        for (track in expectedAlbum2Tracks) {
-            assertTrackEquals(track, actualAlbum2Tracks.find { it.id == track.id })
-        }
+        assertTrackEquals(FakeTrack1, album1Tracks.find { it.id == FakeTrack1.id })
+        assertTrackEquals(FakeTrack2, album1Tracks.find { it.id == FakeTrack2.id })
+        assertTrackEquals(FakeTrack3, album2Tracks.find { it.id == FakeTrack3.id })
     }
 
     @Test
     fun delete_removesEntity() = runTest {
-        val album = FakeAlbum1
-        albumDao.insert(album)
-        val track = FakeTrack1.copy(albumId = album.id)
-        trackDao.insert(track)
+        trackDao.insert(FakeTrack1)
 
-        trackDao.delete(track.id)
+        trackDao.delete(FakeTrack1.id)
 
-        val resultAfterDelete = trackDao.getTrack(track.id)
-        assertNull(resultAfterDelete)
+        assertNull(trackDao.getTrack(FakeTrack1.id))
     }
 
     @Test
     fun getTrackCountFlow_updatesOnInsert() = runTest {
-        val album1 = FakeAlbum1
-        albumDao.insert(album1)
-        val album2 = FakeAlbum2
-        albumDao.insert(album2)
-        val track1 = FakeTrack1.copy(albumId = album1.id)
-        val track2 = FakeTrack2.copy(albumId = album1.id)
-        val track3 = FakeTrack3.copy(albumId = album2.id)
-
-        trackDao.insert(track1)
+        mediaCollectionDao.insert(FakeMediaCollection1)
+        albumDao.insert(FakeAlbum1)
+        mediaCollectionDao.insert(FakeMediaCollection2)
+        albumDao.insert(FakeAlbum2)
+        trackDao.insert(FakeTrack1)
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum1.id, FakeTrack1.id, 1))
         val count = completeTrackDao.getTrackCountFlow().first()
         assertEquals(1, count)
 
-        trackDao.insert(track2, track3)
+        trackDao.insert(FakeTrack2, FakeTrack3)
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum1.id, FakeTrack2.id, 2))
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum2.id, FakeTrack3.id, 1))
         val count2 = completeTrackDao.getTrackCountFlow().first()
         assertEquals(3, count2)
     }
 
     @Test
     fun insert_ignoresExistingTrack() = runTest {
-        val album = FakeAlbum1
-        albumDao.insert(album)
-        val track = FakeTrack1.copy(albumId = album.id)
-        trackDao.insert(track)
-        trackDao.insert(track.copy(title = "Updated Title"))
+        trackDao.insert(FakeTrack1)
+        trackDao.insert(FakeTrack1.copy(title = "Updated Title"))
 
-        val result = trackDao.getTrack(track.id)
-        assertTrackEquals(track, result)
+        val result = trackDao.getTrack(FakeTrack1.id)
+        assertTrackEquals(FakeTrack1, result)
     }
 
     @Test
     fun update_updatesTrack() = runTest {
-        val album = FakeAlbum1
-        albumDao.insert(album)
-        val track = FakeTrack1.copy(albumId = album.id)
-        trackDao.insert(track)
+        trackDao.insert(FakeTrack1)
 
-        trackDao.update(track.copy(title = "Updated Title"))
+        trackDao.update(FakeTrack1.copy(title = "Updated Title"))
 
-        val result = trackDao.getTrack(track.id)
+        val result = trackDao.getTrack(FakeTrack1.id)
         assertNotNull(result)
         assertEquals("Updated Title", result.title)
     }
 
     @Test
     fun getTrackCountFlow_updatesOnDelete() = runTest {
-        val album1 = FakeAlbum1
-        albumDao.insert(album1)
-        val album2 = FakeAlbum2
-        albumDao.insert(album2)
-        val track1 = FakeTrack1.copy(albumId = album1.id)
-        val track2 = FakeTrack2.copy(albumId = album1.id)
-        val track3 = FakeTrack3.copy(albumId = album2.id)
-        trackDao.insert(track1, track2, track3)
+        mediaCollectionDao.insert(FakeMediaCollection1)
+        albumDao.insert(FakeAlbum1)
+        mediaCollectionDao.insert(FakeMediaCollection2)
+        albumDao.insert(FakeAlbum2)
+        trackDao.insert(FakeTrack1, FakeTrack2, FakeTrack3)
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum1.id, FakeTrack1.id, 1))
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum1.id, FakeTrack2.id, 2))
+        albumTrackDao.insert(AlbumTrackCrossRef(FakeAlbum2.id, FakeTrack3.id, 1))
 
-        trackDao.delete(track1.id)
+        trackDao.delete(FakeTrack1.id)
 
         val count = completeAlbumDao.getAlbumCountFlow().first()
         assertEquals(2, count)

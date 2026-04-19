@@ -10,7 +10,7 @@ import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 @Dao
 interface AlbumArtistDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg albumArist: AlbumArtistCrossRef)
+    suspend fun insert(vararg albumArtist: AlbumArtistCrossRef)
 
     @Query("SELECT * FROM album_artists WHERE album_id = :albumId")
     suspend fun getAlbumArtists(albumId: String): List<AlbumArtistCrossRef>

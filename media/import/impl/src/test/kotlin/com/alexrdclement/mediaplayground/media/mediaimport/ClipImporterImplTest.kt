@@ -20,8 +20,8 @@ class ClipImporterImplTest {
 
     private val audioMetadata = FakeLocalMediaAsset1.metadata as MediaMetadata.Audio
 
-    // FakeClip1.endFrameInFile was computed from the same FakeMediaAsset1 metadata,
-    // so it serves as the expected value for our computed end frame.
+    // FakeClip1.timeUnit was computed from the same FakeMediaAsset1 metadata,
+    // so it serves as the expected value for our computed duration.
     private val filePath = Path("/tmp/albums/album-1/song.mp3")
 
     @Test
@@ -39,8 +39,8 @@ class ClipImporterImplTest {
         fixture.mediaMetadataRetriever.mediaMetadata = MediaMetadata.Image(
             mimeType = "image/png",
             extension = "png",
-            widthPx = null,
-            heightPx = null,
+            widthPx = 1024,
+            heightPx = 768,
             dateTimeOriginal = null,
             gpsLatitude = null,
             gpsLongitude = null,
@@ -59,7 +59,7 @@ class ClipImporterImplTest {
             clipImporter.importTransaction(
                 filePath = filePath,
                 metadata = audioMetadata,
-                mediaAsset = FakeLocalMediaAsset1,
+                audioFile = FakeLocalMediaAsset1,
             )
         } as? Result.Success
 
@@ -68,16 +68,16 @@ class ClipImporterImplTest {
     }
 
     @Test
-    fun importTransaction_setsCorrectEndFrame() = runTest {
+    fun importTransaction_setsCorrectTimeUnit() = runTest {
         val result = fixture.transactionRunner.run {
             clipImporter.importTransaction(
                 filePath = filePath,
                 metadata = audioMetadata,
-                mediaAsset = FakeLocalMediaAsset1,
+                audioFile = FakeLocalMediaAsset1,
             )
         } as? Result.Success
 
         assertIs<Result.Success<*, *>>(result)
-        assertEquals(FakeClip1.endFrameInFile, result.value.endFrameInFile)
+        assertEquals(FakeClip1.duration, result.value.duration)
     }
 }

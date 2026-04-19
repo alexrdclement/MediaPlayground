@@ -1,9 +1,10 @@
 package com.alexrdclement.mediaplayground.feature.album.navigation
 
 import com.alexrdclement.mediaplayground.media.model.AlbumId
-import com.embarrasdf.palette.navigation.NavKey
-import com.embarrasdf.palette.navigation.PathSegment
-import com.embarrasdf.palette.navigation.toPathSegment
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
+import com.alexrdclement.palette.navigation.NavKey
+import com.alexrdclement.palette.navigation.PathSegment
+import com.alexrdclement.palette.navigation.toPathSegment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,7 +17,7 @@ data class AlbumRoute(
 ) : AlbumNavRoute {
     override val pathSegment: PathSegment = albumIdValue.toPathSegment()
 
-    val albumId: AlbumId get() = AlbumId(albumIdValue)
+    val albumId: AlbumId get() = AudioAlbumId(albumIdValue)
 }
 
 @Serializable
@@ -25,7 +26,7 @@ data class AlbumMetadataRoute(
     val albumIdValue: String,
 ) : AlbumNavRoute {
     override val pathSegment: PathSegment = albumIdValue.toPathSegment()
-    val albumId: AlbumId get() = AlbumId(albumIdValue)
+    val albumId: AlbumId get() = AudioAlbumId(albumIdValue)
 }
 
 @Serializable
@@ -35,5 +36,5 @@ data class AlbumDeleteRoute(
     val displayName: String = "",
 ) : AlbumNavRoute {
     override val pathSegment: PathSegment = albumIdValue.toPathSegment()
-    val albumId: AlbumId get() = AlbumId(albumIdValue)
+    val albumId: AlbumId get() = AudioAlbumId(albumIdValue)
 }

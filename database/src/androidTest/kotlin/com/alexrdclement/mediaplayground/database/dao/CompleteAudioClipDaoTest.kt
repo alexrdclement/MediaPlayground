@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
-import com.alexrdclement.mediaplayground.database.fakes.FakeAudioFile1
-import com.alexrdclement.mediaplayground.database.fakes.FakeAudioFile2
+import com.alexrdclement.mediaplayground.database.fakes.FakeAudioAsset1
+import com.alexrdclement.mediaplayground.database.fakes.FakeAudioAsset2
 import com.alexrdclement.mediaplayground.database.fakes.FakeClip1
 import com.alexrdclement.mediaplayground.database.fakes.FakeClip2
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteAudioClip1
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaAssetRecord1
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaAssetRecord2
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioClip
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -22,9 +24,10 @@ import kotlin.test.assertNull
 class CompleteAudioClipDaoTest {
 
     private lateinit var db: MediaPlaygroundDatabase
-    private lateinit var audioFileDao: AudioFileDao
+    private lateinit var audioAssetDao: AudioAssetDao
     private lateinit var clipDao: ClipDao
     private lateinit var completeAudioClipDao: CompleteAudioClipDao
+    private lateinit var mediaAssetDao: MediaAssetDao
 
     @Before
     fun create() {
@@ -32,9 +35,10 @@ class CompleteAudioClipDaoTest {
         db = Room
             .inMemoryDatabaseBuilder(context, MediaPlaygroundDatabase::class.java)
             .build()
-        audioFileDao = db.audioFileDao()
+        audioAssetDao = db.audioAssetDao()
         clipDao = db.clipDao()
         completeAudioClipDao = db.completeAudioClipDao()
+        mediaAssetDao = db.mediaAssetDao()
     }
 
     @After
@@ -45,11 +49,13 @@ class CompleteAudioClipDaoTest {
     private fun assertCompleteAudioClipEquals(expected: CompleteAudioClip, actual: CompleteAudioClip?) {
         assertNotNull(actual)
         assertEquals(expected.clip, actual.clip)
-        assertEquals(expected.audioFile, actual.audioFile)
+        assertEquals(expected.audioAsset, actual.audioAsset)
+        assertEquals(expected.mediaAsset, actual.mediaAsset)
     }
 
     private suspend fun insertCompleteAudioClip(completeAudioClip: CompleteAudioClip) {
-        audioFileDao.insert(completeAudioClip.audioFile)
+        mediaAssetDao.insert(completeAudioClip.mediaAsset)
+        audioAssetDao.insert(completeAudioClip.audioAsset)
         clipDao.insert(completeAudioClip.clip)
     }
 
@@ -85,7 +91,8 @@ class CompleteAudioClipDaoTest {
 
     @Test
     fun getClipCountFlow_incrementsOnInsert() = runTest {
-        audioFileDao.insert(FakeAudioFile1, FakeAudioFile2)
+        mediaAssetDao.insert(FakeMediaAssetRecord1, FakeMediaAssetRecord2)
+        audioAssetDao.insert(FakeAudioAsset1, FakeAudioAsset2)
         clipDao.insert(FakeClip1, FakeClip2)
 
         val count = completeAudioClipDao.getClipCountFlow().first()

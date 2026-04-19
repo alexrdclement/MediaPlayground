@@ -1,7 +1,8 @@
 package com.alexrdclement.media.store
 
-import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.ArtistId
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.store.AlbumMediaStore
@@ -12,15 +13,14 @@ class FakeAlbumMediaStore : AlbumMediaStore {
 
     private val albums = mutableMapOf<AlbumId, SimpleAlbum>()
 
-    override suspend fun getAlbum(id: AlbumId): Album? {
+    override suspend fun getAlbum(id: AlbumId): AudioAlbum? {
         val simpleAlbum = albums[id] ?: return null
-        return Album(
-            id = simpleAlbum.id,
+        return AudioAlbum(
+            id = AudioAlbumId(simpleAlbum.id.value),
             title = simpleAlbum.name,
             artists = simpleAlbum.artists,
             images = simpleAlbum.images,
-            tracks = persistentListOf(),
-            source = simpleAlbum.source,
+            items = persistentListOf(),
             notes = null,
         )
     }

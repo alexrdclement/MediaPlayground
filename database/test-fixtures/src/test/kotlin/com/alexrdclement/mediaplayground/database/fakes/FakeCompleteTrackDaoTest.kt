@@ -14,43 +14,56 @@ import kotlin.test.assertNotNull
 class FakeCompleteTrackDaoTest {
 
     private val albumDao = FakeAlbumDao()
+    private val mediaCollectionDao = FakeMediaCollectionDao()
     private val artistDao = FakeArtistDao()
     private val albumArtistDao = FakeAlbumArtistDao()
     private val albumImageDao = FakeAlbumImageDao()
-    private val imageDao = FakeImageFileDao()
+    private val albumTrackDao = FakeAlbumTrackDao()
+    private val imageDao = FakeImageAssetDao()
+    private val mediaAssetDao = FakeMediaAssetDao()
     private val trackDao = FakeTrackDao()
     private val clipDao = FakeClipDao()
-    private val audioFileDao = FakeAudioFileDao()
+    private val audioFileDao = FakeAudioAssetDao(mediaAssetDao)
     private val trackClipDao = FakeTrackClipDao()
 
     private fun makeCompleteTrackDao(coroutineScope: CoroutineScope): FakeCompleteTrackDao {
         return FakeCompleteTrackDao(
             coroutineScope = coroutineScope,
             albumDao = albumDao,
+            mediaCollectionDao = mediaCollectionDao,
             artistDao = artistDao,
             albumArtistDao = albumArtistDao,
             albumImageDao = albumImageDao,
+            albumTrackDao = albumTrackDao,
             imageDao = imageDao,
+            mediaAssetDao = mediaAssetDao,
             trackDao = trackDao,
             clipDao = clipDao,
-            audioFileDao = audioFileDao,
+            audioAssetDao = audioFileDao,
             trackClipDao = trackClipDao,
         )
     }
 
     private suspend fun stubCompleteTrack(completeTrack: CompleteTrack) {
-        albumDao.insert(completeTrack.album)
-        for (artist in completeTrack.artists) {
-            artistDao.insert(artist)
-            albumArtistDao.insert(AlbumArtistCrossRef(completeTrack.album.id, artist.id))
-        }
-        for (image in completeTrack.images) {
-            imageDao.insert(image)
-            albumImageDao.insert(AlbumImageCrossRef(albumId = completeTrack.album.id, imageId = image.id))
-        }
         trackDao.insert(completeTrack.track)
+        for (albumRef in completeTrack.albumRefs) {
+            val simpleAlbum = albumRef.simpleAlbum
+            mediaCollectionDao.insert(simpleAlbum.mediaCollection)
+            albumDao.insert(simpleAlbum.album)
+            for (artist in simpleAlbum.artists) {
+                artistDao.insert(artist)
+                albumArtistDao.insert(AlbumArtistCrossRef(simpleAlbum.album.id, artist.id))
+            }
+            for (completeImage in simpleAlbum.images) {
+                mediaAssetDao.insert(completeImage.mediaAsset)
+                imageDao.insert(completeImage.imageAsset)
+                albumImageDao.insert(AlbumImageCrossRef(albumId = simpleAlbum.album.id, imageId = completeImage.imageAsset.id))
+            }
+            albumTrackDao.insert(albumRef.albumTrackCrossRef)
+        }
         for (completeTrackClip in completeTrack.clips) {
-            audioFileDao.insert(completeTrackClip.completeAudioClip.audioFile)
+            mediaAssetDao.insert(completeTrackClip.completeAudioClip.mediaAsset)
+            audioFileDao.insert(completeTrackClip.completeAudioClip.audioAsset)
             clipDao.insert(completeTrackClip.completeAudioClip.clip)
             trackClipDao.insert(TrackClipCrossRef(completeTrack.track.id, completeTrackClip.completeAudioClip.clip.id, completeTrackClip.trackClipCrossRef.startFrameInTrack))
         }

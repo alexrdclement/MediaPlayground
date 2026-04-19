@@ -1,15 +1,13 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
-import com.alexrdclement.mediaplayground.database.model.ImageFile
+import com.alexrdclement.mediaplayground.database.model.CompleteImageAsset
+import com.alexrdclement.mediaplayground.database.model.ImageAsset
 
-val FakeImageFile1 = ImageFile(
+val FakeImageAsset1 = ImageAsset(
     id = "1",
-    fileName = "1.jpg",
-    mimeType = "image/jpeg",
-    extension = "jpg",
-    widthPx = null,
-    heightPx = null,
+    widthPx = 1024,
+    heightPx = 768,
     dateTimeOriginal = null,
     gpsLatitude = null,
     gpsLongitude = null,
@@ -18,14 +16,23 @@ val FakeImageFile1 = ImageFile(
     notes = null,
 )
 
-val FakeImage2 = FakeImageFile1.copy(
-    id = "2",
-    fileName = "2.jpg",
+val FakeImage2 = FakeImageAsset1.copy(id = "2")
+
+val FakeImage3 = FakeImageAsset1.copy(id = "3")
+
+val FakeCompleteImageAsset1 = CompleteImageAsset(
+    imageAsset = FakeImageAsset1,
+    mediaAsset = FakeImageAssetRecord1,
 )
 
-val FakeImage3 = FakeImageFile1.copy(
-    id = "3",
-    fileName = "3.jpg",
+val FakeCompleteImageAsset2 = CompleteImageAsset(
+    imageAsset = FakeImage2,
+    mediaAsset = FakeImageAssetRecord2,
+)
+
+val FakeCompleteImageAsset3 = CompleteImageAsset(
+    imageAsset = FakeImage3,
+    mediaAsset = FakeImageAssetRecord3,
 )
 
 val FakeAlbumImage1 = AlbumImageCrossRef(albumId = "1", imageId = "1")

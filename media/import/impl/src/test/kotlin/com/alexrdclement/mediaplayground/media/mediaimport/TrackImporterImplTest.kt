@@ -10,6 +10,7 @@ import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlinx.coroutines.flow.first
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
@@ -36,8 +37,8 @@ class TrackImporterImplTest {
         fixture.mediaMetadataRetriever.mediaMetadata = MediaMetadata.Image(
             mimeType = "image/png",
             extension = "png",
-            widthPx = null,
-            heightPx = null,
+            widthPx = 1024,
+            heightPx = 768,
             dateTimeOriginal = null,
             gpsLatitude = null,
             gpsLongitude = null,
@@ -75,12 +76,12 @@ class TrackImporterImplTest {
         }
 
         assertIs<Result.Success<*, *>>(result)
-        assertEquals(FakeSimpleTrack1.name, (result as Result.Success).value.name)
+        assertEquals(FakeSimpleTrack1.name, (result as Result.Success).value.title)
     }
 
     @Test
     fun importSimpleTrack_setsTrackNumber_fromMetadata() = runTest {
-        fixture.transactionRunner.run {
+        val result = fixture.transactionRunner.run {
             trackImporter.importSimpleTrack(
                 metadata = audioMetadata,
                 simpleAlbum = FakeLocalSimpleAlbum1,
@@ -88,7 +89,9 @@ class TrackImporterImplTest {
             )
         }
 
-        val stored = fixture.trackMediaStore.getByClipId(FakeLocalClip1.id)
+        assertIs<Result.Success<*, *>>(result)
+        val trackId = (result as Result.Success).value.id
+        val stored = fixture.trackMediaStore.getTrackFlow(trackId).first()
         assertNotNull(stored)
         assertEquals(FakeSimpleTrack1.trackNumber, stored.trackNumber)
     }

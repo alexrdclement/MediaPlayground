@@ -21,5 +21,6 @@ dependencies {
 
     testImplementation(libs.maindispatcher.rule)
     testImplementation(projects.data.album.testFixtures)
+    testImplementation(projects.data.track)
     testImplementation(projects.media.model.testFixtures)
 }

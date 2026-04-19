@@ -1,6 +1,5 @@
 package com.alexrdclement.media.store
 
-import com.alexrdclement.mediaplayground.media.model.ClipId
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
@@ -16,9 +15,6 @@ class FakeTrackMediaStore : TrackMediaStore {
 
     override fun getTrackFlow(id: TrackId): Flow<Track?> =
         tracksFlow.map { it[id] }
-
-    override suspend fun getByClipId(clipId: ClipId): Track? =
-        tracksFlow.value.values.find { track -> track.clips.any { it.clip.id == clipId } }
 
     context(scope: MediaStoreTransactionScope)
     override suspend fun put(track: Track) {

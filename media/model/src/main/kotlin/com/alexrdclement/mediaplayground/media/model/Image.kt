@@ -1,23 +1,26 @@
 package com.alexrdclement.mediaplayground.media.model
 
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @JvmInline
 @Serializable
-value class ImageId(val value: String)
+value class ImageId(override val value: String) : MediaAssetId
 
 @Serializable
 data class Image(
-    val id: ImageId,
-    val uri: String,
+    override val id: ImageId,
+    override val uri: MediaAssetUri,
+    override val originUri: MediaAssetOriginUri,
+    override val createdAt: Instant,
     val mimeType: String,
     val extension: String,
-    val widthPx: Int? = null,
-    val heightPx: Int? = null,
+    val widthPx: Int,
+    val heightPx: Int,
     val dateTimeOriginal: String? = null,
     val gpsLatitude: Double? = null,
     val gpsLongitude: Double? = null,
     val cameraMake: String? = null,
     val cameraModel: String? = null,
     val notes: String? = null,
-)
+) : MediaAsset

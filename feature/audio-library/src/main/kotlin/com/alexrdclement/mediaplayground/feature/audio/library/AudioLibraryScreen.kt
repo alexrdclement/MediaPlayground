@@ -25,9 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
-import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStyle
-import com.alexrdclement.mediaplayground.feature.audio.library.theme.component.media.contentReady
-import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.Track
@@ -48,7 +46,7 @@ private const val MediaPickerAudioMimeType = "audio/*"
 @Composable
 fun AudioLibraryScreen(
     onNavigateToPlayer: (MediaItem) -> Unit,
-    onNavigateToAlbum: (Album) -> Unit,
+    onNavigateToAlbum: (AudioAlbum) -> Unit,
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
@@ -70,7 +68,7 @@ fun AudioLibraryScreen(
             viewModel.onItemClick(mediaItemUi)
 
             when (val mediaItem = mediaItemUi.mediaItem) {
-                is Album -> {
+                is AudioAlbum -> {
                     onNavigateToAlbum(mediaItem)
                 }
                 is Track -> {

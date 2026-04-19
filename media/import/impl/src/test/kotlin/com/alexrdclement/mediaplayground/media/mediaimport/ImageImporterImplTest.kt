@@ -3,6 +3,9 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 import android.net.FakeUri
 import com.alexrdclement.media.mediaimport.fixtures.MediaImporterFixture
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
+import com.alexrdclement.mediaplayground.media.model.Image
+import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
+import com.alexrdclement.mediaplayground.media.model.MediaAssetSyncState
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.test.runTest
@@ -36,7 +39,9 @@ class ImageImporterImplTest {
         val result = imageImporter.import(FakeUri)
 
         assertIs<Result.Success<*, *>>(result)
-        assertEquals(FakeImage1.mimeType, (result as Result.Success).value.mimeType)
+        val image = (result as Result.Success).value as Image
+        assertEquals(FakeImage1.mimeType, image.mimeType)
+        assertEquals(MediaAssetSyncState.Synced, fixture.syncStateStore.states[image.id])
     }
 
     @Test
@@ -90,7 +95,8 @@ class ImageImporterImplTest {
     fun importImageTransaction_createsAndStoresImage() = runTest {
         val result = fixture.transactionRunner.run {
             imageImporter.importImageTransaction(
-                filePath = Path("/tmp/images/${FakeImage1.id.value}.${FakeImage1.extension}"),
+                originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image"),
+                destinationPath = Path("/tmp/images/${FakeImage1.id.value}.${FakeImage1.extension}"),
                 imageId = FakeImage1.id,
                 mediaMetadata = imageMetadata,
             )
@@ -104,7 +110,8 @@ class ImageImporterImplTest {
     fun importImageTransaction_setsImageMetadata() = runTest {
         val result = fixture.transactionRunner.run {
             imageImporter.importImageTransaction(
-                filePath = Path("/tmp/images/${FakeImage1.id.value}.${FakeImage1.extension}"),
+                originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image"),
+                destinationPath = Path("/tmp/images/${FakeImage1.id.value}.${FakeImage1.extension}"),
                 imageId = FakeImage1.id,
                 mediaMetadata = imageMetadata,
             )

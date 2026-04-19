@@ -11,4 +11,5 @@ dependencies {
     api(projects.media.metadata.api)
 
     implementation(libs.androidx.exifinterface)
+    implementation(libs.kotlinx.coroutines.android)
 }

@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.data.album
 
-import com.alexrdclement.mediaplayground.data.album.local.LocalAlbumDataStore
-import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.data.album.local.LocalAudioAlbumDataStore
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.ArtistId
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
@@ -10,20 +10,20 @@ import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
 import dev.zacsweers.metro.Inject
 
 class AlbumMediaStoreImpl @Inject constructor(
-    private val localAlbumDataStore: LocalAlbumDataStore,
+    private val localAudioAlbumDataStore: LocalAudioAlbumDataStore,
 ): AlbumMediaStore {
 
-    override suspend fun getAlbum(id: AlbumId): Album? =
-        localAlbumDataStore.getAlbum(id)
+    override suspend fun getAlbum(id: AlbumId): AudioAlbum? =
+        localAudioAlbumDataStore.getAlbum(id)
 
     override suspend fun getAlbumTrackCount(id: AlbumId): Int =
-        localAlbumDataStore.getAlbumTrackCount(id)
+        localAudioAlbumDataStore.getAlbumTrackCount(id)
 
     override suspend fun getAlbumByTitleAndArtistId(
         albumTitle: String,
         artistId: ArtistId,
     ): SimpleAlbum? {
-        return localAlbumDataStore.getAlbumByTitleAndArtistId(
+        return localAudioAlbumDataStore.getAlbumByTitleAndArtistId(
             albumTitle = albumTitle,
             artistId = artistId,
         )
@@ -31,6 +31,6 @@ class AlbumMediaStoreImpl @Inject constructor(
 
     context(scope: MediaStoreTransactionScope)
     override suspend fun put(album: SimpleAlbum) {
-        localAlbumDataStore.put(album)
+        localAudioAlbumDataStore.put(album)
     }
 }

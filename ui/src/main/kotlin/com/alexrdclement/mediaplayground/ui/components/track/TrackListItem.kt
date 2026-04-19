@@ -30,14 +30,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
-import com.alexrdclement.mediaplayground.media.model.SimpleTrack
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
-import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
-import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
-import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
@@ -70,7 +64,7 @@ data class TrackListItemStyle(
  */
 @Composable
 fun TrackListItem(
-    track: SimpleTrack,
+    track: Track,
     isLoaded: Boolean,
     isPlayable: Boolean,
     isPlaying: Boolean,
@@ -228,8 +222,8 @@ private fun TrackListItem(
                     .padding(style.textPadding),
             ) {
                 Text(
-                    text = title,
-                    style = style.titleStyle,
+                    text = track.title,
+                    style = PaletteTheme.styles.text.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee(),
@@ -243,8 +237,8 @@ private fun TrackListItem(
                 )
             }
             Text(
-                text = remember { duration.formatShort() },
-                style = style.durationStyle,
+                text = remember { track.duration.toKotlinDuration().formatShort() },
+                style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
                 modifier = Modifier
                     .height(IntrinsicSize.Max)
                     .width(style.durationWidth),
@@ -258,7 +252,7 @@ private fun TrackListItem(
 private fun TrackPreview() {
     PaletteTheme {
         TrackListItem(
-            track = PreviewSimpleTrack1,
+            track = PreviewTrack1,
             isLoaded = true,
             isPlayable = false,
             isPlaying = false,
