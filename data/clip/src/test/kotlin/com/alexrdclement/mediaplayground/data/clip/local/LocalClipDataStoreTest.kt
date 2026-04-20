@@ -35,7 +35,7 @@ class LocalClipDataStoreTest {
     @Test
     fun getClipFlow_returnsClip_afterPut() = runTest {
         fixture.transactionRunner.run {
-            fixture.mediaAssetFixture.localAudioAssetDataStore.put(FakeLocalMediaAsset1)
+            fixture.mediaAssetFixture.localAudioAssetStore.put(FakeLocalMediaAsset1)
             fixture.localClipDataStore.put(FakeLocalClip1)
         }
 
@@ -47,7 +47,7 @@ class LocalClipDataStoreTest {
     @Test
     fun delete_removesClip() = runTest {
         fixture.transactionRunner.run {
-            fixture.mediaAssetFixture.localAudioAssetDataStore.put(FakeLocalMediaAsset1)
+            fixture.mediaAssetFixture.localAudioAssetStore.put(FakeLocalMediaAsset1)
             fixture.localClipDataStore.put(FakeLocalClip1)
         }
 
@@ -62,7 +62,7 @@ class LocalClipDataStoreTest {
     @Test
     fun updateClipTitle_updatesTitle() = runTest {
         fixture.transactionRunner.run {
-            fixture.mediaAssetFixture.localAudioAssetDataStore.put(FakeLocalMediaAsset1)
+            fixture.mediaAssetFixture.localAudioAssetStore.put(FakeLocalMediaAsset1)
             fixture.localClipDataStore.put(FakeLocalClip1)
         }
 
@@ -78,7 +78,7 @@ class LocalClipDataStoreTest {
         assertEquals(0, fixture.localClipDataStore.getClipCountFlow().first())
 
         fixture.transactionRunner.run {
-            fixture.mediaAssetFixture.localAudioAssetDataStore.put(FakeLocalMediaAsset1)
+            fixture.mediaAssetFixture.localAudioAssetStore.put(FakeLocalMediaAsset1)
             fixture.localClipDataStore.put(FakeLocalClip1)
         }
 

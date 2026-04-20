@@ -4,7 +4,6 @@ import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.util.runTracked
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
-import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.store.MediaAssetSyncStateStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
@@ -55,11 +54,8 @@ class MediaAssetImporterImpl(
 
         val audioAsset = syncStateStore.runTracked(audioCopyResult.id, transactionRunner) {
             audioFileImporter.value.importTransaction(
-                id = audioCopyResult.id,
+                audioAsset = audioCopyResult.audioAsset,
                 filePath = audioCopyResult.path,
-                originUri = MediaAssetOriginUri.AndroidContentUri(uri.toString()),
-                mediaMetadata = mediaMetadata,
-                simpleAlbum = audioCopyResult.simpleAlbum,
             )
         }.guardSuccess { return@withContext Result.Failure(it) }
 
@@ -76,23 +72,18 @@ class MediaAssetImporterImpl(
         uri: Uri,
         mediaMetadata: MediaMetadata.Image,
     ): Result<MediaAssetImportResult.Image, MediaImportError> = withContext(Dispatchers.IO) {
-        val (destinationPath, imageId) = imageImporter.value.copyFile(
+        val imageCopyResult = imageImporter.value.copyFile(
             uri = uri,
             mediaMetadata = mediaMetadata,
         ).guardSuccess { return@withContext Result.Failure(it) }
 
-        val image = syncStateStore.runTracked(imageId, transactionRunner) {
-            imageImporter.value.importImageTransaction(
-                imageId = imageId,
-                originUri = MediaAssetOriginUri.AndroidContentUri(uri.toString()),
-                destinationPath = destinationPath,
-                mediaMetadata = mediaMetadata,
-            )
+        val image = syncStateStore.runTracked(imageCopyResult.id, transactionRunner) {
+            imageImporter.value.importImageTransaction(image = imageCopyResult.image)
         }.guardSuccess { return@withContext Result.Failure(it) }
 
         Result.Success(
             MediaAssetImportResult.Image(
-                path = destinationPath,
+                path = imageCopyResult.path,
                 image = image,
             ),
         )

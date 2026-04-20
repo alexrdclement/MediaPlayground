@@ -8,6 +8,7 @@ import com.alexrdclement.media.store.FakeFileReader
 import com.alexrdclement.media.store.FakeFileWriter
 import com.alexrdclement.media.store.FakeImageMediaStore
 import com.alexrdclement.media.store.FakeAudioAssetStore
+import com.alexrdclement.media.store.FakeMediaAssetStore
 import com.alexrdclement.media.store.FakeMediaAssetSyncStateStore
 import com.alexrdclement.media.store.FakeMediaStoreTransactionRunner
 import com.alexrdclement.media.store.FakePathProvider
@@ -31,6 +32,7 @@ class MediaImporterFixture(
     val trackMediaStore = FakeTrackMediaStore()
     val imageMediaStore = FakeImageMediaStore()
     val audioAssetStore = FakeAudioAssetStore()
+    val mediaAssetStore = FakeMediaAssetStore()
     val syncStateStore = FakeMediaAssetSyncStateStore()
     val transactionRunner = FakeMediaStoreTransactionRunner()
     val pathProvider = FakePathProvider()
@@ -45,6 +47,7 @@ class MediaImporterFixture(
         mediaMetadataRetriever = mediaMetadataRetriever,
         pathProvider = pathProvider,
         imageMediaStore = imageMediaStore,
+        mediaAssetStore = mediaAssetStore,
         syncStateStore = syncStateStore,
         transactionRunner = transactionRunner,
         fileReader = fileReader,
@@ -73,6 +76,7 @@ class MediaImporterFixture(
     val audioAssetImporter: AudioAssetImporterImpl by lazy {
         AudioAssetImporterImpl(
             audioAssetStore = audioAssetStore,
+            mediaAssetStore = mediaAssetStore,
             syncStateStore = syncStateStore,
             mediaMetadataRetriever = mediaMetadataRetriever,
             artistImporter = artistImporter,

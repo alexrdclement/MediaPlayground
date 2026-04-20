@@ -7,9 +7,9 @@ import com.alexrdclement.mediaplayground.media.model.AudioAssetId
 import kotlinx.coroutines.flow.Flow
 
 interface AudioAssetRepository {
-    fun getAudioAssetFlow(id: AudioAssetId): Flow<AudioAsset?>
-    fun getAudioAssetPagingData(config: PagingConfig): Flow<PagingData<AudioAsset>>
-    fun getAudioAssetCountFlow(): Flow<Int>
+    fun getFlow(id: AudioAssetId): Flow<AudioAsset?>
+    fun getPagingData(config: PagingConfig): Flow<PagingData<AudioAsset>>
+    fun getCountFlow(): Flow<Int>
     suspend fun put(audioAsset: AudioAsset)
     suspend fun delete(id: AudioAssetId)
 }

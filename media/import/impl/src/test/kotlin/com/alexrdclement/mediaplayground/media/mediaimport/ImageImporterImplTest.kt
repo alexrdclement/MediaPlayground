@@ -4,12 +4,10 @@ import android.net.FakeUri
 import com.alexrdclement.media.mediaimport.fixtures.MediaImporterFixture
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
 import com.alexrdclement.mediaplayground.media.model.Image
-import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaAssetSyncState
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.test.runTest
-import kotlinx.io.files.Path
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -86,20 +84,15 @@ class ImageImporterImplTest {
         assertIs<Result.Success<*, *>>(first)
         assertIs<Result.Success<*, *>>(second)
         assertEquals(
-            (first as Result.Success).value.second,
-            (second as Result.Success).value.second,
+            (first as Result.Success).value.id,
+            (second as Result.Success).value.id,
         )
     }
 
     @Test
     fun importImageTransaction_createsAndStoresImage() = runTest {
         val result = fixture.transactionRunner.run {
-            imageImporter.importImageTransaction(
-                originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image"),
-                destinationPath = Path("/tmp/images/${FakeImage1.id.value}.${FakeImage1.extension}"),
-                imageId = FakeImage1.id,
-                mediaMetadata = imageMetadata,
-            )
+            imageImporter.importImageTransaction(image = FakeImage1)
         }
 
         assertIs<Result.Success<*, *>>(result)
@@ -109,12 +102,7 @@ class ImageImporterImplTest {
     @Test
     fun importImageTransaction_setsImageMetadata() = runTest {
         val result = fixture.transactionRunner.run {
-            imageImporter.importImageTransaction(
-                originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image"),
-                destinationPath = Path("/tmp/images/${FakeImage1.id.value}.${FakeImage1.extension}"),
-                imageId = FakeImage1.id,
-                mediaMetadata = imageMetadata,
-            )
+            imageImporter.importImageTransaction(image = FakeImage1)
         }
 
         assertIs<Result.Success<*, *>>(result)

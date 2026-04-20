@@ -17,7 +17,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class LocalAudioAssetDataStoreTest {
+class LocalAudioAssetStoreTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -33,25 +33,25 @@ class LocalAudioAssetDataStoreTest {
         val transactionScope = FakeDatabaseTransactionScope(CoroutineScope(Dispatchers.Unconfined))
         val databaseTransactionRunner = FakeDatabaseTransactionRunner(transactionScope)
         val transactionRunner = FakeMediaStoreTransactionRunner()
-        val localAudioAssetDataStore = LocalAudioAssetDataStore(
+        val localAudioAssetStore = LocalAudioAssetStore(
             audioAssetDao = transactionScope.audioAssetDao,
             databaseTransactionRunner = databaseTransactionRunner,
         )
     }
 
     @Test
-    fun getAudioAssetFlow_returnsNull_forUnknownAudioAsset() = runTest {
-        val result = fixture.localAudioAssetDataStore.getAudioAssetFlow(FakeMediaAsset1.id).first()
+    fun getAudioAssetFlow_returnsNull_forUnknown() = runTest {
+        val result = fixture.localAudioAssetStore.getFlow(FakeMediaAsset1.id).first()
         assertNull(result)
     }
 
     @Test
-    fun getAudioAssetFlow_returnsAudioAsset_afterPut() = runTest {
+    fun getAudioAssetFlow_returns_afterPut() = runTest {
         fixture.transactionRunner.run {
-            fixture.localAudioAssetDataStore.put(FakeLocalMediaAsset1)
+            fixture.localAudioAssetStore.put(FakeLocalMediaAsset1)
         }
 
-        val result = fixture.localAudioAssetDataStore.getAudioAssetFlow(FakeLocalMediaAsset1.id).first()
+        val result = fixture.localAudioAssetStore.getFlow(FakeLocalMediaAsset1.id).first()
         assertNotNull(result)
         assertEquals(FakeLocalMediaAsset1.id, result.id)
     }
@@ -59,25 +59,25 @@ class LocalAudioAssetDataStoreTest {
     @Test
     fun delete_removesMediaAsset() = runTest {
         fixture.transactionRunner.run {
-            fixture.localAudioAssetDataStore.put(FakeLocalMediaAsset1)
+            fixture.localAudioAssetStore.put(FakeLocalMediaAsset1)
         }
 
         fixture.transactionRunner.run {
-            fixture.localAudioAssetDataStore.delete(FakeLocalMediaAsset1.id)
+            fixture.localAudioAssetStore.delete(FakeLocalMediaAsset1.id)
         }
 
-        val result = fixture.localAudioAssetDataStore.getAudioAssetFlow(FakeLocalMediaAsset1.id).first()
+        val result = fixture.localAudioAssetStore.getFlow(FakeLocalMediaAsset1.id).first()
         assertNull(result)
     }
 
     @Test
-    fun getAudioAssetCountFlow_returnsCount() = runTest {
-        assertEquals(0, fixture.localAudioAssetDataStore.getAudioAssetCountFlow().first())
+    fun getCountFlow_returnsCount() = runTest {
+        assertEquals(0, fixture.localAudioAssetStore.getCountFlow().first())
 
         fixture.transactionRunner.run {
-            fixture.localAudioAssetDataStore.put(FakeLocalMediaAsset1)
+            fixture.localAudioAssetStore.put(FakeLocalMediaAsset1)
         }
 
-        assertEquals(1, fixture.localAudioAssetDataStore.getAudioAssetCountFlow().first())
+        assertEquals(1, fixture.localAudioAssetStore.getCountFlow().first())
     }
 }

@@ -11,6 +11,7 @@ class FakeDatabaseTransactionScope(
     override val albumTrackDao: FakeAlbumTrackDao = FakeAlbumTrackDao(),
     override val artistDao: FakeArtistDao = FakeArtistDao(),
     override val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
+    override val mediaAssetSyncStateDao: FakeMediaAssetSyncStateDao = FakeMediaAssetSyncStateDao(),
     override val mediaCollectionDao: FakeMediaCollectionDao = FakeMediaCollectionDao(),
     override val audioAssetDao: FakeAudioAssetDao = FakeAudioAssetDao(mediaAssetDao),
     override val clipDao: FakeClipDao = FakeClipDao(),

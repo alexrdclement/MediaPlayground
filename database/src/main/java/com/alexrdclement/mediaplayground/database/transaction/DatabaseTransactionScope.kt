@@ -12,6 +12,7 @@ import com.alexrdclement.mediaplayground.database.dao.CompleteAudioClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ImageAssetDao
 import com.alexrdclement.mediaplayground.database.dao.MediaAssetDao
+import com.alexrdclement.mediaplayground.database.dao.MediaAssetSyncStateDao
 import com.alexrdclement.mediaplayground.database.dao.MediaCollectionDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackClipDao
@@ -30,6 +31,7 @@ interface DatabaseTransactionScope {
     val completeTrackDao: CompleteTrackDao
     val imageAssetDao: ImageAssetDao
     val mediaAssetDao: MediaAssetDao
+    val mediaAssetSyncStateDao: MediaAssetSyncStateDao
     val mediaCollectionDao: MediaCollectionDao
     val simpleAlbumDao: SimpleAlbumDao
     val trackClipDao: TrackClipDao
