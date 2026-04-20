@@ -3,8 +3,9 @@ package com.alexrdclement.mediaplayground.database.mapping
 import com.alexrdclement.mediaplayground.database.model.MediaAssetType
 import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
-import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.AudioAssetId
+import com.alexrdclement.mediaplayground.media.model.Image
+import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import kotlinx.collections.immutable.PersistentList
@@ -22,6 +23,11 @@ fun AudioAsset.toAudioAssetEntity(): AudioAssetEntity {
         bitRate = metadata.bitRate ?: 0,
         bitDepth = metadata.bitDepth ?: 0,
     )
+}
+
+fun MediaAsset.toMediaAssetRecord(): MediaAssetRecord = when (this) {
+    is AudioAsset -> toMediaAssetRecord()
+    is Image -> toMediaAssetRecord()
 }
 
 fun AudioAsset.toMediaAssetRecord(): MediaAssetRecord {

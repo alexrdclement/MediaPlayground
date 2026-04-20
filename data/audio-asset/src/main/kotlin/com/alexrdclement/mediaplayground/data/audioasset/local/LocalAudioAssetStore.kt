@@ -17,7 +17,7 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class LocalAudioAssetDataStore @Inject constructor(
+class LocalAudioAssetStore @Inject constructor(
     private val audioAssetDao: AudioAssetDao,
     private val databaseTransactionRunner: DatabaseTransactionRunner,
 ) {
@@ -27,17 +27,17 @@ class LocalAudioAssetDataStore @Inject constructor(
     suspend fun getByFileName(fileName: String): AudioAsset? =
         audioAssetDao.getAudioAssetByFileName(fileName)?.toAudioAsset()
 
-    fun getAudioAssetFlow(id: AudioAssetId): Flow<AudioAsset?> =
+    fun getFlow(id: AudioAssetId): Flow<AudioAsset?> =
         audioAssetDao.getAudioAssetFlow(id.value).map { it?.toAudioAsset() }
 
-    fun getAudioAssetPagingData(config: PagingConfig): Flow<PagingData<AudioAsset>> =
+    fun getPagingData(config: PagingConfig): Flow<PagingData<AudioAsset>> =
         Pager(config = config) {
             audioAssetDao.getAudioAssetsPagingSource()
         }.flow.map { pagingData ->
             pagingData.map { it.toAudioAsset() }
         }
 
-    fun getAudioAssetCountFlow(): Flow<Int> = audioAssetDao.getAudioAssetCountFlow()
+    fun getCountFlow(): Flow<Int> = audioAssetDao.getAudioAssetCountFlow()
 
     suspend fun put(audioAsset: AudioAsset) = databaseTransactionRunner.run {
         insertAudioAsset(

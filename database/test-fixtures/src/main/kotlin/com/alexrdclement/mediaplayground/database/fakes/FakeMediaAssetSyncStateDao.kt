@@ -17,6 +17,12 @@ class FakeMediaAssetSyncStateDao : MediaAssetSyncStateDao {
         _states.value = _states.value + (entity.mediaAssetId to entity)
     }
 
+    override suspend fun insertIfAbsent(entity: MediaAssetSyncStateEntity) {
+        if (!_states.value.containsKey(entity.mediaAssetId)) {
+            _states.value = _states.value + (entity.mediaAssetId to entity)
+        }
+    }
+
     override suspend fun delete(id: String) {
         _states.value = _states.value - id
     }

@@ -2,12 +2,14 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 
 import android.net.FakeUri
 import com.alexrdclement.media.mediaimport.fixtures.MediaImporterFixture
+import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeAudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioAssetId
 import com.alexrdclement.mediaplayground.media.model.FakeLocalMediaAsset1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum1
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaAssetSyncState
+import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.test.runTest
@@ -58,13 +60,18 @@ class AudioAssetImporterImplTest {
 
     @Test
     fun importTransaction_createsAndStoresMediaAsset() = runTest {
+        val audioAsset = makeAudioAsset(
+            id = AudioAssetId("test-id"),
+            uri = MediaAssetUri.Album(albumId = FakeLocalSimpleAlbum1.id, fileName = filePath.name),
+            originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
+            mediaMetadata = audioMetadata,
+            artists = FakeLocalSimpleAlbum1.artists,
+            images = FakeLocalSimpleAlbum1.images,
+        )
         val result = fixture.transactionRunner.run {
             audioFileImporter.importTransaction(
+                audioAsset = audioAsset,
                 filePath = filePath,
-                mediaMetadata = audioMetadata,
-                simpleAlbum = FakeLocalSimpleAlbum1,
-                id = AudioAssetId("test-id"),
-                originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
             )
         } as? Result.Success<*, *>
 
@@ -74,22 +81,24 @@ class AudioAssetImporterImplTest {
 
     @Test
     fun importTransaction_returnsExistingAsset_whenSameFileName() = runTest {
+        val audioAsset = makeAudioAsset(
+            id = AudioAssetId("test-id"),
+            uri = MediaAssetUri.Album(albumId = FakeLocalSimpleAlbum1.id, fileName = filePath.name),
+            originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
+            mediaMetadata = audioMetadata,
+            artists = FakeLocalSimpleAlbum1.artists,
+            images = FakeLocalSimpleAlbum1.images,
+        )
         val first = fixture.transactionRunner.run {
             audioFileImporter.importTransaction(
+                audioAsset = audioAsset,
                 filePath = filePath,
-                mediaMetadata = audioMetadata,
-                simpleAlbum = FakeLocalSimpleAlbum1,
-                id = AudioAssetId("test-id"),
-                originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
             )
         } as? Result.Success<*, *>
         val second = fixture.transactionRunner.run {
             audioFileImporter.importTransaction(
+                audioAsset = audioAsset,
                 filePath = filePath,
-                mediaMetadata = audioMetadata,
-                simpleAlbum = FakeLocalSimpleAlbum1,
-                id = AudioAssetId("test-id"),
-                originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
             )
         } as? Result.Success<*, *>
 

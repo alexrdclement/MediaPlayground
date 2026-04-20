@@ -11,5 +11,6 @@ suspend fun insertAudioAsset(mediaAsset: MediaAsset, audioAsset: AudioAsset) {
 
 context(scope: DatabaseTransactionScope)
 suspend fun deleteAudioAsset(id: String) {
+    scope.audioAssetDao.delete(id)
     deleteMediaAsset(id)
 }

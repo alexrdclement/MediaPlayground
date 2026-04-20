@@ -15,6 +15,9 @@ interface MediaAssetSyncStateDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(entity: MediaAssetSyncStateEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertIfAbsent(entity: MediaAssetSyncStateEntity)
+
     @Query("DELETE FROM media_asset_sync_states WHERE media_asset_id = :id")
     suspend fun delete(id: String)
 }

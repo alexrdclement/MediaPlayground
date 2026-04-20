@@ -8,14 +8,12 @@ import com.alexrdclement.mediaplayground.media.model.MediaAssetSyncState
 
 @Entity(
     tableName = "media_asset_sync_states",
-    foreignKeys = [
-        ForeignKey(
-            entity = MediaAsset::class,
-            parentColumns = ["id"],
-            childColumns = ["media_asset_id"],
-            onDelete = ForeignKey.CASCADE,
-        ),
-    ],
+    foreignKeys = [ForeignKey(
+        entity = MediaAsset::class,
+        parentColumns = ["id"],
+        childColumns = ["media_asset_id"],
+        onDelete = ForeignKey.CASCADE,
+    )],
 )
 data class MediaAssetSyncStateEntity(
     @PrimaryKey

@@ -4,6 +4,7 @@ import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeImage
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toMediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
+import com.alexrdclement.mediaplayground.media.mediaimport.util.runTracked
 import com.alexrdclement.mediaplayground.media.mediaimport.util.sha256
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.model.Image
@@ -11,10 +12,10 @@ import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
-import com.alexrdclement.mediaplayground.media.mediaimport.util.runTracked
 import com.alexrdclement.mediaplayground.media.store.FileReader
 import com.alexrdclement.mediaplayground.media.store.FileWriter
 import com.alexrdclement.mediaplayground.media.store.ImageMediaStore
+import com.alexrdclement.mediaplayground.media.store.MediaAssetStore
 import com.alexrdclement.mediaplayground.media.store.MediaAssetSyncStateStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
@@ -34,6 +35,7 @@ class ImageImporterImpl(
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val pathProvider: PathProvider,
     private val imageMediaStore: ImageMediaStore,
+    private val mediaAssetStore: MediaAssetStore,
     private val syncStateStore: MediaAssetSyncStateStore,
     private val transactionRunner: MediaStoreTransactionRunner,
     private val fileReader: FileReader,
@@ -45,18 +47,13 @@ class ImageImporterImpl(
             val metadata = mediaMetadataRetriever.getMediaMetadata(uri) as? MediaMetadata.Image
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
 
-            val (destinationPath, imageId) = copyFile(
+            val imageCopyResult = copyFile(
                 uri = uri,
                 mediaMetadata = metadata,
             ).guardSuccess { return@withContext Result.Failure(it) }
 
-            syncStateStore.runTracked(imageId, transactionRunner) {
-                importImageTransaction(
-                    imageId = imageId,
-                    destinationPath = destinationPath,
-                    originUri = MediaAssetOriginUri.AndroidContentUri(uri.toString()),
-                    mediaMetadata = metadata,
-                )
+            syncStateStore.runTracked(imageCopyResult.id, transactionRunner) {
+                importImageTransaction(image = imageCopyResult.image)
             }
         } catch (e: Throwable) {
             ensureActive()
@@ -78,13 +75,14 @@ class ImageImporterImpl(
             val metadata = mediaMetadataRetriever.getMediaMetadata(filePath = destinationPath) as? MediaMetadata.Image
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
 
+            val image = makeImage(
+                id = imageId,
+                uri = MediaAssetUri.Shared(destinationPath.name),
+                originUri = MediaAssetOriginUri.AndroidContentUri(""),
+                mediaMetadata = metadata,
+            )
             transactionRunner.run {
-                importImageTransaction(
-                    imageId = imageId,
-                    destinationPath = destinationPath,
-                    originUri = MediaAssetOriginUri.AndroidContentUri(""),
-                    mediaMetadata = metadata,
-                )
+                importImageTransaction(image = image)
             }
         } catch (e: Throwable) {
             ensureActive()
@@ -95,14 +93,28 @@ class ImageImporterImpl(
     internal suspend fun copyFile(
         uri: Uri,
         mediaMetadata: MediaMetadata.Image,
-    ): Result<Pair<Path, ImageId>, MediaImportError> = withContext(Dispatchers.IO) {
+    ): Result<ImageCopyResult, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val bytes = fileReader.readBytes(uri)
                 .guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
             val imageId = ImageId(bytes.sha256())
             val destination = pathProvider.getImagePath(imageId, mediaMetadata.extension)
+            val image = makeImage(
+                id = imageId,
+                uri = MediaAssetUri.Shared(destination.name),
+                originUri = MediaAssetOriginUri.AndroidContentUri(uri.toString()),
+                mediaMetadata = mediaMetadata,
+            )
+            mediaAssetStore.put(image)
+
             if (SystemFileSystem.exists(destination)) {
-                return@withContext Result.Success(destination to imageId)
+                return@withContext Result.Success(
+                    ImageCopyResult(
+                        path = destination,
+                        id = imageId,
+                        image = image,
+                    ),
+                )
             }
             try {
                 destination.parent?.let { SystemFileSystem.createDirectories(it) }
@@ -114,7 +126,13 @@ class ImageImporterImpl(
                 destination = destination,
             ).guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
 
-            Result.Success(path to imageId)
+            Result.Success(
+                ImageCopyResult(
+                    path = path,
+                    id = imageId,
+                    image = image,
+                ),
+            )
         } catch (e: Throwable) {
             ensureActive()
             Result.Failure(MediaImportError.Unknown(throwable = e))
@@ -152,18 +170,8 @@ class ImageImporterImpl(
 
     context(context: MediaStoreTransactionScope)
     internal suspend fun importImageTransaction(
-        imageId: ImageId,
-        destinationPath: Path,
-        originUri: MediaAssetOriginUri,
-        mediaMetadata: MediaMetadata.Image,
+        image: Image,
     ): Result<Image, MediaImportError> {
-        val assetUri = MediaAssetUri.Shared(destinationPath.name)
-        val image = makeImage(
-            id = imageId,
-            uri = assetUri,
-            originUri = originUri,
-            mediaMetadata = mediaMetadata,
-        )
         imageMediaStore.put(setOf(image))
         return Result.Success(image)
     }
@@ -172,4 +180,11 @@ class ImageImporterImpl(
     internal suspend fun importImagesTransaction(
         image: Set<Image>,
     ) = imageMediaStore.put(image)
+
 }
+
+internal data class ImageCopyResult(
+    val path: Path,
+    val id: ImageId,
+    val image: Image,
+)
