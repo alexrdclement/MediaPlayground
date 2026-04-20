@@ -6,11 +6,13 @@ import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.store.PathProvider
 import dev.zacsweers.metro.Inject
 
 class PlaylistControlImpl @Inject constructor(
     override val playlistState: PlaylistState,
     private val mediaControllerHolder: MediaControllerHolder,
+    private val pathProvider: PathProvider,
 ): PlaylistControl {
 
     override suspend fun load(mediaItem: MediaItem) {
@@ -46,7 +48,7 @@ class PlaylistControlImpl @Inject constructor(
             pause()
 
             clearMediaItems()
-            setMediaItem(track.toMediaItem())
+            setMediaItem(track.toMediaItem(pathProvider))
             if (wasPlaying) play() else pause()
         }
     }
@@ -58,7 +60,7 @@ class PlaylistControlImpl @Inject constructor(
 
             clearMediaItems()
 
-            val mediaItems = album.items.map { it.toMediaItem() }
+            val mediaItems = album.items.map { it.toMediaItem(pathProvider) }
             addMediaItems(0, mediaItems)
 
             if (wasPlaying) play() else pause()

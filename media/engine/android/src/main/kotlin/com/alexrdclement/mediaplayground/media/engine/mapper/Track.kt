@@ -6,21 +6,24 @@ import androidx.media3.common.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.largeImageUrl
+import com.alexrdclement.mediaplayground.media.store.PathProvider
+import java.io.File
 
-fun Track.toMediaItem(): MediaItem = when (this) {
-    is AudioTrack -> toAudioMediaItem()
+fun Track.toMediaItem(pathProvider: PathProvider): MediaItem = when (this) {
+    is AudioTrack -> toAudioMediaItem(pathProvider)
 }
 
 fun Track.toMediaMetadata(): MediaMetadata = when (this) {
     is AudioTrack -> toAudioMediaMetadata()
 }
 
-private fun AudioTrack.toAudioMediaItem(): MediaItem {
+private fun AudioTrack.toAudioMediaItem(pathProvider: PathProvider): MediaItem {
     val trackClip = clips.firstOrNull() ?: return MediaItem.Builder().build()
     val clip = trackClip.clip
+    val path = pathProvider.getPath(clip.mediaAsset.uri)
     return MediaItem.Builder()
         .setMediaId(id.value)
-        .setUri(clip.mediaAsset.uri.toUriString())
+        .setUri(Uri.fromFile(File(path.toString())))
         .setMediaMetadata(this.toAudioMediaMetadata())
         .build()
 }
