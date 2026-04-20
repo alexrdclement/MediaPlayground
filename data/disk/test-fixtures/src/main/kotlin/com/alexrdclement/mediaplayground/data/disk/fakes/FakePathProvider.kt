@@ -6,14 +6,6 @@ import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import kotlinx.io.files.Path
 
 class FakePathProvider : PathProvider {
-    override fun getAudioFilesDir(): Path {
-        return Path("file:/", "audio")
-    }
-
-    override fun getAudioFilePath(id: String, extension: String): Path {
-        return Path("file:/", "audio", "$id.$extension")
-    }
-
     override fun getPath(uri: MediaAssetUri): Path = when (uri) {
         is MediaAssetUri.Shared -> Path("file:/", "shared", uri.fileName)
         is MediaAssetUri.Album -> Path("file:/", uri.albumId.value, uri.fileName)

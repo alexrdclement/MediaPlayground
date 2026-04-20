@@ -101,9 +101,11 @@ class AudioAssetImporterImpl(
             val bytes = fileReader.readBytes(uri)
                 .guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
             val id = AudioAssetId(bytes.sha256())
-            val destination = pathProvider.getAudioFilePath(id.value, mediaMetadata.extension)
-
-            val assetUri = MediaAssetUri.Album(albumId = simpleAlbum.id, fileName = destination.name)
+            val assetUri = MediaAssetUri.Album(
+                albumId = simpleAlbum.id,
+                fileName = "${id.value}.${mediaMetadata.extension}",
+            )
+            val destination = pathProvider.getPath(assetUri)
             val audioAsset = makeAudioAsset(
                 id = id,
                 uri = assetUri,
