@@ -5,6 +5,7 @@ import com.alexrdclement.media.mediaimport.fixtures.MediaImporterFixture
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeAudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioAssetId
+import com.alexrdclement.mediaplayground.media.model.FakeImage1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalMediaAsset1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum1
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
@@ -18,6 +19,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class AudioAssetImporterImplTest {
 
@@ -37,6 +40,32 @@ class AudioAssetImporterImplTest {
         val asset = (result as Result.Success).value
         assertNotNull(asset)
         assertEquals(MediaAssetSyncState.Synced, fixture.syncStateStore.states[asset.id])
+    }
+
+    @Test
+    fun import_includesEmbeddedArtwork_inAudioAsset() = runTest {
+        val imageMetadata = MediaMetadata.Image(
+            mimeType = FakeImage1.mimeType,
+            extension = FakeImage1.extension,
+            widthPx = 1024,
+            heightPx = 768,
+            dateTimeOriginal = null,
+            gpsLatitude = null,
+            gpsLongitude = null,
+            cameraMake = null,
+            cameraModel = null,
+        )
+        fixture.mediaMetadataRetriever.mediaMetadata = audioMetadata.copy(
+            embeddedPicture = byteArrayOf(1, 2, 3),
+        )
+        fixture.mediaMetadataRetriever.fileMetadata = imageMetadata
+
+        val result = audioFileImporter.import(uri = FakeUri)
+
+        assertIs<Result.Success<*, *>>(result)
+        val asset = (result as Result.Success).value as AudioAsset
+        assertTrue(asset.images.isNotEmpty())
+        assertIs<MediaAssetUri.Album>(asset.images.first().uri)
     }
 
     @Test
@@ -77,6 +106,94 @@ class AudioAssetImporterImplTest {
 
         assertIs<Result.Success<*, *>>(result)
         assertNotNull(result.value)
+    }
+
+    @Test
+    fun importTransaction_linksImagesToAlbum() = runTest {
+        val audioAsset = makeAudioAsset(
+            id = AudioAssetId("test-id"),
+            uri = MediaAssetUri.Album(albumId = FakeLocalSimpleAlbum1.id, fileName = filePath.name),
+            originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
+            mediaMetadata = audioMetadata,
+            artists = FakeLocalSimpleAlbum1.artists,
+            images = FakeLocalSimpleAlbum1.images,
+        )
+        fixture.transactionRunner.run {
+            audioFileImporter.importTransaction(
+                audioAsset = audioAsset,
+                filePath = filePath,
+            )
+        }
+
+        val linkedImageIds = fixture.albumMediaStore.albumImageLinks[FakeLocalSimpleAlbum1.id]
+        assertNotNull(linkedImageIds)
+        assertTrue(linkedImageIds.containsAll(FakeLocalSimpleAlbum1.images.map { it.id }))
+    }
+
+    @Test
+    fun importTransaction_linksImagesToAlbum_onReimport() = runTest {
+        val audioAsset = makeAudioAsset(
+            id = AudioAssetId("test-id"),
+            uri = MediaAssetUri.Album(albumId = FakeLocalSimpleAlbum1.id, fileName = filePath.name),
+            originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
+            mediaMetadata = audioMetadata,
+            artists = FakeLocalSimpleAlbum1.artists,
+            images = FakeLocalSimpleAlbum1.images,
+        )
+        // First import
+        fixture.transactionRunner.run {
+            audioFileImporter.importTransaction(audioAsset = audioAsset, filePath = filePath)
+        }
+        // Clear links to simulate pre-fix state
+        fixture.albumMediaStore.albumImageLinks.clear()
+
+        // Re-import same file
+        fixture.transactionRunner.run {
+            audioFileImporter.importTransaction(audioAsset = audioAsset, filePath = filePath)
+        }
+
+        val linkedImageIds = fixture.albumMediaStore.albumImageLinks[FakeLocalSimpleAlbum1.id]
+        assertNotNull(linkedImageIds)
+        assertTrue(linkedImageIds.containsAll(FakeLocalSimpleAlbum1.images.map { it.id }))
+    }
+
+    @Test
+    fun importTransaction_setsImageSyncStateToSynced() = runTest {
+        val audioAsset = makeAudioAsset(
+            id = AudioAssetId("test-id"),
+            uri = MediaAssetUri.Album(albumId = FakeLocalSimpleAlbum1.id, fileName = filePath.name),
+            originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
+            mediaMetadata = audioMetadata,
+            artists = FakeLocalSimpleAlbum1.artists,
+            images = FakeLocalSimpleAlbum1.images,
+        )
+        fixture.transactionRunner.run {
+            audioFileImporter.importTransaction(audioAsset = audioAsset, filePath = filePath)
+        }
+
+        FakeLocalSimpleAlbum1.images.forEach { image ->
+            assertEquals(MediaAssetSyncState.Synced, fixture.syncStateStore.states[image.id])
+        }
+    }
+
+    @Test
+    fun importTransaction_doesNotLinkImages_whenAssetHasNoImages() = runTest {
+        val audioAsset = makeAudioAsset(
+            id = AudioAssetId("test-id"),
+            uri = MediaAssetUri.Album(albumId = FakeLocalSimpleAlbum1.id, fileName = filePath.name),
+            originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio"),
+            mediaMetadata = audioMetadata,
+            artists = FakeLocalSimpleAlbum1.artists,
+            images = kotlinx.collections.immutable.persistentListOf(),
+        )
+        fixture.transactionRunner.run {
+            audioFileImporter.importTransaction(
+                audioAsset = audioAsset,
+                filePath = filePath,
+            )
+        }
+
+        assertNull(fixture.albumMediaStore.albumImageLinks[FakeLocalSimpleAlbum1.id])
     }
 
     @Test

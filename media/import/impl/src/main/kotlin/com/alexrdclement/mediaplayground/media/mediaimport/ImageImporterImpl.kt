@@ -64,32 +64,6 @@ class ImageImporterImpl(
     override suspend fun import(uris: List<Uri>): Map<Uri, Result<Image, MediaImportError>> =
         uris.associateWith { import(it) }
 
-    internal suspend fun import(
-        byteArray: ByteArray,
-    ): Result<Image, MediaImportError> = withContext(Dispatchers.IO) {
-        try {
-            val (destinationPath, imageId) = copyBitmap(
-                byteArray = byteArray,
-            ).guardSuccess { return@withContext Result.Failure(it) }
-
-            val metadata = mediaMetadataRetriever.getMediaMetadata(filePath = destinationPath) as? MediaMetadata.Image
-                ?: return@withContext Result.Failure(MediaImportError.InputFileError)
-
-            val image = makeImage(
-                id = imageId,
-                uri = MediaAssetUri.Shared(destinationPath.name),
-                originUri = MediaAssetOriginUri.AndroidContentUri(""),
-                mediaMetadata = metadata,
-            )
-            transactionRunner.run {
-                importImageTransaction(image = image)
-            }
-        } catch (e: Throwable) {
-            ensureActive()
-            Result.Failure(MediaImportError.Unknown(throwable = e))
-        }
-    }
-
     internal suspend fun copyFile(
         uri: Uri,
         mediaMetadata: MediaMetadata.Image,
@@ -98,10 +72,11 @@ class ImageImporterImpl(
             val bytes = fileReader.readBytes(uri)
                 .guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
             val imageId = ImageId(bytes.sha256())
-            val destination = pathProvider.getImagePath(imageId, mediaMetadata.extension)
+            val mediaUri = MediaAssetUri.Shared("${imageId.value}.${mediaMetadata.extension}")
+            val destination = pathProvider.getPath(mediaUri)
             val image = makeImage(
                 id = imageId,
-                uri = MediaAssetUri.Shared(destination.name),
+                uri = mediaUri,
                 originUri = MediaAssetOriginUri.AndroidContentUri(uri.toString()),
                 mediaMetadata = mediaMetadata,
             )
@@ -141,27 +116,35 @@ class ImageImporterImpl(
 
     internal suspend fun copyBitmap(
         byteArray: ByteArray,
+        uri: MediaAssetUri,
         imageId: ImageId = ImageId(byteArray.sha256()),
-    ): Result<Pair<Path, ImageId>, MediaImportError> = withContext(Dispatchers.IO) {
+    ): Result<Image, MediaImportError> = withContext(Dispatchers.IO) {
         try {
-            val destination = pathProvider.getImagePath(
-                imageId = imageId,
-                extension = "png",
-            )
-            if (SystemFileSystem.exists(destination)) {
-                return@withContext Result.Success(destination to imageId)
-            }
-            try {
-                destination.parent?.let { SystemFileSystem.createDirectories(it) }
-            } catch (e: IOException) {
-                return@withContext Result.Failure(MediaImportError.MkdirError)
-            }
-            val path = fileWriter.writeBitmapToDisk(
-                byteArray = byteArray,
-                destination = destination,
-            ).guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
+            val destination = pathProvider.getPath(uri)
 
-            Result.Success(path to imageId)
+            if (!SystemFileSystem.exists(destination)) {
+                try {
+                    destination.parent?.let { SystemFileSystem.createDirectories(it) }
+                } catch (e: IOException) {
+                    return@withContext Result.Failure(MediaImportError.MkdirError)
+                }
+                fileWriter.writeBitmapToDisk(
+                    byteArray = byteArray,
+                    destination = destination,
+                ).guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
+            }
+
+            val metadata = mediaMetadataRetriever.getMediaMetadata(filePath = destination) as? MediaMetadata.Image
+                ?: return@withContext Result.Failure(MediaImportError.InputFileError)
+
+            Result.Success(
+                makeImage(
+                    id = imageId,
+                    uri = uri,
+                    originUri = MediaAssetOriginUri.AndroidContentUri(""),
+                    mediaMetadata = metadata,
+                )
+            )
         } catch (e: Throwable) {
             ensureActive()
             Result.Failure(MediaImportError.Unknown(throwable = e))

@@ -15,12 +15,12 @@ sealed interface MediaItem {
     val duration: TimeUnit
 }
 
-val MediaItem.thumbnailImageUrl: String?
+val MediaItem.thumbnailImageUri: MediaAssetUri?
     get() {
         // Third image is typically too low-res
         val image = images.getOrNull(1) ?: images.firstOrNull()
-        return image?.uri?.toUriString()
+        return image?.uri
     }
 
-val MediaItem.largeImageUrl: String?
-    get() = images.firstOrNull()?.uri?.toUriString()
+val MediaItem.largeImageUri: MediaAssetUri?
+    get() = images.firstOrNull()?.uri

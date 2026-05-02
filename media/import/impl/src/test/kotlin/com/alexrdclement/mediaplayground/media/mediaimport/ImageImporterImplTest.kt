@@ -3,8 +3,10 @@ package com.alexrdclement.mediaplayground.media.mediaimport
 import android.net.FakeUri
 import com.alexrdclement.media.mediaimport.fixtures.MediaImporterFixture
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
+import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum1
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.MediaAssetSyncState
+import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.test.runTest
@@ -53,27 +55,44 @@ class ImageImporterImplTest {
 
     @Test
     fun copyBitmap_returnsSameImageId_forSameBytes() = runTest {
+        fixture.mediaMetadataRetriever.fileMetadata = imageMetadata
         val bytes = byteArrayOf(1, 2, 3)
-        val first = imageImporter.copyBitmap(bytes)
-        val second = imageImporter.copyBitmap(bytes)
+        val uri = MediaAssetUri.Album(FakeLocalSimpleAlbum1.id, "art.png")
+        val first = imageImporter.copyBitmap(bytes, uri)
+        val second = imageImporter.copyBitmap(bytes, uri)
         assertIs<Result.Success<*, *>>(first)
         assertIs<Result.Success<*, *>>(second)
         assertEquals(
-            (first as Result.Success).value.second,
-            (second as Result.Success).value.second,
+            (first as Result.Success).value.id,
+            (second as Result.Success).value.id,
         )
     }
 
     @Test
     fun copyBitmap_returnsDifferentImageId_forDifferentBytes() = runTest {
-        val first = imageImporter.copyBitmap(byteArrayOf(1, 2, 3))
-        val second = imageImporter.copyBitmap(byteArrayOf(4, 5, 6))
+        fixture.mediaMetadataRetriever.fileMetadata = imageMetadata
+        val uri = MediaAssetUri.Album(FakeLocalSimpleAlbum1.id, "art.png")
+        val first = imageImporter.copyBitmap(byteArrayOf(1, 2, 3), uri)
+        val second = imageImporter.copyBitmap(byteArrayOf(4, 5, 6), uri)
         assertIs<Result.Success<*, *>>(first)
         assertIs<Result.Success<*, *>>(second)
         assertNotEquals(
-            (first as Result.Success).value.second,
-            (second as Result.Success).value.second,
+            (first as Result.Success).value.id,
+            (second as Result.Success).value.id,
         )
+    }
+
+    @Test
+    fun copyBitmap_storesImageWithProvidedUri() = runTest {
+        fixture.mediaMetadataRetriever.fileMetadata = imageMetadata
+        val albumId = FakeLocalSimpleAlbum1.id
+        val uri = MediaAssetUri.Album(albumId, "art.png")
+
+        val result = imageImporter.copyBitmap(byteArrayOf(1, 2, 3), uri)
+
+        assertIs<Result.Success<*, *>>(result)
+        val image = (result as Result.Success).value as Image
+        assertEquals(uri, image.uri)
     }
 
     @Test

@@ -11,12 +11,12 @@ data class SimpleAlbum(
     val images: PersistentList<Image>,
 )
 
-val SimpleAlbum.thumbnailImageUrl: String?
+val SimpleAlbum.thumbnailImageUri: MediaAssetUri?
     get() {
         // Third image is typically too low-res
         val image = images.getOrNull(1) ?: images.firstOrNull()
-        return image?.uri?.toUriString()
+        return image?.uri
     }
 
-val SimpleAlbum.largeImageUrl: String?
-    get() = images.firstOrNull()?.uri?.toUriString()
+val SimpleAlbum.largeImageUri: MediaAssetUri?
+    get() = images.firstOrNull()?.uri

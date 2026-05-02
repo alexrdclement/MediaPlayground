@@ -4,15 +4,18 @@ import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeAudioAsset
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toMediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
+import com.alexrdclement.mediaplayground.media.mediaimport.util.runTracked
 import com.alexrdclement.mediaplayground.media.mediaimport.util.sha256
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioAssetId
+import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
+import com.alexrdclement.mediaplayground.media.model.MediaAssetSyncState
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.mediaimport.util.runTracked
+import com.alexrdclement.mediaplayground.media.store.AlbumMediaStore
 import com.alexrdclement.mediaplayground.media.store.AudioAssetStore
 import com.alexrdclement.mediaplayground.media.store.FileReader
 import com.alexrdclement.mediaplayground.media.store.FileWriter
@@ -23,7 +26,10 @@ import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
 import com.alexrdclement.mediaplayground.media.store.PathProvider
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.guardSuccess
+import com.alexrdclement.mediaplayground.model.result.successOrNull
 import dev.zacsweers.metro.Inject
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
@@ -39,6 +45,7 @@ class AudioAssetImporterImpl(
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val artistImporter: ArtistImporterImpl,
     private val albumImporter: AlbumImporterImpl,
+    private val albumMediaStore: AlbumMediaStore,
     private val pathProvider: PathProvider,
     private val fileWriter: FileWriter,
     private val imageImporter: ImageImporterImpl,
@@ -92,9 +99,13 @@ class AudioAssetImporterImpl(
             )
         }.guardSuccess { return@withContext Result.Failure(it) }
 
-        val embeddedPicture = mediaMetadata.embeddedPicture
-        if (embeddedPicture != null) {
-            imageImporter.copyBitmap(byteArray = embeddedPicture)
+        val embeddedImage = mediaMetadata.embeddedPicture?.let { embeddedPicture ->
+            val imageId = ImageId(embeddedPicture.sha256())
+            imageImporter.copyBitmap(
+                byteArray = embeddedPicture,
+                uri = MediaAssetUri.Album(albumId = simpleAlbum.id, fileName = "${imageId.value}.png"),
+                imageId = imageId,
+            ).successOrNull()
         }
 
         try {
@@ -106,13 +117,14 @@ class AudioAssetImporterImpl(
                 fileName = "${id.value}.${mediaMetadata.extension}",
             )
             val destination = pathProvider.getPath(assetUri)
+            val images = embeddedImage?.let { simpleAlbum.images.plus(it).toPersistentList() } ?: simpleAlbum.images
             val audioAsset = makeAudioAsset(
                 id = id,
                 uri = assetUri,
                 originUri = MediaAssetOriginUri.AndroidContentUri(uri.toString()),
                 mediaMetadata = mediaMetadata,
                 artists = simpleAlbum.artists,
-                images = simpleAlbum.images,
+                images = images,
             )
             mediaAssetStore.put(audioAsset)
 
@@ -158,11 +170,20 @@ class AudioAssetImporterImpl(
         filePath: Path,
     ): Result<AudioAsset, MediaImportError> {
         val existing = audioAssetStore.getByFileName(filePath.name)
-        if (existing != null) {
-            return Result.Success(existing)
+
+        if (existing == null) {
+            imageImporter.importImagesTransaction(audioAsset.images.toSet())
+            audioAsset.images.forEach { image ->
+                syncStateStore.upsert(image.id, MediaAssetSyncState.Synced)
+            }
+            audioAssetStore.put(audioAsset)
         }
-        imageImporter.importImagesTransaction(audioAsset.images.toSet())
-        audioAssetStore.put(audioAsset)
-        return Result.Success(audioAsset)
+
+        val albumId = (audioAsset.uri as? MediaAssetUri.Album)?.albumId
+        if (albumId != null && audioAsset.images.isNotEmpty()) {
+            albumMediaStore.addImagesToAlbum(albumId, audioAsset.images.map { it.id }.toSet())
+        }
+
+        return Result.Success(existing ?: audioAsset)
     }
 }

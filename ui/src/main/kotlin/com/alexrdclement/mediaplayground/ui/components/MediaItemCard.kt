@@ -26,7 +26,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.palette.components.core.Surface
@@ -64,7 +64,7 @@ fun MediaItemCard(
                     .aspectRatio(1f, matchHeightConstraintsFirst = false)
             ) {
                 MediaItemArtwork(
-                    imageUrl = mediaItem.thumbnailImageUrl,
+                    uri = mediaItem.thumbnailImageUri,
                     modifier = Modifier
                         .aspectRatio(1f)
                         .fillMaxSize()

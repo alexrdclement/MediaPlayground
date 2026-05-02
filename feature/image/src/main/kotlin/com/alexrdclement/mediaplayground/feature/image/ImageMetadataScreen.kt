@@ -158,7 +158,7 @@ private fun LoadedContent(
     ) {
         item {
             MediaItemArtwork(
-                imageUrl = state.image.uri.toUriString(),
+                uri = state.image.uri,
                 modifier = Modifier
                     .fillMaxWidth()
             )

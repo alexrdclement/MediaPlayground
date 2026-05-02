@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.AudioTrack
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
@@ -48,7 +48,7 @@ fun TrackCardWide(
                 modifier = Modifier.size(64.dp)
             ) {
                 MediaItemArtwork(
-                    imageUrl = track.thumbnailImageUrl,
+                    uri = track.thumbnailImageUri,
                     isEnabled = isEnabled,
                     modifier = Modifier
                         .aspectRatio(1f)

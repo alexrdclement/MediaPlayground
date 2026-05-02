@@ -138,7 +138,7 @@ private fun LoadedContent(
         ) {
             item {
                 MediaItemArtwork(
-                    imageUrl = state.imageUrl,
+                    uri = state.imageUri,
                     modifier = Modifier
                         .heightIn(
                             max = with(LocalDensity.current) {
@@ -247,7 +247,7 @@ private fun Preview() {
             )
         }
         val uiState = AlbumUiState.Success(
-            imageUrl = null,
+            imageUri = null,
             title = album.title,
             artists = album.artists,
             tracks = tracks,

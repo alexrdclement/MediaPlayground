@@ -11,7 +11,7 @@ import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.Track
-import com.alexrdclement.mediaplayground.media.model.largeImageUrl
+import com.alexrdclement.mediaplayground.media.model.largeImageUri
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
@@ -94,7 +94,7 @@ class AlbumViewModel(
         }
 
         return@combine AlbumUiState.Success(
-            imageUrl = album.largeImageUrl,
+            imageUri = album.largeImageUri,
             title = album.title,
             artists = album.artists,
             tracks = tracks,

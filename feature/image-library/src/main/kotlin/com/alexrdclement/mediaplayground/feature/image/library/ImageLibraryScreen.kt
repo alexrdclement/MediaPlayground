@@ -167,7 +167,7 @@ private fun ImageGrid(
             var touchOffset by remember { mutableStateOf(Offset.Zero) }
             Box {
                 MediaItemArtwork(
-                    imageUrl = image.uri.toUriString(),
+                    uri = image.uri,
                     modifier = Modifier
                         .pointerInput(Unit) {
                             awaitEachGesture {

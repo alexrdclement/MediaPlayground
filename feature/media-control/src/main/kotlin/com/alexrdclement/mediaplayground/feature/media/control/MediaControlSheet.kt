@@ -30,8 +30,8 @@ import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.largeImageUrl
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.largeImageUri
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.palette.components.layout.PeekSheetState
@@ -127,8 +127,8 @@ fun MediaControlSheet(
             }
             val uiMediaItem by derivedStateOf {
                 UiMediaItem(
-                    artworkLargeUrl = mediaItem.largeImageUrl,
-                    artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
+                    artworkLargeUrl = mediaItem.largeImageUri?.toUriString(),
+                    artworkThumbnailUrl = mediaItem.thumbnailImageUri?.toUriString(),
                     title = mediaItem.title,
                     artists = artists,
                 )

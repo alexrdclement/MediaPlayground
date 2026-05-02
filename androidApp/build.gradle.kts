@@ -54,9 +54,12 @@ android {
 dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.coil.core)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.metrox.viewmodel.compose)
     implementation(libs.palette.navigation)
 
     implementation(projects.app)
+    implementation(projects.media.model)
+    implementation(projects.media.store.api)
 }
