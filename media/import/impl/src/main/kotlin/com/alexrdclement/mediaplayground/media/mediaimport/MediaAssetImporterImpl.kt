@@ -20,7 +20,7 @@ class MediaAssetImporterImpl(
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val syncStateStore: MediaAssetSyncStateStore,
     private val transactionRunner: MediaStoreTransactionRunner,
-    private val audioFileImporter: Lazy<AudioAssetImporterImpl>,
+    private val audioAssetImporter: Lazy<AudioAssetImporterImpl>,
     private val imageImporter: Lazy<ImageImporterImpl>,
 ): MediaAssetImporter {
     override suspend fun import(
@@ -47,13 +47,13 @@ class MediaAssetImporterImpl(
         uri: Uri,
         mediaMetadata: MediaMetadata.Audio,
     ): Result<MediaAssetImportResult.Audio, MediaImportError> = withContext(Dispatchers.IO) {
-        val audioCopyResult = audioFileImporter.value.copyFiles(
+        val audioCopyResult = audioAssetImporter.value.copyFiles(
             uri = uri,
             mediaMetadata = mediaMetadata,
         ).guardSuccess { return@withContext Result.Failure(it) }
 
         val audioAsset = syncStateStore.runTracked(audioCopyResult.id, transactionRunner) {
-            audioFileImporter.value.importTransaction(
+            audioAssetImporter.value.importTransaction(
                 audioAsset = audioCopyResult.audioAsset,
                 filePath = audioCopyResult.path,
             )

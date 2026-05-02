@@ -22,11 +22,9 @@ class FakeMediaMetadataRetriever : MediaMetadataRetriever {
         extension = "mp3",
     )
 
-    override suspend fun getMediaMetadata(filePath: Path): MediaMetadata {
-        return mediaMetadata
-    }
+    var fileMetadata: MediaMetadata? = null
 
-    override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata {
-        return mediaMetadata
-    }
+    override suspend fun getMediaMetadata(filePath: Path): MediaMetadata = fileMetadata ?: mediaMetadata
+
+    override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata = mediaMetadata
 }

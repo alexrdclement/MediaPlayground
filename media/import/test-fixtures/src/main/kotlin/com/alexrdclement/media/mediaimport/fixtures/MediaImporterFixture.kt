@@ -81,6 +81,7 @@ class MediaImporterFixture(
             mediaMetadataRetriever = mediaMetadataRetriever,
             artistImporter = artistImporter,
             albumImporter = albumImporter,
+            albumMediaStore = albumMediaStore,
             pathProvider = pathProvider,
             fileWriter = fileWriter,
             imageImporter = imageImporter,
@@ -104,7 +105,7 @@ class MediaImporterFixture(
             mediaMetadataRetriever = mediaMetadataRetriever,
             syncStateStore = syncStateStore,
             transactionRunner = transactionRunner,
-            audioFileImporter = lazy { audioAssetImporter },
+            audioAssetImporter = lazy { audioAssetImporter },
             imageImporter = lazy { imageImporter },
         )
     }

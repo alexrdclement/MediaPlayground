@@ -5,16 +5,12 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.Track
-import com.alexrdclement.mediaplayground.media.model.largeImageUrl
+import com.alexrdclement.mediaplayground.media.model.largeImageUri
 import com.alexrdclement.mediaplayground.media.store.PathProvider
 import java.io.File
 
 fun Track.toMediaItem(pathProvider: PathProvider): MediaItem = when (this) {
     is AudioTrack -> toAudioMediaItem(pathProvider)
-}
-
-fun Track.toMediaMetadata(): MediaMetadata = when (this) {
-    is AudioTrack -> toAudioMediaMetadata()
 }
 
 private fun AudioTrack.toAudioMediaItem(pathProvider: PathProvider): MediaItem {
@@ -24,11 +20,11 @@ private fun AudioTrack.toAudioMediaItem(pathProvider: PathProvider): MediaItem {
     return MediaItem.Builder()
         .setMediaId(id.value)
         .setUri(Uri.fromFile(File(path.toString())))
-        .setMediaMetadata(this.toAudioMediaMetadata())
+        .setMediaMetadata(toAudioMediaMetadata(pathProvider))
         .build()
 }
 
-private fun AudioTrack.toAudioMediaMetadata(): MediaMetadata {
+private fun AudioTrack.toAudioMediaMetadata(pathProvider: PathProvider): MediaMetadata {
     return MediaMetadata.Builder()
         .setAlbumArtist(simpleAlbum.artists.joinToString { it.name ?: "Unknown artist" })
         .setArtist(simpleAlbum.artists.joinToString { it.name ?: "Unknown artist" })
@@ -36,8 +32,9 @@ private fun AudioTrack.toAudioMediaMetadata(): MediaMetadata {
         .setDisplayTitle(title)
         .setTitle(title)
         .apply {
-            simpleAlbum.largeImageUrl?.let {
-                setArtworkUri(Uri.parse(it))
+            simpleAlbum.largeImageUri?.let { mediaUri ->
+                val artworkPath = pathProvider.getPath(mediaUri)
+                setArtworkUri(Uri.fromFile(File(artworkPath.toString())))
             }
         }
         .build()

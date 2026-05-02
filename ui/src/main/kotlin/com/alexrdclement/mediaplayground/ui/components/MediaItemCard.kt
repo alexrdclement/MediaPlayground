@@ -27,8 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
-import com.alexrdclement.mediaplayground.ui.theme.component.media.mediaItemCard
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.embarrasdf.palette.components.core.Surface
@@ -82,7 +81,7 @@ fun MediaItemCard(
                     .aspectRatio(ratio = 1f, matchHeightConstraintsFirst = false),
             ) {
                 MediaItemArtwork(
-                    imageUrl = mediaItem.thumbnailImageUrl,
+                    uri = mediaItem.thumbnailImageUri,
                     modifier = Modifier
                         .aspectRatio(1f)
                         .fillMaxSize(),

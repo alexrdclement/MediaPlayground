@@ -2,7 +2,6 @@ package com.alexrdclement.mediaplayground.data.disk
 
 import android.app.Application
 import android.os.Environment
-import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import dev.zacsweers.metro.Inject
 import kotlinx.io.files.Path
@@ -32,15 +31,7 @@ class PathProviderImpl @Inject constructor(
     }
 
     override fun getPath(uri: MediaAssetUri): Path = when (uri) {
-        is MediaAssetUri.Shared -> Path(audioImportDir, "shared", uri.fileName)
+        is MediaAssetUri.Shared -> Path(imageImportDir, "images", uri.fileName)
         is MediaAssetUri.Album -> Path(audioImportDir, uri.albumId.value, uri.fileName)
-    }
-
-    override fun getImagesDir(): Path {
-        return Path(imageImportDir, "images")
-    }
-
-    override fun getImagePath(imageId: ImageId, extension: String): Path {
-        return Path(imageImportDir, "images", "${imageId.value}.$extension")
     }
 }

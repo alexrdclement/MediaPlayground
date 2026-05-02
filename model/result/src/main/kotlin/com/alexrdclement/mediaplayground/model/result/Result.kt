@@ -5,7 +5,11 @@ sealed interface Result<Success, Failure> {
     data class Failure<Success, Failure>(val failure: Failure) : Result<Success, Failure>
 }
 
-fun <Success, Failure> Result<Success, Failure>.successOrElse(onFailure: (Failure) -> Success): Success {
+fun <Success> Result<Success, *>.successOrNull(): Success? = if (this is Result.Success) value else null
+
+fun <Success, Failure> Result<Success, Failure>.successOrElse(
+    onFailure: (Failure) -> Success
+): Success {
     return when (this) {
         is Result.Success -> this.value
         is Result.Failure -> onFailure(this.failure)

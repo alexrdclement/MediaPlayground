@@ -30,8 +30,9 @@ import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.largeImageUrl
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.largeImageUri
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
+import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.embarrasdf.palette.components.layout.PeekSheetState
 import com.embarrasdf.palette.components.media.model.Artist
@@ -129,15 +130,13 @@ fun MediaControlSheet(
                     }
                 }
             }
-            val uiMediaItem by remember(mediaItem, fallbackArtistName) {
-                derivedStateOf {
-                    UiMediaItem(
-                        artworkLargeUrl = mediaItem.largeImageUrl,
-                        artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
-                        title = mediaItem.title,
-                        artists = artists,
-                    )
-                }
+            val uiMediaItem by derivedStateOf {
+                UiMediaItem(
+                    artworkLargeUrl = mediaItem.largeImageUri?.toUriString(),
+                    artworkThumbnailUrl = mediaItem.thumbnailImageUri?.toUriString(),
+                    title = mediaItem.title,
+                    artists = artists,
+                )
             }
 
             val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()

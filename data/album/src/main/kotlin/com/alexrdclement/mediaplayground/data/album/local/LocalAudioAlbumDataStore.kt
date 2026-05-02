@@ -14,9 +14,11 @@ import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactio
 import com.alexrdclement.mediaplayground.database.transaction.deleteAlbum
 import com.alexrdclement.mediaplayground.database.transaction.insertAlbum
 import com.alexrdclement.mediaplayground.database.transaction.updateAlbum
+import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.ArtistId
+import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import dev.zacsweers.metro.Inject
 import kotlin.time.Clock
@@ -73,6 +75,11 @@ class LocalAudioAlbumDataStore @Inject constructor(
             imageIds = album.images.map { it.id.value }.toSet(),
             artistIds = album.artists.map { it.id.value }.toSet(),
         )
+    }
+
+    suspend fun addImagesToAlbum(albumId: AlbumId, imageIds: Set<ImageId>) = databaseTransactionRunner.run {
+        val crossRefs = imageIds.map { AlbumImageCrossRef(albumId.value, it.value) }.toTypedArray()
+        albumImageDao.insert(*crossRefs)
     }
 
     suspend fun updateAlbumTitle(id: AlbumId, title: String) {

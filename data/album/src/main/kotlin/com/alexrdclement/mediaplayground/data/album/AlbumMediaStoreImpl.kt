@@ -4,6 +4,7 @@ import com.alexrdclement.mediaplayground.data.album.local.LocalAudioAlbumDataSto
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.ArtistId
+import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.store.AlbumMediaStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
@@ -27,6 +28,10 @@ class AlbumMediaStoreImpl @Inject constructor(
             albumTitle = albumTitle,
             artistId = artistId,
         )
+    }
+
+    override suspend fun addImagesToAlbum(albumId: AlbumId, imageIds: Set<ImageId>) {
+        localAudioAlbumDataStore.addImagesToAlbum(albumId, imageIds)
     }
 
     context(scope: MediaStoreTransactionScope)
