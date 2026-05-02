@@ -8,6 +8,7 @@ sealed class FileWriteError {
     data object UnknownInputFileError : FileWriteError()
     data class InputFileNotFound(val throwable: Throwable) : FileWriteError()
     data object InputStreamError : FileWriteError()
+    data class MkdirError(val throwable: Throwable) : FileWriteError()
     data class Unknown(val throwable: Throwable?) : FileWriteError()
 }
 

@@ -33,7 +33,6 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
-import kotlinx.io.IOException
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 
@@ -137,12 +136,6 @@ class AudioAssetImporterImpl(
                         audioAsset = audioAsset,
                     ),
                 )
-            }
-
-            try {
-                destination.parent?.let { SystemFileSystem.createDirectories(it) }
-            } catch (e: IOException) {
-                return@withContext Result.Failure(MediaImportError.MkdirError)
             }
 
             val path = fileWriter.writeFileToDisk(

@@ -5,6 +5,7 @@ import android.content.ContentResolver
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import com.alexrdclement.mediaplayground.model.result.Result
+import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,6 +24,7 @@ class FileWriterImpl @Inject constructor(
         byteArray: ByteArray,
         destination: Path,
     ): Result<Path, FileWriteError> {
+        destination.ensureParentDir().guardSuccess { return Result.Failure(it) }
         return byteArray.writeToDisk(destination)
     }
 
@@ -30,6 +32,7 @@ class FileWriterImpl @Inject constructor(
         contentUri: Uri,
         destination: Path,
     ): Result<Path, FileWriteError> {
+        destination.ensureParentDir().guardSuccess { return Result.Failure(it) }
         return contentUri.writeToDisk(destination, application.contentResolver)
     }
 
@@ -42,12 +45,27 @@ class FileWriterImpl @Inject constructor(
         val documentFileName = documentFile.name
             ?: return Result.Failure(FileWriteError.UnknownInputFileError)
 
+        val destination = Path(destinationDir, documentFileName)
+        destination.ensureParentDir().guardSuccess { return Result.Failure(it) }
         return documentFile.uri.writeToDisk(
-            destination = Path(destinationDir, documentFileName),
+            destination = destination,
             contentResolver = application.contentResolver,
         )
     }
 }
+
+private suspend fun Path.ensureParentDir(): Result<Unit, FileWriteError> =
+    withContext(Dispatchers.IO) {
+        val parent = parent ?: return@withContext Result.Success(Unit)
+        try {
+            SystemFileSystem.createDirectories(parent)
+            Result.Success(Unit)
+        } catch (e: IOException) {
+            Result.Failure(FileWriteError.MkdirError(e))
+        } catch (e: Throwable) {
+            Result.Failure(FileWriteError.MkdirError(e))
+        }
+    }
 
 suspend fun ByteArray.writeToDisk(destination: Path): Result<Path, FileWriteError> =
     withContext(Dispatchers.IO) {

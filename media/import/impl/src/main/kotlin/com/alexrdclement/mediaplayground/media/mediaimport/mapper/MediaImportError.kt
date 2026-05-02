@@ -17,6 +17,7 @@ fun FileWriteError.toMediaImportError() = when (this) {
     is FileWriteError.InputFileNotFound ->
         MediaImportError.FileWriteError.InputFileNotFound(throwable = throwable)
     FileWriteError.InputStreamError -> MediaImportError.FileWriteError.InputStreamError
+    is FileWriteError.MkdirError -> MediaImportError.MkdirError
     is FileWriteError.Unknown -> MediaImportError.FileWriteError.Unknown(throwable = throwable)
 }
 
