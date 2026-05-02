@@ -26,7 +26,6 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
-import kotlinx.io.IOException
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 
@@ -91,11 +90,6 @@ class ImageImporterImpl(
                     ),
                 )
             }
-            try {
-                destination.parent?.let { SystemFileSystem.createDirectories(it) }
-            } catch (e: IOException) {
-                return@withContext Result.Failure(MediaImportError.MkdirError)
-            }
             val path = fileWriter.writeFileToDisk(
                 contentUri = uri,
                 destination = destination,
@@ -123,11 +117,6 @@ class ImageImporterImpl(
             val destination = pathProvider.getPath(uri)
 
             if (!SystemFileSystem.exists(destination)) {
-                try {
-                    destination.parent?.let { SystemFileSystem.createDirectories(it) }
-                } catch (e: IOException) {
-                    return@withContext Result.Failure(MediaImportError.MkdirError)
-                }
                 fileWriter.writeBitmapToDisk(
                     byteArray = byteArray,
                     destination = destination,

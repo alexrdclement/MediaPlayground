@@ -15,6 +15,11 @@ class PathProviderImpl @Inject constructor(
     private val imageImportDir: Path
         get() = externalFilesDir(Environment.DIRECTORY_PICTURES)
 
+    override fun getPath(uri: MediaAssetUri): Path = when (uri) {
+        is MediaAssetUri.Shared -> Path(imageImportDir, "images", uri.fileName)
+        is MediaAssetUri.Album -> Path(audioImportDir, uri.albumId.value, uri.fileName)
+    }
+
     private fun externalFilesDir(type: String): Path {
         val defaultPath = Path(application.filesDir.absolutePath)
 
@@ -28,10 +33,5 @@ class PathProviderImpl @Inject constructor(
         }
 
         return defaultPath
-    }
-
-    override fun getPath(uri: MediaAssetUri): Path = when (uri) {
-        is MediaAssetUri.Shared -> Path(imageImportDir, "images", uri.fileName)
-        is MediaAssetUri.Album -> Path(audioImportDir, uri.albumId.value, uri.fileName)
     }
 }
