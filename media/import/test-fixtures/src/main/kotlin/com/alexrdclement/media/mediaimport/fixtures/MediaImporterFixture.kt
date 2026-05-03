@@ -4,7 +4,7 @@ import com.alexrdclement.media.metadata.FakeMediaMetadataRetriever
 import com.alexrdclement.media.store.FakeAlbumMediaStore
 import com.alexrdclement.media.store.FakeArtistMediaStore
 import com.alexrdclement.media.store.FakeClipMediaStore
-import com.alexrdclement.media.store.FakeFileReader
+import com.alexrdclement.media.store.FakeContentUriReader
 import com.alexrdclement.media.store.FakeFileWriter
 import com.alexrdclement.media.store.FakeImageMediaStore
 import com.alexrdclement.media.store.FakeAudioAssetStore
@@ -23,7 +23,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporterImpl
 
 class MediaImporterFixture(
     val mediaMetadataRetriever: FakeMediaMetadataRetriever = FakeMediaMetadataRetriever(),
-    val fileReader: FakeFileReader = FakeFileReader(),
+    val contentUriReader: FakeContentUriReader = FakeContentUriReader(),
     val fileWriter: FakeFileWriter = FakeFileWriter(),
 ) {
     val artistMediaStore = FakeArtistMediaStore()
@@ -50,7 +50,7 @@ class MediaImporterFixture(
         mediaAssetStore = mediaAssetStore,
         syncStateStore = syncStateStore,
         transactionRunner = transactionRunner,
-        fileReader = fileReader,
+        contentUriReader = contentUriReader,
         fileWriter = fileWriter,
     )
 
@@ -86,7 +86,7 @@ class MediaImporterFixture(
             fileWriter = fileWriter,
             imageImporter = imageImporter,
             transactionRunner = transactionRunner,
-            fileReader = fileReader,
+            contentUriReader = contentUriReader,
         )
     }
 

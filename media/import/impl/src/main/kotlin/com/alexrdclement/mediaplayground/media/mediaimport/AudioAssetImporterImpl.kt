@@ -17,7 +17,7 @@ import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.store.AlbumMediaStore
 import com.alexrdclement.mediaplayground.media.store.AudioAssetStore
-import com.alexrdclement.mediaplayground.media.store.FileReader
+import com.alexrdclement.mediaplayground.media.store.ContentUriReader
 import com.alexrdclement.mediaplayground.media.store.FileWriter
 import com.alexrdclement.mediaplayground.media.store.MediaAssetStore
 import com.alexrdclement.mediaplayground.media.store.MediaAssetSyncStateStore
@@ -49,7 +49,7 @@ class AudioAssetImporterImpl(
     private val fileWriter: FileWriter,
     private val imageImporter: ImageImporterImpl,
     private val transactionRunner: MediaStoreTransactionRunner,
-    private val fileReader: FileReader,
+    private val contentUriReader: ContentUriReader,
 ) : AudioAssetImporter {
 
     internal data class AudioCopyResult(
@@ -108,7 +108,7 @@ class AudioAssetImporterImpl(
         }
 
         try {
-            val bytes = fileReader.readBytes(uri)
+            val bytes = contentUriReader.readBytes(uri)
                 .guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
             val id = AudioAssetId(bytes.sha256())
             val assetUri = MediaAssetUri.Album(
@@ -138,8 +138,8 @@ class AudioAssetImporterImpl(
                 )
             }
 
-            val path = fileWriter.writeFileToDisk(
-                contentUri = uri,
+            val path = fileWriter.write(
+                byteArray = bytes,
                 destination = destination,
             ).guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
 

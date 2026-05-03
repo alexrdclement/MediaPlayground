@@ -12,7 +12,7 @@ import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
-import com.alexrdclement.mediaplayground.media.store.FileReader
+import com.alexrdclement.mediaplayground.media.store.ContentUriReader
 import com.alexrdclement.mediaplayground.media.store.FileWriter
 import com.alexrdclement.mediaplayground.media.store.ImageMediaStore
 import com.alexrdclement.mediaplayground.media.store.MediaAssetStore
@@ -37,7 +37,7 @@ class ImageImporterImpl(
     private val mediaAssetStore: MediaAssetStore,
     private val syncStateStore: MediaAssetSyncStateStore,
     private val transactionRunner: MediaStoreTransactionRunner,
-    private val fileReader: FileReader,
+    private val contentUriReader: ContentUriReader,
     private val fileWriter: FileWriter,
 ) : ImageImporter {
 
@@ -68,7 +68,7 @@ class ImageImporterImpl(
         mediaMetadata: MediaMetadata.Image,
     ): Result<ImageCopyResult, MediaImportError> = withContext(Dispatchers.IO) {
         try {
-            val bytes = fileReader.readBytes(uri)
+            val bytes = contentUriReader.readBytes(uri)
                 .guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
             val imageId = ImageId(bytes.sha256())
             val mediaUri = MediaAssetUri.Shared("${imageId.value}.${mediaMetadata.extension}")
@@ -90,8 +90,8 @@ class ImageImporterImpl(
                     ),
                 )
             }
-            val path = fileWriter.writeFileToDisk(
-                contentUri = uri,
+            val path = fileWriter.write(
+                byteArray = bytes,
                 destination = destination,
             ).guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }
 
@@ -117,7 +117,7 @@ class ImageImporterImpl(
             val destination = pathProvider.getPath(uri)
 
             if (!SystemFileSystem.exists(destination)) {
-                fileWriter.writeBitmapToDisk(
+                fileWriter.write(
                     byteArray = byteArray,
                     destination = destination,
                 ).guardSuccess { return@withContext Result.Failure(it.toMediaImportError()) }

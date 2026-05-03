@@ -9,22 +9,22 @@ import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
 import kotlinx.io.files.FileNotFoundException
 
-class FileReaderImpl @Inject constructor(
+class ContentUriReaderImpl @Inject constructor(
     private val application: Application,
-) : FileReader {
+) : ContentUriReader {
 
-    override suspend fun readBytes(uri: Uri): Result<ByteArray, FileReadError> =
+    override suspend fun readBytes(uri: Uri): Result<ByteArray, ContentUriReadError> =
         withContext(Dispatchers.IO) {
             try {
                 val inputStream = application.contentResolver.openInputStream(uri)
-                    ?: return@withContext Result.Failure(FileReadError.InputStreamError)
+                    ?: return@withContext Result.Failure(ContentUriReadError.InputStreamError)
                 Result.Success(inputStream.use { it.readBytes() })
             } catch (e: FileNotFoundException) {
-                Result.Failure(FileReadError.InputFileNotFound(e))
+                Result.Failure(ContentUriReadError.InputFileNotFound(e))
             } catch (e: IOException) {
-                Result.Failure(FileReadError.Unknown(e))
+                Result.Failure(ContentUriReadError.Unknown(e))
             } catch (e: Throwable) {
-                Result.Failure(FileReadError.Unknown(e))
+                Result.Failure(ContentUriReadError.Unknown(e))
             }
         }
 }
