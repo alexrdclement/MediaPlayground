@@ -4,7 +4,7 @@ import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeAudioAsset
 import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toMediaImportError
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.mediaimport.util.runTracked
+import com.alexrdclement.mediaplayground.media.mediaimport.util.runTrackedImport
 import com.alexrdclement.mediaplayground.media.mediaimport.util.sha256
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
@@ -52,36 +52,41 @@ class AudioAssetImporterImpl(
     private val contentUriReader: ContentUriReader,
 ) : AudioAssetImporter {
 
+    override suspend fun import(
+        uri: Uri,
+        metadata: MediaMetadata.Audio,
+    ): Result<MediaAssetImportResult.Audio, MediaImportError> = withContext(Dispatchers.IO) {
+        val copyResult = copyFiles(
+            uri = uri,
+            mediaMetadata = metadata,
+        ).guardSuccess { return@withContext Result.Failure(it) }
+
+        val audioAsset = syncStateStore.runTrackedImport(
+            asset = copyResult.audioAsset,
+            mediaAssetStore = mediaAssetStore,
+            transactionRunner = transactionRunner,
+        ) {
+            importTransaction(
+                audioAsset = copyResult.audioAsset,
+                filePath = copyResult.path,
+            )
+        }.guardSuccess { return@withContext Result.Failure(it) }
+
+        Result.Success(
+            MediaAssetImportResult.Audio(
+                filePath = copyResult.path,
+                audioAsset = audioAsset,
+                simpleAlbum = copyResult.simpleAlbum,
+            ),
+        )
+    }
+
     internal data class AudioCopyResult(
         val path: Path,
         val id: AudioAssetId,
         val simpleAlbum: SimpleAlbum,
         val audioAsset: AudioAsset,
     )
-
-    override suspend fun import(
-        uri: Uri,
-    ): Result<AudioAsset, MediaImportError> = withContext(Dispatchers.IO) {
-        val metadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri) as? MediaMetadata.Audio
-            ?: return@withContext Result.Failure(MediaImportError.InputFileError)
-
-        val audioCopyResult = copyFiles(
-            uri = uri,
-            mediaMetadata = metadata,
-        ).guardSuccess { return@withContext Result.Failure(it) }
-
-        syncStateStore.runTracked(id = audioCopyResult.id, transactionRunner = transactionRunner) {
-            importTransaction(
-                audioAsset = audioCopyResult.audioAsset,
-                filePath = audioCopyResult.path,
-            )
-        }
-    }
-
-    override suspend fun import(
-        uris: List<Uri>,
-    ): Map<Uri, Result<AudioAsset, MediaImportError>> =
-        uris.associateWith { import(uri = it) }
 
     internal suspend fun copyFiles(
         uri: Uri,
@@ -125,7 +130,6 @@ class AudioAssetImporterImpl(
                 artists = simpleAlbum.artists,
                 images = images,
             )
-            mediaAssetStore.put(audioAsset)
 
             if (SystemFileSystem.exists(destination)) {
                 return@withContext Result.Success(

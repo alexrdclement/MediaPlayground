@@ -26,7 +26,7 @@ import kotlinx.io.files.Path
 @Inject
 class AlbumImporterImpl(
     private val albumMediaStore: AlbumMediaStore,
-    private val mediaAssetImporter: Lazy<MediaAssetImporterImpl>,
+    private val audioAssetImporter: Lazy<AudioAssetImporter>,
     private val transactionRunner: MediaStoreTransactionRunner,
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val trackImporter: Lazy<TrackImporterImpl>,
@@ -41,9 +41,9 @@ class AlbumImporterImpl(
 
             // NOTE: SimpleAlbum is imported during asset import to find or create the directory
 
-            val assetImportResult = mediaAssetImporter.value.importAudio(
+            val assetImportResult = audioAssetImporter.value.import(
                 uri = uri,
-                mediaMetadata = metadata,
+                metadata = metadata,
             ).guardSuccess { return@withContext Result.Failure(it) }
 
             transactionRunner.run {

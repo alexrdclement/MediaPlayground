@@ -57,7 +57,7 @@ class MediaImporterFixture(
     val albumImporter: AlbumImporterImpl by lazy {
         AlbumImporterImpl(
             albumMediaStore = albumMediaStore,
-            mediaAssetImporter = lazy { mediaAssetImporter },
+            audioAssetImporter = lazy { audioAssetImporter },
             transactionRunner = transactionRunner,
             mediaMetadataRetriever = mediaMetadataRetriever,
             trackImporter = lazy { trackImporter },
@@ -67,7 +67,7 @@ class MediaImporterFixture(
     val clipImporter: ClipImporterImpl by lazy {
         ClipImporterImpl(
             clipDataStore = clipMediaStore,
-            mediaAssetImporter = lazy { mediaAssetImporter },
+            audioAssetImporter = lazy { audioAssetImporter },
             mediaMetadataRetriever = mediaMetadataRetriever,
             transactionRunner = transactionRunner,
         )
@@ -93,7 +93,7 @@ class MediaImporterFixture(
     val trackImporter: TrackImporterImpl by lazy {
         TrackImporterImpl(
             trackMediaStore = trackMediaStore,
-            mediaAssetImporter = lazy { mediaAssetImporter },
+            audioAssetImporter = lazy { audioAssetImporter },
             clipImporter = lazy { clipImporter },
             mediaMetadataRetriever = mediaMetadataRetriever,
             transactionRunner = transactionRunner,
@@ -103,8 +103,6 @@ class MediaImporterFixture(
     val mediaAssetImporter: MediaAssetImporterImpl by lazy {
         MediaAssetImporterImpl(
             mediaMetadataRetriever = mediaMetadataRetriever,
-            syncStateStore = syncStateStore,
-            transactionRunner = transactionRunner,
             audioAssetImporter = lazy { audioAssetImporter },
             imageImporter = lazy { imageImporter },
         )

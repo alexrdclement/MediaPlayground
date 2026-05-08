@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStore
-import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.model.AudioTrack
@@ -26,7 +25,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 
 class TrackRepositoryImpl @Inject constructor(
-    private val mediaImporter: ImageImporter,
     private val localTrackDataStore: LocalTrackDataStore,
     private val trackImporter: TrackImporter,
 ) : TrackRepository {

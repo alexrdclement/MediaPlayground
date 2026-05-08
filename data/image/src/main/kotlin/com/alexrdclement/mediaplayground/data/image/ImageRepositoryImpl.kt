@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.data.image.local.LocalImageDataStore
-import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporter
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import dev.zacsweers.metro.Inject
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 class ImageRepositoryImpl @Inject constructor(
     private val localImageDataStore: LocalImageDataStore,
-    private val mediaImporter: ImageImporter,
+    private val mediaAssetImporter: MediaAssetImporter,
 ) : ImageRepository {
 
     override fun getImageFlow(imageId: ImageId): Flow<Image?> =
@@ -25,7 +25,7 @@ class ImageRepositoryImpl @Inject constructor(
         localImageDataStore.getImageCountFlow()
 
     override suspend fun import(uris: List<Uri>) {
-        mediaImporter.import(uris = uris)
+        uris.forEach { mediaAssetImporter.import(it) }
     }
 
     override suspend fun put(images: Set<Image>) {
