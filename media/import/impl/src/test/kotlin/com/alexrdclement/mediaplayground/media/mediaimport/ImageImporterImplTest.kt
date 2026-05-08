@@ -34,23 +34,12 @@ class ImageImporterImplTest {
 
     @Test
     fun import_createsImage() = runTest {
-        fixture.mediaMetadataRetriever.mediaMetadata = imageMetadata
-
-        val result = imageImporter.import(FakeUri)
+        val result = imageImporter.import(FakeUri, imageMetadata)
 
         assertIs<Result.Success<*, *>>(result)
-        val image = (result as Result.Success).value as Image
+        val image = (result as Result.Success).value.image
         assertEquals(FakeImage1.mimeType, image.mimeType)
         assertEquals(MediaAssetSyncState.Synced, fixture.syncStateStore.states[image.id])
-    }
-
-    @Test
-    fun import_returnsInputFileError_whenMetadataIsNotImage() = runTest {
-        // FakeMediaMetadataRetriever returns MediaMetadata.Audio by default
-
-        val result = imageImporter.import(FakeUri)
-
-        assertIs<Result.Failure<*, *>>(result)
     }
 
     @Test

@@ -10,6 +10,8 @@ import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporterImpl
 import dev.zacsweers.metro.BindingContainer
@@ -31,6 +33,9 @@ interface MediaImportModule {
 
     @Binds
     val ImageImporterImpl.bind: ImageImporter
+
+    @Binds
+    val MediaAssetImporterImpl.bind: MediaAssetImporter
 
     @Binds
     val TrackImporterImpl.bind: TrackImporter

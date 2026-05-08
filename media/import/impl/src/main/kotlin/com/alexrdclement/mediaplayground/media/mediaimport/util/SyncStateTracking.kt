@@ -1,7 +1,9 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.util
 
+import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaAssetId
 import com.alexrdclement.mediaplayground.media.model.MediaAssetSyncState
+import com.alexrdclement.mediaplayground.media.store.MediaAssetStore
 import com.alexrdclement.mediaplayground.media.store.MediaAssetSyncStateStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
@@ -25,4 +27,14 @@ internal suspend fun <T, E> MediaAssetSyncStateStore.runTracked(
             upsert(id, finalState)
         }
     }
+}
+
+internal suspend fun <T, E> MediaAssetSyncStateStore.runTrackedImport(
+    asset: MediaAsset,
+    mediaAssetStore: MediaAssetStore,
+    transactionRunner: MediaStoreTransactionRunner,
+    block: suspend MediaStoreTransactionScope.() -> Result<T, E>,
+): Result<T, E> {
+    mediaAssetStore.put(asset)
+    return runTracked(asset.id, transactionRunner, block)
 }

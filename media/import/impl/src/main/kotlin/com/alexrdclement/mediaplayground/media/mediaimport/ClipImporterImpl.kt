@@ -21,7 +21,7 @@ import kotlinx.io.files.Path
 @Inject
 class ClipImporterImpl(
     private val clipDataStore: ClipMediaStore,
-    private val mediaAssetImporter: Lazy<MediaAssetImporterImpl>,
+    private val audioAssetImporter: Lazy<AudioAssetImporter>,
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val transactionRunner: MediaStoreTransactionRunner,
 ) : ClipImporter {
@@ -33,9 +33,9 @@ class ClipImporterImpl(
             val metadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri) as? MediaMetadata.Audio
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
 
-            val assetImportResult = mediaAssetImporter.value.importAudio(
+            val assetImportResult = audioAssetImporter.value.import(
                 uri = uri,
-                mediaMetadata = metadata,
+                metadata = metadata,
             ).guardSuccess { return@withContext Result.Failure(it) }
 
             transactionRunner.run {

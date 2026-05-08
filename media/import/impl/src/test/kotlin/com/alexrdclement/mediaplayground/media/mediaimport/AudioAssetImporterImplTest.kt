@@ -32,14 +32,11 @@ class AudioAssetImporterImplTest {
 
     @Test
     fun import_createsMediaAsset() = runTest {
-        fixture.mediaMetadataRetriever.mediaMetadata = audioMetadata
-
-        val result = audioFileImporter.import(uri = FakeUri)
+        val result = audioFileImporter.import(uri = FakeUri, metadata = audioMetadata)
 
         assertIs<Result.Success<*, *>>(result)
-        val asset = (result as Result.Success).value
-        assertNotNull(asset)
-        assertEquals(MediaAssetSyncState.Synced, fixture.syncStateStore.states[asset.id])
+        val audioAsset = (result as Result.Success).value.audioAsset
+        assertEquals(MediaAssetSyncState.Synced, fixture.syncStateStore.states[audioAsset.id])
     }
 
     @Test
@@ -55,36 +52,15 @@ class AudioAssetImporterImplTest {
             cameraMake = null,
             cameraModel = null,
         )
-        fixture.mediaMetadataRetriever.mediaMetadata = audioMetadata.copy(
-            embeddedPicture = byteArrayOf(1, 2, 3),
-        )
+        val metadata = audioMetadata.copy(embeddedPicture = byteArrayOf(1, 2, 3))
         fixture.mediaMetadataRetriever.fileMetadata = imageMetadata
 
-        val result = audioFileImporter.import(uri = FakeUri)
+        val result = audioFileImporter.import(uri = FakeUri, metadata = metadata)
 
         assertIs<Result.Success<*, *>>(result)
-        val asset = (result as Result.Success).value as AudioAsset
+        val asset = (result as Result.Success).value.audioAsset
         assertTrue(asset.images.isNotEmpty())
         assertIs<MediaAssetUri.Album>(asset.images.first().uri)
-    }
-
-    @Test
-    fun import_returnsInputFileError_whenMetadataIsNotAudio() = runTest {
-        fixture.mediaMetadataRetriever.mediaMetadata = MediaMetadata.Image(
-            mimeType = "image/png",
-            extension = "png",
-            widthPx = 1024,
-            heightPx = 768,
-            dateTimeOriginal = null,
-            gpsLatitude = null,
-            gpsLongitude = null,
-            cameraMake = null,
-            cameraModel = null,
-        )
-
-        val result = audioFileImporter.import(uri = FakeUri)
-
-        assertIs<Result.Failure<*, *>>(result)
     }
 
     @Test
