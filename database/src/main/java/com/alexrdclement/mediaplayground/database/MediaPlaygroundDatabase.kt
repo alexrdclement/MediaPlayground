@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.database.converter.MediaAssetOriginUriC
 import com.alexrdclement.mediaplayground.database.converter.MediaAssetSyncStateConverter
 import com.alexrdclement.mediaplayground.database.converter.MediaAssetUriConverter
 import com.alexrdclement.mediaplayground.database.converter.MediaCollectionTypeConverter
+import com.alexrdclement.mediaplayground.database.converter.MediaItemTypeConverter
 import com.alexrdclement.mediaplayground.database.converter.MediaTypeConverter
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
@@ -23,6 +24,7 @@ import com.alexrdclement.mediaplayground.database.dao.ImageAssetDao
 import com.alexrdclement.mediaplayground.database.dao.MediaAssetDao
 import com.alexrdclement.mediaplayground.database.dao.MediaAssetSyncStateDao
 import com.alexrdclement.mediaplayground.database.dao.MediaCollectionDao
+import com.alexrdclement.mediaplayground.database.dao.MediaItemDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackClipDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
@@ -37,6 +39,7 @@ import com.alexrdclement.mediaplayground.database.model.ImageAsset
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
 import com.alexrdclement.mediaplayground.database.model.MediaAssetSyncStateEntity
 import com.alexrdclement.mediaplayground.database.model.MediaCollection
+import com.alexrdclement.mediaplayground.database.model.MediaItem
 import com.alexrdclement.mediaplayground.database.model.Track
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 
@@ -53,6 +56,7 @@ import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
         MediaAsset::class,
         MediaAssetSyncStateEntity::class,
         MediaCollection::class,
+        MediaItem::class,
         Track::class,
         TrackClipCrossRef::class,
     ],
@@ -64,6 +68,7 @@ import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
     MediaAssetSyncStateConverter::class,
     MediaAssetUriConverter::class,
     MediaCollectionTypeConverter::class,
+    MediaItemTypeConverter::class,
     MediaTypeConverter::class,
 )
 abstract class MediaPlaygroundDatabase : RoomDatabase() {
@@ -81,6 +86,7 @@ abstract class MediaPlaygroundDatabase : RoomDatabase() {
     abstract fun mediaAssetDao(): MediaAssetDao
     abstract fun mediaAssetSyncStateDao(): MediaAssetSyncStateDao
     abstract fun mediaCollectionDao(): MediaCollectionDao
+    abstract fun mediaItemDao(): MediaItemDao
     abstract fun simpleAlbumDao(): SimpleAlbumDao
     abstract fun trackClipDao(): TrackClipDao
     abstract fun trackDao(): TrackDao

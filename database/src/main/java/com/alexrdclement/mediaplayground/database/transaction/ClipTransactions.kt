@@ -3,6 +3,8 @@ package com.alexrdclement.mediaplayground.database.transaction
 import com.alexrdclement.mediaplayground.database.model.AudioAsset
 import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
+import com.alexrdclement.mediaplayground.database.model.MediaItem
+import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import kotlin.time.Clock
 
 context(scope: DatabaseTransactionScope)
@@ -12,6 +14,7 @@ suspend fun insertClip(
     audioAsset: AudioAsset,
 ) {
     insertAudioAsset(mediaAsset, audioAsset)
+    scope.mediaItemDao.insert(MediaItem(id = clip.id, itemType = MediaItemType.CLIP))
     scope.clipDao.insert(clip)
 }
 
@@ -28,5 +31,5 @@ suspend fun updateClip(
 
 context(scope: DatabaseTransactionScope)
 suspend fun deleteClip(id: String) {
-    scope.clipDao.delete(id)
+    scope.mediaItemDao.delete(id)
 }

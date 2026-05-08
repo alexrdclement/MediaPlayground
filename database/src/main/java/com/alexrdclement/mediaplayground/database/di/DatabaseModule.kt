@@ -17,6 +17,7 @@ import com.alexrdclement.mediaplayground.database.dao.ImageAssetDao
 import com.alexrdclement.mediaplayground.database.dao.MediaAssetDao
 import com.alexrdclement.mediaplayground.database.dao.MediaAssetSyncStateDao
 import com.alexrdclement.mediaplayground.database.dao.MediaCollectionDao
+import com.alexrdclement.mediaplayground.database.dao.MediaItemDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackClipDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
@@ -56,6 +57,7 @@ interface DatabaseModule {
             mediaAssetDao: MediaAssetDao,
             mediaAssetSyncStateDao: MediaAssetSyncStateDao,
             mediaCollectionDao: MediaCollectionDao,
+            mediaItemDao: MediaItemDao,
             simpleAlbumDao: SimpleAlbumDao,
             trackClipDao: TrackClipDao,
             trackDao: TrackDao,
@@ -74,6 +76,7 @@ interface DatabaseModule {
             override val mediaAssetDao = mediaAssetDao
             override val mediaAssetSyncStateDao = mediaAssetSyncStateDao
             override val mediaCollectionDao = mediaCollectionDao
+            override val mediaItemDao = mediaItemDao
             override val simpleAlbumDao = simpleAlbumDao
             override val trackClipDao = trackClipDao
             override val trackDao = trackDao

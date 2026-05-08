@@ -7,6 +7,11 @@ data class CompleteTrack(
     @Embedded
     val track: Track,
     @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+    )
+    val mediaCollection: MediaCollection,
+    @Relation(
         entity = AlbumTrackCrossRef::class,
         parentColumn = "id",
         entityColumn = "track_id",

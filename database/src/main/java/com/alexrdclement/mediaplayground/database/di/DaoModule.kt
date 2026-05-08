@@ -15,6 +15,7 @@ import com.alexrdclement.mediaplayground.database.dao.ImageAssetDao
 import com.alexrdclement.mediaplayground.database.dao.MediaAssetDao
 import com.alexrdclement.mediaplayground.database.dao.MediaAssetSyncStateDao
 import com.alexrdclement.mediaplayground.database.dao.MediaCollectionDao
+import com.alexrdclement.mediaplayground.database.dao.MediaItemDao
 import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.TrackClipDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
@@ -78,5 +79,8 @@ interface DaoModule {
 
         @Provides
         fun provideMediaCollectionDao(database: MediaPlaygroundDatabase): MediaCollectionDao = database.mediaCollectionDao()
+
+        @Provides
+        fun provideMediaItemDao(database: MediaPlaygroundDatabase): MediaItemDao = database.mediaItemDao()
     }
 }

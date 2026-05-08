@@ -36,7 +36,6 @@ internal fun assertTrackEquals(
 ) {
     assertNotNull(actual)
     assertEquals(expected.id, actual.id)
-    assertEquals(expected.title, actual.title)
     assertEquals(expected.modifiedAt.epochSeconds, actual.modifiedAt.epochSeconds)
 }
 

@@ -60,6 +60,7 @@ class CompleteTrackDaoTest {
     }
 
     private suspend fun insertCompleteTrack(completeTrack: CompleteTrack) {
+        mediaCollectionDao.insert(completeTrack.mediaCollection)
         trackDao.insert(completeTrack.track)
         for (albumRef in completeTrack.albumRefs) {
             val simpleAlbum = albumRef.simpleAlbum

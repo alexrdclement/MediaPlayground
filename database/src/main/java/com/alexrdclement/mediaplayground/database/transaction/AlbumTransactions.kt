@@ -4,6 +4,8 @@ import com.alexrdclement.mediaplayground.database.model.Album
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.MediaCollection
+import com.alexrdclement.mediaplayground.database.model.MediaItem
+import com.alexrdclement.mediaplayground.database.model.MediaItemType
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertAlbum(
@@ -12,6 +14,7 @@ suspend fun insertAlbum(
     artistIds: Set<String>,
     imageIds: Set<String>,
 ) = with(scope) {
+    mediaItemDao.insert(MediaItem(id = mediaCollection.id, itemType = MediaItemType.COLLECTION))
     mediaCollectionDao.insert(mediaCollection)
     albumDao.insert(album)
     val albumArtistCrossRefs = artistIds.map { AlbumArtistCrossRef(album.id, it) }
@@ -43,9 +46,8 @@ suspend fun deleteAlbum(
     albumImageDao.deleteForAlbum(id)
     albumArtistDao.deleteForAlbum(id)
     albumTrackDao.deleteForAlbum(id)
-    albumDao.delete(id)
-    mediaCollectionDao.delete(id)
+    mediaItemDao.delete(id)
     for (trackId in orphanedTrackIds) {
-        trackDao.delete(trackId)
+        deleteTrack(trackId)
     }
 }
