@@ -72,6 +72,7 @@ val FakeAlbumTrackCrossRef3 = AlbumTrackCrossRef(
 
 val FakeCompleteTrack1 = CompleteTrack(
     track = FakeTrack1,
+    mediaCollection = FakeTrackMediaCollection1,
     albumRefs = listOf(
         CompleteAlbumRef(
             albumTrackCrossRef = FakeAlbumTrackCrossRef1,
@@ -83,6 +84,7 @@ val FakeCompleteTrack1 = CompleteTrack(
 
 val FakeCompleteTrack2 = CompleteTrack(
     track = FakeTrack2,
+    mediaCollection = FakeTrackMediaCollection2,
     albumRefs = listOf(
         CompleteAlbumRef(
             albumTrackCrossRef = FakeAlbumTrackCrossRef2,
@@ -94,6 +96,7 @@ val FakeCompleteTrack2 = CompleteTrack(
 
 val FakeCompleteTrack3 = CompleteTrack(
     track = FakeTrack3,
+    mediaCollection = FakeTrackMediaCollection3,
     albumRefs = listOf(
         CompleteAlbumRef(
             albumTrackCrossRef = FakeAlbumTrackCrossRef3,

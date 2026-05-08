@@ -58,6 +58,7 @@ class FakeCompleteAudioAlbumDaoTest {
             albumImageDao.insert(AlbumImageCrossRef(albumId = completeAlbum.id, imageId = completeImage.imageAsset.id))
         }
         for (completeTrack in completeAlbum.tracks) {
+            mediaCollectionDao.insert(completeTrack.mediaCollection)
             trackDao.insert(completeTrack.track)
             for (albumRef in completeTrack.albumRefs) {
                 albumTrackDao.insert(albumRef.albumTrackCrossRef)

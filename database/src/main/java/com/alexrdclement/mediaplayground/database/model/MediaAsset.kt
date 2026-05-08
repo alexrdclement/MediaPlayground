@@ -2,12 +2,23 @@ package com.alexrdclement.mediaplayground.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import kotlin.time.Instant
 
-@Entity(tableName = "media_assets")
+@Entity(
+    tableName = "media_assets",
+    foreignKeys = [
+        ForeignKey(
+            entity = MediaItem::class,
+            parentColumns = ["id"],
+            childColumns = ["id"],
+            onDelete = ForeignKey.CASCADE,
+        ),
+    ],
+)
 data class MediaAsset(
     @PrimaryKey
     val id: String,

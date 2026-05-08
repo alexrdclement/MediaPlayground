@@ -17,6 +17,5 @@ suspend fun insertImageAssets(vararg imageAssets: Pair<MediaAsset, ImageAsset>) 
 
 context(scope: DatabaseTransactionScope)
 suspend fun deleteImage(id: String) {
-    scope.imageAssetDao.delete(id)
     deleteMediaAsset(id)
 }

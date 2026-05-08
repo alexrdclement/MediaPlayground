@@ -30,7 +30,6 @@ internal fun assertArtistEquals(expected: Artist, actual: Artist?) {
 internal fun assertTrackEquals(expected: Track, actual: Track?) {
     assertNotNull(actual)
     assertEquals(expected.id, actual.id)
-    assertEquals(expected.title, actual.title)
     assertEquals(expected.modifiedAt.epochSeconds, actual.modifiedAt.epochSeconds)
 }
 

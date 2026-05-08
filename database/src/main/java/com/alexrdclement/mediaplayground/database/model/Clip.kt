@@ -11,6 +11,12 @@ import kotlin.time.Instant
     tableName = "clips",
     foreignKeys = [
         ForeignKey(
+            entity = MediaItem::class,
+            parentColumns = ["id"],
+            childColumns = ["id"],
+            onDelete = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
             entity = MediaAsset::class,
             parentColumns = ["id"],
             childColumns = ["asset_id"],

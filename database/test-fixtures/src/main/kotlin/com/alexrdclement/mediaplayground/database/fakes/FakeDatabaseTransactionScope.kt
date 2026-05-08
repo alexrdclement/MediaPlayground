@@ -13,6 +13,7 @@ class FakeDatabaseTransactionScope(
     override val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
     override val mediaAssetSyncStateDao: FakeMediaAssetSyncStateDao = FakeMediaAssetSyncStateDao(),
     override val mediaCollectionDao: FakeMediaCollectionDao = FakeMediaCollectionDao(),
+    override val mediaItemDao: FakeMediaItemDao = FakeMediaItemDao(),
     override val audioAssetDao: FakeAudioAssetDao = FakeAudioAssetDao(mediaAssetDao),
     override val clipDao: FakeClipDao = FakeClipDao(),
     override val imageAssetDao: FakeImageAssetDao = FakeImageAssetDao(mediaAssetDao),

@@ -114,7 +114,7 @@ class TrackDaoTest {
     @Test
     fun insert_ignoresExistingTrack() = runTest {
         trackDao.insert(FakeTrack1)
-        trackDao.insert(FakeTrack1.copy(title = "Updated Title"))
+        trackDao.insert(FakeTrack1.copy(notes = "Updated notes"))
 
         val result = trackDao.getTrack(FakeTrack1.id)
         assertTrackEquals(FakeTrack1, result)
@@ -124,11 +124,11 @@ class TrackDaoTest {
     fun update_updatesTrack() = runTest {
         trackDao.insert(FakeTrack1)
 
-        trackDao.update(FakeTrack1.copy(title = "Updated Title"))
+        trackDao.update(FakeTrack1.copy(notes = "Updated notes"))
 
         val result = trackDao.getTrack(FakeTrack1.id)
         assertNotNull(result)
-        assertEquals("Updated Title", result.title)
+        assertEquals("Updated notes", result.notes)
     }
 
     @Test

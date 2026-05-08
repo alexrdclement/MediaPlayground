@@ -9,6 +9,7 @@ import com.alexrdclement.mediaplayground.database.mapping.toAudioAssetEntity
 import com.alexrdclement.mediaplayground.database.mapping.toAudioTrack
 import com.alexrdclement.mediaplayground.database.mapping.toClipEntity
 import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
+import com.alexrdclement.mediaplayground.database.mapping.toMediaCollectionEntity
 import com.alexrdclement.mediaplayground.database.mapping.toTrackEntity
 import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
@@ -67,6 +68,7 @@ class LocalTrackDataStore @Inject constructor(
     }
 
     private suspend fun putAudioTrack(track: AudioTrack) {
+        val mediaCollectionEntity = track.toMediaCollectionEntity()
         val trackEntity = track.toTrackEntity()
         val albumTrackCrossRef = AlbumTrackCrossRef(
             albumId = track.simpleAlbum.id.value,
@@ -90,6 +92,7 @@ class LocalTrackDataStore @Inject constructor(
         }
         databaseTransactionRunner.run {
             insertTrack(
+                mediaCollection = mediaCollectionEntity,
                 track = trackEntity,
                 albumTrackCrossRef = albumTrackCrossRef,
                 clips = clipsAndAudioAssets,

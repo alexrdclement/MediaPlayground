@@ -4,12 +4,16 @@ import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import com.alexrdclement.mediaplayground.database.model.AudioAsset
 import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
+import com.alexrdclement.mediaplayground.database.model.MediaCollection
+import com.alexrdclement.mediaplayground.database.model.MediaItem
+import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.database.model.Track
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import kotlin.time.Clock
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertTrack(
+    mediaCollection: MediaCollection,
     track: Track,
     albumTrackCrossRef: AlbumTrackCrossRef,
     clips: List<Triple<Clip, MediaAsset, AudioAsset>>,
@@ -22,6 +26,8 @@ suspend fun insertTrack(
             audioAsset = audioAsset,
         )
     }
+    scope.mediaItemDao.insert(MediaItem(id = mediaCollection.id, itemType = MediaItemType.COLLECTION))
+    scope.mediaCollectionDao.insert(mediaCollection)
     scope.trackDao.insert(track)
     scope.albumTrackDao.insert(albumTrackCrossRef)
     for (crossRef in trackClipCrossRefs) {
@@ -36,8 +42,9 @@ suspend fun insertTrackClipCrossRef(crossRef: TrackClipCrossRef) {
 
 context(scope: DatabaseTransactionScope)
 suspend fun updateTrack(id: String, title: String) {
-    val track = scope.trackDao.getTrack(id) ?: error("Track $id not found")
-    scope.trackDao.update(track.copy(title = title, modifiedAt = Clock.System.now()))
+    val mediaCollection = scope.mediaCollectionDao.getMediaCollection(id)
+        ?: error("MediaCollection $id not found")
+    scope.mediaCollectionDao.update(mediaCollection.copy(title = title, modifiedAt = Clock.System.now()))
 }
 
 context(scope: DatabaseTransactionScope)
@@ -54,7 +61,7 @@ suspend fun deleteTrack(
         emptyList()
     }
     scope.trackClipDao.deleteForTrack(id)
-    scope.trackDao.delete(id)
+    scope.mediaItemDao.delete(id)
     for (clipId in orphanedClipIds) {
         deleteClip(clipId)
     }

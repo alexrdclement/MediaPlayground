@@ -45,6 +45,7 @@ class FakeCompleteTrackDaoTest {
     }
 
     private suspend fun stubCompleteTrack(completeTrack: CompleteTrack) {
+        mediaCollectionDao.insert(completeTrack.mediaCollection)
         trackDao.insert(completeTrack.track)
         for (albumRef in completeTrack.albumRefs) {
             val simpleAlbum = albumRef.simpleAlbum

@@ -84,6 +84,8 @@ class FakeCompleteAlbumDao(
                         ),
                     )
                 }
+                val trackMediaCollection = mediaCollections.find { it.id == track.id }
+                    ?: return@mapNotNull null
                 val trackClipCrossRefs = trackClipDao.trackClips.filter { it.trackId == track.id }
                 val completeTrackClips = trackClipCrossRefs.mapNotNull { clipCrossRef ->
                     val clip = clips.find { it.id == clipCrossRef.clipId } ?: return@mapNotNull null
@@ -100,6 +102,7 @@ class FakeCompleteAlbumDao(
                 }
                 CompleteTrack(
                     track = track,
+                    mediaCollection = trackMediaCollection,
                     albumRefs = albumRefsList,
                     clips = completeTrackClips,
                 )

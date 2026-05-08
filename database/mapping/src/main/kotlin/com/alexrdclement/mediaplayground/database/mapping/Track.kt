@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.database.mapping
 
+import com.alexrdclement.mediaplayground.database.model.MediaCollectionType
 import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
@@ -9,15 +10,25 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
 import kotlin.time.Clock
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack as CompleteTrackEntity
+import com.alexrdclement.mediaplayground.database.model.MediaCollection as MediaCollectionEntity
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
 
 fun Track.toTrackEntity(): TrackEntity {
     return TrackEntity(
         id = id.value,
-        title = title,
         createdAt = Clock.System.now(),
         modifiedAt = Clock.System.now(),
         notes = notes,
+    )
+}
+
+fun Track.toMediaCollectionEntity(): MediaCollectionEntity {
+    return MediaCollectionEntity(
+        id = id.value,
+        title = title,
+        mediaCollectionType = MediaCollectionType.TRACK,
+        createdAt = Clock.System.now(),
+        modifiedAt = Clock.System.now(),
     )
 }
 
@@ -27,7 +38,7 @@ fun CompleteTrackEntity.toAudioTrack(): AudioTrack {
     val domainImages = firstRef.simpleAlbum.images.map { it.toImage() }.toPersistentList()
     return AudioTrack(
         id = TrackId(track.id),
-        title = track.title,
+        title = mediaCollection.title,
         artists = artists,
         trackNumber = firstRef.albumTrackCrossRef.trackNumber,
         clips = clips.map {
