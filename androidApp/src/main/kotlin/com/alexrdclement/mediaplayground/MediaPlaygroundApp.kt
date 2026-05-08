@@ -6,8 +6,8 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import com.alexrdclement.mediaplayground.app.di.AppGraph
 import com.alexrdclement.mediaplayground.app.di.MetroApp
-import com.alexrdclement.mediaplayground.coil.MediaAssetUriFetcher
-import com.alexrdclement.mediaplayground.coil.MediaAssetUriMapper
+import com.alexrdclement.mediaplayground.media.ui.coil.MediaAssetUriFetcher
+import com.alexrdclement.mediaplayground.media.ui.coil.MediaAssetUriMapper
 import dev.zacsweers.metro.createGraphFactory
 
 class MediaPlaygroundApp : Application(), MetroApp, SingletonImageLoader.Factory {
