@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.coil
+package com.alexrdclement.mediaplayground.media.ui.coil
 
 import coil3.ImageLoader
 import coil3.decode.DataSource
