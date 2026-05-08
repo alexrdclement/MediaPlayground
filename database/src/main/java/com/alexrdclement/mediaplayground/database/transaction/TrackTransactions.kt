@@ -18,7 +18,7 @@ suspend fun insertTrack(
     albumTrackCrossRef: AlbumTrackCrossRef,
     clips: List<Triple<Clip, MediaAsset, AudioAsset>>,
     trackClipCrossRefs: List<TrackClipCrossRef>,
-) {
+) = with(scope) {
     for ((clip, mediaAsset, audioAsset) in clips) {
         insertClip(
             clip = clip,
@@ -26,10 +26,10 @@ suspend fun insertTrack(
             audioAsset = audioAsset,
         )
     }
-    scope.mediaItemDao.insert(MediaItem(id = mediaCollection.id, itemType = MediaItemType.COLLECTION))
-    scope.mediaCollectionDao.insert(mediaCollection)
-    scope.trackDao.insert(track)
-    scope.albumTrackDao.insert(albumTrackCrossRef)
+    mediaItemDao.insert(MediaItem(id = mediaCollection.id, itemType = MediaItemType.COLLECTION))
+    mediaCollectionDao.insert(mediaCollection)
+    trackDao.insert(track)
+    albumTrackDao.insert(albumTrackCrossRef)
     for (crossRef in trackClipCrossRefs) {
         insertTrackClipCrossRef(crossRef)
     }
