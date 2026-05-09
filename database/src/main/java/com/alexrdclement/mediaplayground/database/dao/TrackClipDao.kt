@@ -19,4 +19,7 @@ interface TrackClipDao {
 
     @Query("DELETE FROM track_clips WHERE track_id = :trackId")
     suspend fun deleteForTrack(trackId: String)
+
+    @Query("DELETE FROM track_clips WHERE clip_id = :clipId")
+    suspend fun deleteForClip(clipId: String)
 }

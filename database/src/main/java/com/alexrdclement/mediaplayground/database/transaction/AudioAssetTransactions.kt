@@ -11,5 +11,10 @@ suspend fun insertAudioAsset(mediaAsset: MediaAsset, audioAsset: AudioAsset) {
 
 context(scope: DatabaseTransactionScope)
 suspend fun deleteAudioAsset(id: String) {
+    val clipIds = scope.clipDao.getClipIdsByAssetId(id)
+    for (clipId in clipIds) {
+        deleteClip(clipId)
+    }
+    scope.audioAssetDao.delete(id)
     deleteMediaAsset(id)
 }

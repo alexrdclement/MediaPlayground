@@ -32,6 +32,10 @@ class FakeClipDao : ClipDao {
         clips.value = clips.value - existing + clip
     }
 
+    override suspend fun getClipIdsByAssetId(assetId: String): List<String> {
+        return clips.value.filter { it.assetId == assetId }.map { it.id }
+    }
+
     override suspend fun delete(id: String) {
         val existing = clips.value.find { it.id == id } ?: return
         clips.value -= existing

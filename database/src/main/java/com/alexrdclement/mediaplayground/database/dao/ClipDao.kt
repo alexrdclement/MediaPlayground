@@ -25,6 +25,9 @@ interface ClipDao {
     @Update
     suspend fun update(clip: Clip)
 
+    @Query("SELECT id FROM clips WHERE asset_id = :assetId")
+    suspend fun getClipIdsByAssetId(assetId: String): List<String>
+
     @Query("DELETE FROM clips WHERE id = :id")
     suspend fun delete(id: String)
 }
