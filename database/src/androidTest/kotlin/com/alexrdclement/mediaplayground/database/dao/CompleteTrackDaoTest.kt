@@ -86,7 +86,7 @@ class CompleteTrackDaoTest {
                 TrackClipCrossRef(
                     trackId = completeTrack.track.id,
                     clipId = completeTrackClip.completeAudioClip.clip.id,
-                    startFrameInTrack = completeTrackClip.trackClipCrossRef.startFrameInTrack,
+                    startSampleInTrack = completeTrackClip.trackClipCrossRef.startSampleInTrack,
                 )
             )
         }

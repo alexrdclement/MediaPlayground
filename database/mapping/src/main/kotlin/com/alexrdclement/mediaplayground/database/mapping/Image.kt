@@ -35,7 +35,7 @@ fun Image.toMediaAssetRecord(): MediaAssetRecord {
         mimeType = mimeType,
         extension = extension,
         createdAt = createdAt,
-        modifiedAt = createdAt,
+        modifiedAt = modifiedAt,
         originUri = originUri,
     )
 }
@@ -56,5 +56,6 @@ fun CompleteImageEntity.toImage(): Image {
         cameraModel = imageAsset.cameraModel,
         notes = imageAsset.notes,
         createdAt = mediaAsset.createdAt,
+        modifiedAt = mediaAsset.modifiedAt,
     )
 }

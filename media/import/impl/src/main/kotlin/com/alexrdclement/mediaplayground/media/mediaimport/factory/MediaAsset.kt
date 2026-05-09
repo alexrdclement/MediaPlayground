@@ -19,12 +19,14 @@ internal fun makeAudioAsset(
     artists: PersistentList<Artist>,
     images: PersistentList<Image>,
     createdAt: Instant = Clock.System.now(),
+    modifiedAt: Instant = createdAt,
 ): AudioAsset {
     return AudioAsset(
         id = id,
         uri = uri,
         originUri = originUri,
         createdAt = createdAt,
+        modifiedAt = modifiedAt,
         artists = artists,
         images = images,
         metadata = mediaMetadata,

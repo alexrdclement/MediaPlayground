@@ -14,6 +14,7 @@ data class AudioAsset(
     override val uri: MediaAssetUri,
     override val originUri: MediaAssetOriginUri,
     override val createdAt: Instant,
+    override val modifiedAt: Instant,
     val artists: PersistentList<Artist>,
     val images: PersistentList<Image>,
     val metadata: MediaMetadata.Audio,

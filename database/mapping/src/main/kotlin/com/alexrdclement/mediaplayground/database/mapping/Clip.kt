@@ -19,11 +19,11 @@ fun Clip.toClipEntity(): ClipEntity {
         id = id.value,
         title = title,
         assetId = mediaAsset.id.value,
-        startFrameInAsset = when (val s = assetOffset) {
+        startSampleInAsset = when (val s = assetOffset) {
             is TimeUnit.Samples -> s.samples
             is TimeUnit.Frames -> s.frames
         },
-        durationFrames = when (val t = duration) {
+        durationSamples = when (val t = duration) {
             is TimeUnit.Samples -> t.samples
             is TimeUnit.Frames -> t.frames
         },
@@ -38,8 +38,8 @@ fun ClipEntity.toClip(audioAsset: DomainAudioAsset): Clip {
         id = ClipId(id),
         title = title,
         mediaAsset = audioAsset,
-        assetOffset = TimeUnit.Samples(startFrameInAsset, sampleRate),
-        duration = TimeUnit.Samples(durationFrames, sampleRate),
+        assetOffset = TimeUnit.Samples(startSampleInAsset, sampleRate),
+        duration = TimeUnit.Samples(durationSamples, sampleRate),
     )
 }
 
@@ -69,6 +69,6 @@ private fun CompleteTrackClipEntity.toTrackClip(audioAsset: DomainAudioAsset): T
     val sampleRate = audioAsset.metadata.sampleRate
     return TrackClip(
         clip = completeAudioClip.clip.toClip(audioAsset),
-        trackOffset = TimeUnit.Samples(trackClipCrossRef.startFrameInTrack, sampleRate),
+        trackOffset = TimeUnit.Samples(trackClipCrossRef.startSampleInTrack, sampleRate),
     )
 }

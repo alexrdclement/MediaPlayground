@@ -32,6 +32,6 @@ data class TrackClipCrossRef(
     val trackId: String,
     @ColumnInfo(name = "clip_id")
     val clipId: String,
-    @ColumnInfo(name = "start_frame_in_track")
-    val startFrameInTrack: Long,
+    @ColumnInfo(name = "start_sample_in_track")
+    val startSampleInTrack: Long,
 )

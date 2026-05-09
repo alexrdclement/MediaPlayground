@@ -205,7 +205,7 @@ class LocalTrackDataStoreTest {
             TrackClipCrossRef(
                 trackId = track2.id.value,
                 clipId = FakeLocalClip1.id.value,
-                startFrameInTrack = 0L,
+                startSampleInTrack = 0L,
             )
         )
 

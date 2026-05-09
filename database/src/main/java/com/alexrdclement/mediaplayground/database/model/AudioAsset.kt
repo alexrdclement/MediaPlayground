@@ -26,7 +26,7 @@ data class AudioAsset(
     @ColumnInfo(name = "channel_count")
     val channelCount: Int,
     @ColumnInfo(name = "bit_rate")
-    val bitRate: Int,
+    val bitRate: Int?,
     @ColumnInfo(name = "bit_depth")
-    val bitDepth: Int,
+    val bitDepth: Int?,
 )
