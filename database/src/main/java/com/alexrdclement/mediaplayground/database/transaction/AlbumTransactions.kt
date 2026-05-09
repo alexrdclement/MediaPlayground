@@ -6,6 +6,7 @@ import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.MediaCollection
 import com.alexrdclement.mediaplayground.database.model.MediaItem
 import com.alexrdclement.mediaplayground.database.model.MediaItemType
+import com.alexrdclement.mediaplayground.media.model.deletion.DeleteAlbumPolicy
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertAlbum(
@@ -33,9 +34,9 @@ suspend fun updateAlbum(
 context(scope: DatabaseTransactionScope)
 suspend fun deleteAlbum(
     id: String,
-    deleteOrphanedTracks: Boolean = true,
+    policy: DeleteAlbumPolicy = DeleteAlbumPolicy(),
 ) = with(scope) {
-    val orphanedTrackIds = if (deleteOrphanedTracks) {
+    val orphanedTrackIds = if (policy.deleteOrphanedTracks) {
         val trackIds = albumTrackDao.getTrackIdsForAlbum(id)
         trackIds.filter { trackId ->
             albumTrackDao.getAlbumIdsForTrack(trackId) == listOf(id)
@@ -50,6 +51,6 @@ suspend fun deleteAlbum(
     mediaCollectionDao.delete(id)
     mediaItemDao.delete(id)
     for (trackId in orphanedTrackIds) {
-        deleteTrack(trackId)
+        deleteTrack(trackId, policy.trackPolicy)
     }
 }

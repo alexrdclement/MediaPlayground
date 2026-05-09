@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.data.track.local
 
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
+import com.alexrdclement.mediaplayground.media.model.deletion.DeleteTrackPolicy
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
 import com.alexrdclement.mediaplayground.media.model.FakeImage2
 import com.alexrdclement.mediaplayground.media.model.FakeLocalClip1
@@ -223,7 +224,7 @@ class LocalTrackDataStoreTest {
         val track = FakeLocalTrack1.copy(artists = artists, simpleAlbum = simpleAlbum)
 
         fixture.putTrack(track)
-        fixture.localTrackDataStore.delete(track.id, deleteOrphanedClips = false)
+        fixture.localTrackDataStore.delete(track.id, DeleteTrackPolicy(deleteOrphanedClips = false))
 
         assertNotNull(fixture.clipDao.getClip(FakeLocalClip1.id.value))
     }
