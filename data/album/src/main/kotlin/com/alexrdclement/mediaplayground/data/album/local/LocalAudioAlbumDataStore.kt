@@ -92,7 +92,9 @@ class LocalAudioAlbumDataStore @Inject constructor(
     suspend fun updateAlbumNotes(id: AlbumId, notes: String?) {
         databaseTransactionRunner.run {
             val album = albumDao.getAlbum(id.value) ?: return@run
-            updateAlbum(album.copy(notes = notes, modifiedAt = Clock.System.now()))
+            albumDao.update(album.copy(notes = notes))
+            val mc = mediaCollectionDao.getMediaCollection(id.value) ?: return@run
+            mediaCollectionDao.update(mc.copy(modifiedAt = Clock.System.now()))
         }
     }
 

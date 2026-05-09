@@ -110,7 +110,9 @@ class LocalTrackDataStore @Inject constructor(
     suspend fun updateTrackNotes(id: TrackId, notes: String?) {
         databaseTransactionRunner.run {
             val track = trackDao.getTrack(id.value) ?: return@run
-            trackDao.update(track.copy(notes = notes, modifiedAt = Clock.System.now()))
+            trackDao.update(track.copy(notes = notes))
+            val mc = mediaCollectionDao.getMediaCollection(id.value) ?: return@run
+            mediaCollectionDao.update(mc.copy(modifiedAt = Clock.System.now()))
         }
     }
 

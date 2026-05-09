@@ -13,7 +13,7 @@ interface CompleteAlbumDao {
     fun getAlbumCountFlow(): Flow<Int>
 
     @Transaction
-    @Query("SELECT * FROM albums ORDER BY modified_at DESC")
+    @Query("SELECT albums.* FROM albums JOIN media_collections ON albums.id = media_collections.id ORDER BY media_collections.modified_at DESC")
     fun getAlbumsPagingSource(): PagingSource<Int, CompleteAlbum>
 
     @Transaction

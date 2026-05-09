@@ -8,7 +8,6 @@ import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
-import kotlin.time.Clock
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack as CompleteTrackEntity
 import com.alexrdclement.mediaplayground.database.model.MediaCollection as MediaCollectionEntity
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
@@ -16,8 +15,6 @@ import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
 fun Track.toTrackEntity(): TrackEntity {
     return TrackEntity(
         id = id.value,
-        createdAt = Clock.System.now(),
-        modifiedAt = Clock.System.now(),
         notes = notes,
     )
 }

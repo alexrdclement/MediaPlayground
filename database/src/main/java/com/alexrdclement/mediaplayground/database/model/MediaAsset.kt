@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
@@ -18,6 +19,7 @@ import kotlin.time.Instant
             onDelete = ForeignKey.CASCADE,
         ),
     ],
+    indices = [Index(value = ["uri"], unique = true)],
 )
 data class MediaAsset(
     @PrimaryKey
