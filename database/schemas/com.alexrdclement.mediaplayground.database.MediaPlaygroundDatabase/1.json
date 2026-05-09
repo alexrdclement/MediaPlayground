@@ -2,28 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5a7ba49ad5c731a09ae8831794f56394",
+    "identityHash": "05e1d915013dd2a7cdf512b1b008165c",
     "entities": [
       {
         "tableName": "albums",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `modified_at` INTEGER NOT NULL, `notes` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `media_collections`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `notes` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `media_collections`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "createdAt",
-            "columnName": "created_at",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "modifiedAt",
-            "columnName": "modified_at",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -592,6 +580,17 @@
             "id"
           ]
         },
+        "indices": [
+          {
+            "name": "index_media_assets_uri",
+            "unique": true,
+            "columnNames": [
+              "uri"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_media_assets_uri` ON `${TABLE_NAME}` (`uri`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "media_items",
@@ -724,24 +723,12 @@
       },
       {
         "tableName": "tracks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `modified_at` INTEGER NOT NULL, `notes` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `media_collections`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `notes` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `media_collections`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "createdAt",
-            "columnName": "created_at",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "modifiedAt",
-            "columnName": "modified_at",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -848,7 +835,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5a7ba49ad5c731a09ae8831794f56394')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '05e1d915013dd2a7cdf512b1b008165c')"
     ]
   }
 }

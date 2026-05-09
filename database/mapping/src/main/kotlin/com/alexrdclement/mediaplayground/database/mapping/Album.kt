@@ -6,7 +6,6 @@ import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import kotlinx.collections.immutable.toPersistentList
-import kotlin.time.Clock
 import com.alexrdclement.mediaplayground.database.model.Album as AlbumEntity
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum as CompleteAlbumEntity
 import com.alexrdclement.mediaplayground.database.model.MediaCollection as MediaCollectionEntity
@@ -25,8 +24,6 @@ fun SimpleAlbum.toMediaCollectionEntity(): MediaCollectionEntity {
 fun SimpleAlbum.toAlbumEntity(): AlbumEntity {
     return AlbumEntity(
         id = id.value,
-        createdAt = Clock.System.now(),
-        modifiedAt = Clock.System.now(),
         notes = null,
     )
 }

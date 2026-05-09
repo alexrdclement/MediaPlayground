@@ -18,8 +18,7 @@ internal fun assertMediaCollectionEquals(expected: MediaCollection, actual: Medi
 
 internal fun assertAlbumEquals(expected: Album, actual: Album?) {
     assertNotNull(actual)
-    assertEquals(expected.id, actual.id)
-    assertEquals(expected.modifiedAt.epochSeconds, actual.modifiedAt.epochSeconds)
+    assertEquals(expected, actual)
 }
 
 internal fun assertArtistEquals(expected: Artist, actual: Artist?) {
@@ -29,8 +28,7 @@ internal fun assertArtistEquals(expected: Artist, actual: Artist?) {
 
 internal fun assertTrackEquals(expected: Track, actual: Track?) {
     assertNotNull(actual)
-    assertEquals(expected.id, actual.id)
-    assertEquals(expected.modifiedAt.epochSeconds, actual.modifiedAt.epochSeconds)
+    assertEquals(expected, actual)
 }
 
 internal fun assertSimpleAlbumEquals(expected: SimpleAlbum, actual: SimpleAlbum?) {
