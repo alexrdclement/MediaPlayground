@@ -28,5 +28,7 @@ suspend fun insertMediaAssets(
 
 context(scope: DatabaseTransactionScope)
 suspend fun deleteMediaAsset(id: String) {
+    scope.mediaAssetSyncStateDao.delete(id)
+    scope.mediaAssetDao.delete(id)
     scope.mediaItemDao.delete(id)
 }

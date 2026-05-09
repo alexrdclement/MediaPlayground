@@ -31,5 +31,6 @@ suspend fun updateClip(
 
 context(scope: DatabaseTransactionScope)
 suspend fun deleteClip(id: String) {
+    scope.clipDao.delete(id)
     scope.mediaItemDao.delete(id)
 }
