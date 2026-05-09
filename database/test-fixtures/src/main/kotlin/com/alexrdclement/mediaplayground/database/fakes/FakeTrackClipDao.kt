@@ -26,4 +26,8 @@ class FakeTrackClipDao : TrackClipDao {
     override suspend fun deleteForTrack(trackId: String) {
         trackClips.removeAll { it.trackId == trackId }
     }
+
+    override suspend fun deleteForClip(clipId: String) {
+        trackClips.removeAll { it.clipId == clipId }
+    }
 }

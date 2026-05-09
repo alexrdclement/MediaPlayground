@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 
 val FakeSimpleTrack1 = SimpleAudioTrack(
-    id = TrackId("1"),
+    id = TrackId("track-1"),
     name = "Pioneer Spine",
     artists = persistentListOf(FakeArtist1),
     trackNumber = 1,
@@ -12,7 +12,7 @@ val FakeSimpleTrack1 = SimpleAudioTrack(
 )
 
 val FakeSimpleTrack2 = SimpleAudioTrack(
-    id = TrackId("2"),
+    id = TrackId("track-2"),
     name = "Tiger Tank",
     artists = persistentListOf(FakeArtist1),
     trackNumber = 2,
@@ -20,7 +20,7 @@ val FakeSimpleTrack2 = SimpleAudioTrack(
 )
 
 val FakeSimpleTrack3 = SimpleAudioTrack(
-    id = TrackId("3"),
+    id = TrackId("track-3"),
     name = "Hitch",
     artists = persistentListOf(FakeArtist1),
     trackNumber = 3,
