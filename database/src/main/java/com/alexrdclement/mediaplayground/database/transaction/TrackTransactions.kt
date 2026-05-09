@@ -9,6 +9,7 @@ import com.alexrdclement.mediaplayground.database.model.MediaItem
 import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.database.model.Track
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
+import com.alexrdclement.mediaplayground.media.model.deletion.DeleteTrackPolicy
 import kotlin.time.Clock
 
 context(scope: DatabaseTransactionScope)
@@ -50,9 +51,9 @@ suspend fun updateTrack(id: String, title: String) {
 context(scope: DatabaseTransactionScope)
 suspend fun deleteTrack(
     id: String,
-    deleteOrphanedClips: Boolean = true,
+    policy: DeleteTrackPolicy = DeleteTrackPolicy(),
 ) {
-    val orphanedClipIds = if (deleteOrphanedClips) {
+    val orphanedClipIds = if (policy.deleteOrphanedClips) {
         val clipIds = scope.trackClipDao.getClipIdsForTrack(id)
         clipIds.filter { clipId ->
             scope.trackClipDao.getTrackIdsForClip(clipId) == listOf(id)
@@ -65,6 +66,6 @@ suspend fun deleteTrack(
     scope.mediaCollectionDao.delete(id)
     scope.mediaItemDao.delete(id)
     for (clipId in orphanedClipIds) {
-        deleteClip(clipId)
+        deleteClip(clipId, policy.clipPolicy)
     }
 }

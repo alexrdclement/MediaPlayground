@@ -18,6 +18,7 @@ import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.ClipId
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.MediaAssetId
+import com.alexrdclement.mediaplayground.media.model.deletion.DeleteClipPolicy
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -66,7 +67,7 @@ class LocalClipDataStore @Inject constructor(
         )
     }
 
-    suspend fun delete(id: ClipId) = databaseTransactionRunner.run {
-        deleteClip(id = id.value)
+    suspend fun delete(id: ClipId, policy: DeleteClipPolicy = DeleteClipPolicy()) = databaseTransactionRunner.run {
+        deleteClip(id = id.value, policy = policy)
     }
 }

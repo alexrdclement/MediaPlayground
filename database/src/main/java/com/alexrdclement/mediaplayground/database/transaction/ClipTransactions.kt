@@ -5,6 +5,7 @@ import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
 import com.alexrdclement.mediaplayground.database.model.MediaItem
 import com.alexrdclement.mediaplayground.database.model.MediaItemType
+import com.alexrdclement.mediaplayground.media.model.deletion.DeleteClipPolicy
 import kotlin.time.Clock
 
 context(scope: DatabaseTransactionScope)
@@ -30,8 +31,21 @@ suspend fun updateClip(
 }
 
 context(scope: DatabaseTransactionScope)
-suspend fun deleteClip(id: String) {
+suspend fun deleteClip(id: String, policy: DeleteClipPolicy = DeleteClipPolicy()) {
+    val assetId = if (policy.deleteOrphanedAssets) {
+        scope.clipDao.getClip(id)?.assetId
+    } else {
+        null
+    }
+    val assetIsOrphaned = assetId != null &&
+        scope.clipDao.getClipIdsByAssetId(assetId) == listOf(id)
+
     scope.trackClipDao.deleteForClip(id)
     scope.clipDao.delete(id)
     scope.mediaItemDao.delete(id)
+
+    if (assetIsOrphaned && assetId != null) {
+        deleteAudioAsset(assetId)
+    }
 }
+

@@ -17,6 +17,7 @@ import com.alexrdclement.mediaplayground.database.transaction.updateAlbum
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.deletion.DeleteAlbumPolicy
 import com.alexrdclement.mediaplayground.media.model.ArtistId
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
@@ -98,7 +99,7 @@ class LocalAudioAlbumDataStore @Inject constructor(
         }
     }
 
-    suspend fun delete(id: AlbumId) = databaseTransactionRunner.run {
-        deleteAlbum(id.value)
+    suspend fun delete(id: AlbumId, policy: DeleteAlbumPolicy = DeleteAlbumPolicy()) = databaseTransactionRunner.run {
+        deleteAlbum(id.value, policy)
     }
 }

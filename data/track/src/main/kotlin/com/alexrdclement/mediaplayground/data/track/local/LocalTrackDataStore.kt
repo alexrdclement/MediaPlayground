@@ -21,6 +21,7 @@ import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
+import com.alexrdclement.mediaplayground.media.model.deletion.DeleteTrackPolicy
 import dev.zacsweers.metro.Inject
 import kotlin.time.Clock
 import kotlinx.coroutines.flow.Flow
@@ -116,9 +117,9 @@ class LocalTrackDataStore @Inject constructor(
         }
     }
 
-    suspend fun delete(id: TrackId, deleteOrphanedClips: Boolean = true) {
+    suspend fun delete(id: TrackId, policy: DeleteTrackPolicy = DeleteTrackPolicy()) {
         databaseTransactionRunner.run {
-            deleteTrack(id.value, deleteOrphanedClips)
+            deleteTrack(id.value, policy)
         }
     }
 }
