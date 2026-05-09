@@ -1,7 +1,6 @@
 package com.alexrdclement.mediaplayground.data.track
 
 import android.net.Uri
-import com.alexrdclement.media.mediaimport.fixtures.MediaImporterFixture
 import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepositoryImpl
 import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStoreFixture
 import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
@@ -11,7 +10,6 @@ import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.model.result.Result
 
 class LocalTrackRepositoryFixture(
-    val mediaImporterFixture: MediaImporterFixture = MediaImporterFixture(),
     val trackDataStoreFixture: LocalTrackDataStoreFixture = LocalTrackDataStoreFixture(),
 ) {
     private val trackImporter = object : TrackImporter {
@@ -27,7 +25,6 @@ class LocalTrackRepositoryFixture(
     }
 
     val trackRepository = TrackRepositoryImpl(
-        mediaImporter = mediaImporterFixture.imageImporter,
         localTrackDataStore = trackDataStoreFixture.localTrackDataStore,
         trackImporter = trackImporter,
     )
