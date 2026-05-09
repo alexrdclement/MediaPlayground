@@ -33,10 +33,10 @@ data class Clip(
     val title: String,
     @ColumnInfo(name = "asset_id")
     val assetId: String,
-    @ColumnInfo(name = "start_frame_in_asset")
-    val startFrameInAsset: Long,
-    @ColumnInfo(name = "duration_frames")
-    val durationFrames: Long,
+    @ColumnInfo(name = "start_sample_in_asset")
+    val startSampleInAsset: Long,
+    @ColumnInfo(name = "duration_samples")
+    val durationSamples: Long,
     @ColumnInfo(name = "created_at")
     val createdAt: Instant,
     @ColumnInfo(name = "modified_at")

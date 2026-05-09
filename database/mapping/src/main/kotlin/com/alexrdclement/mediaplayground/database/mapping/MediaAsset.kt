@@ -20,8 +20,8 @@ fun AudioAsset.toAudioAssetEntity(): AudioAssetEntity {
         durationUs = metadata.durationUs ?: 0L,
         sampleRate = metadata.sampleRate,
         channelCount = metadata.channelCount ?: 0,
-        bitRate = metadata.bitRate ?: 0,
-        bitDepth = metadata.bitDepth ?: 0,
+        bitRate = metadata.bitRate,
+        bitDepth = metadata.bitDepth,
     )
 }
 
@@ -43,7 +43,7 @@ fun AudioAsset.toMediaAssetRecord(): MediaAssetRecord {
         mimeType = metadata.mimeType ?: "",
         extension = metadata.extension,
         createdAt = createdAt,
-        modifiedAt = createdAt,
+        modifiedAt = modifiedAt,
         originUri = originUri,
     )
 }
@@ -64,6 +64,7 @@ fun CompleteAudioAssetEntity.toAudioAsset(
         uri = mediaAsset.uri,
         originUri = mediaAsset.originUri,
         createdAt = mediaAsset.createdAt,
+        modifiedAt = mediaAsset.modifiedAt,
         artists = artists,
         images = images,
         metadata = MediaMetadata.Audio(

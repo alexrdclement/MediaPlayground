@@ -13,6 +13,7 @@ data class Image(
     override val uri: MediaAssetUri,
     override val originUri: MediaAssetOriginUri,
     override val createdAt: Instant,
+    override val modifiedAt: Instant,
     val mimeType: String,
     val extension: String,
     val widthPx: Int,

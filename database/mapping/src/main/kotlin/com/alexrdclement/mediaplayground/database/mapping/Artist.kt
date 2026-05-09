@@ -10,8 +10,8 @@ fun Artist.toArtistEntity(): ArtistEntity {
         id = id.value,
         name = name,
         notes = notes,
-        createdAt = Clock.System.now(),
-        modifiedAt = Clock.System.now(),
+        createdAt = createdAt,
+        modifiedAt = modifiedAt,
     )
 }
 
@@ -20,5 +20,7 @@ fun ArtistEntity.toArtist(): Artist {
         id = ArtistId(id),
         name = name,
         notes = notes,
+        createdAt = createdAt,
+        modifiedAt = modifiedAt,
     )
 }

@@ -14,4 +14,5 @@ sealed interface MediaAsset {
     val uri: MediaAssetUri
     val originUri: MediaAssetOriginUri
     val createdAt: Instant
+    val modifiedAt: Instant
 }

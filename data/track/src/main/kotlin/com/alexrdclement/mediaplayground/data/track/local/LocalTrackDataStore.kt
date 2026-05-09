@@ -88,7 +88,7 @@ class LocalTrackDataStore @Inject constructor(
             TrackClipCrossRef(
                 trackId = track.id.value,
                 clipId = trackClip.clip.id.value,
-                startFrameInTrack = trackClip.trackOffset.samples,
+                startSampleInTrack = trackClip.trackOffset.samples,
             )
         }
         databaseTransactionRunner.run {

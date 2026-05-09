@@ -8,6 +8,7 @@ val FakeAudioAsset1 = AudioAsset(
     uri = MediaAssetUri.Shared("audio-1.mp3"),
     originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio-1"),
     createdAt = Instant.DISTANT_PAST,
+    modifiedAt = Instant.DISTANT_PAST,
     artists = persistentListOf(FakeArtist1),
     images = persistentListOf(FakeImage1),
     metadata = MediaMetadata.Audio(

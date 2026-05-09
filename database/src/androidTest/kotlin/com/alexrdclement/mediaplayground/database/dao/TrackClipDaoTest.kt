@@ -69,7 +69,7 @@ class TrackClipDaoTest {
             TrackClipCrossRef(
                 trackId = FakeTrack1.id,
                 clipId = FakeClip1.id,
-                startFrameInTrack = 0L,
+                startSampleInTrack = 0L,
             )
         )
 
@@ -88,8 +88,8 @@ class TrackClipDaoTest {
     fun getClipIdsForTrack_returnsOnlyClipsForRequestedTrack() = runTest {
         insertPrerequisites()
         trackClipDao.insert(
-            TrackClipCrossRef(trackId = FakeTrack1.id, clipId = FakeClip1.id, startFrameInTrack = 0L),
-            TrackClipCrossRef(trackId = FakeTrack2.id, clipId = FakeClip2.id, startFrameInTrack = 0L),
+            TrackClipCrossRef(trackId = FakeTrack1.id, clipId = FakeClip1.id, startSampleInTrack = 0L),
+            TrackClipCrossRef(trackId = FakeTrack2.id, clipId = FakeClip2.id, startSampleInTrack = 0L),
         )
 
         val result = trackClipDao.getClipIdsForTrack(FakeTrack1.id)
@@ -103,10 +103,10 @@ class TrackClipDaoTest {
         val crossRef = TrackClipCrossRef(
             trackId = FakeTrack1.id,
             clipId = FakeClip1.id,
-            startFrameInTrack = 0L,
+            startSampleInTrack = 0L,
         )
         trackClipDao.insert(crossRef)
-        trackClipDao.insert(crossRef.copy(startFrameInTrack = 100L))
+        trackClipDao.insert(crossRef.copy(startSampleInTrack = 100L))
 
         val result = trackClipDao.getClipIdsForTrack(FakeTrack1.id)
         assertEquals(1, result.size)

@@ -12,11 +12,13 @@ fun MediaMetadata.Image.toImage(
     uri: MediaAssetUri,
     originUri: MediaAssetOriginUri,
     createdAt: Instant,
+    modifiedAt: Instant = createdAt,
 ): Image = Image(
     id = id,
     uri = uri,
     originUri = originUri,
     createdAt = createdAt,
+    modifiedAt = modifiedAt,
     mimeType = mimeType,
     extension = extension,
     widthPx = widthPx,

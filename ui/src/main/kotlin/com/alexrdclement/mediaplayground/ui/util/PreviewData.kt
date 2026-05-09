@@ -103,6 +103,7 @@ val PreviewImage1 = Image(
     uri = MediaAssetUri.Shared("image-1.png"),
     originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image-1"),
     createdAt = Instant.DISTANT_PAST,
+    modifiedAt = Instant.DISTANT_PAST,
     mimeType = "image/png",
     extension = "png",
     widthPx = 1024,
