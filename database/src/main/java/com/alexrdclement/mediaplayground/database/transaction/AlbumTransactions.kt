@@ -46,6 +46,8 @@ suspend fun deleteAlbum(
     albumImageDao.deleteForAlbum(id)
     albumArtistDao.deleteForAlbum(id)
     albumTrackDao.deleteForAlbum(id)
+    albumDao.delete(id)
+    mediaCollectionDao.delete(id)
     mediaItemDao.delete(id)
     for (trackId in orphanedTrackIds) {
         deleteTrack(trackId)

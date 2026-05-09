@@ -61,6 +61,8 @@ suspend fun deleteTrack(
         emptyList()
     }
     scope.trackClipDao.deleteForTrack(id)
+    scope.trackDao.delete(id)
+    scope.mediaCollectionDao.delete(id)
     scope.mediaItemDao.delete(id)
     for (clipId in orphanedClipIds) {
         deleteClip(clipId)
