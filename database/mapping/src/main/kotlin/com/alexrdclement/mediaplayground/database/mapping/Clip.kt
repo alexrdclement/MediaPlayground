@@ -18,13 +18,13 @@ fun Clip.toClipEntity(): ClipEntity {
         id = id.value,
         title = title,
         assetId = mediaAsset.id.value,
-        startSampleInAsset = when (val s = assetOffset) {
-            is TimeUnit.Samples -> s.samples
-            is TimeUnit.Frames -> s.frames
+        startSampleInAsset = when (val assetOffset = assetOffset) {
+            is TimeUnit.Samples -> assetOffset.samples
+            is TimeUnit.Frames -> assetOffset.frames
         },
-        durationSamples = when (val t = duration) {
-            is TimeUnit.Samples -> t.samples
-            is TimeUnit.Frames -> t.frames
+        durationSamples = when (val duration = duration) {
+            is TimeUnit.Samples -> duration.samples
+            is TimeUnit.Frames -> duration.frames
         },
         createdAt = createdAt,
         modifiedAt = modifiedAt,
