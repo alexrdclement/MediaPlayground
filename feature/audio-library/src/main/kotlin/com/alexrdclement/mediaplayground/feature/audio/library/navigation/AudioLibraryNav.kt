@@ -5,7 +5,7 @@ import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryScree
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
-import com.alexrdclement.mediaplayground.media.model.AudioItem
+import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.navigation.NavGraphBuilder
@@ -17,7 +17,7 @@ fun NavGraphBuilder.audioLibraryNavGraph() {
 
 fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
     navController: NavController,
-    onNavigateToPlayer: (AudioItem) -> Unit,
+    onNavigateToPlayer: (MediaItem) -> Unit,
     onNavigateToAlbum: (AudioAlbum) -> Unit,
     onNavigateToTrackMetadata: (TrackId) -> Unit = {},
     onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},

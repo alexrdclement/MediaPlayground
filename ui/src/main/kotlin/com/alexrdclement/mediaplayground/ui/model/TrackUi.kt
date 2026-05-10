@@ -1,9 +1,10 @@
 package com.alexrdclement.mediaplayground.ui.model
 
-import com.alexrdclement.mediaplayground.media.model.AudioTrack
+import com.alexrdclement.mediaplayground.media.model.Track
 
 data class TrackUi(
-    val track: AudioTrack,
+    val track: Track,
+    val subtitle: String,
     val isLoaded: Boolean,
     val isPlayable: Boolean,
     val isPlaying: Boolean,

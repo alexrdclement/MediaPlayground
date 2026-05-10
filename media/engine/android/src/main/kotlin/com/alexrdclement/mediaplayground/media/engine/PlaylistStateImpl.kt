@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.media.engine
 
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
-import com.alexrdclement.mediaplayground.media.model.AudioItem
+import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.coroutines.channels.awaitClose
@@ -41,7 +41,7 @@ class PlaylistStateImpl @Inject constructor(
         }
     }
 
-    override fun getPlaylist(): Flow<List<AudioItem>> {
+    override fun getPlaylist(): Flow<List<MediaItem>> {
         val timelineIds: Flow<List<String>> = callbackFlow {
             val mediaController = mediaControllerHolder.getMediaController()
             send(mediaController.currentTimeline.getMediaIds())
@@ -55,7 +55,7 @@ class PlaylistStateImpl @Inject constructor(
         }
 
         return timelineIds.flatMapLatest { ids ->
-            if (ids.isEmpty()) flowOf(emptyList())
+            if (ids.isEmpty()) flowOf(emptyList<MediaItem>())
             else combine(ids.map { mediaItemRepository.getMediaItemFlow(it) }) { items ->
                 items.filterNotNull()
             }

@@ -86,6 +86,7 @@ class AlbumViewModel(
         val tracks = album.items.map { track ->
             TrackUi(
                 track = track,
+                subtitle = track.artists.joinToString { it.name ?: "" },
                 isLoaded = track.id == loadedMediaItem?.id,
                 isPlayable = track.isPlayable,
                 isPlaying = isPlaying && track.id == loadedMediaItem?.id

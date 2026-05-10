@@ -8,7 +8,7 @@ import com.alexrdclement.mediaplayground.media.engine.PlaylistState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.engine.loadedMediaItem
-import com.alexrdclement.mediaplayground.media.model.AudioItem
+import com.alexrdclement.mediaplayground.media.model.MediaItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -23,7 +23,7 @@ val MediaSessionState.transportState: Flow<TransportState>
 val MediaSessionState.playlistState: Flow<PlaylistState>
     get() = mediaEngineState.map { it.playlistState }
 
-val MediaSessionState.loadedMediaItem: Flow<AudioItem?>
+val MediaSessionState.loadedMediaItem: Flow<MediaItem?>
     get() = mediaEngineState.flatMapLatest { it.loadedMediaItem }
 
 val MediaSessionState.isPlaying: Flow<Boolean>

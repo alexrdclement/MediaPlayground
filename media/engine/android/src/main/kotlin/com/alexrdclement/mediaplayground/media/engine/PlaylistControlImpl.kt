@@ -2,7 +2,8 @@ package com.alexrdclement.mediaplayground.media.engine
 
 import com.alexrdclement.mediaplayground.media.engine.mapper.toMediaItem
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
-import com.alexrdclement.mediaplayground.media.model.AudioItem
+import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.store.PathProvider
@@ -14,10 +15,11 @@ class PlaylistControlImpl @Inject constructor(
     private val pathProvider: PathProvider,
 ): PlaylistControl {
 
-    override suspend fun load(mediaItem: AudioItem) {
+    override suspend fun load(mediaItem: MediaItem) {
         return when (mediaItem) {
             is AudioAlbum -> loadAlbum(mediaItem)
             is Track -> loadTrack(mediaItem)
+            is Clip -> Unit
         }
     }
 
