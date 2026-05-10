@@ -7,6 +7,7 @@ import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.TimeUnit
 import kotlinx.io.files.Path
 import java.util.UUID
+import kotlin.time.Clock
 
 internal fun makeClip(
     filePath: Path,
@@ -21,11 +22,14 @@ internal fun makeClip(
         0L
     }
     val title = mediaMetadata.title ?: filePath.name
+    val now = Clock.System.now()
     return Clip(
         id = ClipId(UUID.randomUUID().toString()),
         title = title,
         mediaAsset = audioFile,
         assetOffset = TimeUnit.Samples(0L, sampleRate),
         duration = TimeUnit.Samples(totalSamples, sampleRate),
+        createdAt = now,
+        modifiedAt = now,
     )
 }

@@ -7,7 +7,6 @@ import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.TimeUnit
 import com.alexrdclement.mediaplayground.media.model.AudioAsset as DomainAudioAsset
 import com.alexrdclement.mediaplayground.media.model.TrackClip
-import kotlin.time.Clock
 import kotlinx.collections.immutable.PersistentList
 import com.alexrdclement.mediaplayground.database.model.Clip as ClipEntity
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioAsset
@@ -27,8 +26,8 @@ fun Clip.toClipEntity(): ClipEntity {
             is TimeUnit.Samples -> t.samples
             is TimeUnit.Frames -> t.frames
         },
-        createdAt = Clock.System.now(),
-        modifiedAt = Clock.System.now(),
+        createdAt = createdAt,
+        modifiedAt = modifiedAt,
     )
 }
 
@@ -40,6 +39,8 @@ fun ClipEntity.toClip(audioAsset: DomainAudioAsset): Clip {
         mediaAsset = audioAsset,
         assetOffset = TimeUnit.Samples(startSampleInAsset, sampleRate),
         duration = TimeUnit.Samples(durationSamples, sampleRate),
+        createdAt = createdAt,
+        modifiedAt = modifiedAt,
     )
 }
 

@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.ui.model
 
+import com.alexrdclement.mediaplayground.media.model.AudioCollection
 import com.alexrdclement.mediaplayground.media.model.AudioItem
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 
@@ -20,6 +21,7 @@ data class MediaItemUi(
                 mediaItem = mediaItem,
                 subtitle = when (mediaItem) {
                     is AudioItem -> mediaItem.artists.joinToString { it.name ?: "" }
+                    is AudioCollection<*> -> mediaItem.artists.joinToString { it.name ?: "" }
                     else -> ""
                 },
                 isLoaded = mediaItem.id == loadedMediaItem?.id,

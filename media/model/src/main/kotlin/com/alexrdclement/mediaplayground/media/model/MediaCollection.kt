@@ -6,10 +6,9 @@ sealed interface MediaCollectionId : MediaItemId {
     override val value: String
 }
 
-sealed interface MediaCollection<out T : MediaItem> {
-    val id: MediaCollectionId
-    val title: String
+sealed interface MediaCollection<out T : MediaItem> : MediaItem {
+    override val id: MediaCollectionId
     val items: PersistentList<T>
-    val images: PersistentList<Image>
-    val isPlayable: Boolean
+    override val isPlayable: Boolean
+        get() = items.any { it.isPlayable }
 }
