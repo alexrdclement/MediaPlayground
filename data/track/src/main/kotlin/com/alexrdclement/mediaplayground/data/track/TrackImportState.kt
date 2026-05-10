@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.data.track
 
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.embarrasdf.logging.Loggable
 
 sealed interface TrackImportState {
@@ -10,7 +10,7 @@ sealed interface TrackImportState {
 }
 
 sealed class TrackImportResult : Loggable {
-    data class Success(val track: Track) : TrackImportResult()
+    data class Success(val track: AudioTrack) : TrackImportResult()
     data class Failure(val error: Error) : TrackImportResult()
 
     override val message: String

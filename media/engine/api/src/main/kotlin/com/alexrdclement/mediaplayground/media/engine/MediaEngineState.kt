@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.media.engine
 
-import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.AudioItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -16,5 +16,5 @@ interface MediaEngineState {
 val MediaEngineState.isPlaying: Flow<Boolean>
     get() = getTransportState().map { it == TransportState.Playing }
 
-val MediaEngineState.loadedMediaItem: Flow<MediaItem?>
+val MediaEngineState.loadedMediaItem: Flow<AudioItem?>
     get() = playlistState.getLoadedMediaItem()

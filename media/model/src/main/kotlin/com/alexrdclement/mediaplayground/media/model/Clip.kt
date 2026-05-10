@@ -12,22 +12,22 @@ value class ClipId(override val value: String) : MediaItemId
 @Serializable
 data class Clip(
     override val id: ClipId,
-    override val title: String,
-    override val duration: TimeUnit,
+    val title: String,
+    val duration: TimeUnit,
     val mediaAsset: MediaAsset,
     val assetOffset: TimeUnit,
 ) : MediaItem {
-    override val artists: PersistentList<Artist> = when (mediaAsset) {
+    val artists: PersistentList<Artist> = when (mediaAsset) {
         is AudioAsset -> mediaAsset.artists
         is Image -> persistentListOf()
     }
 
-    override val images: PersistentList<Image> = when (mediaAsset) {
+    val images: PersistentList<Image> = when (mediaAsset) {
         is AudioAsset -> mediaAsset.images
         is Image -> persistentListOf(mediaAsset)
     }
 
-    override val isPlayable: Boolean = true
+    val isPlayable: Boolean = true
 }
 
 val <T : TimeUnit> PersistentSet<TrackClip<T>>.duration: TimeUnit

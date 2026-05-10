@@ -1,27 +1,27 @@
 package com.alexrdclement.mediaplayground.media.engine.fakes
 
 import com.alexrdclement.mediaplayground.media.engine.PlaylistState
-import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.MediaItemId
+import com.alexrdclement.mediaplayground.media.model.AudioItem
+import com.alexrdclement.mediaplayground.media.model.AudioItemId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class FakePlaylistState : PlaylistState {
 
-    val mutablePlaylist = MutableSharedFlow<List<MediaItem>>(replay = 1)
-    val mutableLoadedMediaItemId = MutableSharedFlow<MediaItemId?>()
+    val mutablePlaylist = MutableSharedFlow<List<AudioItem>>(replay = 1)
+    val mutableLoadedAudioItemId = MutableSharedFlow<AudioItemId?>()
 
     suspend fun clear() {
         mutablePlaylist.emit(emptyList())
-        mutableLoadedMediaItemId.emit(null)
+        mutableLoadedAudioItemId.emit(null)
     }
 
-    suspend fun setPlaylist(playlist: List<MediaItem>) {
+    suspend fun setPlaylist(playlist: List<AudioItem>) {
         mutablePlaylist.emit(playlist)
     }
 
-    suspend fun setLoadedMediaItemId(mediaItemId: MediaItemId?) {
-        mutableLoadedMediaItemId.emit(mediaItemId)
+    suspend fun setLoadedAudioItemId(mediaItemId: AudioItemId?) {
+        mutableLoadedAudioItemId.emit(mediaItemId)
     }
 
     suspend fun seek(playlistItemIndex: Int) {
@@ -30,14 +30,14 @@ class FakePlaylistState : PlaylistState {
             return
         }
         val mediaItem = playlist[playlistItemIndex]
-        mutableLoadedMediaItemId.emit(mediaItem.id)
+        mutableLoadedAudioItemId.emit(mediaItem.id)
     }
 
-    override fun getLoadedMediaItemId(): Flow<MediaItemId?> {
-        return mutableLoadedMediaItemId
+    override fun getLoadedAudioItemId(): Flow<AudioItemId?> {
+        return mutableLoadedAudioItemId
     }
 
-    override fun getPlaylist(): Flow<List<MediaItem>> {
+    override fun getPlaylist(): Flow<List<AudioItem>> {
         return mutablePlaylist
     }
 }

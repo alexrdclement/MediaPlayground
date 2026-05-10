@@ -4,13 +4,13 @@ import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
 @Serializable
-sealed interface MediaAssetId {
-    val value: String
+sealed interface MediaAssetId : MediaItemId {
+    override val value: String
 }
 
 @Serializable
-sealed interface MediaAsset {
-    val id: MediaAssetId
+sealed interface MediaAsset : MediaItem {
+    override val id: MediaAssetId
     val uri: MediaAssetUri
     val originUri: MediaAssetOriginUri
     val createdAt: Instant
