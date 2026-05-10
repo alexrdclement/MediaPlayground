@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.media.engine
 import com.alexrdclement.mediaplayground.media.engine.mapper.toMediaItem
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import com.alexrdclement.mediaplayground.media.model.Track
@@ -20,6 +21,7 @@ class PlaylistControlImpl @Inject constructor(
             is AudioAlbum -> loadAlbum(mediaItem)
             is Track -> loadTrack(mediaItem)
             is Clip -> Unit
+            is MediaAsset -> Unit
         }
     }
 
