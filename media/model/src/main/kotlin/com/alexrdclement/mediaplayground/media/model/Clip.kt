@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @JvmInline
 @Serializable
@@ -16,6 +17,8 @@ data class Clip(
     override val duration: TimeUnit,
     val mediaAsset: MediaAsset,
     val assetOffset: TimeUnit,
+    val createdAt: Instant,
+    val modifiedAt: Instant,
 ) : MediaItem {
     override val images: PersistentList<Image> = when (mediaAsset) {
         is AudioAsset -> mediaAsset.images

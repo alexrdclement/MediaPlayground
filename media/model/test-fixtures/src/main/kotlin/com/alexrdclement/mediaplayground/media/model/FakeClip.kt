@@ -1,11 +1,15 @@
 package com.alexrdclement.mediaplayground.media.model
 
+import kotlin.time.Instant
+
 val FakeClip1 = Clip(
     id = ClipId("clip-1"),
     title = "Pioneer Spine",
     mediaAsset = FakeMediaAsset1,
     assetOffset = TimeUnit.Samples(0L, 44100),
     duration = TimeUnit.Samples(9569700L, 44100),
+    createdAt = Instant.DISTANT_PAST,
+    modifiedAt = Instant.DISTANT_PAST,
 )
 
 val FakeClip2 = Clip(
@@ -14,6 +18,8 @@ val FakeClip2 = Clip(
     mediaAsset = FakeMediaAsset2,
     assetOffset = TimeUnit.Samples(0L, 44100),
     duration = TimeUnit.Samples(7320600L, 44100),
+    createdAt = Instant.DISTANT_PAST,
+    modifiedAt = Instant.DISTANT_PAST,
 )
 
 val FakeClip3 = Clip(
@@ -22,6 +28,8 @@ val FakeClip3 = Clip(
     mediaAsset = FakeMediaAsset3,
     assetOffset = TimeUnit.Samples(0L, 44100),
     duration = TimeUnit.Samples(6835500L, 44100),
+    createdAt = Instant.DISTANT_PAST,
+    modifiedAt = Instant.DISTANT_PAST,
 )
 
 val FakeLocalClip1 = FakeClip1.copy(mediaAsset = FakeLocalMediaAsset1)

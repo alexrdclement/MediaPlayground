@@ -14,11 +14,4 @@ data class AudioAlbum(
     override val images: PersistentList<Image>,
     override val items: PersistentList<AudioTrack>,
     val notes: String?,
-) : AudioCollection<AudioTrack>, AudioItem {
-    override val isPlayable: Boolean
-        get() = items.any { it.isPlayable }
-
-    override val duration: TimeUnit = items
-        .map { it.duration }
-        .reduceOrNull { a, b -> a + b } ?: TimeUnit.Samples(0L, 44100)
-}
+) : AudioCollection<AudioTrack>
