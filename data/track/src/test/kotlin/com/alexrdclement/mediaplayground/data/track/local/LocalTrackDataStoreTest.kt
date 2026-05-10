@@ -50,14 +50,14 @@ class LocalTrackDataStoreTest {
 
         fixture.putTrack(track)
 
-        val result = fixture.localTrackDataStore.getTrack(track.id)
+        val result = fixture.localTrackDataStore.getTrack(track.id) as? AudioTrack
         assertNotNull(result)
         assertEquals(track.id, result.id)
         assertEquals(track.title, result.title)
         assertEquals(track.artists, result.artists)
         assertEquals(track.trackNumber, result.trackNumber)
         assertEquals(track.simpleAlbum.id, result.simpleAlbum.id)
-        assertEquals(track.clips.size, (result as AudioTrack).clips.size)
+        assertEquals(track.clips.size, result.clips.size)
     }
 
     @Test
