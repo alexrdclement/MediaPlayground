@@ -17,8 +17,8 @@ data class Clip(
     override val duration: TimeUnit,
     val mediaAsset: MediaAsset,
     val assetOffset: TimeUnit,
-    val createdAt: Instant,
-    val modifiedAt: Instant,
+    override val createdAt: Instant,
+    override val modifiedAt: Instant,
 ) : MediaItem {
     override val images: PersistentList<Image> = when (mediaAsset) {
         is AudioAsset -> mediaAsset.images

@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.media.model
 
 import kotlinx.collections.immutable.PersistentList
+import kotlin.time.Instant
 
 sealed interface MediaItemId {
     val value: String
@@ -12,6 +13,8 @@ sealed interface MediaItem {
     val images: PersistentList<Image>
     val isPlayable: Boolean
     val duration: TimeUnit
+    val createdAt: Instant
+    val modifiedAt: Instant
 }
 
 val MediaItem.thumbnailImageUri: MediaAssetUri?

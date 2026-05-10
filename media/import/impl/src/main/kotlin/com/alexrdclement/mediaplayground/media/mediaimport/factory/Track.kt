@@ -11,6 +11,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.toPersistentSet
 import java.util.UUID
+import kotlin.time.Clock
 
 internal fun makeTrack(
     id: UUID,
@@ -20,6 +21,7 @@ internal fun makeTrack(
     simpleAlbum: SimpleAlbum,
 ): AudioTrack {
     val title = mediaMetadata.title ?: "Unknown track"
+    val now = Clock.System.now()
 
     return AudioTrack(
         id = TrackId(id.toString()),
@@ -29,5 +31,7 @@ internal fun makeTrack(
         clips = trackClips.toPersistentSet(),
         simpleAlbum = simpleAlbum,
         notes = null,
+        createdAt = now,
+        modifiedAt = now,
     )
 }

@@ -51,5 +51,7 @@ fun CompleteAlbumEntity.toAlbum(): AudioAlbum {
             .map { it.toAudioTrack() }
             .toPersistentList(),
         notes = simpleAlbum.album.notes,
+        createdAt = simpleAlbum.mediaCollection.createdAt,
+        modifiedAt = simpleAlbum.mediaCollection.modifiedAt,
     )
 }

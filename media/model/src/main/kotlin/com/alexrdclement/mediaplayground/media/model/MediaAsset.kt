@@ -13,6 +13,6 @@ sealed interface MediaAsset : MediaItem {
     override val id: MediaAssetId
     val uri: MediaAssetUri
     val originUri: MediaAssetOriginUri
-    val createdAt: Instant
-    val modifiedAt: Instant
+    override val createdAt: Instant
+    override val modifiedAt: Instant
 }

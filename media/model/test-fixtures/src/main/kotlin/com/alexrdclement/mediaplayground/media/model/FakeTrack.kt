@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.media.model
 
 import kotlinx.collections.immutable.persistentSetOf
+import kotlin.time.Instant
 
 val FakeTrack1 = AudioTrack(
     id = FakeSimpleTrack1.id,
@@ -10,6 +11,8 @@ val FakeTrack1 = AudioTrack(
     clips = FakeSimpleTrack1.clips,
     simpleAlbum = FakeSimpleAlbum1,
     notes = null,
+    createdAt = Instant.DISTANT_PAST,
+    modifiedAt = Instant.DISTANT_PAST,
 )
 
 val FakeTrack2 = AudioTrack(
@@ -20,6 +23,8 @@ val FakeTrack2 = AudioTrack(
     clips = FakeSimpleTrack2.clips,
     simpleAlbum = FakeSimpleAlbum1,
     notes = null,
+    createdAt = Instant.DISTANT_PAST,
+    modifiedAt = Instant.DISTANT_PAST,
 )
 
 val FakeTrack3 = AudioTrack(
@@ -30,6 +35,8 @@ val FakeTrack3 = AudioTrack(
     clips = FakeSimpleTrack3.clips,
     simpleAlbum = FakeSimpleAlbum1,
     notes = null,
+    createdAt = Instant.DISTANT_PAST,
+    modifiedAt = Instant.DISTANT_PAST,
 )
 
 val FakeLocalTrack1 = FakeTrack1.copy(

@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.media.model
 
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @JvmInline
 @Serializable
@@ -14,4 +15,6 @@ data class AudioAlbum(
     override val images: PersistentList<Image>,
     override val items: PersistentList<AudioTrack>,
     val notes: String?,
+    override val createdAt: Instant,
+    override val modifiedAt: Instant,
 ) : AudioCollection<AudioTrack>
