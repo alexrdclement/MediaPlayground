@@ -30,10 +30,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.media.model.AudioTrack
+import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
-import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
 import com.embarrasdf.palette.components.core.Surface
 import com.embarrasdf.palette.components.core.SurfaceStyle
@@ -64,7 +63,8 @@ data class TrackListItemStyle(
  */
 @Composable
 fun TrackListItem(
-    track: AudioTrack,
+    track: Track,
+    subtitle: String,
     isLoaded: Boolean,
     isPlayable: Boolean,
     isPlaying: Boolean,
@@ -229,8 +229,8 @@ private fun TrackListItem(
                         .basicMarquee(),
                 )
                 Text(
-                    text = artistNamesOrDefault(artists),
-                    style = style.artistStyle,
+                    text = subtitle,
+                    style = PaletteTheme.styles.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee(),
@@ -253,6 +253,7 @@ private fun TrackPreview() {
     PaletteTheme {
         TrackListItem(
             track = PreviewTrack1,
+            subtitle = PreviewTrack1.artists.joinToString { it.name ?: "" },
             isLoaded = true,
             isPlayable = false,
             isPlaying = false,

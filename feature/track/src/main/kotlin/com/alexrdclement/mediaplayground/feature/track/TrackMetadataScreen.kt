@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.AudioItem
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
@@ -217,11 +218,12 @@ private fun LoadedContent(
                 )
             }
         }
-        if (state.track.artists.isNotEmpty()) {
+        val trackArtists = (state.track as? AudioItem)?.artists.orEmpty()
+        if (trackArtists.isNotEmpty()) {
             item {
                 Text(text = "Artists", style = style.labelStyle)
             }
-            items(state.track.artists, key = { it.id.value }) { artist ->
+            items(trackArtists, key = { it.id.value }) { artist ->
                 ArtistRow(
                     artist = artist,
                     onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id.value) },

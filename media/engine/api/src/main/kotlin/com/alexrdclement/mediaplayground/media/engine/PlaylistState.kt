@@ -1,16 +1,16 @@
 package com.alexrdclement.mediaplayground.media.engine
 
-import com.alexrdclement.mediaplayground.media.model.AudioItem
+import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
 interface PlaylistState {
     fun getLoadedMediaItemId(): Flow<MediaItemId?>
-    fun getPlaylist(): Flow<List<AudioItem>>
+    fun getPlaylist(): Flow<List<MediaItem>>
 }
 
-fun PlaylistState.getLoadedMediaItem(): Flow<AudioItem?> {
+fun PlaylistState.getLoadedMediaItem(): Flow<MediaItem?> {
     return combine(
         getLoadedMediaItemId(),
         getPlaylist(),

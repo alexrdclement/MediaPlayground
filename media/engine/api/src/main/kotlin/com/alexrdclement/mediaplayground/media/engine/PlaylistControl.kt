@@ -1,17 +1,17 @@
 package com.alexrdclement.mediaplayground.media.engine
 
-import com.alexrdclement.mediaplayground.media.model.AudioItem
+import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import kotlinx.coroutines.flow.first
 
 interface PlaylistControl {
     val playlistState: PlaylistState
-    suspend fun load(mediaItem: AudioItem)
+    suspend fun load(mediaItem: MediaItem)
     suspend fun seek(playlistItemIndex: Int)
     suspend fun delete(mediaItemId: MediaItemId)
 }
 
-suspend fun PlaylistControl.loadIfNecessary(mediaItem: AudioItem) {
+suspend fun PlaylistControl.loadIfNecessary(mediaItem: MediaItem) {
     playlistState.getLoadedMediaItem().first()?.let { loadedMediaItem ->
         if (mediaItem.id != loadedMediaItem.id) {
             load(mediaItem)

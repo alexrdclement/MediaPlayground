@@ -1,14 +1,14 @@
 package com.alexrdclement.mediaplayground.media.engine.fakes
 
 import com.alexrdclement.mediaplayground.media.engine.PlaylistControl
-import com.alexrdclement.mediaplayground.media.model.AudioItem
-import com.alexrdclement.mediaplayground.media.model.AudioItemId
+import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import kotlinx.coroutines.flow.first
 
 class FakePlaylistControl(
     override val playlistState: FakePlaylistState = FakePlaylistState(),
 ) : PlaylistControl {
-    override suspend fun load(mediaItem: AudioItem) {
+    override suspend fun load(mediaItem: MediaItem) {
         playlistState.clear()
         playlistState.setPlaylist(listOf(mediaItem))
         playlistState.setLoadedMediaItemId(mediaItem.id)

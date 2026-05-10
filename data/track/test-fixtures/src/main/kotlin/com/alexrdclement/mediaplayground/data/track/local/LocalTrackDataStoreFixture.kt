@@ -6,6 +6,7 @@ import com.alexrdclement.mediaplayground.data.image.local.LocalImageDataStore
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionScope
 import com.alexrdclement.media.store.FakeMediaStoreTransactionRunner
+import com.alexrdclement.mediaplayground.media.model.AudioItem
 import com.alexrdclement.mediaplayground.media.model.Track
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +52,7 @@ class LocalTrackDataStoreFixture(
 
     suspend fun putTrack(track: Track) {
         mediaStoreTransactionRunner.run {
-            for (artist in track.artists) {
+            for (artist in (track as? AudioItem)?.artists.orEmpty()) {
                 localArtistDataStore.put(artist)
             }
             localImageDataStore.put(track.simpleAlbum.images.toSet())
@@ -72,7 +73,7 @@ class LocalTrackDataStoreFixture(
                 return@run
             }
 
-            for (artist in track.artists) {
+            for (artist in (track as? AudioItem)?.artists.orEmpty()) {
                 val albumCount = localArtistDataStore.getArtistAlbumCount(artist.id)
                 if (albumCount <= 1) {
                     localArtistDataStore.delete(artist.id)

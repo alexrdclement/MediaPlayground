@@ -8,7 +8,6 @@ import com.alexrdclement.mediaplayground.data.track.TrackRepository
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
-import com.alexrdclement.mediaplayground.media.model.AudioItem
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +52,7 @@ class LocalContentStateProvider @Inject constructor(
     ) { pagingData, loadedMediaItem, isPlaying ->
         pagingData.map { track ->
             MediaItemUi.from(
-                mediaItem = track as AudioItem,
+                mediaItem = track,
                 loadedMediaItem = loadedMediaItem,
                 isPlaying = isPlaying,
             )
