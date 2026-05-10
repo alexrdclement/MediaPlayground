@@ -101,7 +101,7 @@ class AlbumViewModel(
             isAlbumPlayable = album.isPlayable,
             isAlbumPlaying = isPlaying && when (loadedMediaItem) {
                 is AudioAlbum -> loadedMediaItem.id == album.id
-                is Track -> loadedMediaItem.simpleAlbum.id == album.id
+                is Track -> loadedMediaItem.albums.any { it.id == album.id }
                 else -> false
             },
             isMediaItemLoaded = loadedMediaItem != null,
@@ -183,7 +183,7 @@ class AlbumViewModel(
             is AudioAlbum -> loadedMediaItem.id == album.id
             is Track -> playlist.all {
                 val asTrack = it as? Track ?: return@all false
-                asTrack.simpleAlbum.id == album.id
+                asTrack.albums.any { it.id == album.id }
             }
             else -> false
         }

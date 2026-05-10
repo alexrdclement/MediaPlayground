@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.media.model
 
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlin.time.Instant
 
@@ -9,7 +10,7 @@ val FakeTrack1 = AudioTrack(
     trackNumber = FakeSimpleTrack1.trackNumber,
     artists = FakeSimpleTrack1.artists,
     clips = FakeSimpleTrack1.clips,
-    simpleAlbum = FakeSimpleAlbum1,
+    albums = persistentListOf(FakeSimpleAlbum1),
     notes = null,
     createdAt = Instant.DISTANT_PAST,
     modifiedAt = Instant.DISTANT_PAST,
@@ -21,7 +22,7 @@ val FakeTrack2 = AudioTrack(
     trackNumber = FakeSimpleTrack2.trackNumber,
     artists = FakeSimpleTrack2.artists,
     clips = FakeSimpleTrack2.clips,
-    simpleAlbum = FakeSimpleAlbum1,
+    albums = persistentListOf(FakeSimpleAlbum1),
     notes = null,
     createdAt = Instant.DISTANT_PAST,
     modifiedAt = Instant.DISTANT_PAST,
@@ -33,24 +34,24 @@ val FakeTrack3 = AudioTrack(
     trackNumber = FakeSimpleTrack3.trackNumber,
     artists = FakeSimpleTrack3.artists,
     clips = FakeSimpleTrack3.clips,
-    simpleAlbum = FakeSimpleAlbum1,
+    albums = persistentListOf(FakeSimpleAlbum1),
     notes = null,
     createdAt = Instant.DISTANT_PAST,
     modifiedAt = Instant.DISTANT_PAST,
 )
 
 val FakeLocalTrack1 = FakeTrack1.copy(
-    simpleAlbum = FakeLocalSimpleAlbum1,
+    albums = persistentListOf(FakeLocalSimpleAlbum1),
     clips = persistentSetOf(FakeLocalTrackClip1),
 )
 
 val FakeLocalTrack2 = FakeTrack2.copy(
-    simpleAlbum = FakeLocalSimpleAlbum1,
+    albums = persistentListOf(FakeLocalSimpleAlbum1),
     clips = persistentSetOf(FakeLocalTrackClip2),
 )
 
 val FakeLocalTrack3 = FakeTrack3.copy(
-    simpleAlbum = FakeLocalSimpleAlbum1,
+    albums = persistentListOf(FakeLocalSimpleAlbum1),
     clips = persistentSetOf(FakeLocalTrackClip3),
 )
 

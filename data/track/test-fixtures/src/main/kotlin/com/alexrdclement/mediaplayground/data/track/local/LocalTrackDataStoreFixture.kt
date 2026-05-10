@@ -55,8 +55,8 @@ class LocalTrackDataStoreFixture(
             for (artist in (track as? AudioItem)?.artists.orEmpty()) {
                 localArtistDataStore.put(artist)
             }
-            localImageDataStore.put(track.simpleAlbum.images.toSet())
-            localAudioAlbumDataStore.put(track.simpleAlbum)
+            localImageDataStore.put(track.albums.flatMap { it.images }.toSet())
+            track.albums.forEach { localAudioAlbumDataStore.put(it) }
             localTrackDataStore.put(track)
         }
     }
@@ -67,7 +67,7 @@ class LocalTrackDataStoreFixture(
 
     suspend fun deleteTrack(track: Track) {
         mediaStoreTransactionRunner.run {
-            val trackCount = localAudioAlbumDataStore.getAlbumTrackCount(track.simpleAlbum.id)
+            val trackCount = localAudioAlbumDataStore.getAlbumTrackCount(track.albums.first().id)
             if (trackCount > 1) {
                 localTrackDataStore.delete(track.id)
                 return@run
@@ -84,7 +84,7 @@ class LocalTrackDataStoreFixture(
                 localImageDataStore.delete(image.id)
             }
 
-            localAudioAlbumDataStore.delete(track.simpleAlbum.id)
+            track.albums.forEach { localAudioAlbumDataStore.delete(it.id) }
             localTrackDataStore.delete(track.id)
         }
     }

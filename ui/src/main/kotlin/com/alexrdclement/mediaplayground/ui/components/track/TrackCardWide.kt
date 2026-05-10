@@ -66,7 +66,7 @@ fun TrackCardWide(
             ) {
                 Text(text = track.title)
                 Text(text = artistNamesOrDefault(track.artists))
-                Text(text = track.simpleAlbum.name)
+                Text(text = track.albums.joinToString { it.name })
             }
         }
     }

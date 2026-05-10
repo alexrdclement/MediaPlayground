@@ -16,7 +16,7 @@ context(scope: DatabaseTransactionScope)
 suspend fun insertTrack(
     mediaCollection: MediaCollection,
     track: Track,
-    albumTrackCrossRef: AlbumTrackCrossRef,
+    albumTrackCrossRefs: List<AlbumTrackCrossRef>,
     clips: List<Triple<Clip, MediaAsset, AudioAsset>>,
     trackClipCrossRefs: List<TrackClipCrossRef>,
 ) = with(scope) {
@@ -30,7 +30,9 @@ suspend fun insertTrack(
     mediaItemDao.insert(MediaItem(id = mediaCollection.id, itemType = MediaItemType.COLLECTION))
     mediaCollectionDao.insert(mediaCollection)
     trackDao.insert(track)
-    albumTrackDao.insert(albumTrackCrossRef)
+    for (crossRef in albumTrackCrossRefs) {
+        albumTrackDao.insert(crossRef)
+    }
     for (crossRef in trackClipCrossRefs) {
         insertTrackClipCrossRef(crossRef)
     }
