@@ -7,7 +7,6 @@ import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
-import kotlin.time.Clock
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack as CompleteTrackEntity
 import com.alexrdclement.mediaplayground.database.model.MediaCollection as MediaCollectionEntity
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
@@ -24,8 +23,8 @@ fun AudioTrack.toMediaCollectionEntity(): MediaCollectionEntity {
         id = id.value,
         title = title,
         mediaCollectionType = MediaCollectionType.TRACK,
-        createdAt = Clock.System.now(),
-        modifiedAt = Clock.System.now(),
+        createdAt = createdAt,
+        modifiedAt = modifiedAt,
     )
 }
 
@@ -48,5 +47,7 @@ fun CompleteTrackEntity.toAudioTrack(): AudioTrack {
             images = domainImages,
         ),
         notes = track.notes,
+        createdAt = mediaCollection.createdAt,
+        modifiedAt = mediaCollection.modifiedAt,
     )
 }

@@ -9,6 +9,7 @@ import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.store.AlbumMediaStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
 import kotlinx.collections.immutable.persistentListOf
+import kotlin.time.Instant
 
 class FakeAlbumMediaStore : AlbumMediaStore {
 
@@ -24,6 +25,8 @@ class FakeAlbumMediaStore : AlbumMediaStore {
             images = simpleAlbum.images,
             items = persistentListOf(),
             notes = null,
+            createdAt = Instant.DISTANT_PAST,
+            modifiedAt = Instant.DISTANT_PAST,
         )
     }
 
