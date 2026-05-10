@@ -1,5 +1,7 @@
 package com.alexrdclement.mediaplayground.media.model
 
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
@@ -24,4 +26,9 @@ data class Image(
     val cameraMake: String? = null,
     val cameraModel: String? = null,
     val notes: String? = null,
-) : MediaAsset
+) : MediaAsset {
+    override val title: String get() = uri.toUriString().substringAfterLast('/')
+    override val images: PersistentList<Image> get() = persistentListOf(this)
+    override val isPlayable: Boolean get() = true
+    override val duration: TimeUnit get() = TimeUnit.Frames(frames = 1L, frameRate = 1.0)
+}
