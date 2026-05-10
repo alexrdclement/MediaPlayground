@@ -9,7 +9,6 @@ import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
-import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.largeImageUri
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
@@ -102,7 +101,7 @@ class AlbumViewModel(
             isAlbumPlaying = isPlaying && when (loadedMediaItem) {
                 is AudioAlbum -> loadedMediaItem.id == album.id
                 is Track -> loadedMediaItem.simpleAlbum.id == album.id
-                is Clip, null -> false
+                else -> false
             },
             isMediaItemLoaded = loadedMediaItem != null,
         )

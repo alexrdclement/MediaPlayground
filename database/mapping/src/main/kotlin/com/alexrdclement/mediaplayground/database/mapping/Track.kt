@@ -4,7 +4,6 @@ import com.alexrdclement.mediaplayground.database.model.MediaCollectionType
 import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
@@ -13,14 +12,14 @@ import com.alexrdclement.mediaplayground.database.model.CompleteTrack as Complet
 import com.alexrdclement.mediaplayground.database.model.MediaCollection as MediaCollectionEntity
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
 
-fun Track.toTrackEntity(): TrackEntity {
+fun AudioTrack.toTrackEntity(): TrackEntity {
     return TrackEntity(
         id = id.value,
         notes = notes,
     )
 }
 
-fun Track.toMediaCollectionEntity(): MediaCollectionEntity {
+fun AudioTrack.toMediaCollectionEntity(): MediaCollectionEntity {
     return MediaCollectionEntity(
         id = id.value,
         title = title,

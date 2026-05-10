@@ -27,7 +27,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
@@ -40,7 +40,7 @@ import com.alexrdclement.palette.theme.styles.copy
 
 @Composable
 fun TrackListItem(
-    track: Track,
+    track: AudioTrack,
     isLoaded: Boolean,
     isPlayable: Boolean,
     isPlaying: Boolean,

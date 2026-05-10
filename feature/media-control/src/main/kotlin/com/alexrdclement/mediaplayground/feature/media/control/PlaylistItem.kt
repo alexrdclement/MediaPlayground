@@ -28,7 +28,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.AudioItem
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
@@ -64,7 +64,7 @@ fun PlaylistItem(
 
 @Composable
 fun PlaylistItem(
-    item: MediaItem,
+    item: AudioItem,
     isLoaded: Boolean,
     isPlayable: Boolean,
     isPlaying: Boolean,

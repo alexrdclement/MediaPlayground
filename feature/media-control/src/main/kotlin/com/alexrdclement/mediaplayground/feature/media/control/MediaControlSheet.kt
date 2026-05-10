@@ -29,7 +29,7 @@ import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
-import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.AudioItem
 import com.alexrdclement.mediaplayground.media.model.largeImageUri
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
@@ -90,7 +90,7 @@ fun MediaControlSheet(
 @Composable
 fun MediaControlSheet(
     mediaControlSheetState: PeekSheetState,
-    loadedMediaItem: MediaItem?,
+    loadedMediaItem: AudioItem?,
     playlist: PersistentList<MediaItemUi>,
     transportState: TransportState,
     playheadState: PlayheadState?,

@@ -1,17 +1,17 @@
 package com.alexrdclement.mediaplayground.ui.model
 
-import com.alexrdclement.mediaplayground.media.model.MediaItem
+import com.alexrdclement.mediaplayground.media.model.AudioItem
 
 data class MediaItemUi(
-    val mediaItem: MediaItem,
+    val mediaItem: AudioItem,
     val isLoaded: Boolean,
     val isPlayable: Boolean,
     val isPlaying: Boolean,
 ) {
     companion object {
         fun from(
-            mediaItem: MediaItem,
-            loadedMediaItem: MediaItem?,
+            mediaItem: AudioItem,
+            loadedMediaItem: AudioItem?,
             isPlaying: Boolean,
         ): MediaItemUi {
             return MediaItemUi(

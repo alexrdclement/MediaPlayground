@@ -24,9 +24,8 @@ import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
-import com.alexrdclement.mediaplayground.media.model.Clip
-import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.AudioItem
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
@@ -43,7 +42,7 @@ private const val MediaPickerAudioMimeType = "audio/*"
 
 @Composable
 fun AudioLibraryScreen(
-    onNavigateToPlayer: (MediaItem) -> Unit,
+    onNavigateToPlayer: (AudioItem) -> Unit,
     onNavigateToAlbum: (AudioAlbum) -> Unit,
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
@@ -70,14 +69,10 @@ fun AudioLibraryScreen(
                     onNavigateToAlbum(mediaItem)
                 }
 
-                is Track -> {
+                is AudioTrack -> {
                     if (mediaItem.isPlayable) {
                         onNavigateToPlayer(mediaItem)
                     }
-                }
-
-                is Clip -> {
-                    // TODO: Clip UI
                 }
             }
         },
