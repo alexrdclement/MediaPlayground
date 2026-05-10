@@ -25,14 +25,15 @@ private fun AudioTrack.toAudioMediaItem(pathProvider: PathProvider): MediaItem {
 }
 
 private fun AudioTrack.toAudioMediaMetadata(pathProvider: PathProvider): MediaMetadata {
+    val primaryAlbum = albums.firstOrNull()
     return MediaMetadata.Builder()
-        .setAlbumArtist(simpleAlbum.artists.joinToString { it.name ?: "Unknown artist" })
-        .setArtist(simpleAlbum.artists.joinToString { it.name ?: "Unknown artist" })
-        .setAlbumTitle(simpleAlbum.name)
+        .setAlbumArtist(primaryAlbum?.artists?.joinToString { it.name ?: "Unknown artist" })
+        .setArtist(artists.joinToString { it.name ?: "Unknown artist" })
+        .setAlbumTitle(primaryAlbum?.name)
         .setDisplayTitle(title)
         .setTitle(title)
         .apply {
-            simpleAlbum.largeImageUri?.let { mediaUri ->
+            primaryAlbum?.largeImageUri?.let { mediaUri ->
                 val artworkPath = pathProvider.getPath(mediaUri)
                 setArtworkUri(Uri.fromFile(File(artworkPath.toString())))
             }

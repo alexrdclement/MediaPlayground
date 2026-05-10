@@ -45,7 +45,7 @@ class LocalTrackDataStoreTest {
         )
         val track = FakeLocalTrack1.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
 
         fixture.putTrack(track)
@@ -56,7 +56,7 @@ class LocalTrackDataStoreTest {
         assertEquals(track.title, result.title)
         assertEquals(track.artists, result.artists)
         assertEquals(track.trackNumber, result.trackNumber)
-        assertEquals(track.simpleAlbum.id, result.simpleAlbum.id)
+        assertEquals(track.albums.first().id, result.albums.first().id)
         assertEquals(track.clips.size, result.clips.size)
     }
 
@@ -81,7 +81,7 @@ class LocalTrackDataStoreTest {
         )
         val track = FakeLocalTrack1.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
 
         fixture.putTrack(track)
@@ -99,7 +99,7 @@ class LocalTrackDataStoreTest {
         )
         val track = FakeLocalTrack1.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
 
         fixture.putTrack(track)
@@ -119,7 +119,7 @@ class LocalTrackDataStoreTest {
         )
         val track = FakeLocalTrack1.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
 
         fixture.putTrack(track)
@@ -139,7 +139,7 @@ class LocalTrackDataStoreTest {
         )
         val track = FakeLocalTrack1.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
 
         fixture.putTrack(track)
@@ -159,11 +159,11 @@ class LocalTrackDataStoreTest {
         )
         val track1 = FakeLocalTrack1.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
         val track2 = FakeLocalTrack2.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
 
         fixture.putTrack(track1)
@@ -180,7 +180,7 @@ class LocalTrackDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(artists = artists, simpleAlbum = simpleAlbum)
+        val track = FakeLocalTrack1.copy(artists = artists, albums = persistentListOf(simpleAlbum))
 
         fixture.putTrack(track)
         fixture.localTrackDataStore.delete(track.id)
@@ -195,8 +195,8 @@ class LocalTrackDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track1 = FakeLocalTrack1.copy(artists = artists, simpleAlbum = simpleAlbum)
-        val track2 = FakeLocalTrack2.copy(artists = artists, simpleAlbum = simpleAlbum)
+        val track1 = FakeLocalTrack1.copy(artists = artists, albums = persistentListOf(simpleAlbum))
+        val track2 = FakeLocalTrack2.copy(artists = artists, albums = persistentListOf(simpleAlbum))
 
         fixture.putTrack(track1)
         fixture.putTrack(track2)
@@ -221,7 +221,7 @@ class LocalTrackDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(artists = artists, simpleAlbum = simpleAlbum)
+        val track = FakeLocalTrack1.copy(artists = artists, albums = persistentListOf(simpleAlbum))
 
         fixture.putTrack(track)
         fixture.localTrackDataStore.delete(track.id, DeleteTrackPolicy(deleteOrphanedClips = false))
@@ -238,11 +238,11 @@ class LocalTrackDataStoreTest {
         )
         val track1 = FakeLocalTrack1.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
         val track2 = FakeLocalTrack2.copy(
             artists = artists,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
 
         fixture.putTrack(track1)
@@ -269,7 +269,7 @@ class LocalTrackDataStoreTest {
         )
         val track1 = FakeLocalTrack1.copy(
             artists = artists1,
-            simpleAlbum = simpleAlbum,
+            albums = persistentListOf(simpleAlbum),
         )
 
         fixture.putTrack(track1)
@@ -297,11 +297,11 @@ class LocalTrackDataStoreTest {
         )
         val track1 = FakeLocalTrack1.copy(
             artists = artists1,
-            simpleAlbum = simpleAlbum1,
+            albums = persistentListOf(simpleAlbum1),
         )
         val track2 = FakeLocalTrack2.copy(
             artists = artists2,
-            simpleAlbum = simpleAlbum2,
+            albums = persistentListOf(simpleAlbum2),
         )
 
         fixture.putTrack(track1)
@@ -323,7 +323,7 @@ class LocalTrackDataStoreTest {
         )
         val track1 = FakeLocalTrack1.copy(
             artists = artists1,
-            simpleAlbum = simpleAlbum1,
+            albums = persistentListOf(simpleAlbum1),
         )
 
         fixture.putTrack(track1)

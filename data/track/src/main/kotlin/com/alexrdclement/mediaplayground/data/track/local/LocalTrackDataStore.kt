@@ -71,11 +71,13 @@ class LocalTrackDataStore @Inject constructor(
     private suspend fun putAudioTrack(track: AudioTrack) {
         val mediaCollectionEntity = track.toMediaCollectionEntity()
         val trackEntity = track.toTrackEntity()
-        val albumTrackCrossRef = AlbumTrackCrossRef(
-            albumId = track.simpleAlbum.id.value,
-            trackId = track.id.value,
-            trackNumber = track.trackNumber,
-        )
+        val albumTrackCrossRefs = track.albums.map { album ->
+            AlbumTrackCrossRef(
+                albumId = album.id.value,
+                trackId = track.id.value,
+                trackNumber = track.trackNumber,
+            )
+        }
         val clipsAndAudioAssets = track.clips.mapNotNull { trackClip ->
             val audioAsset = trackClip.clip.mediaAsset as? AudioAsset ?: return@mapNotNull null
             Triple(
@@ -95,7 +97,7 @@ class LocalTrackDataStore @Inject constructor(
             insertTrack(
                 mediaCollection = mediaCollectionEntity,
                 track = trackEntity,
-                albumTrackCrossRef = albumTrackCrossRef,
+                albumTrackCrossRefs = albumTrackCrossRefs,
                 clips = clipsAndAudioAssets,
                 trackClipCrossRefs = crossRefs,
             )

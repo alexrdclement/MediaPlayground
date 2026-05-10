@@ -84,9 +84,9 @@ fun TrackCardWide(
                 verticalArrangement = Arrangement.spacedBy(style.textSpacing),
                 horizontalAlignment = Alignment.Start,
             ) {
-                Text(text = track.title, style = style.titleStyle)
-                Text(text = artistNamesOrDefault(track.artists), style = style.artistStyle)
-                Text(text = track.simpleAlbum.name, style = style.albumStyle)
+                Text(text = track.title)
+                Text(text = artistNamesOrDefault(track.artists))
+                Text(text = track.albums.joinToString { it.name })
             }
         }
     }

@@ -9,6 +9,7 @@ import com.alexrdclement.mediaplayground.media.model.TrackClip
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentSet
 import java.util.UUID
 import kotlin.time.Clock
@@ -29,7 +30,7 @@ internal fun makeTrack(
         artists = artists,
         trackNumber = mediaMetadata.trackNumber,
         clips = trackClips.toPersistentSet(),
-        simpleAlbum = simpleAlbum,
+        albums = persistentListOf(simpleAlbum),
         notes = null,
         createdAt = now,
         modifiedAt = now,

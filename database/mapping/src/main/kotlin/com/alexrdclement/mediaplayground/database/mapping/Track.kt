@@ -7,6 +7,7 @@ import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
+import kotlinx.collections.immutable.persistentListOf
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack as CompleteTrackEntity
 import com.alexrdclement.mediaplayground.database.model.MediaCollection as MediaCollectionEntity
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
@@ -29,7 +30,7 @@ fun AudioTrack.toMediaCollectionEntity(): MediaCollectionEntity {
 }
 
 fun CompleteTrackEntity.toAudioTrack(): AudioTrack {
-    val firstRef = albumRefs.first()
+    val firstRef = albumRefs.firstOrNull() ?: error("Track ${track.id} has no album refs")
     val artists = firstRef.simpleAlbum.artists.map { it.toArtist() }.toPersistentList()
     val domainImages = firstRef.simpleAlbum.images.map { it.toImage() }.toPersistentList()
     return AudioTrack(
@@ -40,12 +41,14 @@ fun CompleteTrackEntity.toAudioTrack(): AudioTrack {
         clips = clips.map {
             it.toTrackClip(artists, domainImages)
         }.toPersistentSet(),
-        simpleAlbum = SimpleAlbum(
-            id = AudioAlbumId(firstRef.simpleAlbum.album.id),
-            name = firstRef.simpleAlbum.mediaCollection.title,
-            artists = artists,
-            images = domainImages,
-        ),
+        albums = albumRefs.map { ref ->
+            SimpleAlbum(
+                id = AudioAlbumId(ref.simpleAlbum.album.id),
+                name = ref.simpleAlbum.mediaCollection.title,
+                artists = ref.simpleAlbum.artists.map { it.toArtist() }.toPersistentList(),
+                images = ref.simpleAlbum.images.map { it.toImage() }.toPersistentList(),
+            )
+        }.toPersistentList(),
         notes = track.notes,
         createdAt = mediaCollection.createdAt,
         modifiedAt = mediaCollection.modifiedAt,
