@@ -60,6 +60,9 @@ fun CompleteAudioClipEntity.toAudioAsset(
 ): DomainAudioAsset =
     CompleteAudioAsset(audioAsset = audioAsset, mediaAsset = mediaAsset).toAudioAsset(artists, images)
 
+fun CompleteTrackClipEntity.toTrackClip(): TrackClip<TimeUnit.Samples> =
+    toTrackClip(completeAudioClip.toAudioAsset())
+
 fun CompleteTrackClipEntity.toTrackClip(
     artists: PersistentList<Artist>,
     images: PersistentList<Image>,

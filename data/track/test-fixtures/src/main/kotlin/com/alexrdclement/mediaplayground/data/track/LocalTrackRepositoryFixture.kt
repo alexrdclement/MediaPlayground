@@ -3,24 +3,24 @@ package com.alexrdclement.mediaplayground.data.track
 import android.net.Uri
 import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepositoryImpl
 import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStoreFixture
-import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumTrackImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.model.AudioTrack
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
+import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.model.result.Result
 
 class LocalTrackRepositoryFixture(
     val trackDataStoreFixture: LocalTrackDataStoreFixture = LocalTrackDataStoreFixture(),
 ) {
-    private val trackImporter = object : TrackImporter {
+    private val trackImporter = object : AlbumTrackImporter {
         override suspend fun import(
             uri: Uri,
-        ): Result<AudioTrack, MediaImportError> =
+        ): Result<AlbumTrack, MediaImportError> =
             TODO("Not implemented in fixture")
 
         override suspend fun import(
             uris: List<Uri>,
-        ): Map<Uri, Result<AudioTrack, MediaImportError>> =
+        ): Map<Uri, Result<AlbumTrack, MediaImportError>> =
             TODO("Not implemented in fixture")
     }
 
@@ -35,19 +35,19 @@ class LocalTrackRepositoryFixture(
         localAudioAlbumDataStore = trackDataStoreFixture.localAudioAlbumDataStore,
     )
 
-    suspend fun putTrack(track: Track) {
-        trackDataStoreFixture.putTrack(track)
+    suspend fun putTrack(albumTrack: AlbumTrack, simpleAlbum: SimpleAlbum) {
+        trackDataStoreFixture.putTrack(albumTrack, simpleAlbum)
     }
 
-    suspend fun putTracks(tracks: List<Track>) {
-        trackDataStoreFixture.putTracks(tracks)
+    suspend fun putTracks(albumTracks: List<AlbumTrack>, simpleAlbum: SimpleAlbum) {
+        trackDataStoreFixture.putTracks(albumTracks, simpleAlbum)
     }
 
-    suspend fun deleteTrack(track: Track) {
-        trackDataStoreFixture.deleteTrack(track)
+    suspend fun deleteTrack(albumTrack: AlbumTrack, simpleAlbum: SimpleAlbum) {
+        trackDataStoreFixture.deleteTrack(albumTrack, simpleAlbum)
     }
 
-    suspend fun deleteTracks(tracks: List<Track>) {
-        trackDataStoreFixture.deleteTracks(tracks)
+    suspend fun deleteTracks(albumTracks: List<AlbumTrack>, simpleAlbum: SimpleAlbum) {
+        trackDataStoreFixture.deleteTracks(albumTracks, simpleAlbum)
     }
 }

@@ -4,7 +4,7 @@ sealed interface AudioCollectionId : MediaCollectionId {
     override val value: String
 }
 
-sealed interface AudioCollection<T : AudioItem> : MediaCollection<T> {
+sealed interface AudioCollection<T : AudioItem> : MediaCollection<T>, AudioItem {
     override val id: AudioCollectionId
-    val duration: TimeUnit
+    override val duration: TimeUnit
 }

@@ -1,13 +1,13 @@
 package com.alexrdclement.mediaplayground.media.model.mapper
 
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
-import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import kotlinx.collections.immutable.PersistentList
 
 fun SimpleAlbum.toAlbum(
-    tracks: PersistentList<AudioTrack>,
+    tracks: PersistentList<AlbumTrack>,
 ) = AudioAlbum(
     id = AudioAlbumId(id.value),
     title = name,

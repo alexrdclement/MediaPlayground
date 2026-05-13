@@ -6,8 +6,8 @@ import com.alexrdclement.mediaplayground.data.image.local.LocalImageDataStore
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionScope
 import com.alexrdclement.media.store.FakeMediaStoreTransactionRunner
-import com.alexrdclement.mediaplayground.media.model.AudioItem
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
+import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
@@ -50,46 +50,46 @@ class LocalTrackDataStoreFixture(
     val imageDao get() = transactionScope.imageAssetDao
     val artistDao get() = transactionScope.artistDao
 
-    suspend fun putTrack(track: Track) {
+    suspend fun putTrack(albumTrack: AlbumTrack, simpleAlbum: SimpleAlbum) {
         mediaStoreTransactionRunner.run {
-            for (artist in (track as? AudioItem)?.artists.orEmpty()) {
+            for (artist in albumTrack.artists) {
                 localArtistDataStore.put(artist)
             }
-            localImageDataStore.put(track.simpleAlbum.images.toSet())
-            localAudioAlbumDataStore.put(track.simpleAlbum)
-            localTrackDataStore.put(track)
+            localImageDataStore.put(simpleAlbum.images.toSet())
+            localAudioAlbumDataStore.put(simpleAlbum)
+            localTrackDataStore.put(albumTrack)
         }
     }
 
-    suspend fun putTracks(tracks: List<Track>) {
-        tracks.forEach { putTrack(it) }
+    suspend fun putTracks(albumTracks: List<AlbumTrack>, simpleAlbum: SimpleAlbum) {
+        albumTracks.forEach { putTrack(it, simpleAlbum) }
     }
 
-    suspend fun deleteTrack(track: Track) {
+    suspend fun deleteTrack(albumTrack: AlbumTrack, simpleAlbum: SimpleAlbum) {
         mediaStoreTransactionRunner.run {
-            val trackCount = localAudioAlbumDataStore.getAlbumTrackCount(track.simpleAlbum.id)
+            val trackCount = localAudioAlbumDataStore.getAlbumTrackCount(simpleAlbum.id)
             if (trackCount > 1) {
-                localTrackDataStore.delete(track.id)
+                localTrackDataStore.delete(albumTrack.track.id)
                 return@run
             }
 
-            for (artist in (track as? AudioItem)?.artists.orEmpty()) {
+            for (artist in albumTrack.artists) {
                 val albumCount = localArtistDataStore.getArtistAlbumCount(artist.id)
                 if (albumCount <= 1) {
                     localArtistDataStore.delete(artist.id)
                 }
             }
 
-            for (image in track.images) {
+            for (image in albumTrack.images) {
                 localImageDataStore.delete(image.id)
             }
 
-            localAudioAlbumDataStore.delete(track.simpleAlbum.id)
-            localTrackDataStore.delete(track.id)
+            localAudioAlbumDataStore.delete(simpleAlbum.id)
+            localTrackDataStore.delete(albumTrack.track.id)
         }
     }
 
-    suspend fun deleteTracks(tracks: List<Track>) {
-        tracks.forEach { deleteTrack(it) }
+    suspend fun deleteTracks(albumTracks: List<AlbumTrack>, simpleAlbum: SimpleAlbum) {
+        albumTracks.forEach { deleteTrack(it, simpleAlbum) }
     }
 }

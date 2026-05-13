@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.MediaAsset
@@ -77,6 +78,7 @@ fun AudioLibraryScreen(
                     }
                 }
 
+                is AlbumTrack -> Unit
                 is Clip -> Unit
                 is MediaAsset -> Unit
             }

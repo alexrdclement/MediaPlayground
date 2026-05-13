@@ -12,9 +12,7 @@ interface TrackRepository {
     suspend fun getTrack(id: TrackId): Track?
     fun getTrackCountFlow(): Flow<Int>
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>>
-    suspend fun put(track: Track)
     suspend fun updateTrackTitle(id: TrackId, title: String)
-    suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?)
     suspend fun updateTrackNotes(id: TrackId, notes: String?)
     suspend fun delete(id: TrackId)
     fun importTracksFromDisk(uris: List<Uri>): Flow<Map<Uri, TrackImportState>>

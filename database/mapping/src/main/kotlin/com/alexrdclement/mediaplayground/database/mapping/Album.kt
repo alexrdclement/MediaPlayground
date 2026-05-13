@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.database.mapping
 
 import com.alexrdclement.mediaplayground.database.model.MediaCollectionType
 import com.alexrdclement.mediaplayground.database.model.id
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
@@ -39,17 +40,25 @@ fun SimpleAlbumEntity.toSimpleAlbum(): SimpleAlbum {
 }
 
 fun CompleteAlbumEntity.toAlbum(): AudioAlbum {
-    val albumId = this.id
+    val albumId = AudioAlbumId(this.id)
     val artists = simpleAlbum.artists.map { it.toArtist() }.toPersistentList()
     val domainImages = simpleAlbum.images.map { it.toImage() }.toPersistentList()
     return AudioAlbum(
-        id = AudioAlbumId(albumId),
+        id = albumId,
         title = simpleAlbum.mediaCollection.title,
         artists = artists,
         images = domainImages,
-        items = orderedTracks
-            .map { it.toAudioTrack() }
-            .toPersistentList(),
+        items = orderedTracks.map { completeTrack ->
+            val albumRef = completeTrack.albumRefs.find {
+                it.albumTrackCrossRef.albumId == albumId.value
+            }
+            AlbumTrack(
+                track = completeTrack.toAudioTrack(),
+                albumId = albumId,
+                trackNumber = albumRef?.albumTrackCrossRef?.trackNumber,
+                artists = artists,
+            )
+        }.toPersistentList(),
         notes = simpleAlbum.album.notes,
     )
 }

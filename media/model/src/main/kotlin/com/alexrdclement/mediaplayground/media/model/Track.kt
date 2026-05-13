@@ -8,7 +8,5 @@ value class TrackId(override val value: String) : MediaItemId
 
 sealed interface Track : MediaItem {
     override val id: TrackId
-    val trackNumber: Int?
-    val simpleAlbum: SimpleAlbum
     val notes: String?
 }

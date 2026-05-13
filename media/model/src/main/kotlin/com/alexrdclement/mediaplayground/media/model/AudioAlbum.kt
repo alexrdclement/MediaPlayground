@@ -12,9 +12,9 @@ data class AudioAlbum(
     override val title: String,
     override val artists: PersistentList<Artist>,
     override val images: PersistentList<Image>,
-    override val items: PersistentList<AudioTrack>,
+    override val items: PersistentList<AlbumTrack>,
     val notes: String?,
-) : AudioCollection<AudioTrack>, AudioItem {
+) : AudioCollection<AlbumTrack> {
     override val isPlayable: Boolean
         get() = items.any { it.isPlayable }
 

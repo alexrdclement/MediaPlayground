@@ -17,8 +17,8 @@ import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactio
 import com.alexrdclement.mediaplayground.database.transaction.deleteTrack
 import com.alexrdclement.mediaplayground.database.transaction.insertTrack
 import com.alexrdclement.mediaplayground.database.transaction.updateTrack
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
-import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteTrackPolicy
@@ -62,19 +62,14 @@ class LocalTrackDataStore @Inject constructor(
         }
     }
 
-    suspend fun put(track: Track) {
-        when (track) {
-            is AudioTrack -> putAudioTrack(track)
-        }
-    }
-
-    private suspend fun putAudioTrack(track: AudioTrack) {
+    suspend fun put(albumTrack: AlbumTrack) {
+        val track = albumTrack.track
         val mediaCollectionEntity = track.toMediaCollectionEntity()
         val trackEntity = track.toTrackEntity()
         val albumTrackCrossRef = AlbumTrackCrossRef(
-            albumId = track.simpleAlbum.id.value,
+            albumId = albumTrack.albumId.value,
             trackId = track.id.value,
-            trackNumber = track.trackNumber,
+            trackNumber = albumTrack.trackNumber,
         )
         val clipsAndAudioAssets = track.clips.mapNotNull { trackClip ->
             val audioAsset = trackClip.clip.mediaAsset as? AudioAsset ?: return@mapNotNull null
