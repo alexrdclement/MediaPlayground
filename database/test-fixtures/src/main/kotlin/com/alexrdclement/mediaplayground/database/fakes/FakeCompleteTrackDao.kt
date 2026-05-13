@@ -87,6 +87,8 @@ class FakeCompleteTrackDao(
                         clip = clip,
                         audioAsset = audioAsset,
                         mediaAsset = mediaAsset,
+                        artists = emptyList(),
+                        images = emptyList(),
                     ),
                 )
             }

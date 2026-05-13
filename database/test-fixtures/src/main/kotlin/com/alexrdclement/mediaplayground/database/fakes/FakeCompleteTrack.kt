@@ -11,18 +11,24 @@ val FakeCompleteAudioClip1 = CompleteAudioClip(
     clip = FakeClip1,
     audioAsset = FakeAudioAsset1,
     mediaAsset = FakeMediaAssetRecord1,
+    artists = emptyList(),
+    images = emptyList(),
 )
 
 val FakeCompleteAudioClip2 = CompleteAudioClip(
     clip = FakeClip2,
     audioAsset = FakeAudioAsset2,
     mediaAsset = FakeMediaAssetRecord2,
+    artists = emptyList(),
+    images = emptyList(),
 )
 
 val FakeCompleteAudioClip3 = CompleteAudioClip(
     clip = FakeClip3,
     audioAsset = FakeAudioAsset3,
     mediaAsset = FakeMediaAssetRecord3,
+    artists = emptyList(),
+    images = emptyList(),
 )
 
 val FakeCompleteTrackClip1 = CompleteTrackClip(

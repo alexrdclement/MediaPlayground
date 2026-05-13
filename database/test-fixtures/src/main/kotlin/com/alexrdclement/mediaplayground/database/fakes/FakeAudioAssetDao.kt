@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
 import com.alexrdclement.mediaplayground.database.model.AudioAsset
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioAsset
+import com.alexrdclement.mediaplayground.database.model.CompleteImageAsset
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -12,13 +13,36 @@ import kotlinx.coroutines.flow.map
 
 class FakeAudioAssetDao(
     val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
+    val audioAssetArtistDao: FakeAudioAssetArtistDao? = null,
+    val artistDao: FakeArtistDao? = null,
+    val audioAssetImageDao: FakeAudioAssetImageDao? = null,
+    val imageAssetDao: FakeImageAssetDao? = null,
 ) : AudioAssetDao {
 
     val audioAssets = MutableStateFlow(emptySet<AudioAsset>())
 
-    private fun buildCompleteAudioAsset(audioAsset: AudioAsset): CompleteAudioAsset? {
+    internal fun buildCompleteAudioAsset(audioAsset: AudioAsset): CompleteAudioAsset? {
         val mediaAsset = mediaAssetDao.mediaAssets[audioAsset.id] ?: return null
-        return CompleteAudioAsset(audioAsset = audioAsset, mediaAsset = mediaAsset)
+        val artists = if (audioAssetArtistDao != null && artistDao != null) {
+            audioAssetArtistDao.audioAssetArtists
+                .filter { it.audioAssetId == audioAsset.id }
+                .mapNotNull { ref -> artistDao.artists.value.find { it.id == ref.artistId } }
+        } else emptyList()
+        val images = if (audioAssetImageDao != null && imageAssetDao != null) {
+            audioAssetImageDao.audioAssetImages
+                .filter { it.audioAssetId == audioAsset.id }
+                .mapNotNull { ref ->
+                    val img = imageAssetDao.images.value.find { it.id == ref.imageId } ?: return@mapNotNull null
+                    val mediaAssetImg = mediaAssetDao.mediaAssets[img.id] ?: return@mapNotNull null
+                    CompleteImageAsset(imageAsset = img, mediaAsset = mediaAssetImg)
+                }
+        } else emptyList()
+        return CompleteAudioAsset(
+            audioAsset = audioAsset,
+            mediaAsset = mediaAsset,
+            artists = artists,
+            images = images,
+        )
     }
 
     override suspend fun getAudioAsset(id: String): CompleteAudioAsset? {
@@ -29,7 +53,7 @@ class FakeAudioAssetDao(
     override suspend fun getAudioAssetByFileName(fileName: String): CompleteAudioAsset? {
         val mediaAsset = mediaAssetDao.mediaAssets.values.find { it.fileName == fileName } ?: return null
         val audioAsset = audioAssets.value.find { it.id == mediaAsset.id } ?: return null
-        return CompleteAudioAsset(audioAsset = audioAsset, mediaAsset = mediaAsset)
+        return buildCompleteAudioAsset(audioAsset)
     }
 
     override fun getAudioAssetFlow(id: String): Flow<CompleteAudioAsset?> {

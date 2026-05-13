@@ -15,7 +15,9 @@ import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
+import com.alexrdclement.mediaplayground.database.dao.AudioAssetArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
+import com.alexrdclement.mediaplayground.database.dao.AudioAssetImageDao
 import com.alexrdclement.mediaplayground.database.dao.ClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAudioClipDao
@@ -34,6 +36,8 @@ import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import com.alexrdclement.mediaplayground.database.model.Artist
 import com.alexrdclement.mediaplayground.database.model.AudioAsset
+import com.alexrdclement.mediaplayground.database.model.AudioAssetArtistCrossRef
+import com.alexrdclement.mediaplayground.database.model.AudioAssetImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.ImageAsset
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
@@ -51,6 +55,8 @@ import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
         AlbumTrackCrossRef::class,
         Artist::class,
         AudioAsset::class,
+        AudioAssetArtistCrossRef::class,
+        AudioAssetImageCrossRef::class,
         Clip::class,
         ImageAsset::class,
         MediaAsset::class,
@@ -77,7 +83,9 @@ abstract class MediaPlaygroundDatabase : RoomDatabase() {
     abstract fun albumTrackDao(): AlbumTrackDao
     abstract fun albumImageDao(): AlbumImageDao
     abstract fun artistDao(): ArtistDao
+    abstract fun audioAssetArtistDao(): AudioAssetArtistDao
     abstract fun audioAssetDao(): AudioAssetDao
+    abstract fun audioAssetImageDao(): AudioAssetImageDao
     abstract fun clipDao(): ClipDao
     abstract fun completeAlbumDao(): CompleteAlbumDao
     abstract fun completeAudioClipDao(): CompleteAudioClipDao

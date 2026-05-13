@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.database.model
 
 import androidx.room.Embedded
+import androidx.room.Junction
 import androidx.room.Relation
 
 data class CompleteAudioAsset(
@@ -11,4 +12,26 @@ data class CompleteAudioAsset(
         entityColumn = "id",
     )
     val mediaAsset: MediaAsset,
+    @Relation(
+        entity = Artist::class,
+        parentColumn = "id",
+        entityColumn = "id",
+        associateBy = Junction(
+            value = AudioAssetArtistCrossRef::class,
+            parentColumn = "audio_asset_id",
+            entityColumn = "artist_id",
+        ),
+    )
+    val artists: List<Artist>,
+    @Relation(
+        entity = ImageAsset::class,
+        parentColumn = "id",
+        entityColumn = "id",
+        associateBy = Junction(
+            value = AudioAssetImageCrossRef::class,
+            parentColumn = "audio_asset_id",
+            entityColumn = "image_id",
+        ),
+    )
+    val images: List<CompleteImageAsset>,
 )

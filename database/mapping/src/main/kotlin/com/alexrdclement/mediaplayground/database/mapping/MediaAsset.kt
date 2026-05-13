@@ -1,15 +1,13 @@
 package com.alexrdclement.mediaplayground.database.mapping
 
 import com.alexrdclement.mediaplayground.database.model.MediaAssetType
-import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioAssetId
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import com.alexrdclement.mediaplayground.database.model.AudioAsset as AudioAssetEntity
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioAsset as CompleteAudioAssetEntity
 import com.alexrdclement.mediaplayground.database.model.MediaAsset as MediaAssetRecord
@@ -49,24 +47,14 @@ fun AudioAsset.toMediaAssetRecord(): MediaAssetRecord {
 }
 
 fun CompleteAudioAssetEntity.toAudioAsset(): AudioAsset {
-    return toAudioAsset(
-        artists = persistentListOf(),
-        images = persistentListOf(),
-    )
-}
-
-fun CompleteAudioAssetEntity.toAudioAsset(
-    artists: PersistentList<Artist>,
-    images: PersistentList<Image>,
-): AudioAsset {
     return AudioAsset(
         id = AudioAssetId(audioAsset.id),
         uri = mediaAsset.uri,
         originUri = mediaAsset.originUri,
         createdAt = mediaAsset.createdAt,
         modifiedAt = mediaAsset.modifiedAt,
-        artists = artists,
-        images = images,
+        artists = artists.map { it.toArtist() }.toPersistentList(),
+        images = images.map { it.toImage() }.toPersistentList(),
         metadata = MediaMetadata.Audio(
             title = null,
             durationUs = audioAsset.durationUs,

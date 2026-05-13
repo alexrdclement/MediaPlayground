@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "353b2b097c4b560661f2ffad512784c3",
+    "identityHash": "cf3e2a661fe3eb51cf40b261cb42b8fb",
     "entities": [
       {
         "tableName": "albums",
@@ -344,6 +344,144 @@
             "onUpdate": "NO ACTION",
             "columns": [
               "id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "audio_asset_artists",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`audio_asset_id` TEXT NOT NULL, `artist_id` TEXT NOT NULL, PRIMARY KEY(`audio_asset_id`, `artist_id`), FOREIGN KEY(`audio_asset_id`) REFERENCES `audio_assets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`artist_id`) REFERENCES `artists`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "audioAssetId",
+            "columnName": "audio_asset_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "artistId",
+            "columnName": "artist_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "audio_asset_id",
+            "artist_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_audio_asset_artists_audio_asset_id",
+            "unique": false,
+            "columnNames": [
+              "audio_asset_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_audio_asset_artists_audio_asset_id` ON `${TABLE_NAME}` (`audio_asset_id`)"
+          },
+          {
+            "name": "index_audio_asset_artists_artist_id",
+            "unique": false,
+            "columnNames": [
+              "artist_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_audio_asset_artists_artist_id` ON `${TABLE_NAME}` (`artist_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "audio_assets",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "audio_asset_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "artists",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "artist_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "audio_asset_images",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`audio_asset_id` TEXT NOT NULL, `image_id` TEXT NOT NULL, PRIMARY KEY(`audio_asset_id`, `image_id`), FOREIGN KEY(`audio_asset_id`) REFERENCES `audio_assets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`image_id`) REFERENCES `image_assets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "audioAssetId",
+            "columnName": "audio_asset_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imageId",
+            "columnName": "image_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "audio_asset_id",
+            "image_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_audio_asset_images_audio_asset_id",
+            "unique": false,
+            "columnNames": [
+              "audio_asset_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_audio_asset_images_audio_asset_id` ON `${TABLE_NAME}` (`audio_asset_id`)"
+          },
+          {
+            "name": "index_audio_asset_images_image_id",
+            "unique": false,
+            "columnNames": [
+              "image_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_audio_asset_images_image_id` ON `${TABLE_NAME}` (`image_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "audio_assets",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "audio_asset_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "image_assets",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "image_id"
             ],
             "referencedColumns": [
               "id"
@@ -833,7 +971,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '353b2b097c4b560661f2ffad512784c3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cf3e2a661fe3eb51cf40b261cb42b8fb')"
     ]
   }
 }

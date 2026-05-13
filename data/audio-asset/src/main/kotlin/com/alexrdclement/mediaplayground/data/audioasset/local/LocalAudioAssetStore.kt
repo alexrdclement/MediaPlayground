@@ -43,6 +43,8 @@ class LocalAudioAssetStore @Inject constructor(
         insertAudioAsset(
             mediaAsset = audioAsset.toMediaAssetRecord(),
             audioAsset = audioAsset.toAudioAssetEntity(),
+            artistIds = audioAsset.artists.map { it.id.value }.toSet(),
+            imageIds = audioAsset.images.map { it.id.value }.toSet(),
         )
     }
 

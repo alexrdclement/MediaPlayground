@@ -1,6 +1,5 @@
 package com.alexrdclement.mediaplayground.media.model
 
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlin.time.Instant
 
@@ -47,42 +46,36 @@ val FakeAlbumTrack1 = AlbumTrack(
     track = FakeTrack1,
     albumId = AudioAlbumId(FakeSimpleAlbum1.id.value),
     trackNumber = FakeSimpleTrack1.trackNumber,
-    artists = FakeSimpleAlbum1.artists,
 )
 
 val FakeAlbumTrack2 = AlbumTrack(
     track = FakeTrack2,
     albumId = AudioAlbumId(FakeSimpleAlbum1.id.value),
     trackNumber = FakeSimpleTrack2.trackNumber,
-    artists = FakeSimpleAlbum1.artists,
 )
 
 val FakeAlbumTrack3 = AlbumTrack(
     track = FakeTrack3,
     albumId = AudioAlbumId(FakeSimpleAlbum1.id.value),
     trackNumber = FakeSimpleTrack3.trackNumber,
-    artists = FakeSimpleAlbum1.artists,
 )
 
 val FakeLocalAlbumTrack1 = AlbumTrack(
     track = FakeLocalTrack1,
     albumId = AudioAlbumId(FakeLocalSimpleAlbum1.id.value),
     trackNumber = FakeSimpleTrack1.trackNumber,
-    artists = FakeLocalSimpleAlbum1.artists,
 )
 
 val FakeLocalAlbumTrack2 = AlbumTrack(
     track = FakeLocalTrack2,
     albumId = AudioAlbumId(FakeLocalSimpleAlbum1.id.value),
     trackNumber = FakeSimpleTrack2.trackNumber,
-    artists = FakeLocalSimpleAlbum1.artists,
 )
 
 val FakeLocalAlbumTrack3 = AlbumTrack(
     track = FakeLocalTrack3,
     albumId = AudioAlbumId(FakeLocalSimpleAlbum1.id.value),
     trackNumber = FakeSimpleTrack3.trackNumber,
-    artists = FakeLocalSimpleAlbum1.artists,
 )
 
 val FakeLocalTracks1 = listOf(FakeLocalTrack1, FakeLocalTrack2, FakeLocalTrack3)

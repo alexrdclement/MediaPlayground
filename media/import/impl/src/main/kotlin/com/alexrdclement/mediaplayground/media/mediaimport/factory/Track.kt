@@ -32,6 +32,5 @@ internal fun makeTrack(
         ),
         albumId = AudioAlbumId(simpleAlbum.id.value),
         trackNumber = mediaMetadata.trackNumber,
-        artists = simpleAlbum.artists,
     )
 }
