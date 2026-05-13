@@ -210,6 +210,7 @@ private fun LoadedContent(
                 Box {
                     TrackListItem(
                         track = trackUi.track,
+                        trackNumber = trackUi.trackNumber,
                         subtitle = trackUi.subtitle,
                         isLoaded = trackUi.isLoaded,
                         isPlayable = trackUi.isPlayable,
@@ -239,10 +240,11 @@ private fun LoadedContent(
 private fun Preview() {
     PaletteTheme {
         val album = PreviewAlbum1
-        val tracks = album.items.mapIndexed { index, track ->
+        val tracks = album.items.mapIndexed { index, albumTrack ->
             TrackUi(
-                track = track,
-                subtitle = track.artists.joinToString { it.name ?: "" },
+                track = albumTrack.track,
+                trackNumber = albumTrack.trackNumber,
+                subtitle = album.artists.joinToString { it.name ?: "" },
                 isLoaded = index == 1,
                 isPlaying = index == 1,
                 isPlayable = true,

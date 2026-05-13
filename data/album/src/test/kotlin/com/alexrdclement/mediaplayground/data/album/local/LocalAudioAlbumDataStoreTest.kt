@@ -2,13 +2,14 @@ package com.alexrdclement.mediaplayground.data.album.local
 
 import com.alexrdclement.mediaplayground.data.album.fixtures.LocalAlbumDataStoreFixture
 import com.alexrdclement.mediaplayground.media.model.ArtistId
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.FakeArtist1
 import com.alexrdclement.mediaplayground.media.model.FakeArtist2
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
 import com.alexrdclement.mediaplayground.media.model.FakeImage2
 import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum2
-import com.alexrdclement.mediaplayground.media.model.FakeLocalTrack1
+import com.alexrdclement.mediaplayground.media.model.FakeLocalAlbumTrack1
 import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.first
@@ -45,19 +46,19 @@ class LocalAudioAlbumDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum),
+            albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
-        fixture.putTrack(track)
+        fixture.putTrack(albumTrack, simpleAlbum)
 
         val result = fixture.localAudioAlbumDataStore.getAlbum(simpleAlbum.id)
         assertNotNull(result)
         assertEquals(simpleAlbum.id, result.id)
         assertEquals(1, result.items.size)
-        assertEquals(track.id, result.items[0].id)
-        assertEquals(track.clips.size, result.items[0].clips.size)
+        assertEquals(albumTrack.track.id, result.items[0].track.id)
+        assertEquals(albumTrack.track.clips.size, result.items[0].track.clips.size)
     }
 
     @Test
@@ -73,12 +74,12 @@ class LocalAudioAlbumDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum),
+            albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
-        fixture.putTrack(track)
+        fixture.putTrack(albumTrack, simpleAlbum)
 
         val count = fixture.localAudioAlbumDataStore.getAlbumCountFlow().first()
         assertEquals(1, count)
@@ -91,12 +92,12 @@ class LocalAudioAlbumDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum),
+            albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
-        fixture.putTrack(track)
+        fixture.putTrack(albumTrack, simpleAlbum)
 
         val result = fixture.localAudioAlbumDataStore.getAlbumFlow(simpleAlbum.id).first()
         assertNotNull(result)
@@ -109,12 +110,12 @@ class LocalAudioAlbumDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum),
+            albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
-        fixture.putTrack(track)
+        fixture.putTrack(albumTrack, simpleAlbum)
 
         val result = fixture.localAudioAlbumDataStore.getAlbumByTitleAndArtistId(
             albumTitle = simpleAlbum.name,
@@ -140,12 +141,12 @@ class LocalAudioAlbumDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum),
+            albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
-        fixture.putTrack(track)
+        fixture.putTrack(albumTrack, simpleAlbum)
         fixture.localAudioAlbumDataStore.delete(simpleAlbum.id)
 
         assertNull(fixture.localAudioAlbumDataStore.getAlbum(simpleAlbum.id))
@@ -158,15 +159,15 @@ class LocalAudioAlbumDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum),
+            albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
-        fixture.putTrack(track)
+        fixture.putTrack(albumTrack, simpleAlbum)
         fixture.localAudioAlbumDataStore.delete(simpleAlbum.id)
 
-        assertNull(fixture.localTrackDataStore.getTrack(track.id))
+        assertNull(fixture.localTrackDataStore.getTrack(albumTrack.track.id))
     }
 
     @Test
@@ -180,17 +181,21 @@ class LocalAudioAlbumDataStoreTest {
             artists = persistentListOf(FakeArtist2),
             images = persistentListOf(FakeImage2),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack1 = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum1),
+            albumId = AudioAlbumId(simpleAlbum1.id.value),
+        )
+        val albumTrack2 = FakeLocalAlbumTrack1.copy(
+            artists = persistentListOf(FakeArtist2),
+            albumId = AudioAlbumId(simpleAlbum2.id.value),
         )
 
-        fixture.putTrack(track)
-        fixture.putTrack(track.copy(albums = persistentListOf(simpleAlbum2)))
+        fixture.putTrack(albumTrack1, simpleAlbum1)
+        fixture.putTrack(albumTrack2, simpleAlbum2)
         fixture.localAudioAlbumDataStore.delete(simpleAlbum1.id)
 
         assertNull(fixture.localAudioAlbumDataStore.getAlbum(simpleAlbum1.id))
-        assertNotNull(fixture.localTrackDataStore.getTrack(track.id))
+        assertNotNull(fixture.localTrackDataStore.getTrack(albumTrack1.track.id))
     }
 
     @Test
@@ -200,12 +205,12 @@ class LocalAudioAlbumDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum),
+            albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
-        fixture.putTrack(track)
+        fixture.putTrack(albumTrack, simpleAlbum)
         fixture.localAudioAlbumDataStore.updateAlbumTitle(simpleAlbum.id, "New Album Title")
 
         val result = fixture.localAudioAlbumDataStore.getAlbum(simpleAlbum.id)
@@ -220,12 +225,12 @@ class LocalAudioAlbumDataStoreTest {
             artists = artists,
             images = persistentListOf(FakeImage1),
         )
-        val track = FakeLocalTrack1.copy(
+        val albumTrack = FakeLocalAlbumTrack1.copy(
             artists = artists,
-            albums = persistentListOf(simpleAlbum),
+            albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
-        fixture.putTrack(track)
+        fixture.putTrack(albumTrack, simpleAlbum)
         fixture.localAudioAlbumDataStore.updateAlbumNotes(simpleAlbum.id, "New notes")
 
         val result = fixture.localAudioAlbumDataStore.getAlbum(simpleAlbum.id)

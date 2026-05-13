@@ -4,7 +4,8 @@ import androidx.paging.PagingConfig
 import app.cash.turbine.test
 import com.alexrdclement.media.ui.fakes.FakeMediaSessionState
 import com.alexrdclement.mediaplayground.data.track.LocalTrackRepositoryFixture
-import com.alexrdclement.mediaplayground.media.model.FakeLocalTracks1
+import com.alexrdclement.mediaplayground.media.model.FakeLocalAlbumTracks1
+import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum1
 import com.alexrdclement.testing.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
@@ -48,8 +49,7 @@ class LocalContentStateProviderTest {
 
     @Test
     fun nonEmptyTracksAndAlbums_returnsContent() = runTest {
-        // Stubbing tracks also stubs albums
-        localTrackRepositoryFixture.putTracks(FakeLocalTracks1)
+        localTrackRepositoryFixture.putTracks(FakeLocalAlbumTracks1, FakeLocalSimpleAlbum1)
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
@@ -62,10 +62,9 @@ class LocalContentStateProviderTest {
 
     @Test
     fun doesNotRecreatePagingDataFlowsOnStateChange() = runTest {
-        val tracks = FakeLocalTracks1
+        val tracks = FakeLocalAlbumTracks1
 
-        // Stubbing tracks also stubs albums
-        localTrackRepositoryFixture.putTracks(tracks)
+        localTrackRepositoryFixture.putTracks(tracks, FakeLocalSimpleAlbum1)
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
@@ -74,10 +73,10 @@ class LocalContentStateProviderTest {
             val firstItem = awaitItem()
             assertTrue(firstItem is LocalContentState.Content)
 
-            localTrackRepositoryFixture.deleteTracks(tracks)
+            localTrackRepositoryFixture.deleteTracks(tracks, FakeLocalSimpleAlbum1)
             assertTrue(awaitItem() is LocalContentState.Empty)
 
-            localTrackRepositoryFixture.putTracks(tracks)
+            localTrackRepositoryFixture.putTracks(tracks, FakeLocalSimpleAlbum1)
 
             val lastItem = awaitItem()
             assertTrue(lastItem is LocalContentState.Content)

@@ -40,6 +40,7 @@ import com.alexrdclement.palette.theme.styles.copy
 @Composable
 fun TrackListItem(
     track: Track,
+    trackNumber: Int?,
     subtitle: String,
     isLoaded: Boolean,
     isPlayable: Boolean,
@@ -85,7 +86,7 @@ fun TrackListItem(
                     )
                 } else {
                     Text(
-                        text = track.trackNumber.toString(),
+                        text = trackNumber?.toString() ?: "",
                         style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
                         modifier = Modifier
                     )
@@ -130,7 +131,8 @@ private fun Preview() {
     PaletteTheme {
         TrackListItem(
             track = PreviewTrack1,
-            subtitle = PreviewTrack1.artists.joinToString { it.name ?: "" },
+            trackNumber = 1,
+            subtitle = "",
             isLoaded = true,
             isPlayable = false,
             isPlaying = false,

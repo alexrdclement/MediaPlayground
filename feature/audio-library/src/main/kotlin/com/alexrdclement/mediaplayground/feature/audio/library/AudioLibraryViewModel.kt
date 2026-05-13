@@ -14,6 +14,7 @@ import com.alexrdclement.mediaplayground.feature.audio.library.content.local.Loc
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
 import com.alexrdclement.mediaplayground.media.engine.playPause
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.MediaAsset
@@ -92,6 +93,7 @@ class AudioLibraryViewModel @Inject constructor(
                     }
                 }
             }
+            is AlbumTrack,
             is AudioAlbum,
             is Clip,
             is MediaAsset,

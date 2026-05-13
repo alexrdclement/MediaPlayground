@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStore
-import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumTrackImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.model.AudioTrack
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.model.result.Result
@@ -26,7 +26,7 @@ import kotlinx.coroutines.yield
 
 class TrackRepositoryImpl @Inject constructor(
     private val localTrackDataStore: LocalTrackDataStore,
-    private val trackImporter: TrackImporter,
+    private val trackImporter: AlbumTrackImporter,
 ) : TrackRepository {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -60,14 +60,8 @@ class TrackRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun put(track: Track) =
-        localTrackDataStore.put(track)
-
     override suspend fun updateTrackTitle(id: TrackId, title: String) =
         localTrackDataStore.updateTrackTitle(id, title)
-
-    override suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?) =
-        localTrackDataStore.updateTrackNumber(id, trackNumber)
 
     override suspend fun updateTrackNotes(id: TrackId, notes: String?) =
         localTrackDataStore.updateTrackNotes(id, notes)
@@ -104,7 +98,7 @@ class TrackRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun mapMediaImportResult(result: Result<AudioTrack, MediaImportError>): TrackImportResult {
+    private fun mapMediaImportResult(result: Result<AlbumTrack, MediaImportError>): TrackImportResult {
         return when (result) {
             is Result.Failure -> {
                 val error = TrackImportResult.Error.ImportError(result.failure)

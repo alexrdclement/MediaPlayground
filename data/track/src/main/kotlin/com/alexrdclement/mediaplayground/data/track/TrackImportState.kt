@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.data.track
 
 import com.alexrdclement.logging.Loggable
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 
 sealed class TrackImportState {
     object InProgress : TrackImportState()
@@ -10,7 +10,7 @@ sealed class TrackImportState {
 }
 
 sealed class TrackImportResult : Loggable {
-    data class Success(val track: Track) : TrackImportResult()
+    data class Success(val track: AlbumTrack) : TrackImportResult()
     data class Failure(val error: Error) : TrackImportResult()
 
     override val message: String

@@ -19,7 +19,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.AudioAssetImporterImp
 import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporterImpl
-import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumTrackImporterImpl
 
 class MediaImporterFixture(
     val mediaMetadataRetriever: FakeMediaMetadataRetriever = FakeMediaMetadataRetriever(),
@@ -64,6 +64,7 @@ class MediaImporterFixture(
         )
     }
 
+
     val clipImporter: ClipImporterImpl by lazy {
         ClipImporterImpl(
             clipDataStore = clipMediaStore,
@@ -90,8 +91,8 @@ class MediaImporterFixture(
         )
     }
 
-    val trackImporter: TrackImporterImpl by lazy {
-        TrackImporterImpl(
+    val trackImporter: AlbumTrackImporterImpl by lazy {
+        AlbumTrackImporterImpl(
             trackMediaStore = trackMediaStore,
             audioAssetImporter = lazy { audioAssetImporter },
             clipImporter = lazy { clipImporter },

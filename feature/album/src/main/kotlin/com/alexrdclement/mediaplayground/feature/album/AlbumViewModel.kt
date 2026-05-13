@@ -7,9 +7,10 @@ import com.alexrdclement.logging.error
 import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepository
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.playPause
-import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
-import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
+import com.alexrdclement.mediaplayground.media.model.AudioTrack
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.media.model.largeImageUri
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
@@ -83,14 +84,22 @@ class AlbumViewModel(
             return@combine if (hasLoadedAlbum) AlbumUiState.NotFound else AlbumUiState.Loading
         }
 
-        val tracks = album.items.map { track ->
+        val albumTrackIds = album.items.map { it.track.id }.toSet()
+        val tracks = album.items.map { albumTrack ->
             TrackUi(
-                track = track,
-                subtitle = track.artists.joinToString { it.name ?: "" },
-                isLoaded = track.id == loadedMediaItem?.id,
-                isPlayable = track.isPlayable,
-                isPlaying = isPlaying && track.id == loadedMediaItem?.id
+                track = albumTrack.track,
+                trackNumber = albumTrack.trackNumber,
+                subtitle = album.artists.joinToString { it.name ?: "" },
+                isLoaded = albumTrack.track.id == loadedMediaItem?.id,
+                isPlayable = albumTrack.track.isPlayable,
+                isPlaying = isPlaying && albumTrack.track.id == loadedMediaItem?.id,
             )
+        }
+
+        val isAlbumPlaying = isPlaying && when (val item = loadedMediaItem) {
+            is AudioAlbum -> item.id == album.id
+            is AudioTrack -> albumTrackIds.contains(item.id)
+            else -> false
         }
 
         return@combine AlbumUiState.Success(
@@ -99,11 +108,7 @@ class AlbumViewModel(
             artists = album.artists,
             tracks = tracks,
             isAlbumPlayable = album.isPlayable,
-            isAlbumPlaying = isPlaying && when (loadedMediaItem) {
-                is AudioAlbum -> loadedMediaItem.id == album.id
-                is Track -> loadedMediaItem.albums.any { it.id == album.id }
-                else -> false
-            },
+            isAlbumPlaying = isAlbumPlaying,
             isMediaItemLoaded = loadedMediaItem != null,
         )
     }
@@ -123,7 +128,7 @@ class AlbumViewModel(
                     engineControl.playlistControl.load(album)
                 }
 
-                val trackIndex = album.items.indexOfFirst { it.id == track.id }
+                val trackIndex = album.items.indexOfFirst { it.track.id == track.id }
                 engineControl.playlistControl.seek(trackIndex)
 
                 engineControl.transportControl.play()
@@ -179,11 +184,11 @@ class AlbumViewModel(
         if (playlist.isEmpty()) return false
 
         val loadedMediaItem = loadedMediaItem.value ?: return false
+        val albumTrackIds = album.items.map { it.track.id }.toSet()
         return when (loadedMediaItem) {
             is AudioAlbum -> loadedMediaItem.id == album.id
-            is Track -> playlist.all {
-                val asTrack = it as? Track ?: return@all false
-                asTrack.albums.any { it.id == album.id }
+            is AudioTrack -> albumTrackIds.contains(loadedMediaItem.id) && playlist.all { item ->
+                (item as? AudioTrack)?.let { albumTrackIds.contains(it.id) } ?: false
             }
             else -> false
         }
