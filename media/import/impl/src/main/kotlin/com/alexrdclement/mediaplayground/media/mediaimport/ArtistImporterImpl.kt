@@ -40,7 +40,7 @@ class ArtistImporterImpl(
     internal suspend fun importTransaction(
         metadata: MediaMetadata.Audio,
     ): Result<Artist, MediaImportError> {
-        val artistName = metadata.artistName ?: "Unknown artist"
+        val artistName = metadata.albumArtistName ?: metadata.artistName ?: "Unknown artist"
         val existing = artistMediaStore.getArtistByName(artistName)
         if (existing != null) return Result.Success(existing)
         val artist = metadata.toArtist(artistName)

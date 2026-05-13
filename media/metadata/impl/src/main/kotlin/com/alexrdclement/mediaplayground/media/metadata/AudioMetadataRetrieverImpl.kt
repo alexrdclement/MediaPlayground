@@ -69,6 +69,7 @@ class AudioMetadataRetrieverImpl @Inject constructor(
         trackNumber = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_CD_TRACK_NUMBER)
             ?.toIntOrNull(),
         artistName = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_ARTIST),
+        albumArtistName = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_ALBUMARTIST),
         albumTitle = retriever.extractMetadata(AndroidMediaMetadataRetriever.METADATA_KEY_ALBUM),
         embeddedPicture = retriever.embeddedPicture,
         mimeType = mimeType,

@@ -19,6 +19,7 @@ sealed class MediaMetadata {
         val bitDepth: Int?,
         val trackNumber: Int?,
         val artistName: String?,
+        val albumArtistName: String? = null,
         val albumTitle: String?,
         val embeddedPicture: ByteArray?,
     ) : MediaMetadata() {
@@ -34,6 +35,7 @@ sealed class MediaMetadata {
             if (trackNumber != other.trackNumber) return false
             if (title != other.title) return false
             if (artistName != other.artistName) return false
+            if (albumArtistName != other.albumArtistName) return false
             if (albumTitle != other.albumTitle) return false
             if (!embeddedPicture.contentEquals(other.embeddedPicture)) return false
             if (mimeType != other.mimeType) return false
@@ -50,6 +52,7 @@ sealed class MediaMetadata {
             result = 31 * result + (trackNumber ?: 0)
             result = 31 * result + (title?.hashCode() ?: 0)
             result = 31 * result + (artistName?.hashCode() ?: 0)
+            result = 31 * result + (albumArtistName?.hashCode() ?: 0)
             result = 31 * result + (albumTitle?.hashCode() ?: 0)
             result = 31 * result + embeddedPicture.contentHashCode()
             result = 31 * result + (mimeType?.hashCode() ?: 0)

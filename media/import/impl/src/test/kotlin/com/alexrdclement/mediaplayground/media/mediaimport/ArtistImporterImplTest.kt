@@ -79,4 +79,28 @@ class ArtistImporterImplTest {
         assertIs<Result.Success<*, *>>(result)
         assertEquals("Unknown artist", (result as Result.Success).value.name)
     }
+
+    @Test
+    fun importTransaction_usesAlbumArtistName_whenProvided() = runTest {
+        val result = fixture.transactionRunner.run {
+            artistImporter.importTransaction(
+                audioMetadata.copy(artistName = "Track Artist", albumArtistName = "Album Artist")
+            )
+        }
+
+        assertIs<Result.Success<*, *>>(result)
+        assertEquals("Album Artist", (result as Result.Success).value.name)
+    }
+
+    @Test
+    fun importTransaction_fallsBackToArtistName_whenAlbumArtistNameIsNull() = runTest {
+        val result = fixture.transactionRunner.run {
+            artistImporter.importTransaction(
+                audioMetadata.copy(artistName = "Track Artist", albumArtistName = null)
+            )
+        }
+
+        assertIs<Result.Success<*, *>>(result)
+        assertEquals("Track Artist", (result as Result.Success).value.name)
+    }
 }
