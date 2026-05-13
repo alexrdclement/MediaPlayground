@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
@@ -22,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.Artist
@@ -81,20 +79,16 @@ fun TrackMetadataScreen(
 fun TrackMetadataScreen(
     uiState: TrackMetadataUiState,
     onNavigateBack: () -> Unit,
-    onSaveClick: (title: String, trackNumber: Int?, notes: String?) -> Unit,
-    modifier: Modifier = Modifier,
+    onSaveClick: (title: String, notes: String?) -> Unit,
     onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
-    val loadedTrack = (uiState as? TrackMetadataUiState.Loaded)?.track
-    val titleState = remember(loadedTrack?.id) {
-        TextFieldState(initialText = loadedTrack?.title.orEmpty())
-    }
-    val trackNumberState = remember(loadedTrack?.id) {
-        TextFieldState(initialText = loadedTrack?.trackNumber?.toString().orEmpty())
-    }
-    val notesState = remember(loadedTrack?.id) {
-        TextFieldState(initialText = loadedTrack?.notes.orEmpty())
+    val titleState = rememberTextFieldState()
+    val notesState = rememberTextFieldState()
+    LaunchedEffect((uiState as? TrackMetadataUiState.Loaded)?.track?.id) {
+        val loaded = uiState as? TrackMetadataUiState.Loaded ?: return@LaunchedEffect
+        titleState.edit { replace(0, length, loaded.track.title) }
+        notesState.edit { replace(0, length, loaded.track.notes ?: "") }
     }
 
     Scaffold(
@@ -137,7 +131,6 @@ fun TrackMetadataScreen(
                             onClick = {
                                 onSaveClick(
                                     titleState.text.toString(),
-                                    trackNumberState.text.toString().toIntOrNull(),
                                     notesState.text.toString().ifBlank { null },
                                 )
                             },
@@ -170,7 +163,6 @@ fun TrackMetadataScreen(
             is TrackMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 titleState = titleState,
-                trackNumberState = trackNumberState,
                 notesState = notesState,
                 onNavigateToArtistMetadata = onNavigateToArtistMetadata,
                 style = contentStyle.copy(
@@ -186,7 +178,6 @@ fun TrackMetadataScreen(
 private fun LoadedContent(
     state: TrackMetadataUiState.Loaded,
     titleState: TextFieldState,
-    trackNumberState: TextFieldState,
     notesState: TextFieldState,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -203,17 +194,6 @@ private fun LoadedContent(
                 TextField(
                     state = titleState,
                     style = style.textFieldStyle,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-        }
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text(text = "Track Number", style = style.labelStyle)
-                TextField(
-                    state = trackNumberState,
-                    style = style.textFieldStyle,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -280,7 +260,7 @@ private fun Preview() {
                 track = PreviewTrack1,
             ),
             onNavigateBack = {},
-            onSaveClick = { _, _, _ -> },
+            onSaveClick = { _, _ -> },
         )
     }
 }

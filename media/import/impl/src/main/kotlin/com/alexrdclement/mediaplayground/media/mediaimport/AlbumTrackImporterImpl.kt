@@ -4,9 +4,9 @@ import android.net.Uri
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
-import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
-import com.alexrdclement.mediaplayground.media.model.AudioTrack
+import com.alexrdclement.mediaplayground.media.model.Clip
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.TimeUnit
@@ -26,17 +26,17 @@ import kotlinx.io.files.Path
 import java.util.UUID
 
 @Inject
-class TrackImporterImpl(
+class AlbumTrackImporterImpl(
     private val trackMediaStore: TrackMediaStore,
     private val audioAssetImporter: Lazy<AudioAssetImporter>,
     private val clipImporter: Lazy<ClipImporterImpl>,
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val transactionRunner: MediaStoreTransactionRunner,
-) : TrackImporter {
+) : AlbumTrackImporter {
 
     override suspend fun import(
         uri: Uri,
-    ): Result<AudioTrack, MediaImportError> = withContext(Dispatchers.IO) {
+    ): Result<AlbumTrack, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val metadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri) as? MediaMetadata.Audio
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
@@ -62,7 +62,7 @@ class TrackImporterImpl(
 
     override suspend fun import(
         uris: List<Uri>,
-    ): Map<Uri, Result<AudioTrack, MediaImportError>> {
+    ): Map<Uri, Result<AlbumTrack, MediaImportError>> {
         // Album directory is only correct after a track has been saved. Import sequentially.
         return uris.associateWith { import(uri = it) }
     }
@@ -73,7 +73,7 @@ class TrackImporterImpl(
         mediaMetadata: MediaMetadata.Audio,
         audioAsset: AudioAsset,
         simpleAlbum: SimpleAlbum,
-    ): Result<AudioTrack, MediaImportError> {
+    ): Result<AlbumTrack, MediaImportError> {
         val clip = clipImporter.value.importTransaction(
             filePath = filePath,
             metadata = mediaMetadata,
@@ -91,14 +91,14 @@ class TrackImporterImpl(
         metadata: MediaMetadata.Audio,
         simpleAlbum: SimpleAlbum,
         clips: Set<Clip>,
-    ): Result<AudioTrack, MediaImportError> = importSimpleAudioTrack(metadata, simpleAlbum, clips)
+    ): Result<AlbumTrack, MediaImportError> = importSimpleAudioTrack(metadata, simpleAlbum, clips)
 
     context(scope: MediaStoreTransactionScope)
     internal suspend fun importSimpleAudioTrack(
         metadata: MediaMetadata.Audio,
         simpleAlbum: SimpleAlbum,
         clips: Set<Clip>,
-    ): Result<AudioTrack, MediaImportError> {
+    ): Result<AlbumTrack, MediaImportError> {
         val trackClips: PersistentSet<TrackClip<TimeUnit.Samples>> = clips.map { clip ->
             val sampleRate = (clip.assetOffset as TimeUnit.Samples).sampleRate
             TrackClip(
@@ -106,14 +106,13 @@ class TrackImporterImpl(
                 trackOffset = TimeUnit.Samples(0L, sampleRate),
             )
         }.toPersistentSet()
-        val track = makeTrack(
+        val albumTrack = makeTrack(
             id = UUID.randomUUID(),
             trackClips = trackClips,
             mediaMetadata = metadata,
-            artists = simpleAlbum.artists,
             simpleAlbum = simpleAlbum,
         )
-        trackMediaStore.put(track)
-        return Result.Success(track)
+        trackMediaStore.put(albumTrack)
+        return Result.Success(albumTrack)
     }
 }

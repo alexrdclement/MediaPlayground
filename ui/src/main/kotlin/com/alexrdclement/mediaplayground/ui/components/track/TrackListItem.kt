@@ -64,6 +64,7 @@ data class TrackListItemStyle(
 @Composable
 fun TrackListItem(
     track: Track,
+    trackNumber: Int?,
     subtitle: String,
     isLoaded: Boolean,
     isPlayable: Boolean,
@@ -211,7 +212,11 @@ private fun TrackListItem(
                         style = style.playPauseButtonStyle,
                     )
                 } else {
-                    leadingContent()
+                    Text(
+                        text = trackNumber?.toString() ?: "",
+                        style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
+                        modifier = Modifier,
+                    )
                 }
             }
 
@@ -253,7 +258,8 @@ private fun TrackPreview() {
     PaletteTheme {
         TrackListItem(
             track = PreviewTrack1,
-            subtitle = PreviewTrack1.artists.joinToString { it.name ?: "" },
+            trackNumber = 1,
+            subtitle = "",
             isLoaded = true,
             isPlayable = false,
             isPlaying = false,

@@ -4,7 +4,7 @@ import com.alexrdclement.mediaplayground.media.model.mapper.toAlbum
 import kotlinx.collections.immutable.persistentListOf
 
 val FakeAlbum1 = FakeSimpleAlbum1.toAlbum(
-    tracks = persistentListOf(FakeTrack1, FakeTrack2, FakeTrack3),
+    tracks = persistentListOf(FakeAlbumTrack1, FakeAlbumTrack2, FakeAlbumTrack3),
 ).copy(id = AudioAlbumId("1"))
 
 val FakeAlbum2 = FakeAlbum1.copy(id = AudioAlbumId("2"))

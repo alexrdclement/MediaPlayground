@@ -1,5 +1,6 @@
 package com.alexrdclement.media.store
 
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionScope
@@ -17,8 +18,8 @@ class FakeTrackMediaStore : TrackMediaStore {
         tracksFlow.map { it[id] }
 
     context(scope: MediaStoreTransactionScope)
-    override suspend fun put(track: Track) {
-        tracksFlow.update { it + (track.id to track) }
+    override suspend fun put(albumTrack: AlbumTrack) {
+        tracksFlow.update { it + (albumTrack.track.id to albumTrack.track) }
     }
 
     context(scope: MediaStoreTransactionScope)

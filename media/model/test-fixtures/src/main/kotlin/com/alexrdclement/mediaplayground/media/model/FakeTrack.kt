@@ -7,10 +7,7 @@ import kotlin.time.Instant
 val FakeTrack1 = AudioTrack(
     id = FakeSimpleTrack1.id,
     title = FakeSimpleTrack1.name,
-    trackNumber = FakeSimpleTrack1.trackNumber,
-    artists = FakeSimpleTrack1.artists,
     clips = FakeSimpleTrack1.clips,
-    albums = persistentListOf(FakeSimpleAlbum1),
     notes = null,
     createdAt = Instant.DISTANT_PAST,
     modifiedAt = Instant.DISTANT_PAST,
@@ -19,10 +16,7 @@ val FakeTrack1 = AudioTrack(
 val FakeTrack2 = AudioTrack(
     id = FakeSimpleTrack2.id,
     title = FakeSimpleTrack2.name,
-    trackNumber = FakeSimpleTrack2.trackNumber,
-    artists = FakeSimpleTrack2.artists,
     clips = FakeSimpleTrack2.clips,
-    albums = persistentListOf(FakeSimpleAlbum1),
     notes = null,
     createdAt = Instant.DISTANT_PAST,
     modifiedAt = Instant.DISTANT_PAST,
@@ -31,31 +25,69 @@ val FakeTrack2 = AudioTrack(
 val FakeTrack3 = AudioTrack(
     id = FakeSimpleTrack3.id,
     title = FakeSimpleTrack3.name,
-    trackNumber = FakeSimpleTrack3.trackNumber,
-    artists = FakeSimpleTrack3.artists,
     clips = FakeSimpleTrack3.clips,
-    albums = persistentListOf(FakeSimpleAlbum1),
     notes = null,
     createdAt = Instant.DISTANT_PAST,
     modifiedAt = Instant.DISTANT_PAST,
 )
 
 val FakeLocalTrack1 = FakeTrack1.copy(
-    albums = persistentListOf(FakeLocalSimpleAlbum1),
     clips = persistentSetOf(FakeLocalTrackClip1),
 )
 
 val FakeLocalTrack2 = FakeTrack2.copy(
-    albums = persistentListOf(FakeLocalSimpleAlbum1),
     clips = persistentSetOf(FakeLocalTrackClip2),
 )
 
 val FakeLocalTrack3 = FakeTrack3.copy(
-    albums = persistentListOf(FakeLocalSimpleAlbum1),
     clips = persistentSetOf(FakeLocalTrackClip3),
 )
 
+val FakeAlbumTrack1 = AlbumTrack(
+    track = FakeTrack1,
+    albumId = AudioAlbumId(FakeSimpleAlbum1.id.value),
+    trackNumber = FakeSimpleTrack1.trackNumber,
+    artists = FakeSimpleAlbum1.artists,
+)
+
+val FakeAlbumTrack2 = AlbumTrack(
+    track = FakeTrack2,
+    albumId = AudioAlbumId(FakeSimpleAlbum1.id.value),
+    trackNumber = FakeSimpleTrack2.trackNumber,
+    artists = FakeSimpleAlbum1.artists,
+)
+
+val FakeAlbumTrack3 = AlbumTrack(
+    track = FakeTrack3,
+    albumId = AudioAlbumId(FakeSimpleAlbum1.id.value),
+    trackNumber = FakeSimpleTrack3.trackNumber,
+    artists = FakeSimpleAlbum1.artists,
+)
+
+val FakeLocalAlbumTrack1 = AlbumTrack(
+    track = FakeLocalTrack1,
+    albumId = AudioAlbumId(FakeLocalSimpleAlbum1.id.value),
+    trackNumber = FakeSimpleTrack1.trackNumber,
+    artists = FakeLocalSimpleAlbum1.artists,
+)
+
+val FakeLocalAlbumTrack2 = AlbumTrack(
+    track = FakeLocalTrack2,
+    albumId = AudioAlbumId(FakeLocalSimpleAlbum1.id.value),
+    trackNumber = FakeSimpleTrack2.trackNumber,
+    artists = FakeLocalSimpleAlbum1.artists,
+)
+
+val FakeLocalAlbumTrack3 = AlbumTrack(
+    track = FakeLocalTrack3,
+    albumId = AudioAlbumId(FakeLocalSimpleAlbum1.id.value),
+    trackNumber = FakeSimpleTrack3.trackNumber,
+    artists = FakeLocalSimpleAlbum1.artists,
+)
+
 val FakeLocalTracks1 = listOf(FakeLocalTrack1, FakeLocalTrack2, FakeLocalTrack3)
+
+val FakeLocalAlbumTracks1 = listOf(FakeLocalAlbumTrack1, FakeLocalAlbumTrack2, FakeLocalAlbumTrack3)
 
 val FakeTracks1 = listOf(
     FakeTrack1,

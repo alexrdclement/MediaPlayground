@@ -29,7 +29,7 @@ class AlbumImporterImpl(
     private val audioAssetImporter: Lazy<AudioAssetImporter>,
     private val transactionRunner: MediaStoreTransactionRunner,
     private val mediaMetadataRetriever: MediaMetadataRetriever,
-    private val trackImporter: Lazy<TrackImporterImpl>,
+    private val trackImporter: Lazy<AlbumTrackImporterImpl>,
 ) : AlbumImporter {
 
     override suspend fun import(

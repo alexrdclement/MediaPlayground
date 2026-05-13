@@ -12,8 +12,8 @@ import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporterImpl
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporterImpl
-import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporter
-import com.alexrdclement.mediaplayground.media.mediaimport.TrackImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumTrackImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumTrackImporterImpl
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Binds
 
@@ -38,5 +38,5 @@ interface MediaImportModule {
     val MediaAssetImporterImpl.bind: MediaAssetImporter
 
     @Binds
-    val TrackImporterImpl.bind: TrackImporter
+    val AlbumTrackImporterImpl.bind: AlbumTrackImporter
 }
