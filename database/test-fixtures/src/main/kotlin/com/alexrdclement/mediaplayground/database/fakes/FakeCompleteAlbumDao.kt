@@ -97,6 +97,8 @@ class FakeCompleteAlbumDao(
                             clip = clip,
                             audioAsset = audioFile,
                             mediaAsset = mediaAsset,
+                            artists = emptyList(),
+                            images = emptyList(),
                         ),
                     )
                 }

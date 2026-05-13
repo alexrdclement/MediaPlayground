@@ -41,22 +41,26 @@ fun SimpleAlbumEntity.toSimpleAlbum(): SimpleAlbum {
 
 fun CompleteAlbumEntity.toAlbum(): AudioAlbum {
     val albumId = AudioAlbumId(this.id)
-    val artists = simpleAlbum.artists.map { it.toArtist() }.toPersistentList()
-    val domainImages = simpleAlbum.images.map { it.toImage() }.toPersistentList()
+    val orderedAudioTracks = orderedTracks.map { it.toAudioTrack() }
+    val albumArtists = simpleAlbum.artists.map { it.toArtist() }.toPersistentList()
+    val artists = if (albumArtists.isNotEmpty()) albumArtists
+                  else orderedAudioTracks.flatMap { it.artists }.distinct().toPersistentList()
+    val albumImages = simpleAlbum.images.map { it.toImage() }.toPersistentList()
+    val images = if (albumImages.isNotEmpty()) albumImages
+                 else orderedAudioTracks.flatMap { it.images }.distinct().toPersistentList()
     return AudioAlbum(
         id = albumId,
         title = simpleAlbum.mediaCollection.title,
         artists = artists,
-        images = domainImages,
-        items = orderedTracks.map { completeTrack ->
+        images = images,
+        items = orderedTracks.mapIndexed { index, completeTrack ->
             val albumRef = completeTrack.albumRefs.find {
                 it.albumTrackCrossRef.albumId == albumId.value
             }
             AlbumTrack(
-                track = completeTrack.toAudioTrack(),
+                track = orderedAudioTracks[index],
                 albumId = albumId,
                 trackNumber = albumRef?.albumTrackCrossRef?.trackNumber,
-                artists = artists,
             )
         }.toPersistentList(),
         notes = simpleAlbum.album.notes,

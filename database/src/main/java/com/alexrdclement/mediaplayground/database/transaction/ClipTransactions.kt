@@ -13,8 +13,10 @@ suspend fun insertClip(
     clip: Clip,
     mediaAsset: MediaAsset,
     audioAsset: AudioAsset,
+    artistIds: Set<String> = emptySet(),
+    imageIds: Set<String> = emptySet(),
 ) {
-    insertAudioAsset(mediaAsset, audioAsset)
+    insertAudioAsset(mediaAsset, audioAsset, artistIds, imageIds)
     scope.mediaItemDao.insert(MediaItem(id = clip.id, itemType = MediaItemType.CLIP))
     scope.clipDao.insert(clip)
 }

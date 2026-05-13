@@ -12,19 +12,29 @@ import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteTrackPolicy
 import kotlin.time.Clock
 
+data class ClipData(
+    val clip: Clip,
+    val mediaAsset: MediaAsset,
+    val audioAsset: AudioAsset,
+    val artistIds: Set<String> = emptySet(),
+    val imageIds: Set<String> = emptySet(),
+)
+
 context(scope: DatabaseTransactionScope)
 suspend fun insertTrack(
     mediaCollection: MediaCollection,
     track: Track,
     albumTrackCrossRefs: List<AlbumTrackCrossRef>,
-    clips: List<Triple<Clip, MediaAsset, AudioAsset>>,
+    clips: List<ClipData>,
     trackClipCrossRefs: List<TrackClipCrossRef>,
 ) = with(scope) {
-    for ((clip, mediaAsset, audioAsset) in clips) {
+    for ((clip, mediaAsset, audioAsset, artistIds, imageIds) in clips) {
         insertClip(
             clip = clip,
             mediaAsset = mediaAsset,
             audioAsset = audioAsset,
+            artistIds = artistIds,
+            imageIds = imageIds,
         )
     }
     mediaItemDao.insert(MediaItem(id = mediaCollection.id, itemType = MediaItemType.COLLECTION))

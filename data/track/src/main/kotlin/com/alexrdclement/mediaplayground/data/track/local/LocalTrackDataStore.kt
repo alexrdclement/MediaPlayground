@@ -13,6 +13,7 @@ import com.alexrdclement.mediaplayground.database.mapping.toMediaCollectionEntit
 import com.alexrdclement.mediaplayground.database.mapping.toTrackEntity
 import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
+import com.alexrdclement.mediaplayground.database.transaction.ClipData
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.deleteTrack
 import com.alexrdclement.mediaplayground.database.transaction.insertTrack
@@ -73,10 +74,12 @@ class LocalTrackDataStore @Inject constructor(
         )
         val clipsAndAudioAssets = track.clips.mapNotNull { trackClip ->
             val audioAsset = trackClip.clip.mediaAsset as? AudioAsset ?: return@mapNotNull null
-            Triple(
-                trackClip.clip.toClipEntity(),
-                audioAsset.toMediaAssetRecord(),
-                audioAsset.toAudioAssetEntity(),
+            ClipData(
+                clip = trackClip.clip.toClipEntity(),
+                mediaAsset = audioAsset.toMediaAssetRecord(),
+                audioAsset = audioAsset.toAudioAssetEntity(),
+                artistIds = audioAsset.artists.map { it.id.value }.toSet(),
+                imageIds = audioAsset.images.map { it.id.value }.toSet(),
             )
         }
         val crossRefs = track.clips.map { trackClip ->

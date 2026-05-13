@@ -20,6 +20,11 @@ data class Clip(
     override val createdAt: Instant,
     override val modifiedAt: Instant,
 ) : MediaItem {
+    val artists: PersistentList<Artist> = when (mediaAsset) {
+        is AudioAsset -> mediaAsset.artists
+        is Image -> persistentListOf()
+    }
+
     override val images: PersistentList<Image> = when (mediaAsset) {
         is AudioAsset -> mediaAsset.images
         is Image -> persistentListOf(mediaAsset)

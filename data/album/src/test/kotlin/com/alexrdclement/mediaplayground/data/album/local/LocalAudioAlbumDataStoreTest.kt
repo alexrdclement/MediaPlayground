@@ -47,7 +47,6 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage1),
         )
         val albumTrack = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
@@ -75,7 +74,6 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage1),
         )
         val albumTrack = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
@@ -93,7 +91,6 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage1),
         )
         val albumTrack = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
@@ -111,7 +108,6 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage1),
         )
         val albumTrack = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
@@ -142,7 +138,6 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage1),
         )
         val albumTrack = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
@@ -160,7 +155,6 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage1),
         )
         val albumTrack = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
@@ -182,11 +176,9 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage2),
         )
         val albumTrack1 = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum1.id.value),
         )
         val albumTrack2 = FakeLocalAlbumTrack1.copy(
-            artists = persistentListOf(FakeArtist2),
             albumId = AudioAlbumId(simpleAlbum2.id.value),
         )
 
@@ -206,7 +198,6 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage1),
         )
         val albumTrack = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 
@@ -226,7 +217,6 @@ class LocalAudioAlbumDataStoreTest {
             images = persistentListOf(FakeImage1),
         )
         val albumTrack = FakeLocalAlbumTrack1.copy(
-            artists = artists,
             albumId = AudioAlbumId(simpleAlbum.id.value),
         )
 

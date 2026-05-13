@@ -23,7 +23,14 @@ class FakeCompleteAudioClipDao(
         clips.mapNotNull { clip ->
             val audioFile = audioFiles.find { it.id == clip.assetId } ?: return@mapNotNull null
             val mediaAsset = mediaAssets[clip.assetId] ?: return@mapNotNull null
-            CompleteAudioClip(clip = clip, audioAsset = audioFile, mediaAsset = mediaAsset)
+            val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return@mapNotNull null
+            CompleteAudioClip(
+                clip = clip,
+                audioAsset = audioFile,
+                mediaAsset = mediaAsset,
+                artists = completeAsset.artists,
+                images = completeAsset.images,
+            )
         }
     }
 
@@ -34,7 +41,14 @@ class FakeCompleteAudioClipDao(
         val clip = clips.find { it.id == id } ?: return null
         val audioFile = audioAssets.find { it.id == clip.assetId } ?: return null
         val mediaAsset = mediaAssets[clip.assetId] ?: return null
-        return CompleteAudioClip(clip = clip, audioAsset = audioFile, mediaAsset = mediaAsset)
+        val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return null
+        return CompleteAudioClip(
+            clip = clip,
+            audioAsset = audioFile,
+            mediaAsset = mediaAsset,
+            artists = completeAsset.artists,
+            images = completeAsset.images,
+        )
     }
 
     override suspend fun getClipByMediaAssetId(assetId: String): CompleteAudioClip? {
@@ -44,7 +58,14 @@ class FakeCompleteAudioClipDao(
         val clip = clips.find { it.assetId == assetId } ?: return null
         val audioFile = audioAssets.find { it.id == clip.assetId } ?: return null
         val mediaAsset = mediaAssets[clip.assetId] ?: return null
-        return CompleteAudioClip(clip = clip, audioAsset = audioFile, mediaAsset = mediaAsset)
+        val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return null
+        return CompleteAudioClip(
+            clip = clip,
+            audioAsset = audioFile,
+            mediaAsset = mediaAsset,
+            artists = completeAsset.artists,
+            images = completeAsset.images,
+        )
     }
 
     override fun getClipFlow(id: String): Flow<CompleteAudioClip?> {

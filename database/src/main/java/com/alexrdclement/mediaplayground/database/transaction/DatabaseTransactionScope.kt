@@ -5,7 +5,9 @@ import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
+import com.alexrdclement.mediaplayground.database.dao.AudioAssetArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
+import com.alexrdclement.mediaplayground.database.dao.AudioAssetImageDao
 import com.alexrdclement.mediaplayground.database.dao.ClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAudioClipDao
@@ -25,7 +27,9 @@ interface DatabaseTransactionScope {
     val albumImageDao: AlbumImageDao
     val albumTrackDao: AlbumTrackDao
     val artistDao: ArtistDao
+    val audioAssetArtistDao: AudioAssetArtistDao
     val audioAssetDao: AudioAssetDao
+    val audioAssetImageDao: AudioAssetImageDao
     val clipDao: ClipDao
     val completeAlbumDao: CompleteAlbumDao
     val completeAudioClipDao: CompleteAudioClipDao

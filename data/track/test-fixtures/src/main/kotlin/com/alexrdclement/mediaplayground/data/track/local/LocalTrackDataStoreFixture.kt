@@ -52,7 +52,7 @@ class LocalTrackDataStoreFixture(
 
     suspend fun putTrack(albumTrack: AlbumTrack, simpleAlbum: SimpleAlbum) {
         mediaStoreTransactionRunner.run {
-            for (artist in albumTrack.artists) {
+            for (artist in simpleAlbum.artists) {
                 localArtistDataStore.put(artist)
             }
             localImageDataStore.put(simpleAlbum.images.toSet())
@@ -73,14 +73,14 @@ class LocalTrackDataStoreFixture(
                 return@run
             }
 
-            for (artist in albumTrack.artists) {
+            for (artist in simpleAlbum.artists) {
                 val albumCount = localArtistDataStore.getArtistAlbumCount(artist.id)
                 if (albumCount <= 1) {
                     localArtistDataStore.delete(artist.id)
                 }
             }
 
-            for (image in albumTrack.images) {
+            for (image in simpleAlbum.images) {
                 localImageDataStore.delete(image.id)
             }
 
