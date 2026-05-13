@@ -7,6 +7,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportErro
 import com.alexrdclement.mediaplayground.media.mediaimport.util.runTrackedImport
 import com.alexrdclement.mediaplayground.media.mediaimport.util.sha256
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
+import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioAssetId
 import com.alexrdclement.mediaplayground.media.model.ImageId
@@ -92,16 +93,21 @@ class AudioAssetImporterImpl(
         uri: Uri,
         mediaMetadata: MediaMetadata.Audio,
     ): Result<AudioCopyResult, MediaImportError> = withContext(Dispatchers.IO) {
-        val simpleAlbum = transactionRunner.run {
-            val artist = artistImporter.importTransaction(
+        val albumAndTrackArtist: Pair<SimpleAlbum, Artist> = transactionRunner.run {
+            val albumArtist = artistImporter.importTransaction(
                 metadata = mediaMetadata,
             ).guardSuccess { return@run Result.Failure(it) }
-
-            albumImporter.importSimpleAlbum(
+            val album = albumImporter.importSimpleAlbum(
                 metadata = mediaMetadata,
-                artist = artist,
-            )
+                artist = albumArtist,
+            ).guardSuccess { return@run Result.Failure(it) }
+            val trackArtist = artistImporter.importTransaction(
+                metadata = mediaMetadata.copy(albumArtistName = null),
+            ).guardSuccess { return@run Result.Failure(it) }
+            Result.Success<Pair<SimpleAlbum, Artist>, MediaImportError>(Pair(album, trackArtist))
         }.guardSuccess { return@withContext Result.Failure(it) }
+        val simpleAlbum = albumAndTrackArtist.first
+        val trackArtist = albumAndTrackArtist.second
 
         val embeddedImage = mediaMetadata.embeddedPicture?.let { embeddedPicture ->
             val imageId = ImageId(embeddedPicture.sha256())
@@ -127,7 +133,7 @@ class AudioAssetImporterImpl(
                 uri = assetUri,
                 originUri = MediaAssetOriginUri.AndroidContentUri(uri.toString()),
                 mediaMetadata = mediaMetadata,
-                artists = simpleAlbum.artists,
+                artists = persistentListOf(trackArtist),
                 images = images,
             )
 
