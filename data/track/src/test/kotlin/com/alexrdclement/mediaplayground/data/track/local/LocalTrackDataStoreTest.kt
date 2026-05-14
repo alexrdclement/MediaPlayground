@@ -176,9 +176,12 @@ class LocalTrackDataStoreTest {
         // Share clip-1 with track2 as well
         fixture.trackClipDao.insert(
             TrackClipCrossRef(
+                id = "track-clip-shared",
                 trackId = albumTrack2.track.id.value,
                 clipId = FakeLocalClip1.id.value,
                 startSampleInTrack = 0L,
+                createdAt = 0L,
+                modifiedAt = 0L,
             )
         )
 

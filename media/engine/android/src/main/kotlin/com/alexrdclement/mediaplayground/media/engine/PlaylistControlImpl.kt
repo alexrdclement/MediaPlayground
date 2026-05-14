@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.TrackClip
 import com.alexrdclement.mediaplayground.media.store.PathProvider
 import dev.zacsweers.metro.Inject
 
@@ -23,6 +24,7 @@ class PlaylistControlImpl @Inject constructor(
             is Track -> loadTrack(mediaItem)
             is AlbumTrack -> Unit
             is Clip -> Unit
+            is TrackClip<*> -> Unit
             is MediaAsset -> Unit
         }
     }

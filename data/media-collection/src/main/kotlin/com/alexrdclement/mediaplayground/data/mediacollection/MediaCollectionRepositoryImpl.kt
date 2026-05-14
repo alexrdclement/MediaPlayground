@@ -4,8 +4,10 @@ import com.alexrdclement.mediaplayground.data.album.local.LocalAudioAlbumDataSto
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.MediaCollection
 import com.alexrdclement.mediaplayground.media.model.MediaCollectionId
+import com.alexrdclement.mediaplayground.media.model.TrackId
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class MediaCollectionRepositoryImpl @Inject constructor(
     private val localAudioAlbumDataStore: LocalAudioAlbumDataStore,
@@ -14,9 +16,11 @@ class MediaCollectionRepositoryImpl @Inject constructor(
     override fun getMediaCollectionFlow(id: MediaCollectionId): Flow<MediaCollection<*>?> =
         when (id) {
             is AlbumId -> localAudioAlbumDataStore.getAlbumFlow(id)
+            is TrackId -> flowOf(null)
         }
 
     override suspend fun delete(id: MediaCollectionId) = when (id) {
         is AlbumId -> localAudioAlbumDataStore.delete(id)
+        is TrackId -> Unit
     }
 }

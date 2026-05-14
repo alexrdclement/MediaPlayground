@@ -67,7 +67,7 @@ class FakeCompleteAudioAlbumDaoTest {
                 mediaAssetDao.insert(completeTrackClip.completeAudioClip.mediaAsset)
                 audioFileDao.insert(completeTrackClip.completeAudioClip.audioAsset)
                 clipDao.insert(completeTrackClip.completeAudioClip.clip)
-                trackClipDao.insert(TrackClipCrossRef(completeTrack.track.id, completeTrackClip.completeAudioClip.clip.id, completeTrackClip.trackClipCrossRef.startSampleInTrack))
+                trackClipDao.insert(TrackClipCrossRef(id = completeTrackClip.trackClipCrossRef.id, trackId = completeTrack.track.id, clipId = completeTrackClip.completeAudioClip.clip.id, startSampleInTrack = completeTrackClip.trackClipCrossRef.startSampleInTrack, createdAt = completeTrackClip.trackClipCrossRef.createdAt, modifiedAt = completeTrackClip.trackClipCrossRef.modifiedAt))
             }
         }
     }
