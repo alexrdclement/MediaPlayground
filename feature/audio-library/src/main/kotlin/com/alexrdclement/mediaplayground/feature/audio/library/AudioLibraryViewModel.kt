@@ -17,6 +17,7 @@ import com.alexrdclement.mediaplayground.media.engine.playPause
 import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.TrackClip
 import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
@@ -96,6 +97,7 @@ class AudioLibraryViewModel @Inject constructor(
             is AlbumTrack,
             is AudioAlbum,
             is Clip,
+            is TrackClip<*>,
             is MediaAsset,
             -> Unit
         }

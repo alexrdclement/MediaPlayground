@@ -84,9 +84,12 @@ class LocalTrackDataStore @Inject constructor(
         }
         val crossRefs = track.clips.map { trackClip ->
             TrackClipCrossRef(
+                id = trackClip.id.value,
                 trackId = track.id.value,
                 clipId = trackClip.clip.id.value,
                 startSampleInTrack = trackClip.trackOffset.samples,
+                createdAt = trackClip.createdAt.toEpochMilliseconds(),
+                modifiedAt = trackClip.modifiedAt.toEpochMilliseconds(),
             )
         }
         databaseTransactionRunner.run {

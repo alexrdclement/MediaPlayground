@@ -26,6 +26,7 @@ import com.alexrdclement.mediaplayground.feature.audio.library.content.local.Loc
 import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.TrackClip
 import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.Track
@@ -80,6 +81,7 @@ fun AudioLibraryScreen(
 
                 is AlbumTrack -> Unit
                 is Clip -> Unit
+                is TrackClip<*> -> Unit
                 is MediaAsset -> Unit
             }
         },

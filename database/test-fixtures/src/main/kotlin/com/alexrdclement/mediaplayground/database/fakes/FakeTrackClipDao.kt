@@ -9,7 +9,8 @@ class FakeTrackClipDao : TrackClipDao {
 
     override suspend fun insert(vararg crossRef: TrackClipCrossRef) {
         for (ref in crossRef) {
-            if (trackClips.none { it.trackId == ref.trackId && it.clipId == ref.clipId }) {
+            if (trackClips.none { it.id == ref.id } &&
+                trackClips.none { it.trackId == ref.trackId && it.clipId == ref.clipId }) {
                 trackClips.add(ref)
             }
         }

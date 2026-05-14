@@ -84,9 +84,12 @@ class CompleteTrackDaoTest {
             clipDao.insert(completeTrackClip.completeAudioClip.clip)
             trackClipDao.insert(
                 TrackClipCrossRef(
+                    id = completeTrackClip.trackClipCrossRef.id,
                     trackId = completeTrack.track.id,
                     clipId = completeTrackClip.completeAudioClip.clip.id,
                     startSampleInTrack = completeTrackClip.trackClipCrossRef.startSampleInTrack,
+                    createdAt = completeTrackClip.trackClipCrossRef.createdAt,
+                    modifiedAt = completeTrackClip.trackClipCrossRef.modifiedAt,
                 )
             )
         }

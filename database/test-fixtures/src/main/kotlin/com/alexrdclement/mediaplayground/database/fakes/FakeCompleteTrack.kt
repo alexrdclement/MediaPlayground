@@ -33,27 +33,36 @@ val FakeCompleteAudioClip3 = CompleteAudioClip(
 
 val FakeCompleteTrackClip1 = CompleteTrackClip(
     trackClipCrossRef = TrackClipCrossRef(
+        id = "track-clip-1",
         trackId = FakeTrack1.id,
         clipId = FakeClip1.id,
         startSampleInTrack = 0L,
+        createdAt = 0L,
+        modifiedAt = 0L,
     ),
     completeAudioClip = FakeCompleteAudioClip1,
 )
 
 val FakeCompleteTrackClip2 = CompleteTrackClip(
     trackClipCrossRef = TrackClipCrossRef(
+        id = "track-clip-2",
         trackId = FakeTrack2.id,
         clipId = FakeClip2.id,
         startSampleInTrack = 0L,
+        createdAt = 0L,
+        modifiedAt = 0L,
     ),
     completeAudioClip = FakeCompleteAudioClip2,
 )
 
 val FakeCompleteTrackClip3 = CompleteTrackClip(
     trackClipCrossRef = TrackClipCrossRef(
+        id = "track-clip-3",
         trackId = FakeTrack3.id,
         clipId = FakeClip3.id,
         startSampleInTrack = 0L,
+        createdAt = 0L,
+        modifiedAt = 0L,
     ),
     completeAudioClip = FakeCompleteAudioClip3,
 )
