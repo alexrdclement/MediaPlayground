@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.database.transaction
 
 import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import com.alexrdclement.mediaplayground.database.model.AudioAsset
+import com.alexrdclement.mediaplayground.database.model.AudioClip
 import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
 import com.alexrdclement.mediaplayground.database.model.MediaCollection
@@ -14,6 +15,7 @@ import kotlin.time.Clock
 
 data class ClipData(
     val clip: Clip,
+    val audioClip: AudioClip,
     val mediaAsset: MediaAsset,
     val audioAsset: AudioAsset,
     val artistIds: Set<String> = emptySet(),
@@ -28,9 +30,10 @@ suspend fun insertTrack(
     clips: List<ClipData>,
     trackClipCrossRefs: List<TrackClipCrossRef>,
 ) = with(scope) {
-    for ((clip, mediaAsset, audioAsset, artistIds, imageIds) in clips) {
+    for ((clip, audioClip, mediaAsset, audioAsset, artistIds, imageIds) in clips) {
         insertClip(
             clip = clip,
+            audioClip = audioClip,
             mediaAsset = mediaAsset,
             audioAsset = audioAsset,
             artistIds = artistIds,

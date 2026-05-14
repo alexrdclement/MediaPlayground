@@ -30,6 +30,7 @@ class FakeCompleteAlbumDao(
     val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
     val trackDao: FakeTrackDao,
     val clipDao: FakeClipDao = FakeClipDao(),
+    val audioClipDao: FakeAudioClipDao = FakeAudioClipDao(),
     val audioAssetDao: FakeAudioAssetDao = FakeAudioAssetDao(mediaAssetDao),
     val trackClipDao: FakeTrackClipDao = FakeTrackClipDao(),
 ) : CompleteAlbumDao {
@@ -38,9 +39,9 @@ class FakeCompleteAlbumDao(
         combine(albumDao.albums, mediaCollectionDao.mediaCollections) { albums, mediaCollections -> Pair(albums, mediaCollections) },
         artistDao.artists,
         combine(albumTrackDao.albumTrackRefs, audioAssetDao.audioAssets) { refs, assets -> Pair(refs, assets) },
-        trackDao.tracks,
-        clipDao.clips,
-    ) { (albums, mediaCollections), artists, (albumTrackRefs, audioAssets), tracks, clips ->
+        combine(trackDao.tracks, clipDao.clips) { tracks, clips -> Pair(tracks, clips) },
+        audioClipDao.audioClips,
+    ) { (albums, mediaCollections), artists, (albumTrackRefs, audioAssets), (tracks, clips), audioClips ->
         val albumArtists = albumArtistDao.albumArtists
         val mediaAssets = mediaAssetDao.mediaAssets
         albums.mapNotNull { album ->
@@ -89,12 +90,14 @@ class FakeCompleteAlbumDao(
                 val trackClipCrossRefs = trackClipDao.trackClips.filter { it.trackId == track.id }
                 val completeTrackClips = trackClipCrossRefs.mapNotNull { clipCrossRef ->
                     val clip = clips.find { it.id == clipCrossRef.clipId } ?: return@mapNotNull null
+                    val audioClip = audioClips.find { it.id == clip.id } ?: return@mapNotNull null
                     val audioFile = audioAssets.find { it.id == clip.assetId } ?: return@mapNotNull null
                     val mediaAsset = mediaAssets[clip.assetId] ?: return@mapNotNull null
                     CompleteTrackClip(
                         trackClipCrossRef = clipCrossRef,
                         completeAudioClip = CompleteAudioClip(
                             clip = clip,
+                            audioClip = audioClip,
                             audioAsset = audioFile,
                             mediaAsset = mediaAsset,
                             artists = emptyList(),

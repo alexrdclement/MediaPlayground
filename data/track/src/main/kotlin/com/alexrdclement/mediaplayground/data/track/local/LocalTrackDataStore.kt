@@ -6,6 +6,8 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.alexrdclement.mediaplayground.database.dao.CompleteTrackDao
 import com.alexrdclement.mediaplayground.database.mapping.toAudioAssetEntity
+import com.alexrdclement.mediaplayground.database.mapping.toAudioClip
+import com.alexrdclement.mediaplayground.database.mapping.toAudioClipEntity
 import com.alexrdclement.mediaplayground.database.mapping.toAudioTrack
 import com.alexrdclement.mediaplayground.database.mapping.toClipEntity
 import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
@@ -19,7 +21,6 @@ import com.alexrdclement.mediaplayground.database.transaction.deleteTrack
 import com.alexrdclement.mediaplayground.database.transaction.insertTrack
 import com.alexrdclement.mediaplayground.database.transaction.updateTrack
 import com.alexrdclement.mediaplayground.media.model.AlbumTrack
-import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteTrackPolicy
@@ -72,14 +73,14 @@ class LocalTrackDataStore @Inject constructor(
             trackId = track.id.value,
             trackNumber = albumTrack.trackNumber,
         )
-        val clipsAndAudioAssets = track.items.mapNotNull { trackClip ->
-            val audioAsset = trackClip.clip.mediaAsset as? AudioAsset ?: return@mapNotNull null
+        val clipsAndAudioAssets = track.items.map { trackClip ->
             ClipData(
                 clip = trackClip.clip.toClipEntity(),
-                mediaAsset = audioAsset.toMediaAssetRecord(),
-                audioAsset = audioAsset.toAudioAssetEntity(),
-                artistIds = audioAsset.artists.map { it.id.value }.toSet(),
-                imageIds = audioAsset.images.map { it.id.value }.toSet(),
+                audioClip = trackClip.clip.toAudioClipEntity(),
+                mediaAsset = trackClip.clip.mediaAsset.toMediaAssetRecord(),
+                audioAsset = trackClip.clip.mediaAsset.toAudioAssetEntity(),
+                artistIds = trackClip.clip.mediaAsset.artists.map { it.id.value }.toSet(),
+                imageIds = trackClip.clip.mediaAsset.images.map { it.id.value }.toSet(),
             )
         }
         val crossRefs = track.items.map { trackClip ->

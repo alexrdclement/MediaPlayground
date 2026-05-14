@@ -5,7 +5,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeClip
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
-import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.AudioClip
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.store.ClipMediaStore
 import com.alexrdclement.mediaplayground.media.store.MediaStoreTransactionRunner
@@ -28,7 +28,7 @@ class ClipImporterImpl(
 
     override suspend fun import(
         uri: Uri,
-    ): Result<Clip, MediaImportError> = withContext(Dispatchers.IO) {
+    ): Result<AudioClip, MediaImportError> = withContext(Dispatchers.IO) {
         try {
             val metadata = mediaMetadataRetriever.getMediaMetadata(contentUri = uri) as? MediaMetadata.Audio
                 ?: return@withContext Result.Failure(MediaImportError.InputFileError)
@@ -53,7 +53,7 @@ class ClipImporterImpl(
 
     override suspend fun import(
         uris: List<Uri>,
-    ): Map<Uri, Result<Clip, MediaImportError>> =
+    ): Map<Uri, Result<AudioClip, MediaImportError>> =
         uris.associateWith { import(it) }
 
     context(scope: MediaStoreTransactionScope)
@@ -61,7 +61,7 @@ class ClipImporterImpl(
         filePath: Path,
         metadata: MediaMetadata.Audio,
         audioFile: AudioAsset,
-    ): Result<Clip, MediaImportError> {
+    ): Result<AudioClip, MediaImportError> {
         val clip = makeClip(
             filePath = filePath,
             mediaMetadata = metadata,

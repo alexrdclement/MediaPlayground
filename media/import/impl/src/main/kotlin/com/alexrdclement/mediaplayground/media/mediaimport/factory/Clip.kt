@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
-import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.AudioClip
 import com.alexrdclement.mediaplayground.media.model.ClipId
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.TimeUnit
@@ -13,7 +13,7 @@ internal fun makeClip(
     filePath: Path,
     mediaMetadata: MediaMetadata.Audio,
     audioFile: AudioAsset,
-): Clip {
+): AudioClip {
     val durationUs = mediaMetadata.durationUs ?: 0L
     val sampleRate = mediaMetadata.sampleRate
     val totalSamples = if (durationUs > 0L && sampleRate > 0) {
@@ -23,7 +23,7 @@ internal fun makeClip(
     }
     val title = mediaMetadata.title ?: filePath.name
     val now = Clock.System.now()
-    return Clip(
+    return AudioClip(
         id = ClipId(UUID.randomUUID().toString()),
         title = title,
         mediaAsset = audioFile,

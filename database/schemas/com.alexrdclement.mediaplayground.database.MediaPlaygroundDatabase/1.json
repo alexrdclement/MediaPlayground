@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cb1dad262b6713b481da204760d19055",
+    "identityHash": "79626f11520b61264ced629338b3f440",
     "entities": [
       {
         "tableName": "albums",
@@ -490,8 +490,51 @@
         ]
       },
       {
+        "tableName": "audio_clips",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `start_sample_in_asset` INTEGER NOT NULL, `duration_samples` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `clips`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startSampleInAsset",
+            "columnName": "start_sample_in_asset",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationSamples",
+            "columnName": "duration_samples",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "clips",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
         "tableName": "clips",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `asset_id` TEXT NOT NULL, `start_sample_in_asset` INTEGER NOT NULL, `duration_samples` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `modified_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `media_items`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`asset_id`) REFERENCES `media_assets`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `asset_id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `modified_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `media_items`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`asset_id`) REFERENCES `media_assets`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -509,18 +552,6 @@
             "fieldPath": "assetId",
             "columnName": "asset_id",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "startSampleInAsset",
-            "columnName": "start_sample_in_asset",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "durationSamples",
-            "columnName": "duration_samples",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -998,7 +1029,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cb1dad262b6713b481da204760d19055')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '79626f11520b61264ced629338b3f440')"
     ]
   }
 }

@@ -23,6 +23,7 @@ class FakeCompleteAudioAlbumDaoTest {
     private val mediaAssetDao = FakeMediaAssetDao()
     private val trackDao = FakeTrackDao()
     private val clipDao = FakeClipDao()
+    private val audioClipDao = FakeAudioClipDao()
     private val audioFileDao = FakeAudioAssetDao(mediaAssetDao)
     private val trackClipDao = FakeTrackClipDao()
 
@@ -39,6 +40,7 @@ class FakeCompleteAudioAlbumDaoTest {
             mediaAssetDao = mediaAssetDao,
             trackDao = trackDao,
             clipDao = clipDao,
+            audioClipDao = audioClipDao,
             audioAssetDao = audioFileDao,
             trackClipDao = trackClipDao,
         )
@@ -67,6 +69,7 @@ class FakeCompleteAudioAlbumDaoTest {
                 mediaAssetDao.insert(completeTrackClip.completeAudioClip.mediaAsset)
                 audioFileDao.insert(completeTrackClip.completeAudioClip.audioAsset)
                 clipDao.insert(completeTrackClip.completeAudioClip.clip)
+                audioClipDao.insert(completeTrackClip.completeAudioClip.audioClip)
                 trackClipDao.insert(TrackClipCrossRef(id = completeTrackClip.trackClipCrossRef.id, trackId = completeTrack.track.id, clipId = completeTrackClip.completeAudioClip.clip.id, startSampleInTrack = completeTrackClip.trackClipCrossRef.startSampleInTrack, createdAt = completeTrackClip.trackClipCrossRef.createdAt, modifiedAt = completeTrackClip.trackClipCrossRef.modifiedAt))
             }
         }

@@ -18,6 +18,7 @@ import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetImageDao
+import com.alexrdclement.mediaplayground.database.dao.AudioClipDao
 import com.alexrdclement.mediaplayground.database.dao.ClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAudioClipDao
@@ -38,6 +39,7 @@ import com.alexrdclement.mediaplayground.database.model.Artist
 import com.alexrdclement.mediaplayground.database.model.AudioAsset
 import com.alexrdclement.mediaplayground.database.model.AudioAssetArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.AudioAssetImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.AudioClip
 import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.ImageAsset
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
@@ -57,6 +59,7 @@ import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
         AudioAsset::class,
         AudioAssetArtistCrossRef::class,
         AudioAssetImageCrossRef::class,
+        AudioClip::class,
         Clip::class,
         ImageAsset::class,
         MediaAsset::class,
@@ -86,6 +89,7 @@ abstract class MediaPlaygroundDatabase : RoomDatabase() {
     abstract fun audioAssetArtistDao(): AudioAssetArtistDao
     abstract fun audioAssetDao(): AudioAssetDao
     abstract fun audioAssetImageDao(): AudioAssetImageDao
+    abstract fun audioClipDao(): AudioClipDao
     abstract fun clipDao(): ClipDao
     abstract fun completeAlbumDao(): CompleteAlbumDao
     abstract fun completeAudioClipDao(): CompleteAudioClipDao

@@ -6,17 +6,16 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.alexrdclement.mediaplayground.database.dao.CompleteAudioClipDao
 import com.alexrdclement.mediaplayground.database.mapping.toAudioAssetEntity
-import com.alexrdclement.mediaplayground.database.mapping.toClip
+import com.alexrdclement.mediaplayground.database.mapping.toAudioClip
+import com.alexrdclement.mediaplayground.database.mapping.toAudioClipEntity
 import com.alexrdclement.mediaplayground.database.mapping.toClipEntity
 import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.deleteClip
 import com.alexrdclement.mediaplayground.database.transaction.insertClip
 import com.alexrdclement.mediaplayground.database.transaction.updateClip
-import com.alexrdclement.mediaplayground.media.model.AudioAsset
-import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.AudioClip
 import com.alexrdclement.mediaplayground.media.model.ClipId
-import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.MediaAssetId
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteClipPolicy
 import dev.zacsweers.metro.Inject
@@ -27,37 +26,35 @@ class LocalClipDataStore @Inject constructor(
     private val completeAudioClipDao: CompleteAudioClipDao,
     private val databaseTransactionRunner: DatabaseTransactionRunner,
 ) {
-    suspend fun get(id: ClipId): Clip? {
-        return completeAudioClipDao.getClip(id.value)?.toClip()
+    suspend fun get(id: ClipId): AudioClip? {
+        return completeAudioClipDao.getClip(id.value)?.toAudioClip()
     }
 
-    suspend fun getByMediaAssetId(id: MediaAssetId): Clip? {
-        return completeAudioClipDao.getClipByMediaAssetId(id.value)?.toClip()
+    suspend fun getByMediaAssetId(id: MediaAssetId): AudioClip? {
+        return completeAudioClipDao.getClipByMediaAssetId(id.value)?.toAudioClip()
     }
 
-    fun getClipFlow(id: ClipId): Flow<Clip?> {
-        return completeAudioClipDao.getClipFlow(id.value).map { it?.toClip() }
+    fun getClipFlow(id: ClipId): Flow<AudioClip?> {
+        return completeAudioClipDao.getClipFlow(id.value).map { it?.toAudioClip() }
     }
 
-    fun getClipPagingData(config: PagingConfig): Flow<PagingData<Clip>> {
+    fun getClipPagingData(config: PagingConfig): Flow<PagingData<AudioClip>> {
         return Pager(config = config) {
             completeAudioClipDao.getClipsPagingSource()
         }.flow.map { pagingData ->
-            pagingData.map { it.toClip() }
+            pagingData.map { it.toAudioClip() }
         }
     }
 
     fun getClipCountFlow(): Flow<Int> = completeAudioClipDao.getClipCountFlow()
 
-    suspend fun put(clip: Clip) = databaseTransactionRunner.run {
-        when (val mediaAsset = clip.mediaAsset) {
-            is AudioAsset -> insertClip(
-                clip = clip.toClipEntity(),
-                mediaAsset = mediaAsset.toMediaAssetRecord(),
-                audioAsset = mediaAsset.toAudioAssetEntity(),
-            )
-            is Image -> TODO()
-        }
+    suspend fun put(clip: AudioClip) = databaseTransactionRunner.run {
+        insertClip(
+            clip = clip.toClipEntity(),
+            audioClip = clip.toAudioClipEntity(),
+            mediaAsset = clip.mediaAsset.toMediaAssetRecord(),
+            audioAsset = clip.mediaAsset.toAudioAssetEntity(),
+        )
     }
 
     suspend fun updateClipTitle(id: ClipId, title: String) = databaseTransactionRunner.run {
