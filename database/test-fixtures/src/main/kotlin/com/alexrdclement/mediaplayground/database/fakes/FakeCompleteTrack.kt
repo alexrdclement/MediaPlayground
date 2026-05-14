@@ -6,6 +6,7 @@ import com.alexrdclement.mediaplayground.database.model.CompleteAudioClip
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 import com.alexrdclement.mediaplayground.database.model.CompleteTrackClip
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
+import kotlin.time.Instant
 
 val FakeCompleteAudioClip1 = CompleteAudioClip(
     clip = FakeClip1,
@@ -37,8 +38,8 @@ val FakeCompleteTrackClip1 = CompleteTrackClip(
         trackId = FakeTrack1.id,
         clipId = FakeClip1.id,
         startSampleInTrack = 0L,
-        createdAt = 0L,
-        modifiedAt = 0L,
+        createdAt = Instant.fromEpochMilliseconds(0L),
+        modifiedAt = Instant.fromEpochMilliseconds(0L),
     ),
     completeAudioClip = FakeCompleteAudioClip1,
 )
@@ -49,8 +50,8 @@ val FakeCompleteTrackClip2 = CompleteTrackClip(
         trackId = FakeTrack2.id,
         clipId = FakeClip2.id,
         startSampleInTrack = 0L,
-        createdAt = 0L,
-        modifiedAt = 0L,
+        createdAt = Instant.fromEpochMilliseconds(0L),
+        modifiedAt = Instant.fromEpochMilliseconds(0L),
     ),
     completeAudioClip = FakeCompleteAudioClip2,
 )
@@ -61,8 +62,8 @@ val FakeCompleteTrackClip3 = CompleteTrackClip(
         trackId = FakeTrack3.id,
         clipId = FakeClip3.id,
         startSampleInTrack = 0L,
-        createdAt = 0L,
-        modifiedAt = 0L,
+        createdAt = Instant.fromEpochMilliseconds(0L),
+        modifiedAt = Instant.fromEpochMilliseconds(0L),
     ),
     completeAudioClip = FakeCompleteAudioClip3,
 )

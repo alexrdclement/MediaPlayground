@@ -13,4 +13,5 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(projects.data.album)
+    implementation(projects.data.track)
 }

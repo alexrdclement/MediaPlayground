@@ -57,7 +57,7 @@ class LocalAudioAlbumDataStoreTest {
         assertEquals(simpleAlbum.id, result.id)
         assertEquals(1, result.items.size)
         assertEquals(albumTrack.track.id, result.items[0].track.id)
-        assertEquals(albumTrack.track.clips.size, result.items[0].track.clips.size)
+        assertEquals(albumTrack.track.items.size, result.items[0].track.items.size)
     }
 
     @Test

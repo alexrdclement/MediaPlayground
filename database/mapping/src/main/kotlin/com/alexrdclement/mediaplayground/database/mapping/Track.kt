@@ -3,7 +3,8 @@ package com.alexrdclement.mediaplayground.database.mapping
 import com.alexrdclement.mediaplayground.database.model.MediaCollectionType
 import com.alexrdclement.mediaplayground.media.model.AudioTrack
 import com.alexrdclement.mediaplayground.media.model.TrackId
-import kotlinx.collections.immutable.toPersistentSet
+import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
+import kotlinx.collections.immutable.toPersistentList
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack as CompleteTrackEntity
 import com.alexrdclement.mediaplayground.database.model.MediaCollection as MediaCollectionEntity
 import com.alexrdclement.mediaplayground.database.model.Track as TrackEntity
@@ -29,7 +30,7 @@ fun CompleteTrackEntity.toAudioTrack(): AudioTrack {
     return AudioTrack(
         id = TrackId(track.id),
         title = mediaCollection.title,
-        clips = clips.map { it.toTrackClip() }.toPersistentSet(),
+        items = clips.map { it.toTrackClip() }.sortedBy { it.trackOffset.toKotlinDuration() }.toPersistentList(),
         notes = track.notes,
         createdAt = mediaCollection.createdAt,
         modifiedAt = mediaCollection.modifiedAt,

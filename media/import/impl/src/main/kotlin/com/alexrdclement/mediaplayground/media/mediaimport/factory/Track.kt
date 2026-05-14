@@ -8,8 +8,9 @@ import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.TimeUnit
 import com.alexrdclement.mediaplayground.media.model.TrackClip
 import com.alexrdclement.mediaplayground.media.model.TrackId
+import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
 import kotlinx.collections.immutable.PersistentSet
-import kotlinx.collections.immutable.toPersistentSet
+import kotlinx.collections.immutable.toPersistentList
 import java.util.UUID
 import kotlin.time.Clock
 
@@ -25,7 +26,7 @@ internal fun makeTrack(
         track = AudioTrack(
             id = TrackId(id.toString()),
             title = title,
-            clips = trackClips.toPersistentSet(),
+            items = trackClips.sortedBy { it.trackOffset.toKotlinDuration() }.toPersistentList(),
             notes = null,
             createdAt = now,
             modifiedAt = now,

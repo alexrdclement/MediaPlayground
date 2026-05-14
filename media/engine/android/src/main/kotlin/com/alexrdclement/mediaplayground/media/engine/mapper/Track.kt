@@ -15,7 +15,7 @@ fun Track.toMediaItem(pathProvider: PathProvider): MediaItem = when (this) {
 }
 
 fun AlbumTrack.toMediaItem(pathProvider: PathProvider): MediaItem {
-    val trackClip = track.clips.firstOrNull() ?: return MediaItem.Builder().build()
+    val trackClip = track.items.firstOrNull() ?: return MediaItem.Builder().build()
     val clip = trackClip.clip
     val path = pathProvider.getPath(clip.mediaAsset.uri)
     return MediaItem.Builder()
@@ -42,7 +42,7 @@ private fun AlbumTrack.toAlbumTrackMediaMetadata(pathProvider: PathProvider): Me
 }
 
 internal fun AudioTrack.toAudioMediaItem(pathProvider: PathProvider): MediaItem {
-    val trackClip = clips.firstOrNull() ?: return MediaItem.Builder().build()
+    val trackClip = items.firstOrNull() ?: return MediaItem.Builder().build()
     val clip = trackClip.clip
     val path = pathProvider.getPath(clip.mediaAsset.uri)
     return MediaItem.Builder()

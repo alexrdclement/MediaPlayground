@@ -6,7 +6,6 @@ import com.alexrdclement.mediaplayground.media.model.TimeUnit
 import com.alexrdclement.mediaplayground.media.model.AudioAsset as DomainAudioAsset
 import com.alexrdclement.mediaplayground.media.model.TrackClip
 import com.alexrdclement.mediaplayground.media.model.TrackClipId
-import kotlin.time.Instant
 import com.alexrdclement.mediaplayground.database.model.Clip as ClipEntity
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioAsset
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioClip as CompleteAudioClipEntity
@@ -63,7 +62,7 @@ private fun CompleteTrackClipEntity.toTrackClip(audioAsset: DomainAudioAsset): T
         id = TrackClipId(trackClipCrossRef.id),
         clip = completeAudioClip.clip.toClip(audioAsset),
         trackOffset = TimeUnit.Samples(trackClipCrossRef.startSampleInTrack, sampleRate),
-        createdAt = Instant.fromEpochMilliseconds(trackClipCrossRef.createdAt),
-        modifiedAt = Instant.fromEpochMilliseconds(trackClipCrossRef.modifiedAt),
+        createdAt = trackClipCrossRef.createdAt,
+        modifiedAt = trackClipCrossRef.modifiedAt,
     )
 }

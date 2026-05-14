@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.data.track.local
 
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
+import kotlin.time.Instant
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteTrackPolicy
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
 import com.alexrdclement.mediaplayground.media.model.FakeImage2
@@ -55,7 +56,7 @@ class LocalTrackDataStoreTest {
         assertNotNull(result)
         assertEquals(albumTrack.track.id, result.id)
         assertEquals(albumTrack.title, result.title)
-        assertEquals(albumTrack.track.clips.size, result.clips.size)
+        assertEquals(albumTrack.track.items.size, result.items.size)
     }
 
     @Test
@@ -180,8 +181,8 @@ class LocalTrackDataStoreTest {
                 trackId = albumTrack2.track.id.value,
                 clipId = FakeLocalClip1.id.value,
                 startSampleInTrack = 0L,
-                createdAt = 0L,
-                modifiedAt = 0L,
+                createdAt = Instant.fromEpochMilliseconds(0L),
+                modifiedAt = Instant.fromEpochMilliseconds(0L),
             )
         )
 
@@ -231,7 +232,7 @@ class LocalTrackDataStoreTest {
         assertEquals(simpleAlbum.id, albumResult.id)
         assertEquals(1, albumResult.items.size)
         assertEquals(albumTrack2.track.id, albumResult.items[0].track.id)
-        assertEquals(albumTrack2.track.clips.size, albumResult.items[0].track.clips.size)
+        assertEquals(albumTrack2.track.items.size, albumResult.items[0].track.items.size)
     }
 
     @Test

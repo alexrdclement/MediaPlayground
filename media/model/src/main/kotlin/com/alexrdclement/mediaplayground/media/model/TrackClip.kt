@@ -1,7 +1,6 @@
 package com.alexrdclement.mediaplayground.media.model
 
 import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.PersistentSet
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
@@ -21,13 +20,4 @@ data class TrackClip<T : TimeUnit>(
     override val images: PersistentList<Image> get() = clip.images
     override val isPlayable: Boolean get() = clip.isPlayable
     override val duration: TimeUnit get() = clip.duration
-
-    val artists: PersistentList<Artist> get() = clip.artists
 }
-
-val <T : TimeUnit> PersistentSet<TrackClip<T>>.duration: TimeUnit
-    get() {
-        val lastTrackClip = this.maxByOrNull { it.trackOffset.toKotlinDuration() }
-            ?: return TimeUnit.Samples(0L, 44100)
-        return lastTrackClip.trackOffset + lastTrackClip.clip.duration
-    }
