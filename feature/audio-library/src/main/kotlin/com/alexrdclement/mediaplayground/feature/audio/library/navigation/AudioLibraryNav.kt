@@ -2,8 +2,9 @@ package com.alexrdclement.mediaplayground.feature.audio.library.navigation
 
 import androidx.navigation3.runtime.EntryProviderScope
 import com.alexrdclement.mediaplayground.feature.audio.library.AudioLibraryScreen
-import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.palette.navigation.NavController
@@ -17,7 +18,7 @@ fun NavGraphBuilder.audioLibraryNavGraph() {
 fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
     navController: NavController,
     onNavigateToPlayer: (MediaItem) -> Unit,
-    onNavigateToAlbum: (Album) -> Unit,
+    onNavigateToAlbum: (AudioAlbum) -> Unit,
     onNavigateToTrackMetadata: (TrackId) -> Unit = {},
     onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
@@ -28,7 +29,7 @@ fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
             onNavigateToPlayer = onNavigateToPlayer,
             onNavigateToAlbum = onNavigateToAlbum,
             onNavigateToTrackMetadata = { onNavigateToTrackMetadata(TrackId(it)) },
-            onNavigateToAlbumMetadata = { onNavigateToAlbumMetadata(AlbumId(it)) },
+            onNavigateToAlbumMetadata = { onNavigateToAlbumMetadata(AudioAlbumId(it)) },
             onNavigateToAlbumDelete = onNavigateToAlbumDelete,
             onNavigateToTrackDelete = onNavigateToTrackDelete,
         )

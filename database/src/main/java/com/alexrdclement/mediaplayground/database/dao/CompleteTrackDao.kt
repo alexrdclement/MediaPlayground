@@ -9,8 +9,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CompleteTrackDao {
+    @Query("SELECT COUNT(*) FROM tracks")
+    fun getTrackCountFlow(): Flow<Int>
+
     @Transaction
-    @Query("SELECT * FROM tracks ORDER BY modified_date DESC")
+    @Query("SELECT tracks.* FROM tracks JOIN media_collections ON tracks.id = media_collections.id ORDER BY media_collections.modified_at DESC")
     fun getTracksPagingSource(): PagingSource<Int, CompleteTrack>
 
     @Transaction
@@ -20,4 +23,8 @@ interface CompleteTrackDao {
     @Transaction
     @Query("SELECT * FROM tracks WHERE id = :id")
     fun getTrackFlow(id: String): Flow<CompleteTrack?>
+
+    @Transaction
+    @Query("SELECT tracks.* FROM tracks INNER JOIN track_clips ON tracks.id = track_clips.track_id WHERE track_clips.clip_id = :clipId LIMIT 1")
+    suspend fun getTrackByClipId(clipId: String): CompleteTrack?
 }

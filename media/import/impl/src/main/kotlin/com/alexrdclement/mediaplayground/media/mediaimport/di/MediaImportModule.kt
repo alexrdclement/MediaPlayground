@@ -1,12 +1,42 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.di
 
-import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporterImpl
-import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.ArtistImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.ArtistImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.AudioAssetImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.AudioAssetImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumTrackImporter
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumTrackImporterImpl
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Binds
 
 @BindingContainer
 interface MediaImportModule {
     @Binds
-    val MediaImporterImpl.bind: MediaImporter
+    val AlbumImporterImpl.bind: AlbumImporter
+
+    @Binds
+    val ArtistImporterImpl.bind: ArtistImporter
+
+    @Binds
+    val AudioAssetImporterImpl.bind: AudioAssetImporter
+
+    @Binds
+    val ClipImporterImpl.bind: ClipImporter
+
+    @Binds
+    val ImageImporterImpl.bind: ImageImporter
+
+    @Binds
+    val MediaAssetImporterImpl.bind: MediaAssetImporter
+
+    @Binds
+    val AlbumTrackImporterImpl.bind: AlbumTrackImporter
 }

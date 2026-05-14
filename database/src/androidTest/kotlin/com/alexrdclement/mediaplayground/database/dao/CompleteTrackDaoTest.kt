@@ -6,7 +6,9 @@ import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteTrack1
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
+import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
+import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.database.model.id
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -18,11 +20,18 @@ class CompleteTrackDaoTest {
 
     private lateinit var db: MediaPlaygroundDatabase
     private lateinit var albumDao: AlbumDao
+    private lateinit var mediaCollectionDao: MediaCollectionDao
+    private lateinit var albumTrackDao: AlbumTrackDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
-    private lateinit var imageDao: ImageDao
+    private lateinit var albumImageDao: AlbumImageDao
+    private lateinit var imageAssetDao: ImageAssetDao
     private lateinit var trackDao: TrackDao
+    private lateinit var audioAssetDao: AudioAssetDao
+    private lateinit var clipDao: ClipDao
+    private lateinit var trackClipDao: TrackClipDao
     private lateinit var completeTrackDao: CompleteTrackDao
+    private lateinit var mediaAssetDao: MediaAssetDao
 
     @Before
     fun create() {
@@ -31,11 +40,18 @@ class CompleteTrackDaoTest {
             .inMemoryDatabaseBuilder(context, MediaPlaygroundDatabase::class.java)
             .build()
         albumDao = db.albumDao()
+        mediaCollectionDao = db.mediaCollectionDao()
+        albumTrackDao = db.albumTrackDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
-        imageDao = db.imageDao()
+        albumImageDao = db.albumImageDao()
+        imageAssetDao = db.imageAssetDao()
         trackDao = db.trackDao()
+        audioAssetDao = db.audioAssetDao()
+        clipDao = db.clipDao()
+        trackClipDao = db.trackClipDao()
         completeTrackDao = db.completeTrackDao()
+        mediaAssetDao = db.mediaAssetDao()
     }
 
     @After
@@ -44,17 +60,39 @@ class CompleteTrackDaoTest {
     }
 
     private suspend fun insertCompleteTrack(completeTrack: CompleteTrack) {
-        val albumArtists = completeTrack.artists.map { artist ->
-            AlbumArtistCrossRef(
-                albumId = completeTrack.album.id,
-                artistId = artist.id,
+        mediaCollectionDao.insert(completeTrack.mediaCollection)
+        trackDao.insert(completeTrack.track)
+        for (albumRef in completeTrack.albumRefs) {
+            val simpleAlbum = albumRef.simpleAlbum
+            mediaCollectionDao.insert(simpleAlbum.mediaCollection)
+            albumDao.insert(simpleAlbum.album)
+            artistDao.insert(*simpleAlbum.artists.toTypedArray())
+            val albumArtists = simpleAlbum.artists.map { artist ->
+                AlbumArtistCrossRef(albumId = simpleAlbum.album.id, artistId = artist.id)
+            }
+            albumArtistDao.insert(*albumArtists.toTypedArray())
+            for (completeImage in simpleAlbum.images) {
+                mediaAssetDao.insert(completeImage.mediaAsset)
+                imageAssetDao.insert(completeImage.imageAsset)
+                albumImageDao.insert(AlbumImageCrossRef(albumId = simpleAlbum.album.id, imageId = completeImage.imageAsset.id))
+            }
+            albumTrackDao.insert(albumRef.albumTrackCrossRef)
+        }
+        for (completeTrackClip in completeTrack.clips) {
+            mediaAssetDao.insert(completeTrackClip.completeAudioClip.mediaAsset)
+            audioAssetDao.insert(completeTrackClip.completeAudioClip.audioAsset)
+            clipDao.insert(completeTrackClip.completeAudioClip.clip)
+            trackClipDao.insert(
+                TrackClipCrossRef(
+                    id = completeTrackClip.trackClipCrossRef.id,
+                    trackId = completeTrack.track.id,
+                    clipId = completeTrackClip.completeAudioClip.clip.id,
+                    startSampleInTrack = completeTrackClip.trackClipCrossRef.startSampleInTrack,
+                    createdAt = completeTrackClip.trackClipCrossRef.createdAt,
+                    modifiedAt = completeTrackClip.trackClipCrossRef.modifiedAt,
+                )
             )
         }
-        albumDao.insert(completeTrack.album)
-        artistDao.insert(*completeTrack.artists.toTypedArray())
-        albumArtistDao.insert(*albumArtists.toTypedArray())
-        imageDao.insert(*completeTrack.images.toTypedArray())
-        trackDao.insert(completeTrack.track)
     }
 
     @Test

@@ -4,22 +4,26 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
-import com.alexrdclement.mediaplayground.data.track.local.LocalTrackRepository
-import com.alexrdclement.mediaplayground.data.track.local.TrackImportResult
-import com.alexrdclement.mediaplayground.data.track.local.TrackImportState
+import com.alexrdclement.logging.Logger
+import com.alexrdclement.logging.error
+import com.alexrdclement.logging.infoString
+import com.alexrdclement.mediaplayground.data.track.TrackImportResult
+import com.alexrdclement.mediaplayground.data.track.TrackImportState
+import com.alexrdclement.mediaplayground.data.track.TrackRepository
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStateProvider
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.loadIfNecessary
 import com.alexrdclement.mediaplayground.media.engine.playPause
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
+import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.TrackClip
+import com.alexrdclement.mediaplayground.media.model.MediaAsset
+import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
-import com.alexrdclement.mediaplayground.media.model.Album
-import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.logging.Logger
-import com.alexrdclement.logging.error
-import com.alexrdclement.logging.infoString
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,7 +37,7 @@ import kotlinx.coroutines.launch
 class AudioLibraryViewModel @Inject constructor(
     private val logger: Logger,
     localContentStateProvider: LocalContentStateProvider,
-    private val localTrackRepository: LocalTrackRepository,
+    private val trackRepository: TrackRepository,
     private val mediaSessionControl: MediaSessionControl,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
@@ -72,7 +76,6 @@ class AudioLibraryViewModel @Inject constructor(
 
     fun onItemClick(mediaItemUi: MediaItemUi) {
         when (val mediaItem = mediaItemUi.mediaItem) {
-            is Album -> {}
             is Track -> {
                 if (!mediaItem.isPlayable) {
                     logger.error { AudioLibraryUiError.NotPlayable }
@@ -91,6 +94,12 @@ class AudioLibraryViewModel @Inject constructor(
                     }
                 }
             }
+            is AlbumTrack,
+            is AudioAlbum,
+            is Clip,
+            is TrackClip<*>,
+            is MediaAsset,
+            -> Unit
         }
     }
 
@@ -123,7 +132,7 @@ class AudioLibraryViewModel @Inject constructor(
 
     private suspend fun importTracks(uris: List<Uri>) {
         val importedUris = mutableSetOf<Uri>()
-        localTrackRepository.importTracksFromDisk(uris)
+        trackRepository.importTracksFromDisk(uris)
             .map(::mapToResults)
             .takeWhile { resultsByUri ->
                 val failuresByUri = mapToFailures(resultsByUri)

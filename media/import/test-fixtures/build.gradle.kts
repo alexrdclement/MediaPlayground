@@ -8,6 +8,7 @@ android {
 
 dependencies {
     api(projects.media.import.impl)
-    implementation(projects.media.metadata.testFixtures)
-    implementation(projects.media.store.testFixtures)
+    api(projects.media.metadata.testFixtures)
+    api(projects.media.model.testFixtures)
+    api(projects.media.store.testFixtures)
 }

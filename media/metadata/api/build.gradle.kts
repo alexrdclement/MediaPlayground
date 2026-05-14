@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+    api(libs.kotlinx.io.core)
     api(projects.media.model)
 }

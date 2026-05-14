@@ -6,14 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.alexrdclement.mediaplayground.database.model.Track
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrackDao {
-    @Query("SELECT COUNT(*) FROM tracks")
-    fun getTrackCountFlow(): Flow<Int>
-
-    @Query("SELECT * FROM tracks WHERE album_id = :albumId ORDER BY track_number")
+    @Query("SELECT tracks.* FROM tracks INNER JOIN album_tracks ON tracks.id = album_tracks.track_id WHERE album_tracks.album_id = :albumId ORDER BY album_tracks.track_number")
     suspend fun getTracksForAlbum(albumId: String): List<Track>
 
     @Query("SELECT * FROM tracks WHERE id = :id")

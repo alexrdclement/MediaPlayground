@@ -10,8 +10,10 @@ android {
 }
 
 dependencies {
+    api(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
     implementation(libs.room.paging)
+    implementation(projects.media.model)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)

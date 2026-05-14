@@ -1,43 +1,37 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.factory
 
-import com.alexrdclement.mediaplayground.media.mediaimport.imageExtension
-import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toImage
-import com.alexrdclement.mediaplayground.media.mediaimport.mapper.toSimpleAlbum
-import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
-import com.alexrdclement.mediaplayground.media.model.AlbumId
-import com.alexrdclement.mediaplayground.media.model.ImageId
+import com.alexrdclement.mediaplayground.media.model.mapper.toSimpleAlbum
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
+import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.ArtistId
+import com.alexrdclement.mediaplayground.media.model.Image
+import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
-import com.alexrdclement.mediaplayground.media.model.Source
+import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.io.files.Path
+import kotlinx.collections.immutable.toPersistentList
 import java.util.UUID
 
 private const val UnknownAlbumName = "Unknown album"
 
 internal suspend fun makeSimpleAlbum(
     mediaMetadata: MediaMetadata.Audio,
-    simpleArtist: SimpleArtist,
-    getImageFilePath: (ImageId, extension: String) -> Path,
-    getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
-    source: Source,
+    artist: Artist,
+    images: PersistentSet<Image>,
+    getAlbumByTitleAndArtistId: suspend (String, ArtistId) -> SimpleAlbum?,
 ): SimpleAlbum {
     val albumName = mediaMetadata.albumTitle ?: UnknownAlbumName
 
-    val existingAlbum = getAlbumByTitleAndArtistId(albumName, simpleArtist.id)
+    val existingAlbum = getAlbumByTitleAndArtistId(albumName, artist.id)
     if (existingAlbum != null) {
         return existingAlbum
     }
 
-    val albumId = AlbumId(UUID.randomUUID().toString())
-    val imageId = ImageId(UUID.randomUUID().toString())
-    val extension = mediaMetadata.embeddedPicture?.imageExtension() ?: "jpg"
-    val image = mediaMetadata.toImage(id = imageId, imageFilePath = getImageFilePath(imageId, extension))
+    val albumId = AudioAlbumId(UUID.randomUUID().toString())
     return mediaMetadata.toSimpleAlbum(
         id = albumId,
         title = albumName,
-        artists = persistentListOf(simpleArtist),
-        images = image?.let { persistentListOf(image) } ?: persistentListOf(),
-        source = source,
+        artists = persistentListOf(artist),
+        images = images.toPersistentList(),
     )
 }

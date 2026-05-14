@@ -7,8 +7,8 @@ class FakeAlbumArtistDao : AlbumArtistDao {
 
     val albumArtists = mutableSetOf<AlbumArtistCrossRef>()
 
-    override suspend fun insert(vararg albumArist: AlbumArtistCrossRef) {
-        albumArtists.addAll(albumArist)
+    override suspend fun insert(vararg albumArtist: AlbumArtistCrossRef) {
+        albumArtists.addAll(albumArtist)
     }
 
     override suspend fun getAlbumArtists(albumId: String): List<AlbumArtistCrossRef> {
@@ -21,5 +21,9 @@ class FakeAlbumArtistDao : AlbumArtistDao {
 
     override suspend fun delete(albumArtist: AlbumArtistCrossRef) {
         albumArtists.remove(albumArtist)
+    }
+
+    override suspend fun deleteForAlbum(albumId: String) {
+        albumArtists.removeAll { it.albumId == albumId }
     }
 }

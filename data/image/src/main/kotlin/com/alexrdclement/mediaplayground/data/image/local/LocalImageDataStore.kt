@@ -4,65 +4,47 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.alexrdclement.mediaplayground.data.disk.PathProvider
-import com.alexrdclement.mediaplayground.data.image.local.mapper.toImage
-import com.alexrdclement.mediaplayground.database.dao.ImageDao
-import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
+import com.alexrdclement.mediaplayground.database.dao.ImageAssetDao
+import com.alexrdclement.mediaplayground.database.mapping.toImage
+import com.alexrdclement.mediaplayground.database.mapping.toImageEntity
+import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
+import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
+import com.alexrdclement.mediaplayground.database.transaction.deleteImage
+import com.alexrdclement.mediaplayground.database.transaction.insertImageAssets
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import com.alexrdclement.mediaplayground.database.model.Image as ImageEntity
 
 class LocalImageDataStore @Inject constructor(
-    private val imageDao: ImageDao,
-    private val pathProvider: PathProvider,
+    private val imageAssetDao: ImageAssetDao,
+    private val databaseTransactionRunner: DatabaseTransactionRunner,
 ) {
     fun getImageFlow(imageId: ImageId): Flow<Image?> {
-        val imagesDir = pathProvider.getImagesDir()
-        return imageDao.getImageFlow(imageId.value).map { it?.toImage(imagesDir) }
+        return imageAssetDao.getImageFlow(imageId.value).map { it?.toImage() }
     }
 
     fun getImagePagingData(config: PagingConfig): Flow<PagingData<Image>> {
-        val imagesDir = pathProvider.getImagesDir()
         return Pager(config = config) {
-            imageDao.getImagesPagingSource()
+            imageAssetDao.getImagesPagingSource()
         }.flow.map { pagingData ->
-            pagingData.map { it.toImage(imagesDir) }
+            pagingData.map { it.toImage() }
         }
     }
 
-    fun getImageCountFlow(): Flow<Int> = imageDao.getImageCountFlow()
+    fun getImageCountFlow(): Flow<Int> = imageAssetDao.getImageCountFlow()
 
-    suspend fun put(
-        imageId: ImageId,
-        fileName: String,
-        mediaMetadata: MediaMetadata.Image? = null,
-        notes: String? = null,
-    ) {
-        imageDao.insert(
-            ImageEntity(
-                id = imageId.value,
-                fileName = fileName,
-                widthPx = mediaMetadata?.widthPx,
-                heightPx = mediaMetadata?.heightPx,
-                dateTimeOriginal = mediaMetadata?.dateTimeOriginal,
-                gpsLatitude = mediaMetadata?.gpsLatitude,
-                gpsLongitude = mediaMetadata?.gpsLongitude,
-                cameraMake = mediaMetadata?.cameraMake,
-                cameraModel = mediaMetadata?.cameraModel,
-                notes = notes,
-            )
-        )
+    suspend fun put(images: Set<Image>) = databaseTransactionRunner.run {
+        insertImageAssets(*images.map { it.toMediaAssetRecord() to it.toImageEntity() }.toTypedArray())
     }
 
-    suspend fun updateImageNotes(imageId: ImageId, notes: String?) {
-        val image = imageDao.getImage(imageId.value) ?: return
-        imageDao.update(image.copy(notes = notes))
+    suspend fun updateImageNotes(imageId: ImageId, notes: String?) = databaseTransactionRunner.run {
+        val image = imageAssetDao.getImage(imageId.value) ?: return@run
+        imageAssetDao.update(image.imageAsset.copy(notes = notes))
     }
 
-    suspend fun deleteImage(imageId: ImageId) {
-        imageDao.delete(imageId.value)
+    suspend fun delete(imageId: ImageId) = databaseTransactionRunner.run {
+        deleteImage(imageId.value)
     }
 }

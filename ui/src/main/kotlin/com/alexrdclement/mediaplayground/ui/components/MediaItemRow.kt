@@ -79,6 +79,7 @@ fun MediaItemRow(
                     Box {
                         MediaItemCard(
                             mediaItem = mediaItem.mediaItem,
+                            subtitle = mediaItem.subtitle,
                             isPlaybackEnabled = mediaItem.mediaItem.isPlayable,
                             isPlaying = mediaItem.isPlaying,
                             onClick = { onItemClick(mediaItem) },
@@ -97,6 +98,7 @@ fun MediaItemRow(
                 } else {
                     MediaItemCard(
                         mediaItem = mediaItem.mediaItem,
+                        subtitle = mediaItem.subtitle,
                         isPlaybackEnabled = mediaItem.mediaItem.isPlayable,
                         isPlaying = mediaItem.isPlaying,
                         onClick = { onItemClick(mediaItem) },

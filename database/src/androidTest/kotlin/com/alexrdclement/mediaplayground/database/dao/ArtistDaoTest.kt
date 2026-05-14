@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbum1
 import com.alexrdclement.mediaplayground.database.fakes.FakeArtist1
+import com.alexrdclement.mediaplayground.database.fakes.FakeMediaCollection1
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -22,6 +23,7 @@ class ArtistDaoTest {
     private lateinit var albumDao: AlbumDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
+    private lateinit var mediaCollectionDao: MediaCollectionDao
 
     @Before
     fun create() {
@@ -32,6 +34,7 @@ class ArtistDaoTest {
         albumDao = db.albumDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
+        mediaCollectionDao = db.mediaCollectionDao()
     }
 
     @After
@@ -106,6 +109,7 @@ class ArtistDaoTest {
 
     @Test
     fun update_doesNotDeleteAlbumArtistCrossRefs() = runTest {
+        mediaCollectionDao.insert(FakeMediaCollection1)
         albumDao.insert(FakeAlbum1)
         artistDao.insert(FakeArtist1)
         albumArtistDao.insert(AlbumArtistCrossRef(FakeAlbum1.id, FakeArtist1.id))

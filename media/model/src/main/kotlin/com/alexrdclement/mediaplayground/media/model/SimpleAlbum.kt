@@ -7,17 +7,16 @@ import kotlinx.serialization.Serializable
 data class SimpleAlbum(
     val id: AlbumId,
     val name: String,
-    val artists: PersistentList<SimpleArtist>,
+    val artists: PersistentList<Artist>,
     val images: PersistentList<Image>,
-    val source: Source,
 )
 
-val SimpleAlbum.thumbnailImageUrl: String?
+val SimpleAlbum.thumbnailImageUri: MediaAssetUri?
     get() {
         // Third image is typically too low-res
         val image = images.getOrNull(1) ?: images.firstOrNull()
         return image?.uri
     }
 
-val SimpleAlbum.largeImageUrl: String?
+val SimpleAlbum.largeImageUri: MediaAssetUri?
     get() = images.firstOrNull()?.uri

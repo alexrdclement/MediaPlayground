@@ -2,9 +2,9 @@ package com.alexrdclement.mediaplayground.feature.album.metadata
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexrdclement.mediaplayground.data.album.AlbumRepository
-import com.alexrdclement.mediaplayground.media.model.Album
-import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepository
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
+import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.uievent.UiEventState
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 sealed class AlbumMetadataUiState {
     data object Loading : AlbumMetadataUiState()
     data class Loaded(
-        val album: Album,
+        val album: AudioAlbum,
         val isSaving: Boolean = false,
         val isMediaItemLoaded: Boolean = false,
     ) : AlbumMetadataUiState()
@@ -34,7 +34,7 @@ sealed class AlbumMetadataUiState {
 @AssistedInject
 class AlbumMetadataViewModel(
     @Assisted private val albumIdValue: String,
-    private val albumRepository: AlbumRepository,
+    private val albumRepository: AudioAlbumRepository,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
 
@@ -43,7 +43,7 @@ class AlbumMetadataViewModel(
         fun create(albumIdValue: String): AlbumMetadataViewModel
     }
 
-    private val albumId = AlbumId(albumIdValue)
+    private val albumId: AudioAlbumId = AudioAlbumId(albumIdValue)
 
     val savedEvent = UiEventState<Unit?>()
     val deletedEvent = UiEventState<Unit?>()

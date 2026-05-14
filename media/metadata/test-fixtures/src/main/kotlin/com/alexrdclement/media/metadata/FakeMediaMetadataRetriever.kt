@@ -2,14 +2,15 @@ package com.alexrdclement.media.metadata
 
 import android.net.Uri
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
-import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
+import com.alexrdclement.mediaplayground.media.model.MediaMetadata
+import kotlinx.io.files.Path
 
 class FakeMediaMetadataRetriever : MediaMetadataRetriever {
 
     var mediaMetadata: MediaMetadata = MediaMetadata.Audio(
         title = null,
         durationUs = null,
-        sampleRate = null,
+        sampleRate = 44100,
         channelCount = null,
         bitRate = null,
         bitDepth = null,
@@ -21,7 +22,9 @@ class FakeMediaMetadataRetriever : MediaMetadataRetriever {
         extension = "mp3",
     )
 
-    override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata {
-        return mediaMetadata
-    }
+    var fileMetadata: MediaMetadata? = null
+
+    override suspend fun getMediaMetadata(filePath: Path): MediaMetadata = fileMetadata ?: mediaMetadata
+
+    override suspend fun getMediaMetadata(contentUri: Uri): MediaMetadata = mediaMetadata
 }

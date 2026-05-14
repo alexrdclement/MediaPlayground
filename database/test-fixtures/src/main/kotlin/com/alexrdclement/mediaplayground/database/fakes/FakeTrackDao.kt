@@ -2,20 +2,14 @@ package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.Track
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 
 class FakeTrackDao : TrackDao {
 
     val tracks = MutableStateFlow(emptySet<Track>())
 
-    override fun getTrackCountFlow(): Flow<Int> {
-        return tracks.map { it.size }
-    }
-
     override suspend fun getTracksForAlbum(albumId: String): List<Track> {
-        return tracks.value.filter { it.albumId == albumId }
+        return emptyList()
     }
 
     override suspend fun getTrack(id: String): Track? {

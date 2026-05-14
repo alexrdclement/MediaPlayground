@@ -8,6 +8,8 @@ android {
 
 dependencies {
     api(projects.database)
+    api(projects.media.store.api)
+    api(projects.media.store.testFixtures)
 
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.io.core)

@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
@@ -40,6 +39,7 @@ import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.theme.PaletteTheme
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
 fun AlbumScreen(
@@ -138,7 +138,7 @@ private fun LoadedContent(
         ) {
             item {
                 MediaItemArtwork(
-                    imageUrl = state.imageUrl,
+                    uri = state.imageUri,
                     modifier = Modifier
                         .heightIn(
                             max = with(LocalDensity.current) {
@@ -163,7 +163,7 @@ private fun LoadedContent(
                     onArtistsLongClick = { offset ->
                         state.artists.firstOrNull()?.let { artist ->
                             artistOptionsTouchOffset = offset
-                            artistOptionsItem = Pair(artist.id, artist.name ?: "")
+                            artistOptionsItem = Pair(artist.id.value, artist.name ?: "")
                         }
                     },
                     titleOverlay = {
@@ -210,6 +210,8 @@ private fun LoadedContent(
                 Box {
                     TrackListItem(
                         track = trackUi.track,
+                        trackNumber = trackUi.trackNumber,
+                        subtitle = trackUi.subtitle,
                         isLoaded = trackUi.isLoaded,
                         isPlayable = trackUi.isPlayable,
                         isPlaying = trackUi.isPlaying,
@@ -225,7 +227,7 @@ private fun LoadedContent(
                         offset = trackOptionsTouchOffset,
                         onDismissRequest = { trackOptionsExpanded = false },
                         onNavigateToMetadata = { onNavigateToTrackMetadata(trackUi.track.id.value) },
-                        onNavigateToDelete = { onNavigateToTrackDelete(trackUi.track.id.value, trackUi.track.name) },
+                        onNavigateToDelete = { onNavigateToTrackDelete(trackUi.track.id.value, trackUi.track.title) },
                     )
                 }
             }
@@ -238,16 +240,18 @@ private fun LoadedContent(
 private fun Preview() {
     PaletteTheme {
         val album = PreviewAlbum1
-        val tracks = album.tracks.mapIndexed { index, track ->
+        val tracks = album.items.mapIndexed { index, albumTrack ->
             TrackUi(
-                track = track,
+                track = albumTrack.track,
+                trackNumber = albumTrack.trackNumber,
+                subtitle = album.artists.joinToString { it.name ?: "" },
                 isLoaded = index == 1,
                 isPlaying = index == 1,
                 isPlayable = true,
             )
         }
         val uiState = AlbumUiState.Success(
-            imageUrl = null,
+            imageUri = null,
             title = album.title,
             artists = album.artists,
             tracks = tracks,

@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.data.track
 
+import android.net.Uri
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.media.model.Track
@@ -12,7 +13,8 @@ interface TrackRepository {
     fun getTrackCountFlow(): Flow<Int>
     fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>>
     suspend fun updateTrackTitle(id: TrackId, title: String)
-    suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?)
     suspend fun updateTrackNotes(id: TrackId, notes: String?)
-    suspend fun deleteTrack(id: TrackId)
+    suspend fun delete(id: TrackId)
+    fun importTracksFromDisk(uris: List<Uri>): Flow<Map<Uri, TrackImportState>>
+    fun getTrackImportProgress(): Flow<Map<Uri, TrackImportState>>
 }

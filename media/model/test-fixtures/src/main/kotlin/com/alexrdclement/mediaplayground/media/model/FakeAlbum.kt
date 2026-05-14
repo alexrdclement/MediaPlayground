@@ -1,14 +1,15 @@
 package com.alexrdclement.mediaplayground.media.model
 
 import com.alexrdclement.mediaplayground.media.model.mapper.toAlbum
+import kotlinx.collections.immutable.persistentListOf
 
 val FakeAlbum1 = FakeSimpleAlbum1.toAlbum(
-    tracks = FakeSimpleTracks1,
-).copy(id = AlbumId("1"))
+    tracks = persistentListOf(FakeAlbumTrack1, FakeAlbumTrack2, FakeAlbumTrack3),
+).copy(id = AudioAlbumId("1"))
 
-val FakeAlbum2 = FakeAlbum1.copy(id = AlbumId("2"))
+val FakeAlbum2 = FakeAlbum1.copy(id = AudioAlbumId("2"))
 
-val FakeAlbum3 = FakeAlbum1.copy(id = AlbumId("3"))
+val FakeAlbum3 = FakeAlbum1.copy(id = AudioAlbumId("3"))
 
 val FakeAlbums1 = listOf(
     FakeAlbum1,

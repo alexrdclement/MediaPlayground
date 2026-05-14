@@ -1,23 +1,31 @@
 package com.alexrdclement.mediaplayground.media.engine
 
 import com.alexrdclement.mediaplayground.media.engine.mapper.toMediaItem
-import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
+import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import com.alexrdclement.mediaplayground.media.model.Track
-import com.alexrdclement.mediaplayground.media.model.mapper.toSimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.mapper.toTrack
+import com.alexrdclement.mediaplayground.media.model.TrackClip
+import com.alexrdclement.mediaplayground.media.store.PathProvider
 import dev.zacsweers.metro.Inject
 
 class PlaylistControlImpl @Inject constructor(
     override val playlistState: PlaylistState,
     private val mediaControllerHolder: MediaControllerHolder,
+    private val pathProvider: PathProvider,
 ): PlaylistControl {
 
     override suspend fun load(mediaItem: MediaItem) {
         return when (mediaItem) {
-            is Album -> loadAlbum(mediaItem)
+            is AudioAlbum -> loadAlbum(mediaItem)
             is Track -> loadTrack(mediaItem)
+            is AlbumTrack -> Unit
+            is Clip -> Unit
+            is TrackClip<*> -> Unit
+            is MediaAsset -> Unit
         }
     }
 
@@ -46,24 +54,19 @@ class PlaylistControlImpl @Inject constructor(
             pause()
 
             clearMediaItems()
-            setMediaItem(track.toMediaItem())
+            setMediaItem(track.toMediaItem(pathProvider))
             if (wasPlaying) play() else pause()
         }
     }
 
-    private suspend fun loadAlbum(album: Album) {
+    private suspend fun loadAlbum(album: AudioAlbum) {
         with(mediaControllerHolder.getMediaController()) {
             val wasPlaying = isPlaying
             pause()
 
             clearMediaItems()
 
-            val mediaItems = album.tracks.map { simpleTrack ->
-                val track = simpleTrack.toTrack(
-                    simpleAlbum = album.toSimpleAlbum()
-                )
-                track.toMediaItem()
-            }
+            val mediaItems = album.items.map { it.toMediaItem(pathProvider) }
             addMediaItems(0, mediaItems)
 
             if (wasPlaying) play() else pause()
