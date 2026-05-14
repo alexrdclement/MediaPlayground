@@ -10,7 +10,9 @@ data class SimpleAudioTrack(
     val trackNumber: Int?,
     val clips: PersistentSet<TrackClip<TimeUnit.Samples>>,
 ) {
-    val duration: TimeUnit = clips.duration
+    val duration: TimeUnit = clips.maxByOrNull { it.trackOffset.toKotlinDuration() }
+        ?.let { it.trackOffset + it.clip.duration }
+        ?: TimeUnit.Samples(0L, DEFAULT_SAMPLE_RATE)
 
     val isPlayable: Boolean
         get() = clips.isNotEmpty()

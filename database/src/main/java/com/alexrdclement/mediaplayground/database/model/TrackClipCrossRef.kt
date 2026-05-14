@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import kotlin.time.Instant
 
 @Entity(
     tableName = "track_clips",
@@ -39,7 +40,7 @@ data class TrackClipCrossRef(
     @ColumnInfo(name = "start_sample_in_track")
     val startSampleInTrack: Long,
     @ColumnInfo(name = "created_at")
-    val createdAt: Long,
+    val createdAt: Instant,
     @ColumnInfo(name = "modified_at")
-    val modifiedAt: Long,
+    val modifiedAt: Instant,
 )

@@ -1,7 +1,6 @@
 package com.alexrdclement.mediaplayground.media.model
 
 import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
@@ -10,14 +9,14 @@ import kotlin.time.Instant
 data class AudioTrack(
     override val id: TrackId,
     override val title: String,
-    val clips: PersistentSet<TrackClip<TimeUnit.Samples>>,
+    override val items: PersistentList<TrackClip<TimeUnit.Samples>>,
     override val notes: String?,
     override val createdAt: Instant,
     override val modifiedAt: Instant,
 ) : Track, AudioItem {
-    override val artists: PersistentList<Artist> = clips.flatMap { it.clip.artists }.distinct().toPersistentList()
-    override val images: PersistentList<Image> = clips.flatMap { it.clip.images }.toPersistentList()
-    override val duration: TimeUnit = clips.duration
-    override val items: PersistentList<TrackClip<TimeUnit.Samples>> =
-        clips.sortedBy { it.trackOffset.toKotlinDuration() }.toPersistentList()
+    override val artists: PersistentList<Artist> = items.flatMap { it.clip.artists }.distinct().toPersistentList()
+    override val images: PersistentList<Image> = items.flatMap { it.clip.images }.toPersistentList()
+    override val duration: TimeUnit = items.lastOrNull()
+        ?.let { it.trackOffset + it.clip.duration }
+        ?: TimeUnit.Samples(0L, DEFAULT_SAMPLE_RATE)
 }

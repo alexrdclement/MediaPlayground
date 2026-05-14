@@ -72,7 +72,7 @@ class LocalTrackDataStore @Inject constructor(
             trackId = track.id.value,
             trackNumber = albumTrack.trackNumber,
         )
-        val clipsAndAudioAssets = track.clips.mapNotNull { trackClip ->
+        val clipsAndAudioAssets = track.items.mapNotNull { trackClip ->
             val audioAsset = trackClip.clip.mediaAsset as? AudioAsset ?: return@mapNotNull null
             ClipData(
                 clip = trackClip.clip.toClipEntity(),
@@ -82,14 +82,14 @@ class LocalTrackDataStore @Inject constructor(
                 imageIds = audioAsset.images.map { it.id.value }.toSet(),
             )
         }
-        val crossRefs = track.clips.map { trackClip ->
+        val crossRefs = track.items.map { trackClip ->
             TrackClipCrossRef(
                 id = trackClip.id.value,
                 trackId = track.id.value,
                 clipId = trackClip.clip.id.value,
                 startSampleInTrack = trackClip.trackOffset.samples,
-                createdAt = trackClip.createdAt.toEpochMilliseconds(),
-                modifiedAt = trackClip.modifiedAt.toEpochMilliseconds(),
+                createdAt = trackClip.createdAt,
+                modifiedAt = trackClip.modifiedAt,
             )
         }
         databaseTransactionRunner.run {
