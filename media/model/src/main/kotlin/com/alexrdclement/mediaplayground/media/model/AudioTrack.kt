@@ -16,7 +16,5 @@ data class AudioTrack(
 ) : Track, AudioItem {
     override val artists: PersistentList<Artist> = items.flatMap { it.clip.artists }.distinct().toPersistentList()
     override val images: PersistentList<Image> = items.flatMap { it.clip.images }.toPersistentList()
-    override val duration: TimeUnit = items.lastOrNull()
-        ?.let { it.trackOffset + it.clip.duration }
-        ?: TimeUnit.Samples(0L, DEFAULT_SAMPLE_RATE)
+    override val duration: TimeUnit = items.duration()
 }

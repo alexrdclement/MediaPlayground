@@ -21,3 +21,8 @@ data class TrackClip<T : TimeUnit>(
     override val isPlayable: Boolean get() = clip.isPlayable
     override val duration: TimeUnit get() = clip.duration
 }
+
+fun <T : TimeUnit> Iterable<TrackClip<T>>.duration(): TimeUnit =
+    maxByOrNull { it.trackOffset.toKotlinDuration() }
+        ?.let { it.trackOffset + it.clip.duration }
+        ?: TimeUnit.Samples(0L, DEFAULT_SAMPLE_RATE)
