@@ -18,14 +18,13 @@ import com.alexrdclement.mediaplayground.media.store.TrackMediaStore
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.guardSuccess
 import dev.zacsweers.metro.Inject
-import kotlin.time.Clock
-import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import kotlinx.io.files.Path
 import java.util.UUID
+import kotlin.time.Clock
 
 @Inject
 class AlbumTrackImporterImpl(
@@ -102,8 +101,8 @@ class AlbumTrackImporterImpl(
         clips: Set<AudioClip>,
     ): Result<AlbumTrack, MediaImportError> {
         val now = Clock.System.now()
-        val trackClips: PersistentSet<TrackClip<TimeUnit.Samples>> = clips.map { clip ->
-            val sampleRate = (clip.assetOffset as TimeUnit.Samples).sampleRate
+        val trackClips = clips.map { clip ->
+            val sampleRate = clip.assetOffset.sampleRate
             TrackClip(
                 id = TrackClipId(UUID.randomUUID().toString()),
                 clip = clip,
