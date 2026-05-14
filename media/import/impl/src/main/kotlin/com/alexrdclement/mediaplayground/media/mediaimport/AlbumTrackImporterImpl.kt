@@ -6,7 +6,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportErro
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
-import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.AudioClip
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.TimeUnit
@@ -92,14 +92,14 @@ class AlbumTrackImporterImpl(
     internal suspend fun importSimpleTrack(
         metadata: MediaMetadata.Audio,
         simpleAlbum: SimpleAlbum,
-        clips: Set<Clip>,
+        clips: Set<AudioClip>,
     ): Result<AlbumTrack, MediaImportError> = importSimpleAudioTrack(metadata, simpleAlbum, clips)
 
     context(scope: MediaStoreTransactionScope)
     internal suspend fun importSimpleAudioTrack(
         metadata: MediaMetadata.Audio,
         simpleAlbum: SimpleAlbum,
-        clips: Set<Clip>,
+        clips: Set<AudioClip>,
     ): Result<AlbumTrack, MediaImportError> {
         val now = Clock.System.now()
         val trackClips: PersistentSet<TrackClip<TimeUnit.Samples>> = clips.map { clip ->

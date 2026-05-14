@@ -8,6 +8,11 @@ data class CompleteAudioClip(
     @Embedded
     val clip: Clip,
     @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+    )
+    val audioClip: AudioClip,
+    @Relation(
         parentColumn = "asset_id",
         entityColumn = "id",
     )

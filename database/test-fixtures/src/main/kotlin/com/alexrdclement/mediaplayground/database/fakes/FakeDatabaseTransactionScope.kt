@@ -16,6 +16,7 @@ class FakeDatabaseTransactionScope(
     override val mediaAssetSyncStateDao: FakeMediaAssetSyncStateDao = FakeMediaAssetSyncStateDao(),
     override val mediaCollectionDao: FakeMediaCollectionDao = FakeMediaCollectionDao(),
     override val mediaItemDao: FakeMediaItemDao = FakeMediaItemDao(),
+    override val audioClipDao: FakeAudioClipDao = FakeAudioClipDao(),
     override val clipDao: FakeClipDao = FakeClipDao(),
     override val imageAssetDao: FakeImageAssetDao = FakeImageAssetDao(mediaAssetDao),
     override val audioAssetDao: FakeAudioAssetDao = FakeAudioAssetDao(
@@ -39,6 +40,7 @@ class FakeDatabaseTransactionScope(
     override val completeAudioClipDao: FakeCompleteAudioClipDao = FakeCompleteAudioClipDao(
         coroutineScope = coroutineScope,
         clipDao = clipDao,
+        audioClipDao = audioClipDao,
         audioAssetDao = audioAssetDao,
     )
     override val completeTrackDao: FakeCompleteTrackDao = FakeCompleteTrackDao(
@@ -53,6 +55,7 @@ class FakeDatabaseTransactionScope(
         mediaAssetDao = mediaAssetDao,
         trackDao = trackDao,
         clipDao = clipDao,
+        audioClipDao = audioClipDao,
         audioAssetDao = audioAssetDao,
         trackClipDao = trackClipDao,
     )
@@ -69,6 +72,7 @@ class FakeDatabaseTransactionScope(
         mediaAssetDao = mediaAssetDao,
         trackDao = trackDao,
         clipDao = clipDao,
+        audioClipDao = audioClipDao,
         audioAssetDao = audioAssetDao,
         trackClipDao = trackClipDao,
     )

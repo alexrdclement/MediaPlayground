@@ -29,6 +29,7 @@ class FakeCompleteTrackDao(
     val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
     val trackDao: FakeTrackDao,
     val clipDao: FakeClipDao = FakeClipDao(),
+    val audioClipDao: FakeAudioClipDao = FakeAudioClipDao(),
     val audioAssetDao: FakeAudioAssetDao = FakeAudioAssetDao(mediaAssetDao),
     val trackClipDao: FakeTrackClipDao = FakeTrackClipDao(),
 ) : CompleteTrackDao {
@@ -37,9 +38,9 @@ class FakeCompleteTrackDao(
         combine(albumDao.albums, mediaCollectionDao.mediaCollections) { albums, mediaCollections -> Pair(albums, mediaCollections) },
         artistDao.artists,
         combine(albumTrackDao.albumTrackRefs, audioAssetDao.audioAssets) { refs, assets -> Pair(refs, assets) },
-        trackDao.tracks,
-        clipDao.clips,
-    ) { (albums, mediaCollections), artists, (albumTrackRefs, audioFiles), tracks, clips ->
+        combine(trackDao.tracks, clipDao.clips) { tracks, clips -> Pair(tracks, clips) },
+        audioClipDao.audioClips,
+    ) { (albums, mediaCollections), artists, (albumTrackRefs, audioFiles), (tracks, clips), audioClips ->
         val albumArtists = albumArtistDao.albumArtists
         val mediaAssets = mediaAssetDao.mediaAssets
         tracks.mapNotNull { track ->
@@ -79,12 +80,14 @@ class FakeCompleteTrackDao(
             val trackClipCrossRefs = trackClipDao.trackClips.filter { it.trackId == track.id }
             val completeTrackClips = trackClipCrossRefs.mapNotNull { crossRef ->
                 val clip = clips.find { it.id == crossRef.clipId } ?: return@mapNotNull null
+                val audioClip = audioClips.find { it.id == clip.id } ?: return@mapNotNull null
                 val audioAsset = audioFiles.find { it.id == clip.assetId } ?: return@mapNotNull null
                 val mediaAsset = mediaAssets[clip.assetId] ?: return@mapNotNull null
                 CompleteTrackClip(
                     trackClipCrossRef = crossRef,
                     completeAudioClip = CompleteAudioClip(
                         clip = clip,
+                        audioClip = audioClip,
                         audioAsset = audioAsset,
                         mediaAsset = mediaAsset,
                         artists = emptyList(),

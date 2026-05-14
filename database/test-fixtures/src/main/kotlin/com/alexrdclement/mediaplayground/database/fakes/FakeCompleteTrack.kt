@@ -10,6 +10,7 @@ import kotlin.time.Instant
 
 val FakeCompleteAudioClip1 = CompleteAudioClip(
     clip = FakeClip1,
+    audioClip = FakeAudioClip1,
     audioAsset = FakeAudioAsset1,
     mediaAsset = FakeMediaAssetRecord1,
     artists = emptyList(),
@@ -18,6 +19,7 @@ val FakeCompleteAudioClip1 = CompleteAudioClip(
 
 val FakeCompleteAudioClip2 = CompleteAudioClip(
     clip = FakeClip2,
+    audioClip = FakeAudioClip2,
     audioAsset = FakeAudioAsset2,
     mediaAsset = FakeMediaAssetRecord2,
     artists = emptyList(),
@@ -26,6 +28,7 @@ val FakeCompleteAudioClip2 = CompleteAudioClip(
 
 val FakeCompleteAudioClip3 = CompleteAudioClip(
     clip = FakeClip3,
+    audioClip = FakeAudioClip3,
     audioAsset = FakeAudioAsset3,
     mediaAsset = FakeMediaAssetRecord3,
     artists = emptyList(),

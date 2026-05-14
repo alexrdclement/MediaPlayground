@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.database.transaction
 
 import com.alexrdclement.mediaplayground.database.model.AudioAsset
+import com.alexrdclement.mediaplayground.database.model.AudioClip
 import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
 import com.alexrdclement.mediaplayground.database.model.MediaItem
@@ -11,6 +12,7 @@ import kotlin.time.Clock
 context(scope: DatabaseTransactionScope)
 suspend fun insertClip(
     clip: Clip,
+    audioClip: AudioClip,
     mediaAsset: MediaAsset,
     audioAsset: AudioAsset,
     artistIds: Set<String> = emptySet(),
@@ -19,6 +21,7 @@ suspend fun insertClip(
     insertAudioAsset(mediaAsset, audioAsset, artistIds, imageIds)
     scope.mediaItemDao.insert(MediaItem(id = clip.id, itemType = MediaItemType.CLIP))
     scope.clipDao.insert(clip)
+    scope.audioClipDao.insert(audioClip)
 }
 
 context(scope: DatabaseTransactionScope)

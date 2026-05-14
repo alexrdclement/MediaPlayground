@@ -1,33 +1,12 @@
 package com.alexrdclement.mediaplayground.media.model
 
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.serialization.Serializable
-import kotlin.time.Instant
 
 @JvmInline
 @Serializable
 value class ClipId(override val value: String) : MediaItemId
 
 @Serializable
-data class Clip(
-    override val id: ClipId,
-    override val title: String,
-    override val duration: TimeUnit,
-    val mediaAsset: MediaAsset,
-    val assetOffset: TimeUnit,
-    override val createdAt: Instant,
-    override val modifiedAt: Instant,
-) : MediaItem {
-    val artists: PersistentList<Artist> = when (mediaAsset) {
-        is AudioAsset -> mediaAsset.artists
-        is Image -> persistentListOf()
-    }
-
-    override val images: PersistentList<Image> = when (mediaAsset) {
-        is AudioAsset -> mediaAsset.images
-        is Image -> persistentListOf(mediaAsset)
-    }
-
-    override val isPlayable: Boolean = true
+sealed interface Clip : MediaItem {
+    override val id: ClipId
 }

@@ -7,6 +7,7 @@ import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
+import com.alexrdclement.mediaplayground.database.dao.AudioClipDao
 import com.alexrdclement.mediaplayground.database.dao.ClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAudioClipDao
@@ -67,6 +68,9 @@ interface DaoModule {
 
         @Provides
         fun provideAudioAssetDao(database: MediaPlaygroundDatabase): AudioAssetDao = database.audioAssetDao()
+
+        @Provides
+        fun provideAudioClipDao(database: MediaPlaygroundDatabase): AudioClipDao = database.audioClipDao()
 
         @Provides
         fun provideClipDao(database: MediaPlaygroundDatabase): ClipDao = database.clipDao()

@@ -12,20 +12,24 @@ import kotlinx.coroutines.flow.map
 class FakeCompleteAudioClipDao(
     val coroutineScope: CoroutineScope,
     val clipDao: FakeClipDao,
+    val audioClipDao: FakeAudioClipDao,
     val audioAssetDao: FakeAudioAssetDao,
 ) : CompleteAudioClipDao {
 
     val completeClips = combine(
         clipDao.clips,
+        audioClipDao.audioClips,
         audioAssetDao.audioAssets,
         audioAssetDao.mediaAssetDao.mediaAssetsFlow,
-    ) { clips, audioFiles, mediaAssets ->
+    ) { clips, audioClips, audioFiles, mediaAssets ->
         clips.mapNotNull { clip ->
+            val audioClip = audioClips.find { it.id == clip.id } ?: return@mapNotNull null
             val audioFile = audioFiles.find { it.id == clip.assetId } ?: return@mapNotNull null
             val mediaAsset = mediaAssets[clip.assetId] ?: return@mapNotNull null
             val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return@mapNotNull null
             CompleteAudioClip(
                 clip = clip,
+                audioClip = audioClip,
                 audioAsset = audioFile,
                 mediaAsset = mediaAsset,
                 artists = completeAsset.artists,
@@ -36,14 +40,17 @@ class FakeCompleteAudioClipDao(
 
     override suspend fun getClip(id: String): CompleteAudioClip? {
         val clips = clipDao.clips.value
+        val audioClips = audioClipDao.audioClips.value
         val audioAssets = audioAssetDao.audioAssets.value
         val mediaAssets = audioAssetDao.mediaAssetDao.mediaAssets
         val clip = clips.find { it.id == id } ?: return null
+        val audioClip = audioClips.find { it.id == clip.id } ?: return null
         val audioFile = audioAssets.find { it.id == clip.assetId } ?: return null
         val mediaAsset = mediaAssets[clip.assetId] ?: return null
         val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return null
         return CompleteAudioClip(
             clip = clip,
+            audioClip = audioClip,
             audioAsset = audioFile,
             mediaAsset = mediaAsset,
             artists = completeAsset.artists,
@@ -53,14 +60,17 @@ class FakeCompleteAudioClipDao(
 
     override suspend fun getClipByMediaAssetId(assetId: String): CompleteAudioClip? {
         val clips = clipDao.clips.value
+        val audioClips = audioClipDao.audioClips.value
         val audioAssets = audioAssetDao.audioAssets.value
         val mediaAssets = audioAssetDao.mediaAssetDao.mediaAssets
         val clip = clips.find { it.assetId == assetId } ?: return null
+        val audioClip = audioClips.find { it.id == clip.id } ?: return null
         val audioFile = audioAssets.find { it.id == clip.assetId } ?: return null
         val mediaAsset = mediaAssets[clip.assetId] ?: return null
         val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return null
         return CompleteAudioClip(
             clip = clip,
+            audioClip = audioClip,
             audioAsset = audioFile,
             mediaAsset = mediaAsset,
             artists = completeAsset.artists,

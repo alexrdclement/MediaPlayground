@@ -11,7 +11,7 @@ value class TrackClipId(override val value: String) : MediaItemId
 @Serializable
 data class TrackClip<T : TimeUnit>(
     override val id: TrackClipId,
-    val clip: Clip,
+    val clip: AudioClip,
     val trackOffset: T,
     override val createdAt: Instant,
     override val modifiedAt: Instant,
