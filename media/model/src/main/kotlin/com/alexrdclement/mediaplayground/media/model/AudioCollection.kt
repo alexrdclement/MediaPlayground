@@ -11,5 +11,5 @@ sealed interface AudioCollection<T : AudioItem> : MediaCollection<T>, AudioItem 
     override val artists: PersistentList<Artist>
     override val duration: TimeUnit
         get() = items.map { it.duration }
-            .reduceOrNull { a, b -> a + b } ?: TimeUnit.Samples(0L, 44100)
+            .reduceOrNull { a, b -> a + b } ?: TimeUnit.Samples(0L, DEFAULT_SAMPLE_RATE)
 }
