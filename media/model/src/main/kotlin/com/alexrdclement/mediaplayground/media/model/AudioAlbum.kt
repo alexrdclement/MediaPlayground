@@ -18,10 +18,4 @@ data class AudioAlbum(
     override val createdAt: Instant,
     override val modifiedAt: Instant,
 ) : AudioCollection<AlbumTrack> {
-    override val isPlayable: Boolean
-        get() = items.any { it.isPlayable }
-
-    override val duration: TimeUnit = items
-        .map { it.duration }
-        .reduceOrNull { a, b -> a + b } ?: TimeUnit.Samples(0L, 44100)
 }
