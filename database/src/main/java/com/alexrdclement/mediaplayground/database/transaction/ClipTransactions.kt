@@ -5,21 +5,22 @@ import com.alexrdclement.mediaplayground.database.model.AudioClip
 import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
 import com.alexrdclement.mediaplayground.database.model.MediaItem
-import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteClipPolicy
 import kotlin.time.Clock
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertClip(
+    clipMediaItem: MediaItem,
     clip: Clip,
     audioClip: AudioClip,
+    assetMediaItem: MediaItem,
     mediaAsset: MediaAsset,
     audioAsset: AudioAsset,
     artistIds: Set<String> = emptySet(),
     imageIds: Set<String> = emptySet(),
 ) {
-    insertAudioAsset(mediaAsset, audioAsset, artistIds, imageIds)
-    scope.mediaItemDao.insert(MediaItem(id = clip.id, itemType = MediaItemType.CLIP))
+    insertAudioAsset(assetMediaItem, mediaAsset, audioAsset, artistIds, imageIds)
+    scope.mediaItemDao.insert(clipMediaItem)
     scope.clipDao.insert(clip)
     scope.audioClipDao.insert(audioClip)
 }
@@ -29,10 +30,8 @@ suspend fun updateClip(
     id: String,
     title: String,
 ) {
-    val clip = scope.clipDao.getClip(id) ?: error("Clip $id not found")
-    scope.clipDao.update(
-        clip = clip.copy(title = title, modifiedAt = Clock.System.now()),
-    )
+    val mediaItem = scope.mediaItemDao.getMediaItem(id) ?: error("MediaItem $id not found")
+    scope.mediaItemDao.update(mediaItem.copy(title = title, modifiedAt = Clock.System.now()))
 }
 
 context(scope: DatabaseTransactionScope)

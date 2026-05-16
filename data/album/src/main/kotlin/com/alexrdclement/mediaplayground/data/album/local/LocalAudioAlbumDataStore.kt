@@ -9,6 +9,7 @@ import com.alexrdclement.mediaplayground.database.dao.SimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.mapping.toAlbum
 import com.alexrdclement.mediaplayground.database.mapping.toAlbumEntity
 import com.alexrdclement.mediaplayground.database.mapping.toMediaCollectionEntity
+import com.alexrdclement.mediaplayground.database.mapping.toMediaItemEntity
 import com.alexrdclement.mediaplayground.database.mapping.toSimpleAlbum
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.deleteAlbum
@@ -71,6 +72,7 @@ class LocalAudioAlbumDataStore @Inject constructor(
 
     suspend fun put(album: SimpleAlbum) = databaseTransactionRunner.run {
         insertAlbum(
+            mediaItem = album.toMediaItemEntity(),
             mediaCollection = album.toMediaCollectionEntity(),
             album = album.toAlbumEntity(),
             imageIds = album.images.map { it.id.value }.toSet(),
@@ -85,8 +87,8 @@ class LocalAudioAlbumDataStore @Inject constructor(
 
     suspend fun updateAlbumTitle(id: AlbumId, title: String) {
         databaseTransactionRunner.run {
-            val mediaCollection = mediaCollectionDao.getMediaCollection(id.value) ?: return@run
-            mediaCollectionDao.update(mediaCollection.copy(title = title, modifiedAt = Clock.System.now()))
+            val mediaItem = mediaItemDao.getMediaItem(id.value) ?: return@run
+            mediaItemDao.update(mediaItem.copy(title = title, modifiedAt = Clock.System.now()))
         }
     }
 
@@ -94,8 +96,8 @@ class LocalAudioAlbumDataStore @Inject constructor(
         databaseTransactionRunner.run {
             val album = albumDao.getAlbum(id.value) ?: return@run
             albumDao.update(album.copy(notes = notes))
-            val mc = mediaCollectionDao.getMediaCollection(id.value) ?: return@run
-            mediaCollectionDao.update(mc.copy(modifiedAt = Clock.System.now()))
+            val mi = mediaItemDao.getMediaItem(id.value) ?: return@run
+            mediaItemDao.update(mi.copy(modifiedAt = Clock.System.now()))
         }
     }
 

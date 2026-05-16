@@ -4,15 +4,17 @@ import com.alexrdclement.mediaplayground.database.model.AudioAsset
 import com.alexrdclement.mediaplayground.database.model.AudioAssetArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.AudioAssetImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
+import com.alexrdclement.mediaplayground.database.model.MediaItem
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertAudioAsset(
+    mediaItem: MediaItem,
     mediaAsset: MediaAsset,
     audioAsset: AudioAsset,
     artistIds: Set<String> = emptySet(),
     imageIds: Set<String> = emptySet(),
 ) {
-    insertMediaAsset(mediaAsset)
+    insertMediaAsset(mediaItem, mediaAsset)
     scope.audioAssetDao.insert(audioAsset)
     if (artistIds.isNotEmpty()) {
         val crossRefs = artistIds.map { AudioAssetArtistCrossRef(audioAsset.id, it) }.toTypedArray()

@@ -11,7 +11,17 @@ data class CompleteAudioClip(
         parentColumn = "id",
         entityColumn = "id",
     )
+    val clipMediaItem: MediaItem,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+    )
     val audioClip: AudioClip,
+    @Relation(
+        parentColumn = "asset_id",
+        entityColumn = "id",
+    )
+    val assetMediaItem: MediaItem,
     @Relation(
         parentColumn = "asset_id",
         entityColumn = "id",

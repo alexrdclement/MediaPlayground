@@ -11,12 +11,21 @@ import com.alexrdclement.mediaplayground.database.model.Clip as ClipEntity
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioAsset
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioClip as CompleteAudioClipEntity
 import com.alexrdclement.mediaplayground.database.model.CompleteTrackClip as CompleteTrackClipEntity
+import com.alexrdclement.mediaplayground.database.model.MediaItem
+import com.alexrdclement.mediaplayground.database.model.MediaItemType
 
 fun DomainAudioClip.toClipEntity(): ClipEntity {
     return ClipEntity(
         id = id.value,
-        title = title,
         assetId = mediaAsset.id.value,
+    )
+}
+
+fun DomainAudioClip.toMediaItemEntity(): MediaItem {
+    return MediaItem(
+        id = id.value,
+        itemType = MediaItemType.CLIP,
+        title = title,
         createdAt = createdAt,
         modifiedAt = modifiedAt,
     )
@@ -30,25 +39,26 @@ fun DomainAudioClip.toAudioClipEntity(): AudioClipEntity {
     )
 }
 
-fun ClipEntity.toAudioClip(audioClipEntity: AudioClipEntity, audioAsset: DomainAudioAsset): DomainAudioClip {
+fun ClipEntity.toAudioClip(mediaItem: MediaItem, audioClipEntity: AudioClipEntity, audioAsset: DomainAudioAsset): DomainAudioClip {
     val sampleRate = audioAsset.metadata.sampleRate
     return DomainAudioClip(
         id = ClipId(id),
-        title = title,
+        title = mediaItem.title,
         mediaAsset = audioAsset,
         assetOffset = TimeUnit.Samples(audioClipEntity.startSampleInAsset, sampleRate),
         duration = TimeUnit.Samples(audioClipEntity.durationSamples, sampleRate),
-        createdAt = createdAt,
-        modifiedAt = modifiedAt,
+        createdAt = mediaItem.createdAt,
+        modifiedAt = mediaItem.modifiedAt,
     )
 }
 
 fun CompleteAudioClipEntity.toAudioClip(): DomainAudioClip =
-    clip.toAudioClip(audioClip, toAudioAsset())
+    clip.toAudioClip(clipMediaItem, audioClip, toAudioAsset())
 
 fun CompleteAudioClipEntity.toAudioAsset(): DomainAudioAsset =
     CompleteAudioAsset(
         audioAsset = audioAsset,
+        mediaItem = assetMediaItem,
         mediaAsset = mediaAsset,
         artists = artists,
         images = images,
@@ -61,7 +71,7 @@ private fun CompleteTrackClipEntity.toTrackClip(audioAsset: DomainAudioAsset): T
     val sampleRate = audioAsset.metadata.sampleRate
     return TrackClip(
         id = TrackClipId(trackClipCrossRef.id),
-        clip = completeAudioClip.clip.toAudioClip(completeAudioClip.audioClip, audioAsset),
+        clip = completeAudioClip.clip.toAudioClip(completeAudioClip.clipMediaItem, completeAudioClip.audioClip, audioAsset),
         trackOffset = TimeUnit.Samples(trackClipCrossRef.startSampleInTrack, sampleRate),
         createdAt = trackClipCrossRef.createdAt,
         modifiedAt = trackClipCrossRef.modifiedAt,

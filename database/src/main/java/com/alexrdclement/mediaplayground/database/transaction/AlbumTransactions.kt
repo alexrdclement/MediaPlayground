@@ -5,17 +5,17 @@ import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
 import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.MediaCollection
 import com.alexrdclement.mediaplayground.database.model.MediaItem
-import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteAlbumPolicy
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertAlbum(
+    mediaItem: MediaItem,
     mediaCollection: MediaCollection,
     album: Album,
     artistIds: Set<String>,
     imageIds: Set<String>,
 ) = with(scope) {
-    mediaItemDao.insert(MediaItem(id = mediaCollection.id, itemType = MediaItemType.COLLECTION))
+    mediaItemDao.insert(mediaItem)
     mediaCollectionDao.insert(mediaCollection)
     albumDao.insert(album)
     val albumArtistCrossRefs = artistIds.map { AlbumArtistCrossRef(album.id, it) }

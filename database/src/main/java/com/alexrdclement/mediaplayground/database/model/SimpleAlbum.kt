@@ -11,6 +11,11 @@ data class SimpleAlbum(
         parentColumn = "id",
         entityColumn = "id",
     )
+    val mediaItem: MediaItem,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+    )
     val mediaCollection: MediaCollection,
     @Relation(
         parentColumn = "id",

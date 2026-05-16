@@ -7,15 +7,16 @@ import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
 import com.alexrdclement.mediaplayground.database.model.MediaCollection
 import com.alexrdclement.mediaplayground.database.model.MediaItem
-import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.database.model.Track
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteTrackPolicy
 import kotlin.time.Clock
 
 data class ClipData(
+    val clipMediaItem: MediaItem,
     val clip: Clip,
     val audioClip: AudioClip,
+    val assetMediaItem: MediaItem,
     val mediaAsset: MediaAsset,
     val audioAsset: AudioAsset,
     val artistIds: Set<String> = emptySet(),
@@ -24,23 +25,26 @@ data class ClipData(
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertTrack(
+    mediaItem: MediaItem,
     mediaCollection: MediaCollection,
     track: Track,
     albumTrackCrossRefs: List<AlbumTrackCrossRef>,
     clips: List<ClipData>,
     trackClipCrossRefs: List<TrackClipCrossRef>,
 ) = with(scope) {
-    for ((clip, audioClip, mediaAsset, audioAsset, artistIds, imageIds) in clips) {
+    for ((clipMediaItem, clip, audioClip, assetMediaItem, mediaAsset, audioAsset, artistIds, imageIds) in clips) {
         insertClip(
+            clipMediaItem = clipMediaItem,
             clip = clip,
             audioClip = audioClip,
+            assetMediaItem = assetMediaItem,
             mediaAsset = mediaAsset,
             audioAsset = audioAsset,
             artistIds = artistIds,
             imageIds = imageIds,
         )
     }
-    mediaItemDao.insert(MediaItem(id = mediaCollection.id, itemType = MediaItemType.COLLECTION))
+    mediaItemDao.insert(mediaItem)
     mediaCollectionDao.insert(mediaCollection)
     trackDao.insert(track)
     for (crossRef in albumTrackCrossRefs) {
@@ -58,9 +62,8 @@ suspend fun insertTrackClipCrossRef(crossRef: TrackClipCrossRef) {
 
 context(scope: DatabaseTransactionScope)
 suspend fun updateTrack(id: String, title: String) {
-    val mediaCollection = scope.mediaCollectionDao.getMediaCollection(id)
-        ?: error("MediaCollection $id not found")
-    scope.mediaCollectionDao.update(mediaCollection.copy(title = title, modifiedAt = Clock.System.now()))
+    val mediaItem = scope.mediaItemDao.getMediaItem(id) ?: error("MediaItem $id not found")
+    scope.mediaItemDao.update(mediaItem.copy(title = title, modifiedAt = Clock.System.now()))
 }
 
 context(scope: DatabaseTransactionScope)

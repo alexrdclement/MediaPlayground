@@ -11,6 +11,11 @@ data class CompleteAudioAsset(
         parentColumn = "id",
         entityColumn = "id",
     )
+    val mediaItem: MediaItem,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+    )
     val mediaAsset: MediaAsset,
     @Relation(
         entity = Artist::class,
