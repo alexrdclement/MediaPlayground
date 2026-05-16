@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import kotlin.time.Instant
 
 @Entity(
     tableName = "clips",
@@ -30,11 +29,6 @@ import kotlin.time.Instant
 data class Clip(
     @PrimaryKey
     val id: String,
-    val title: String,
     @ColumnInfo(name = "asset_id")
     val assetId: String,
-    @ColumnInfo(name = "created_at")
-    val createdAt: Instant,
-    @ColumnInfo(name = "modified_at")
-    val modifiedAt: Instant,
 )

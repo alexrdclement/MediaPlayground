@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.database.mapping
 
 import com.alexrdclement.mediaplayground.database.model.MediaCollectionType
+import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.database.model.id
 import com.alexrdclement.mediaplayground.media.model.AlbumTrack
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
@@ -11,13 +12,21 @@ import kotlin.time.Clock
 import com.alexrdclement.mediaplayground.database.model.Album as AlbumEntity
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum as CompleteAlbumEntity
 import com.alexrdclement.mediaplayground.database.model.MediaCollection as MediaCollectionEntity
+import com.alexrdclement.mediaplayground.database.model.MediaItem
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum as SimpleAlbumEntity
 
 fun SimpleAlbum.toMediaCollectionEntity(): MediaCollectionEntity {
     return MediaCollectionEntity(
         id = id.value,
-        title = name,
         mediaCollectionType = MediaCollectionType.ALBUM,
+    )
+}
+
+fun SimpleAlbum.toMediaItemEntity(): MediaItem {
+    return MediaItem(
+        id = id.value,
+        itemType = MediaItemType.COLLECTION,
+        title = name,
         createdAt = Clock.System.now(),
         modifiedAt = Clock.System.now(),
     )
@@ -33,7 +42,7 @@ fun SimpleAlbum.toAlbumEntity(): AlbumEntity {
 fun SimpleAlbumEntity.toSimpleAlbum(): SimpleAlbum {
     return SimpleAlbum(
         id = AudioAlbumId(album.id),
-        name = mediaCollection.title,
+        name = mediaItem.title,
         artists = artists.map { it.toArtist() }.toPersistentList(),
         images = images.map { it.toImage() }.toPersistentList(),
     )
@@ -50,7 +59,7 @@ fun CompleteAlbumEntity.toAlbum(): AudioAlbum {
                  else orderedAudioTracks.flatMap { it.images }.distinct().toPersistentList()
     return AudioAlbum(
         id = albumId,
-        title = simpleAlbum.mediaCollection.title,
+        title = simpleAlbum.mediaItem.title,
         artists = artists,
         images = images,
         items = orderedTracks.mapIndexed { index, completeTrack ->
@@ -64,7 +73,7 @@ fun CompleteAlbumEntity.toAlbum(): AudioAlbum {
             )
         }.toPersistentList(),
         notes = simpleAlbum.album.notes,
-        createdAt = simpleAlbum.mediaCollection.createdAt,
-        modifiedAt = simpleAlbum.mediaCollection.modifiedAt,
+        createdAt = simpleAlbum.mediaItem.createdAt,
+        modifiedAt = simpleAlbum.mediaItem.modifiedAt,
     )
 }

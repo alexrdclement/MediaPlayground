@@ -1,6 +1,7 @@
 package com.alexrdclement.mediaplayground.database.mapping
 
 import com.alexrdclement.mediaplayground.database.model.MediaAssetType
+import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.media.model.AudioAsset
 import com.alexrdclement.mediaplayground.media.model.AudioAssetId
 import com.alexrdclement.mediaplayground.media.model.Image
@@ -10,6 +11,7 @@ import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import kotlinx.collections.immutable.toPersistentList
 import com.alexrdclement.mediaplayground.database.model.AudioAsset as AudioAssetEntity
 import com.alexrdclement.mediaplayground.database.model.CompleteAudioAsset as CompleteAudioAssetEntity
+import com.alexrdclement.mediaplayground.database.model.MediaItem
 import com.alexrdclement.mediaplayground.database.model.MediaAsset as MediaAssetRecord
 
 fun AudioAsset.toAudioAssetEntity(): AudioAssetEntity {
@@ -40,9 +42,21 @@ fun AudioAsset.toMediaAssetRecord(): MediaAssetRecord {
         fileName = fileName,
         mimeType = metadata.mimeType ?: "",
         extension = metadata.extension,
+        originUri = originUri,
+    )
+}
+
+fun AudioAsset.toMediaItemEntity(): MediaItem {
+    val fileName = when (val uri = uri) {
+        is MediaAssetUri.Shared -> uri.fileName
+        is MediaAssetUri.Album -> uri.fileName
+    }
+    return MediaItem(
+        id = id.value,
+        itemType = MediaItemType.ASSET,
+        title = fileName,
         createdAt = createdAt,
         modifiedAt = modifiedAt,
-        originUri = originUri,
     )
 }
 
@@ -51,8 +65,8 @@ fun CompleteAudioAssetEntity.toAudioAsset(): AudioAsset {
         id = AudioAssetId(audioAsset.id),
         uri = mediaAsset.uri,
         originUri = mediaAsset.originUri,
-        createdAt = mediaAsset.createdAt,
-        modifiedAt = mediaAsset.modifiedAt,
+        createdAt = mediaItem.createdAt,
+        modifiedAt = mediaItem.modifiedAt,
         artists = artists.map { it.toArtist() }.toPersistentList(),
         images = images.map { it.toImage() }.toPersistentList(),
         metadata = MediaMetadata.Audio(

@@ -3,15 +3,15 @@ package com.alexrdclement.mediaplayground.database.transaction
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
 import com.alexrdclement.mediaplayground.database.model.MediaAssetSyncStateEntity
 import com.alexrdclement.mediaplayground.database.model.MediaItem
-import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.media.model.MediaAssetSyncState
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertMediaAsset(
+    mediaItem: MediaItem,
     mediaAsset: MediaAsset,
     syncState: MediaAssetSyncState = MediaAssetSyncState.Pending,
 ) {
-    scope.mediaItemDao.insert(MediaItem(id = mediaAsset.id, itemType = MediaItemType.ASSET))
+    scope.mediaItemDao.insert(mediaItem)
     scope.mediaAssetDao.insert(mediaAsset)
     scope.mediaAssetSyncStateDao.insertIfAbsent(
         MediaAssetSyncStateEntity(mediaAssetId = mediaAsset.id, syncState = syncState)
@@ -20,10 +20,10 @@ suspend fun insertMediaAsset(
 
 context(scope: DatabaseTransactionScope)
 suspend fun insertMediaAssets(
-    vararg mediaAssets: MediaAsset,
+    vararg mediaAssets: Pair<MediaItem, MediaAsset>,
     syncState: MediaAssetSyncState = MediaAssetSyncState.Pending,
 ) {
-    mediaAssets.forEach { insertMediaAsset(it, syncState) }
+    mediaAssets.forEach { (mediaItem, mediaAsset) -> insertMediaAsset(mediaItem, mediaAsset, syncState) }
 }
 
 context(scope: DatabaseTransactionScope)

@@ -10,6 +10,11 @@ data class CompleteTrack(
         parentColumn = "id",
         entityColumn = "id",
     )
+    val mediaItem: MediaItem,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "id",
+    )
     val mediaCollection: MediaCollection,
     @Relation(
         entity = AlbumTrackCrossRef::class,

@@ -12,6 +12,7 @@ import com.alexrdclement.mediaplayground.database.mapping.toAudioTrack
 import com.alexrdclement.mediaplayground.database.mapping.toClipEntity
 import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
 import com.alexrdclement.mediaplayground.database.mapping.toMediaCollectionEntity
+import com.alexrdclement.mediaplayground.database.mapping.toMediaItemEntity
 import com.alexrdclement.mediaplayground.database.mapping.toTrackEntity
 import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
@@ -75,8 +76,10 @@ class LocalTrackDataStore @Inject constructor(
         )
         val clipsAndAudioAssets = track.items.map { trackClip ->
             ClipData(
+                clipMediaItem = trackClip.clip.toMediaItemEntity(),
                 clip = trackClip.clip.toClipEntity(),
                 audioClip = trackClip.clip.toAudioClipEntity(),
+                assetMediaItem = trackClip.clip.mediaAsset.toMediaItemEntity(),
                 mediaAsset = trackClip.clip.mediaAsset.toMediaAssetRecord(),
                 audioAsset = trackClip.clip.mediaAsset.toAudioAssetEntity(),
                 artistIds = trackClip.clip.mediaAsset.artists.map { it.id.value }.toSet(),
@@ -95,6 +98,7 @@ class LocalTrackDataStore @Inject constructor(
         }
         databaseTransactionRunner.run {
             insertTrack(
+                mediaItem = track.toMediaItemEntity(),
                 mediaCollection = mediaCollectionEntity,
                 track = trackEntity,
                 albumTrackCrossRefs = listOf(albumTrackCrossRef),
@@ -108,8 +112,8 @@ class LocalTrackDataStore @Inject constructor(
         databaseTransactionRunner.run {
             val track = trackDao.getTrack(id.value) ?: return@run
             trackDao.update(track.copy(notes = notes))
-            val mc = mediaCollectionDao.getMediaCollection(id.value) ?: return@run
-            mediaCollectionDao.update(mc.copy(modifiedAt = Clock.System.now()))
+            val mi = mediaItemDao.getMediaItem(id.value) ?: return@run
+            mediaItemDao.update(mi.copy(modifiedAt = Clock.System.now()))
         }
     }
 

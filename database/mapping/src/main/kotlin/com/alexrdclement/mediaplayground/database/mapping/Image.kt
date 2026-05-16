@@ -1,11 +1,13 @@
 package com.alexrdclement.mediaplayground.database.mapping
 
 import com.alexrdclement.mediaplayground.database.model.MediaAssetType
+import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
 import com.alexrdclement.mediaplayground.database.model.CompleteImageAsset as CompleteImageEntity
 import com.alexrdclement.mediaplayground.database.model.ImageAsset as ImageEntity
+import com.alexrdclement.mediaplayground.database.model.MediaItem
 import com.alexrdclement.mediaplayground.database.model.MediaAsset as MediaAssetRecord
 
 fun Image.toImageEntity(): ImageEntity {
@@ -34,9 +36,21 @@ fun Image.toMediaAssetRecord(): MediaAssetRecord {
         fileName = fileName,
         mimeType = mimeType,
         extension = extension,
+        originUri = originUri,
+    )
+}
+
+fun Image.toMediaItemEntity(): MediaItem {
+    val fileName = when (val uri = uri) {
+        is MediaAssetUri.Shared -> uri.fileName
+        is MediaAssetUri.Album -> uri.fileName
+    }
+    return MediaItem(
+        id = id.value,
+        itemType = MediaItemType.ASSET,
+        title = fileName,
         createdAt = createdAt,
         modifiedAt = modifiedAt,
-        originUri = originUri,
     )
 }
 
@@ -55,7 +69,7 @@ fun CompleteImageEntity.toImage(): Image {
         cameraMake = imageAsset.cameraMake,
         cameraModel = imageAsset.cameraModel,
         notes = imageAsset.notes,
-        createdAt = mediaAsset.createdAt,
-        modifiedAt = mediaAsset.modifiedAt,
+        createdAt = mediaItem.createdAt,
+        modifiedAt = mediaItem.modifiedAt,
     )
 }

@@ -7,7 +7,6 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
-import kotlin.time.Instant
 
 @Entity(
     tableName = "media_assets",
@@ -34,8 +33,4 @@ data class MediaAsset(
     @ColumnInfo(name = "mime_type")
     val mimeType: String,
     val extension: String,
-    @ColumnInfo(name = "created_at")
-    val createdAt: Instant,
-    @ColumnInfo(name = "modified_at")
-    val modifiedAt: Instant,
 )
