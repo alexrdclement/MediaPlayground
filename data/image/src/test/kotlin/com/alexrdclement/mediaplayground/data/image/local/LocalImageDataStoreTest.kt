@@ -4,6 +4,8 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionR
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionScope
 import com.alexrdclement.mediaplayground.database.model.MediaAsset
 import com.alexrdclement.mediaplayground.database.model.MediaAssetType
+import com.alexrdclement.mediaplayground.database.model.MediaItem
+import com.alexrdclement.mediaplayground.database.model.MediaItemType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
@@ -45,6 +47,15 @@ class LocalImageDataStoreTest {
     }
 
     private suspend fun Fixture.insertFakeImage1() {
+        imageDao.mediaItemDao.insert(
+            MediaItem(
+                id = FakeImage1.id.value,
+                itemType = MediaItemType.ASSET,
+                title = "${FakeImage1.id.value}.${FakeImage1.extension}",
+                createdAt = Instant.DISTANT_PAST,
+                modifiedAt = Instant.DISTANT_PAST,
+            )
+        )
         imageDao.mediaAssetDao.insert(
             MediaAsset(
                 id = FakeImage1.id.value,
@@ -53,8 +64,6 @@ class LocalImageDataStoreTest {
                 fileName = "${FakeImage1.id.value}.${FakeImage1.extension}",
                 mimeType = FakeImage1.mimeType,
                 extension = FakeImage1.extension,
-                createdAt = Instant.DISTANT_PAST,
-                modifiedAt = Instant.DISTANT_PAST,
                 originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image-1"),
             )
         )

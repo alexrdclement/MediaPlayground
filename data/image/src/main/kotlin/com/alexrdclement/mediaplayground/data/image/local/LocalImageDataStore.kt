@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.database.dao.ImageAssetDao
 import com.alexrdclement.mediaplayground.database.mapping.toImage
 import com.alexrdclement.mediaplayground.database.mapping.toImageEntity
 import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
+import com.alexrdclement.mediaplayground.database.mapping.toMediaItemEntity
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.deleteImage
 import com.alexrdclement.mediaplayground.database.transaction.insertImageAssets
@@ -36,7 +37,7 @@ class LocalImageDataStore @Inject constructor(
     fun getImageCountFlow(): Flow<Int> = imageAssetDao.getImageCountFlow()
 
     suspend fun put(images: Set<Image>) = databaseTransactionRunner.run {
-        insertImageAssets(*images.map { it.toMediaAssetRecord() to it.toImageEntity() }.toTypedArray())
+        insertImageAssets(*images.map { Triple(it.toMediaItemEntity(), it.toMediaAssetRecord(), it.toImageEntity()) }.toTypedArray())
     }
 
     suspend fun updateImageNotes(imageId: ImageId, notes: String?) = databaseTransactionRunner.run {

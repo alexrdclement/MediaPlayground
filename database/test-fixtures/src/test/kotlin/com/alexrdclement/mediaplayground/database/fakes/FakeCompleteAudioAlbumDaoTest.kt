@@ -15,16 +15,17 @@ class FakeCompleteAudioAlbumDaoTest {
 
     private val albumDao = FakeAlbumDao()
     private val mediaCollectionDao = FakeMediaCollectionDao()
+    private val mediaItemDao = FakeMediaItemDao()
     private val artistDao = FakeArtistDao()
     private val albumArtistDao = FakeAlbumArtistDao()
     private val albumImageDao = FakeAlbumImageDao()
     private val albumTrackDao = FakeAlbumTrackDao()
-    private val imageDao = FakeImageAssetDao()
+    private val imageDao = FakeImageAssetDao(mediaItemDao = mediaItemDao)
     private val mediaAssetDao = FakeMediaAssetDao()
     private val trackDao = FakeTrackDao()
     private val clipDao = FakeClipDao()
     private val audioClipDao = FakeAudioClipDao()
-    private val audioFileDao = FakeAudioAssetDao(mediaAssetDao)
+    private val audioFileDao = FakeAudioAssetDao(mediaAssetDao, mediaItemDao = mediaItemDao)
     private val trackClipDao = FakeTrackClipDao()
 
     private fun makeCompleteAlbumDao(coroutineScope: CoroutineScope): FakeCompleteAlbumDao {
@@ -43,11 +44,13 @@ class FakeCompleteAudioAlbumDaoTest {
             audioClipDao = audioClipDao,
             audioAssetDao = audioFileDao,
             trackClipDao = trackClipDao,
+            mediaItemDao = mediaItemDao,
         )
     }
 
     private suspend fun stubCompleteAlbum(completeAlbum: CompleteAlbum) {
         val simpleAlbum = completeAlbum.simpleAlbum
+        mediaItemDao.insert(simpleAlbum.mediaItem)
         mediaCollectionDao.insert(simpleAlbum.mediaCollection)
         albumDao.insert(simpleAlbum.album)
         for (artist in simpleAlbum.artists) {
@@ -55,17 +58,21 @@ class FakeCompleteAudioAlbumDaoTest {
             albumArtistDao.insert(AlbumArtistCrossRef(completeAlbum.id, artist.id))
         }
         for (completeImage in simpleAlbum.images) {
+            mediaItemDao.insert(completeImage.mediaItem)
             mediaAssetDao.insert(completeImage.mediaAsset)
             imageDao.insert(completeImage.imageAsset)
             albumImageDao.insert(AlbumImageCrossRef(albumId = completeAlbum.id, imageId = completeImage.imageAsset.id))
         }
         for (completeTrack in completeAlbum.tracks) {
+            mediaItemDao.insert(completeTrack.mediaItem)
             mediaCollectionDao.insert(completeTrack.mediaCollection)
             trackDao.insert(completeTrack.track)
             for (albumRef in completeTrack.albumRefs) {
                 albumTrackDao.insert(albumRef.albumTrackCrossRef)
             }
             for (completeTrackClip in completeTrack.clips) {
+                mediaItemDao.insert(completeTrackClip.completeAudioClip.clipMediaItem)
+                mediaItemDao.insert(completeTrackClip.completeAudioClip.assetMediaItem)
                 mediaAssetDao.insert(completeTrackClip.completeAudioClip.mediaAsset)
                 audioFileDao.insert(completeTrackClip.completeAudioClip.audioAsset)
                 clipDao.insert(completeTrackClip.completeAudioClip.clip)

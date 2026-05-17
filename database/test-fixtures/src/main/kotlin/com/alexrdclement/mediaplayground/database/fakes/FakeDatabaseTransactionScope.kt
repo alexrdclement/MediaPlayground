@@ -18,13 +18,14 @@ class FakeDatabaseTransactionScope(
     override val mediaItemDao: FakeMediaItemDao = FakeMediaItemDao(),
     override val audioClipDao: FakeAudioClipDao = FakeAudioClipDao(),
     override val clipDao: FakeClipDao = FakeClipDao(),
-    override val imageAssetDao: FakeImageAssetDao = FakeImageAssetDao(mediaAssetDao),
+    override val imageAssetDao: FakeImageAssetDao = FakeImageAssetDao(mediaAssetDao, mediaItemDao),
     override val audioAssetDao: FakeAudioAssetDao = FakeAudioAssetDao(
         mediaAssetDao = mediaAssetDao,
         audioAssetArtistDao = audioAssetArtistDao,
         artistDao = artistDao,
         audioAssetImageDao = audioAssetImageDao,
         imageAssetDao = imageAssetDao,
+        mediaItemDao = mediaItemDao,
     ),
     override val trackClipDao: FakeTrackClipDao = FakeTrackClipDao(),
     override val trackDao: FakeTrackDao = FakeTrackDao(),
@@ -32,6 +33,7 @@ class FakeDatabaseTransactionScope(
     override val simpleAlbumDao: FakeSimpleAlbumDao = FakeSimpleAlbumDao(
         albumDao = albumDao,
         mediaCollectionDao = mediaCollectionDao,
+        mediaItemDao = mediaItemDao,
         artistDao = artistDao,
         imageDao = imageAssetDao,
         albumArtistDao = albumArtistDao,
@@ -42,6 +44,7 @@ class FakeDatabaseTransactionScope(
         clipDao = clipDao,
         audioClipDao = audioClipDao,
         audioAssetDao = audioAssetDao,
+        mediaItemDao = mediaItemDao,
     )
     override val completeTrackDao: FakeCompleteTrackDao = FakeCompleteTrackDao(
         coroutineScope = coroutineScope,
@@ -58,6 +61,7 @@ class FakeDatabaseTransactionScope(
         audioClipDao = audioClipDao,
         audioAssetDao = audioAssetDao,
         trackClipDao = trackClipDao,
+        mediaItemDao = mediaItemDao,
     )
 
     override val completeAlbumDao: FakeCompleteAlbumDao = FakeCompleteAlbumDao(
@@ -75,5 +79,6 @@ class FakeDatabaseTransactionScope(
         audioClipDao = audioClipDao,
         audioAssetDao = audioAssetDao,
         trackClipDao = trackClipDao,
+        mediaItemDao = mediaItemDao,
     )
 }

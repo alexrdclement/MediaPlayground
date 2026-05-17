@@ -8,6 +8,7 @@ import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
 import com.alexrdclement.mediaplayground.database.mapping.toAudioAsset
 import com.alexrdclement.mediaplayground.database.mapping.toAudioAssetEntity
 import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
+import com.alexrdclement.mediaplayground.database.mapping.toMediaItemEntity
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.deleteAudioAsset
 import com.alexrdclement.mediaplayground.database.transaction.insertAudioAsset
@@ -41,6 +42,7 @@ class LocalAudioAssetStore @Inject constructor(
 
     suspend fun put(audioAsset: AudioAsset) = databaseTransactionRunner.run {
         insertAudioAsset(
+            mediaItem = audioAsset.toMediaItemEntity(),
             mediaAsset = audioAsset.toMediaAssetRecord(),
             audioAsset = audioAsset.toAudioAssetEntity(),
             artistIds = audioAsset.artists.map { it.id.value }.toSet(),

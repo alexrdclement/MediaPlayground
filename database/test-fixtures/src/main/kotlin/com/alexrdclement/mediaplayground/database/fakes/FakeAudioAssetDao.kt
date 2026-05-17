@@ -17,11 +17,13 @@ class FakeAudioAssetDao(
     val artistDao: FakeArtistDao? = null,
     val audioAssetImageDao: FakeAudioAssetImageDao? = null,
     val imageAssetDao: FakeImageAssetDao? = null,
+    val mediaItemDao: FakeMediaItemDao = FakeMediaItemDao(),
 ) : AudioAssetDao {
 
     val audioAssets = MutableStateFlow(emptySet<AudioAsset>())
 
     internal fun buildCompleteAudioAsset(audioAsset: AudioAsset): CompleteAudioAsset? {
+        val mediaItem = mediaItemDao.getMediaItemSync(audioAsset.id) ?: return null
         val mediaAsset = mediaAssetDao.mediaAssets[audioAsset.id] ?: return null
         val artists = if (audioAssetArtistDao != null && artistDao != null) {
             audioAssetArtistDao.audioAssetArtists
@@ -34,11 +36,13 @@ class FakeAudioAssetDao(
                 .mapNotNull { ref ->
                     val img = imageAssetDao.images.value.find { it.id == ref.imageId } ?: return@mapNotNull null
                     val mediaAssetImg = mediaAssetDao.mediaAssets[img.id] ?: return@mapNotNull null
-                    CompleteImageAsset(imageAsset = img, mediaAsset = mediaAssetImg)
+                    val imgMediaItem = mediaItemDao.getMediaItemSync(img.id) ?: return@mapNotNull null
+                    CompleteImageAsset(imageAsset = img, mediaItem = imgMediaItem, mediaAsset = mediaAssetImg)
                 }
         } else emptyList()
         return CompleteAudioAsset(
             audioAsset = audioAsset,
+            mediaItem = mediaItem,
             mediaAsset = mediaAsset,
             artists = artists,
             images = images,

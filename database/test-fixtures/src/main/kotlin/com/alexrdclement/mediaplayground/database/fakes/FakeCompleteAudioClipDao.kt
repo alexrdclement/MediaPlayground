@@ -14,6 +14,7 @@ class FakeCompleteAudioClipDao(
     val clipDao: FakeClipDao,
     val audioClipDao: FakeAudioClipDao,
     val audioAssetDao: FakeAudioAssetDao,
+    val mediaItemDao: FakeMediaItemDao = FakeMediaItemDao(),
 ) : CompleteAudioClipDao {
 
     val completeClips = combine(
@@ -23,13 +24,17 @@ class FakeCompleteAudioClipDao(
         audioAssetDao.mediaAssetDao.mediaAssetsFlow,
     ) { clips, audioClips, audioFiles, mediaAssets ->
         clips.mapNotNull { clip ->
+            val clipMediaItem = mediaItemDao.getMediaItemSync(clip.id) ?: return@mapNotNull null
             val audioClip = audioClips.find { it.id == clip.id } ?: return@mapNotNull null
             val audioFile = audioFiles.find { it.id == clip.assetId } ?: return@mapNotNull null
+            val assetMediaItem = mediaItemDao.getMediaItemSync(clip.assetId) ?: return@mapNotNull null
             val mediaAsset = mediaAssets[clip.assetId] ?: return@mapNotNull null
             val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return@mapNotNull null
             CompleteAudioClip(
                 clip = clip,
+                clipMediaItem = clipMediaItem,
                 audioClip = audioClip,
+                assetMediaItem = assetMediaItem,
                 audioAsset = audioFile,
                 mediaAsset = mediaAsset,
                 artists = completeAsset.artists,
@@ -44,13 +49,17 @@ class FakeCompleteAudioClipDao(
         val audioAssets = audioAssetDao.audioAssets.value
         val mediaAssets = audioAssetDao.mediaAssetDao.mediaAssets
         val clip = clips.find { it.id == id } ?: return null
+        val clipMediaItem = mediaItemDao.getMediaItemSync(clip.id) ?: return null
         val audioClip = audioClips.find { it.id == clip.id } ?: return null
         val audioFile = audioAssets.find { it.id == clip.assetId } ?: return null
+        val assetMediaItem = mediaItemDao.getMediaItemSync(clip.assetId) ?: return null
         val mediaAsset = mediaAssets[clip.assetId] ?: return null
         val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return null
         return CompleteAudioClip(
             clip = clip,
+            clipMediaItem = clipMediaItem,
             audioClip = audioClip,
+            assetMediaItem = assetMediaItem,
             audioAsset = audioFile,
             mediaAsset = mediaAsset,
             artists = completeAsset.artists,
@@ -64,13 +73,17 @@ class FakeCompleteAudioClipDao(
         val audioAssets = audioAssetDao.audioAssets.value
         val mediaAssets = audioAssetDao.mediaAssetDao.mediaAssets
         val clip = clips.find { it.assetId == assetId } ?: return null
+        val clipMediaItem = mediaItemDao.getMediaItemSync(clip.id) ?: return null
         val audioClip = audioClips.find { it.id == clip.id } ?: return null
         val audioFile = audioAssets.find { it.id == clip.assetId } ?: return null
+        val assetMediaItem = mediaItemDao.getMediaItemSync(clip.assetId) ?: return null
         val mediaAsset = mediaAssets[clip.assetId] ?: return null
         val completeAsset = audioAssetDao.buildCompleteAudioAsset(audioFile) ?: return null
         return CompleteAudioClip(
             clip = clip,
+            clipMediaItem = clipMediaItem,
             audioClip = audioClip,
+            assetMediaItem = assetMediaItem,
             audioAsset = audioFile,
             mediaAsset = mediaAsset,
             artists = completeAsset.artists,
