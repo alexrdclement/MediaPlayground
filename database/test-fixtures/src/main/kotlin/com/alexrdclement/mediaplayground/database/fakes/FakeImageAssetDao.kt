@@ -12,13 +12,15 @@ import kotlinx.coroutines.flow.map
 
 class FakeImageAssetDao(
     val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
+    val mediaItemDao: FakeMediaItemDao = FakeMediaItemDao(),
 ) : ImageAssetDao {
 
     val images = MutableStateFlow(emptySet<ImageAsset>())
 
     private fun buildCompleteImageAsset(imageAsset: ImageAsset): CompleteImageAsset? {
+        val mediaItem = mediaItemDao.getMediaItemSync(imageAsset.id) ?: return null
         val mediaAsset = mediaAssetDao.mediaAssets[imageAsset.id] ?: return null
-        return CompleteImageAsset(imageAsset = imageAsset, mediaAsset = mediaAsset)
+        return CompleteImageAsset(imageAsset = imageAsset, mediaItem = mediaItem, mediaAsset = mediaAsset)
     }
 
     override suspend fun getImage(id: String): CompleteImageAsset? {

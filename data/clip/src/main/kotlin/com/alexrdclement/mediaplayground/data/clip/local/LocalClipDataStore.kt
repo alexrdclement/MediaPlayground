@@ -10,6 +10,7 @@ import com.alexrdclement.mediaplayground.database.mapping.toAudioClip
 import com.alexrdclement.mediaplayground.database.mapping.toAudioClipEntity
 import com.alexrdclement.mediaplayground.database.mapping.toClipEntity
 import com.alexrdclement.mediaplayground.database.mapping.toMediaAssetRecord
+import com.alexrdclement.mediaplayground.database.mapping.toMediaItemEntity
 import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.transaction.deleteClip
 import com.alexrdclement.mediaplayground.database.transaction.insertClip
@@ -50,8 +51,10 @@ class LocalClipDataStore @Inject constructor(
 
     suspend fun put(clip: AudioClip) = databaseTransactionRunner.run {
         insertClip(
+            clipMediaItem = clip.toMediaItemEntity(),
             clip = clip.toClipEntity(),
             audioClip = clip.toAudioClipEntity(),
+            assetMediaItem = clip.mediaAsset.toMediaItemEntity(),
             mediaAsset = clip.mediaAsset.toMediaAssetRecord(),
             audioAsset = clip.mediaAsset.toAudioAssetEntity(),
         )

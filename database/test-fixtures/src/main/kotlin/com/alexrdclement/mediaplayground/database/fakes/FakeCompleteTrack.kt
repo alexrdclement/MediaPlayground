@@ -10,7 +10,9 @@ import kotlin.time.Instant
 
 val FakeCompleteAudioClip1 = CompleteAudioClip(
     clip = FakeClip1,
+    clipMediaItem = FakeClipMediaItem1,
     audioClip = FakeAudioClip1,
+    assetMediaItem = FakeAudioAssetMediaItem1,
     audioAsset = FakeAudioAsset1,
     mediaAsset = FakeMediaAssetRecord1,
     artists = emptyList(),
@@ -19,7 +21,9 @@ val FakeCompleteAudioClip1 = CompleteAudioClip(
 
 val FakeCompleteAudioClip2 = CompleteAudioClip(
     clip = FakeClip2,
+    clipMediaItem = FakeClipMediaItem2,
     audioClip = FakeAudioClip2,
+    assetMediaItem = FakeAudioAssetMediaItem2,
     audioAsset = FakeAudioAsset2,
     mediaAsset = FakeMediaAssetRecord2,
     artists = emptyList(),
@@ -28,7 +32,9 @@ val FakeCompleteAudioClip2 = CompleteAudioClip(
 
 val FakeCompleteAudioClip3 = CompleteAudioClip(
     clip = FakeClip3,
+    clipMediaItem = FakeClipMediaItem3,
     audioClip = FakeAudioClip3,
+    assetMediaItem = FakeAudioAssetMediaItem3,
     audioAsset = FakeAudioAsset3,
     mediaAsset = FakeMediaAssetRecord3,
     artists = emptyList(),
@@ -91,6 +97,7 @@ val FakeAlbumTrackCrossRef3 = AlbumTrackCrossRef(
 
 val FakeCompleteTrack1 = CompleteTrack(
     track = FakeTrack1,
+    mediaItem = FakeTrackMediaItem1,
     mediaCollection = FakeTrackMediaCollection1,
     albumRefs = listOf(
         CompleteAlbumRef(
@@ -103,6 +110,7 @@ val FakeCompleteTrack1 = CompleteTrack(
 
 val FakeCompleteTrack2 = CompleteTrack(
     track = FakeTrack2,
+    mediaItem = FakeTrackMediaItem2,
     mediaCollection = FakeTrackMediaCollection2,
     albumRefs = listOf(
         CompleteAlbumRef(
@@ -115,6 +123,7 @@ val FakeCompleteTrack2 = CompleteTrack(
 
 val FakeCompleteTrack3 = CompleteTrack(
     track = FakeTrack3,
+    mediaItem = FakeTrackMediaItem3,
     mediaCollection = FakeTrackMediaCollection3,
     albumRefs = listOf(
         CompleteAlbumRef(

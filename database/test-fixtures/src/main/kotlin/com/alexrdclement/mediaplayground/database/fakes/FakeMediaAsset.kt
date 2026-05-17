@@ -5,7 +5,6 @@ import com.alexrdclement.mediaplayground.database.model.MediaAssetType
 import com.alexrdclement.mediaplayground.media.model.AudioAlbumId
 import com.alexrdclement.mediaplayground.media.model.MediaAssetOriginUri
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
-import kotlin.time.Instant
 
 val FakeMediaAssetRecord1 = MediaAsset(
     id = "audio-1",
@@ -14,8 +13,6 @@ val FakeMediaAssetRecord1 = MediaAsset(
     fileName = "1.mp3",
     mimeType = "audio/mpeg",
     extension = "mp3",
-    createdAt = Instant.fromEpochMilliseconds(0),
-    modifiedAt = Instant.fromEpochMilliseconds(0),
     originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/audio-1"),
 )
 
@@ -32,25 +29,23 @@ val FakeMediaAssetRecord3 = FakeMediaAssetRecord1.copy(
 )
 
 val FakeImageAssetRecord1 = MediaAsset(
-    id = "1",
+    id = "image-1",
     uri = MediaAssetUri.Shared(fileName = "1.jpg"),
     mediaAssetType = MediaAssetType.IMAGE,
     fileName = "1.jpg",
     mimeType = "image/jpeg",
     extension = "jpg",
-    createdAt = Instant.fromEpochMilliseconds(0),
-    modifiedAt = Instant.fromEpochMilliseconds(0),
     originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image-1"),
 )
 
 val FakeImageAssetRecord2 = FakeImageAssetRecord1.copy(
-    id = "2",
+    id = "image-2",
     uri = MediaAssetUri.Shared(fileName = "2.jpg"),
     fileName = "2.jpg",
 )
 
 val FakeImageAssetRecord3 = FakeImageAssetRecord1.copy(
-    id = "3",
+    id = "image-3",
     uri = MediaAssetUri.Shared(fileName = "3.jpg"),
     fileName = "3.jpg",
 )

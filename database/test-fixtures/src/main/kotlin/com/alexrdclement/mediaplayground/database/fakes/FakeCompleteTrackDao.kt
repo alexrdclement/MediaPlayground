@@ -32,6 +32,7 @@ class FakeCompleteTrackDao(
     val audioClipDao: FakeAudioClipDao = FakeAudioClipDao(),
     val audioAssetDao: FakeAudioAssetDao = FakeAudioAssetDao(mediaAssetDao),
     val trackClipDao: FakeTrackClipDao = FakeTrackClipDao(),
+    val mediaItemDao: FakeMediaItemDao = FakeMediaItemDao(),
 ) : CompleteTrackDao {
 
     val completeTracks = combine(
@@ -49,6 +50,7 @@ class FakeCompleteTrackDao(
 
             val albumRefs = trackCrossRefs.mapNotNull { crossRef ->
                 val album = albums.find { it.id == crossRef.albumId } ?: return@mapNotNull null
+                val albumMediaItem = mediaItemDao.getMediaItemSync(album.id) ?: return@mapNotNull null
                 val mediaCollection = mediaCollections.find { it.id == crossRef.albumId }
                     ?: return@mapNotNull null
                 val albumImageIds = albumImageDao.albumImages
@@ -58,12 +60,14 @@ class FakeCompleteTrackDao(
                     .filter { it.id in albumImageIds }
                     .mapNotNull { imageAsset ->
                         val mediaAsset = mediaAssets[imageAsset.id] ?: return@mapNotNull null
-                        CompleteImageAsset(imageAsset = imageAsset, mediaAsset = mediaAsset)
+                        val imgMediaItem = mediaItemDao.getMediaItemSync(imageAsset.id) ?: return@mapNotNull null
+                        CompleteImageAsset(imageAsset = imageAsset, mediaItem = imgMediaItem, mediaAsset = mediaAsset)
                     }
                 CompleteAlbumRef(
                     albumTrackCrossRef = crossRef,
                     simpleAlbum = SimpleAlbum(
                         album = album,
+                        mediaItem = albumMediaItem,
                         mediaCollection = mediaCollection,
                         artists = artists.filter { artist ->
                             albumArtists.contains(AlbumArtistCrossRef(crossRef.albumId, artist.id))
@@ -74,20 +78,25 @@ class FakeCompleteTrackDao(
             }
             if (albumRefs.isEmpty()) return@mapNotNull null
 
+            val trackMediaItem = mediaItemDao.getMediaItemSync(track.id) ?: return@mapNotNull null
             val trackMediaCollection = mediaCollections.find { it.id == track.id }
                 ?: return@mapNotNull null
 
             val trackClipCrossRefs = trackClipDao.trackClips.filter { it.trackId == track.id }
             val completeTrackClips = trackClipCrossRefs.mapNotNull { crossRef ->
                 val clip = clips.find { it.id == crossRef.clipId } ?: return@mapNotNull null
+                val clipMediaItem = mediaItemDao.getMediaItemSync(clip.id) ?: return@mapNotNull null
                 val audioClip = audioClips.find { it.id == clip.id } ?: return@mapNotNull null
                 val audioAsset = audioFiles.find { it.id == clip.assetId } ?: return@mapNotNull null
+                val assetMediaItem = mediaItemDao.getMediaItemSync(clip.assetId) ?: return@mapNotNull null
                 val mediaAsset = mediaAssets[clip.assetId] ?: return@mapNotNull null
                 CompleteTrackClip(
                     trackClipCrossRef = crossRef,
                     completeAudioClip = CompleteAudioClip(
                         clip = clip,
+                        clipMediaItem = clipMediaItem,
                         audioClip = audioClip,
+                        assetMediaItem = assetMediaItem,
                         audioAsset = audioAsset,
                         mediaAsset = mediaAsset,
                         artists = emptyList(),
@@ -97,6 +106,7 @@ class FakeCompleteTrackDao(
             }
             CompleteTrack(
                 track = track,
+                mediaItem = trackMediaItem,
                 mediaCollection = trackMediaCollection,
                 albumRefs = albumRefs,
                 clips = completeTrackClips,

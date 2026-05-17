@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 class FakeSimpleAlbumDao(
     private val albumDao: FakeAlbumDao,
     private val mediaCollectionDao: FakeMediaCollectionDao,
+    private val mediaItemDao: FakeMediaItemDao,
     private val artistDao: FakeArtistDao,
     private val imageDao: FakeImageAssetDao,
     private val albumArtistDao: FakeAlbumArtistDao,
@@ -25,11 +26,13 @@ class FakeSimpleAlbumDao(
         albums.mapNotNull { album ->
             val mediaCollection = mediaCollections.find { it.id == album.id }
                 ?: return@mapNotNull null
+            val mediaItem = mediaItemDao.getMediaItem(album.id) ?: return@mapNotNull null
             val albumImageIds = albumImageDao.albumImages
                 .filter { it.albumId == album.id }
                 .map { it.imageId }
             SimpleAlbum(
                 album = album,
+                mediaItem = mediaItem,
                 mediaCollection = mediaCollection,
                 artists = artists.filter { artist ->
                     albumArtists.contains(
@@ -41,7 +44,9 @@ class FakeSimpleAlbumDao(
                     .mapNotNull { imageAsset ->
                         val mediaAsset = imageDao.mediaAssetDao.mediaAssets[imageAsset.id]
                             ?: return@mapNotNull null
-                        CompleteImageAsset(imageAsset = imageAsset, mediaAsset = mediaAsset)
+                        val imageMediaItem = mediaItemDao.getMediaItemSync(imageAsset.id)
+                            ?: return@mapNotNull null
+                        CompleteImageAsset(imageAsset = imageAsset, mediaItem = imageMediaItem, mediaAsset = mediaAsset)
                     },
             )
         }
@@ -49,7 +54,7 @@ class FakeSimpleAlbumDao(
 
     override suspend fun getAlbumByTitleAndArtistId(title: String, artistId: String): SimpleAlbum? {
         return albums.firstOrNull()?.find {
-            it.mediaCollection.title == title && it.artists.any { it.id == artistId }
+            it.mediaItem.title == title && it.artists.any { it.id == artistId }
         }
     }
 }

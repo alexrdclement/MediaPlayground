@@ -30,6 +30,11 @@ fun MediaAsset.toMediaAssetRecord(): MediaAssetRecord = when (this) {
     is Image -> toMediaAssetRecord()
 }
 
+fun MediaAsset.toMediaItemEntity(): MediaItem = when (this) {
+    is AudioAsset -> toMediaItemEntity()
+    is Image -> toMediaItemEntity()
+}
+
 fun AudioAsset.toMediaAssetRecord(): MediaAssetRecord {
     val fileName = when (val uri = uri) {
         is MediaAssetUri.Shared -> uri.fileName
@@ -54,7 +59,7 @@ fun AudioAsset.toMediaItemEntity(): MediaItem {
     return MediaItem(
         id = id.value,
         itemType = MediaItemType.ASSET,
-        title = fileName,
+        title = metadata.title ?: fileName,
         createdAt = createdAt,
         modifiedAt = modifiedAt,
     )

@@ -68,9 +68,9 @@ class LocalClipDataStoreTest {
 
         fixture.localClipDataStore.updateClipTitle(FakeLocalClip1.id, "New Title")
 
-        val clip = fixture.transactionScope.clipDao.getClip(FakeLocalClip1.id.value)
-        assertNotNull(clip)
-        assertEquals("New Title", clip.title)
+        val mediaItem = fixture.transactionScope.mediaItemDao.getMediaItem(FakeLocalClip1.id.value)
+        assertNotNull(mediaItem)
+        assertEquals("New Title", mediaItem.title)
     }
 
     @Test
