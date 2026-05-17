@@ -37,7 +37,7 @@ class ImageDeleteViewModel(
     fun onDeleteConfirmed() {
         viewModelScope.launch {
             _deleteState.update { DeleteState.Deleting }
-            imageRepository.deleteImage(ImageId(idValue))
+            imageRepository.delete(ImageId(idValue))
             _deleteState.update { DeleteState.Deleted }
         }
     }

@@ -26,9 +26,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
-import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.media.PlayPauseButton
@@ -37,6 +36,7 @@ import com.alexrdclement.palette.theme.PaletteTheme
 @Composable
 fun MediaItemCard(
     mediaItem: MediaItem,
+    subtitle: String,
     isPlaying: Boolean,
     isPlaybackEnabled: Boolean,
     onClick: () -> Unit,
@@ -64,7 +64,7 @@ fun MediaItemCard(
                     .aspectRatio(1f, matchHeightConstraintsFirst = false)
             ) {
                 MediaItemArtwork(
-                    imageUrl = mediaItem.thumbnailImageUrl,
+                    uri = mediaItem.thumbnailImageUri,
                     modifier = Modifier
                         .aspectRatio(1f)
                         .fillMaxSize()
@@ -91,7 +91,7 @@ fun MediaItemCard(
                         .basicMarquee()
                 )
                 Text(
-                    text = artistNamesOrDefault(mediaItem.artists),
+                    text = subtitle,
                     style = PaletteTheme.styles.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
@@ -108,6 +108,7 @@ private fun Preview() {
     PaletteTheme {
         MediaItemCard(
             mediaItem = PreviewTrack1,
+            subtitle = PreviewTrack1.artists.joinToString { it.name ?: "" },
             isPlaybackEnabled = true,
             isPlaying = false,
             onClick = {},

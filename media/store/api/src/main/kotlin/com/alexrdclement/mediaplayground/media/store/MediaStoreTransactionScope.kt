@@ -1,0 +1,3 @@
+package com.alexrdclement.mediaplayground.media.store
+
+interface MediaStoreTransactionScope

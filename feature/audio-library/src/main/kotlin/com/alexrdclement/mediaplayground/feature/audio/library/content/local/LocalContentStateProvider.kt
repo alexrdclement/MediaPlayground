@@ -3,8 +3,8 @@ package com.alexrdclement.mediaplayground.feature.audio.library.content.local
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.alexrdclement.mediaplayground.data.album.AlbumRepository
-import com.alexrdclement.mediaplayground.data.track.local.LocalTrackRepository
+import com.alexrdclement.mediaplayground.data.album.AudioAlbumRepository
+import com.alexrdclement.mediaplayground.data.track.TrackRepository
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import dev.zacsweers.metro.Inject
 
 class LocalContentStateProvider @Inject constructor(
-    private val localTrackRepository: LocalTrackRepository,
-    private val albumRepository: AlbumRepository,
+    private val trackRepository: TrackRepository,
+    private val albumRepository: AudioAlbumRepository,
     private val mediaSessionState: MediaSessionState,
 ) {
 
@@ -28,7 +28,7 @@ class LocalContentStateProvider @Inject constructor(
         val tracksFlow = tracksFlow(coroutineScope, pagingConfig)
         val albumsFlow = albumsFlow(coroutineScope, pagingConfig)
         return combine(
-            localTrackRepository.getTrackCountFlow(),
+            trackRepository.getTrackCountFlow(),
             albumRepository.getAlbumCountFlow(),
         ) { trackCount, albumCount ->
             if (trackCount == 0 && albumCount == 0) {
@@ -46,7 +46,7 @@ class LocalContentStateProvider @Inject constructor(
         coroutineScope: CoroutineScope,
         pagingConfig: PagingConfig,
     ) = combine(
-        localTrackRepository.getTrackPagingData(pagingConfig).cachedIn(coroutineScope),
+        trackRepository.getTrackPagingData(pagingConfig).cachedIn(coroutineScope),
         mediaSessionState.loadedMediaItem,
         mediaSessionState.isPlaying,
     ) { pagingData, loadedMediaItem, isPlaying ->

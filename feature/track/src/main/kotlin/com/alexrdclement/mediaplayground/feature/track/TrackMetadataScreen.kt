@@ -2,19 +2,18 @@ package com.alexrdclement.mediaplayground.feature.track
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.isImeVisible
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -23,17 +22,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.AudioItem
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
+import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.core.TextField
 import com.alexrdclement.palette.components.layout.FloatingAction
@@ -79,17 +78,15 @@ fun TrackMetadataScreen(
 fun TrackMetadataScreen(
     uiState: TrackMetadataUiState,
     onNavigateBack: () -> Unit,
-    onSaveClick: (title: String, trackNumber: Int?, notes: String?) -> Unit,
+    onSaveClick: (title: String, notes: String?) -> Unit,
     onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
     val titleState = rememberTextFieldState()
-    val trackNumberState = rememberTextFieldState()
     val notesState = rememberTextFieldState()
     LaunchedEffect((uiState as? TrackMetadataUiState.Loaded)?.track?.id) {
         val loaded = uiState as? TrackMetadataUiState.Loaded ?: return@LaunchedEffect
         titleState.edit { replace(0, length, loaded.track.title) }
-        trackNumberState.edit { replace(0, length, loaded.track.trackNumber?.toString() ?: "") }
         notesState.edit { replace(0, length, loaded.track.notes ?: "") }
     }
 
@@ -124,7 +121,6 @@ fun TrackMetadataScreen(
                             onClick = {
                                 onSaveClick(
                                     titleState.text.toString(),
-                                    trackNumberState.text.toString().toIntOrNull(),
                                     notesState.text.toString().ifBlank { null },
                                 )
                             },
@@ -149,7 +145,6 @@ fun TrackMetadataScreen(
             is TrackMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 titleState = titleState,
-                trackNumberState = trackNumberState,
                 notesState = notesState,
                 onNavigateToArtistMetadata = onNavigateToArtistMetadata,
                 contentPadding = innerPadding,
@@ -163,7 +158,6 @@ fun TrackMetadataScreen(
 private fun LoadedContent(
     state: TrackMetadataUiState.Loaded,
     titleState: TextFieldState,
-    trackNumberState: TextFieldState,
     notesState: TextFieldState,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
     contentPadding: PaddingValues,
@@ -184,25 +178,15 @@ private fun LoadedContent(
                 )
             }
         }
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Track Number", style = PaletteTheme.styles.text.titleMedium)
-                TextField(
-                    state = trackNumberState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-        }
-        if (state.track.artists.isNotEmpty()) {
+        val trackArtists = (state.track as? AudioItem)?.artists.orEmpty()
+        if (trackArtists.isNotEmpty()) {
             item {
                 Text("Artists", style = PaletteTheme.styles.text.titleMedium)
             }
-            items(state.track.artists, key = { it.id }) { artist ->
+            items(trackArtists, key = { it.id.value }) { artist ->
                 ArtistRow(
                     artist = artist,
-                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id) },
+                    onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id.value) },
                 )
             }
         }
@@ -222,7 +206,7 @@ private fun LoadedContent(
 
 @Composable
 private fun ArtistRow(
-    artist: SimpleArtist,
+    artist: Artist,
     onNavigateToMetadata: () -> Unit,
 ) {
     Surface(
@@ -256,7 +240,7 @@ private fun Preview() {
                 track = PreviewTrack1,
             ),
             onNavigateBack = {},
-            onSaveClick = { _, _, _ -> },
+            onSaveClick = { _, _ -> },
         )
     }
 }

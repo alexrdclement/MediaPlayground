@@ -16,4 +16,5 @@ dependencies {
     implementation(libs.media3.session)
 
     implementation(projects.media.session.android.api)
+    implementation(projects.media.store.api)
 }

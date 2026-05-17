@@ -29,11 +29,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
+import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
-import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
 import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
@@ -51,6 +51,7 @@ fun PlaylistItem(
 ) {
     PlaylistItem(
         item = item.mediaItem,
+        subtitle = item.subtitle,
         isLoaded = item.isLoaded,
         isPlayable = item.isPlayable,
         isPlaying = item.isPlaying,
@@ -64,6 +65,7 @@ fun PlaylistItem(
 @Composable
 fun PlaylistItem(
     item: MediaItem,
+    subtitle: String,
     isLoaded: Boolean,
     isPlayable: Boolean,
     isPlaying: Boolean,
@@ -109,7 +111,7 @@ fun PlaylistItem(
                     )
                 } else {
                     MediaItemArtwork(
-                        imageUrl = item.thumbnailImageUrl,
+                        uri = item.thumbnailImageUri,
                         modifier = Modifier
                             .aspectRatio(1f)
                             .fillMaxSize()
@@ -131,7 +133,7 @@ fun PlaylistItem(
                         .basicMarquee()
                 )
                 Text(
-                    text = artistNamesOrDefault(item.artists),
+                    text = subtitle,
                     style = PaletteTheme.styles.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
@@ -139,7 +141,7 @@ fun PlaylistItem(
                 )
             }
             Text(
-                text = remember { item.duration.formatShort() },
+                text = remember { item.duration.toKotlinDuration().formatShort() },
                 style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
                 modifier = Modifier
                     .height(IntrinsicSize.Max)
@@ -155,6 +157,7 @@ private fun Preview() {
     PaletteTheme {
         PlaylistItem(
             item = PreviewTrack1,
+            subtitle = PreviewTrack1.artists.joinToString { it.name ?: "" },
             isLoaded = false,
             isPlayable = false,
             isPlaying = false,

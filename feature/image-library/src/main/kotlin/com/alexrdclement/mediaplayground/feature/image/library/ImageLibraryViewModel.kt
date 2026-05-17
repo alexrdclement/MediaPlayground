@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.alexrdclement.mediaplayground.data.image.local.LocalImageRepository
+import com.alexrdclement.mediaplayground.data.image.ImageRepository
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,18 +14,18 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ImageLibraryViewModel @Inject constructor(
-    private val localImageRepository: LocalImageRepository,
+    private val imageRepository: ImageRepository,
 ) : ViewModel() {
 
     private companion object {
         val pagingConfig = PagingConfig(pageSize = 20)
     }
 
-    private val imagesFlow = localImageRepository
+    private val imagesFlow = imageRepository
         .getImagePagingData(pagingConfig)
         .cachedIn(viewModelScope)
 
-    val uiState: StateFlow<ImageLibraryUiState> = localImageRepository
+    val uiState: StateFlow<ImageLibraryUiState> = imageRepository
         .getImageCountFlow()
         .map { count ->
             if (count == 0) {
@@ -42,7 +42,7 @@ class ImageLibraryViewModel @Inject constructor(
 
     fun onImportItemsSelected(uris: List<Uri>) {
         viewModelScope.launch {
-            localImageRepository.importImages(uris)
+            imageRepository.import(uris)
         }
     }
 }

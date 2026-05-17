@@ -1,15 +1,111 @@
 package com.alexrdclement.media.mediaimport.fixtures
 
 import com.alexrdclement.media.metadata.FakeMediaMetadataRetriever
+import com.alexrdclement.media.store.FakeAlbumMediaStore
+import com.alexrdclement.media.store.FakeArtistMediaStore
+import com.alexrdclement.media.store.FakeClipMediaStore
+import com.alexrdclement.media.store.FakeContentUriReader
 import com.alexrdclement.media.store.FakeFileWriter
-import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporterImpl
+import com.alexrdclement.media.store.FakeImageMediaStore
+import com.alexrdclement.media.store.FakeAudioAssetStore
+import com.alexrdclement.media.store.FakeMediaAssetStore
+import com.alexrdclement.media.store.FakeMediaAssetSyncStateStore
+import com.alexrdclement.media.store.FakeMediaStoreTransactionRunner
+import com.alexrdclement.media.store.FakePathProvider
+import com.alexrdclement.media.store.FakeTrackMediaStore
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.ArtistImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.AudioAssetImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.ClipImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.ImageImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.MediaAssetImporterImpl
+import com.alexrdclement.mediaplayground.media.mediaimport.AlbumTrackImporterImpl
 
 class MediaImporterFixture(
     val mediaMetadataRetriever: FakeMediaMetadataRetriever = FakeMediaMetadataRetriever(),
-    val fileWriter: FakeFileWriter = FakeFileWriter()
+    val contentUriReader: FakeContentUriReader = FakeContentUriReader(),
+    val fileWriter: FakeFileWriter = FakeFileWriter(),
 ) {
-    val mediaImporter = MediaImporterImpl(
+    val artistMediaStore = FakeArtistMediaStore()
+    val albumMediaStore = FakeAlbumMediaStore()
+    val clipMediaStore = FakeClipMediaStore()
+    val trackMediaStore = FakeTrackMediaStore()
+    val imageMediaStore = FakeImageMediaStore()
+    val audioAssetStore = FakeAudioAssetStore()
+    val mediaAssetStore = FakeMediaAssetStore()
+    val syncStateStore = FakeMediaAssetSyncStateStore()
+    val transactionRunner = FakeMediaStoreTransactionRunner()
+    val pathProvider = FakePathProvider()
+
+    val artistImporter = ArtistImporterImpl(
+        artistMediaStore = artistMediaStore,
         mediaMetadataRetriever = mediaMetadataRetriever,
+        transactionRunner = transactionRunner,
+    )
+
+    val imageImporter = ImageImporterImpl(
+        mediaMetadataRetriever = mediaMetadataRetriever,
+        pathProvider = pathProvider,
+        imageMediaStore = imageMediaStore,
+        mediaAssetStore = mediaAssetStore,
+        syncStateStore = syncStateStore,
+        transactionRunner = transactionRunner,
+        contentUriReader = contentUriReader,
         fileWriter = fileWriter,
     )
+
+    val albumImporter: AlbumImporterImpl by lazy {
+        AlbumImporterImpl(
+            albumMediaStore = albumMediaStore,
+            audioAssetImporter = lazy { audioAssetImporter },
+            transactionRunner = transactionRunner,
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            trackImporter = lazy { trackImporter },
+        )
+    }
+
+
+    val clipImporter: ClipImporterImpl by lazy {
+        ClipImporterImpl(
+            clipDataStore = clipMediaStore,
+            audioAssetImporter = lazy { audioAssetImporter },
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            transactionRunner = transactionRunner,
+        )
+    }
+
+    val audioAssetImporter: AudioAssetImporterImpl by lazy {
+        AudioAssetImporterImpl(
+            audioAssetStore = audioAssetStore,
+            mediaAssetStore = mediaAssetStore,
+            syncStateStore = syncStateStore,
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            artistImporter = artistImporter,
+            albumImporter = albumImporter,
+            albumMediaStore = albumMediaStore,
+            pathProvider = pathProvider,
+            fileWriter = fileWriter,
+            imageImporter = imageImporter,
+            transactionRunner = transactionRunner,
+            contentUriReader = contentUriReader,
+        )
+    }
+
+    val trackImporter: AlbumTrackImporterImpl by lazy {
+        AlbumTrackImporterImpl(
+            trackMediaStore = trackMediaStore,
+            audioAssetImporter = lazy { audioAssetImporter },
+            clipImporter = lazy { clipImporter },
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            transactionRunner = transactionRunner,
+        )
+    }
+
+    val mediaAssetImporter: MediaAssetImporterImpl by lazy {
+        MediaAssetImporterImpl(
+            mediaMetadataRetriever = mediaMetadataRetriever,
+            audioAssetImporter = lazy { audioAssetImporter },
+            imageImporter = lazy { imageImporter },
+        )
+    }
 }

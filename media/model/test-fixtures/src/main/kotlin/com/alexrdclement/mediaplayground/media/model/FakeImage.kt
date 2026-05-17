@@ -1,13 +1,25 @@
 package com.alexrdclement.mediaplayground.media.model
 
-// URI base path should match that from FakePathProvider's getImagesDir()
-
 val FakeImage1 = Image(
     id = ImageId("image-1"),
-    uri = "file:/images/image-1.png",
+    uri = MediaAssetUri.Shared("image-1.png"),
+    originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image-1"),
+    createdAt = kotlin.time.Instant.DISTANT_PAST,
+    modifiedAt = kotlin.time.Instant.DISTANT_PAST,
+    mimeType = "image/png",
+    extension = "png",
+    widthPx = 1024,
+    heightPx = 768,
 )
 
 val FakeImage2 = Image(
     id = ImageId("image-2"),
-    uri = "file:/images/image-2.png",
+    uri = MediaAssetUri.Shared("image-2.png"),
+    originUri = MediaAssetOriginUri.AndroidContentUri("content://fake/image-2"),
+    createdAt = kotlin.time.Instant.DISTANT_PAST,
+    modifiedAt = kotlin.time.Instant.DISTANT_PAST,
+    mimeType = "image/png",
+    extension = "png",
+    widthPx = 1024,
+    heightPx = 768,
 )

@@ -4,9 +4,10 @@ import androidx.room.withTransaction
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 
 internal class DatabaseTransactionRunnerImpl(
-    private val database: MediaPlaygroundDatabase
+    private val database: MediaPlaygroundDatabase,
+    private val scope: DatabaseTransactionScope,
 ) : DatabaseTransactionRunner {
-    override suspend fun <T> run(block: suspend () -> T): T {
-        return database.withTransaction(block)
+    override suspend fun <T> run(block: suspend DatabaseTransactionScope.() -> T): T {
+        return database.withTransaction { scope.block() }
     }
 }

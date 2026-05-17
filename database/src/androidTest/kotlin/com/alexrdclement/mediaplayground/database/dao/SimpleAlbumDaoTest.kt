@@ -5,7 +5,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.fakes.FakeSimpleAlbum1
+import com.alexrdclement.mediaplayground.database.fakes.FakeImageAssetRecord1
+import com.alexrdclement.mediaplayground.database.fakes.FakeImageAssetRecord2
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
+import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -17,10 +20,13 @@ class SimpleAlbumDaoTest {
 
     private lateinit var db: MediaPlaygroundDatabase
     private lateinit var albumDao: AlbumDao
+    private lateinit var mediaCollectionDao: MediaCollectionDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
-    private lateinit var imageDao: ImageDao
+    private lateinit var albumImageDao: AlbumImageDao
+    private lateinit var imageAssetDao: ImageAssetDao
     private lateinit var simpleAlbumDao: SimpleAlbumDao
+    private lateinit var mediaAssetDao: MediaAssetDao
 
     @Before
     fun create() {
@@ -29,10 +35,13 @@ class SimpleAlbumDaoTest {
             .inMemoryDatabaseBuilder(context, MediaPlaygroundDatabase::class.java)
             .build()
         albumDao = db.albumDao()
+        mediaCollectionDao = db.mediaCollectionDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
-        imageDao = db.imageDao()
+        albumImageDao = db.albumImageDao()
+        imageAssetDao = db.imageAssetDao()
         simpleAlbumDao = db.simpleAlbumDao()
+        mediaAssetDao = db.mediaAssetDao()
     }
 
     @After
@@ -41,6 +50,7 @@ class SimpleAlbumDaoTest {
     }
 
     private suspend fun insertSimpleAlbum(simpleAlbum: SimpleAlbum) {
+        mediaCollectionDao.insert(simpleAlbum.mediaCollection)
         albumDao.insert(simpleAlbum.album)
         for (artists in simpleAlbum.artists) {
             artistDao.insert(artists)
@@ -52,8 +62,10 @@ class SimpleAlbumDaoTest {
             )
         }
         albumArtistDao.insert(*albumArtist.toTypedArray())
+        mediaAssetDao.insert(FakeImageAssetRecord1, FakeImageAssetRecord2)
         for (images in simpleAlbum.images) {
-            imageDao.insert(images)
+            imageAssetDao.insert(images.imageAsset)
+            albumImageDao.insert(AlbumImageCrossRef(albumId = simpleAlbum.album.id, imageId = images.imageAsset.id))
         }
     }
 
@@ -63,7 +75,7 @@ class SimpleAlbumDaoTest {
         insertSimpleAlbum(simpleAlbum)
 
         val result = simpleAlbumDao.getAlbumByTitleAndArtistId(
-            title = simpleAlbum.album.title,
+            title = simpleAlbum.mediaCollection.title,
             artistId = simpleAlbum.artists.first().id,
         )
 
@@ -85,7 +97,7 @@ class SimpleAlbumDaoTest {
         insertSimpleAlbum(simpleAlbum)
 
         val result = simpleAlbumDao.getAlbumByTitleAndArtistId(
-            title = simpleAlbum.album.title,
+            title = simpleAlbum.mediaCollection.title,
             artistId = "nonexistent",
         )
         assertNull(result)

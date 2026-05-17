@@ -20,22 +20,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
-import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.AlbumTrack
+import com.alexrdclement.mediaplayground.media.model.AudioAlbum
+import com.alexrdclement.mediaplayground.media.model.Clip
+import com.alexrdclement.mediaplayground.media.model.TrackClip
+import com.alexrdclement.mediaplayground.media.model.MediaAsset
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.layout.Scaffold
 import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.theme.PaletteTheme
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
 private const val MediaPickerAudioMimeType = "audio/*"
@@ -43,7 +47,7 @@ private const val MediaPickerAudioMimeType = "audio/*"
 @Composable
 fun AudioLibraryScreen(
     onNavigateToPlayer: (MediaItem) -> Unit,
-    onNavigateToAlbum: (Album) -> Unit,
+    onNavigateToAlbum: (AudioAlbum) -> Unit,
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
@@ -65,7 +69,7 @@ fun AudioLibraryScreen(
             viewModel.onItemClick(mediaItemUi)
 
             when (val mediaItem = mediaItemUi.mediaItem) {
-                is Album -> {
+                is AudioAlbum -> {
                     onNavigateToAlbum(mediaItem)
                 }
 
@@ -74,6 +78,11 @@ fun AudioLibraryScreen(
                         onNavigateToPlayer(mediaItem)
                     }
                 }
+
+                is AlbumTrack -> Unit
+                is Clip -> Unit
+                is TrackClip<*> -> Unit
+                is MediaAsset -> Unit
             }
         },
         onItemPlayPauseClick = viewModel::onPlayPauseClick,

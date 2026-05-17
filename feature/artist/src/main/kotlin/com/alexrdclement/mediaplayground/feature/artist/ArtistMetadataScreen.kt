@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
-import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleArtist1
+import com.alexrdclement.mediaplayground.ui.util.PreviewArtist1
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
 import com.alexrdclement.palette.components.core.Text
@@ -182,7 +182,7 @@ private fun Preview() {
     PaletteTheme {
         ArtistMetadataScreen(
             uiState = ArtistMetadataUiState.Loaded(
-                artist = PreviewSimpleArtist1,
+                artist = PreviewArtist1,
             ),
             onNavigateBack = {},
             onSaveClick = { _, _ -> },

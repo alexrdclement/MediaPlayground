@@ -9,6 +9,7 @@ android {
 
 dependencies {
     api(libs.kotlinx.io.core)
+    api(projects.media.model)
     api(projects.model.result)
 
     implementation(libs.kotlinx.coroutines.android)

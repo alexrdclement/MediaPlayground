@@ -73,7 +73,6 @@ class TrackMetadataViewModel(
 
     fun onSaveClick(
         title: String,
-        trackNumber: Int?,
         notes: String?,
     ) {
         if (_isSaving.value) return
@@ -81,7 +80,6 @@ class TrackMetadataViewModel(
         viewModelScope.launch {
             try {
                 trackRepository.updateTrackTitle(trackId, title)
-                trackRepository.updateTrackNumber(trackId, trackNumber)
                 trackRepository.updateTrackNotes(trackId, notes)
                 savedEvent.fire()
             } finally {

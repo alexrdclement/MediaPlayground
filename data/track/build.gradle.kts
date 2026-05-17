@@ -11,16 +11,15 @@ dependencies {
     api(projects.media.model)
 
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.io.core)
     implementation(libs.loggable)
     implementation(libs.paging)
 
-    implementation(projects.data.album)
-    implementation(projects.data.artist)
     implementation(projects.data.disk)
     implementation(projects.database)
+    implementation(projects.database.mapping)
     implementation(projects.media.import.api)
+    implementation(projects.media.store.api)
     implementation(projects.model.result)
 
     testImplementation(libs.maindispatcher.rule)

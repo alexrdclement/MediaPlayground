@@ -15,4 +15,10 @@ dependencies {
 
     implementation(projects.data.album)
     implementation(projects.data.artist)
+    implementation(projects.data.clip)
+    implementation(projects.data.clip.testFixtures)
+    implementation(projects.data.image)
+    implementation(projects.data.mediaAsset)
+    implementation(projects.data.mediaAsset.testFixtures)
+    implementation(projects.media.store.api)
 }

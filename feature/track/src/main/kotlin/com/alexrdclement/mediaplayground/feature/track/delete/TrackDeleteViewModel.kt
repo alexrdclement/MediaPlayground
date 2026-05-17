@@ -42,7 +42,7 @@ class TrackDeleteViewModel(
             _deleteState.update { DeleteState.Deleting }
             val trackId = TrackId(idValue)
             mediaSessionControl.getMediaEngineControl().playlistControl.deleteIfNecessary(trackId)
-            trackRepository.deleteTrack(trackId)
+            trackRepository.delete(trackId)
             _deleteState.update { DeleteState.Deleted }
         }
     }

@@ -1,11 +1,15 @@
 package com.alexrdclement.mediaplayground.data.artist
 
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.media.model.ArtistId
 import kotlinx.coroutines.flow.Flow
 
 interface ArtistRepository {
-    fun getArtistFlow(id: String): Flow<SimpleArtist?>
-    suspend fun updateArtistName(id: String, name: String?)
-    suspend fun updateArtistNotes(id: String, notes: String?)
-    suspend fun deleteArtist(id: String)
+    fun getArtistFlow(id: ArtistId): Flow<Artist?>
+    suspend fun getArtistByName(name: String): Artist?
+    suspend fun getArtistAlbumCount(artistId: ArtistId): Int
+    suspend fun put(artist: Artist)
+    suspend fun updateArtistName(id: ArtistId, name: String?)
+    suspend fun updateArtistNotes(id: ArtistId, notes: String?)
+    suspend fun delete(id: ArtistId)
 }

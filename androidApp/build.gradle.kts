@@ -59,4 +59,5 @@ dependencies {
     implementation(libs.palette.navigation)
 
     implementation(projects.app)
+    implementation(projects.media.ui.coil)
 }

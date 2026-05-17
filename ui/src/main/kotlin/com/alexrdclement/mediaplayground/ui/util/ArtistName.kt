@@ -2,9 +2,9 @@ package com.alexrdclement.mediaplayground.ui.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.alexrdclement.mediaplayground.media.model.SimpleArtist
+import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.ui.R
-import com.alexrdclement.palette.components.media.model.Artist
+import com.alexrdclement.palette.components.media.model.Artist as UiArtist
 
 @Composable
 @JvmName("artistNamesOrDefaultArtist")
@@ -13,8 +13,8 @@ fun artistNamesOrDefault(artists: List<Artist>): String {
 }
 
 @Composable
-@JvmName("artistNamesOrDefaultSimpleArtist")
-fun artistNamesOrDefault(artists: List<SimpleArtist>): String {
+@JvmName("componentArtistNamesOrDefaultArtist")
+fun artistNamesOrDefault(artists: List<UiArtist>): String {
     return artistNamesOrDefault(artists.map { it.name })
 }
 

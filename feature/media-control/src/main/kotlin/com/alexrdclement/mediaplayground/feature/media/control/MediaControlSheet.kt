@@ -29,9 +29,10 @@ import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
+import com.alexrdclement.mediaplayground.media.model.AudioItem
 import com.alexrdclement.mediaplayground.media.model.MediaItem
-import com.alexrdclement.mediaplayground.media.model.largeImageUrl
-import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
+import com.alexrdclement.mediaplayground.media.model.largeImageUri
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.palette.components.layout.PeekSheetState
@@ -119,16 +120,16 @@ fun MediaControlSheet(
         loadedMediaItem?.let { mediaItem ->
             val fallbackArtistName = stringResource(id = UiR.string.artist_name_fallback)
             val artists by derivedStateOf {
-                mediaItem.artists.map {
+                (mediaItem as? AudioItem)?.artists?.map {
                     Artist(
                         name = it.name ?: fallbackArtistName
                     )
-                }
+                } ?: emptyList()
             }
             val uiMediaItem by derivedStateOf {
                 UiMediaItem(
-                    artworkLargeUrl = mediaItem.largeImageUrl,
-                    artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
+                    artworkLargeUrl = mediaItem.largeImageUri?.toUriString(),
+                    artworkThumbnailUrl = mediaItem.thumbnailImageUri?.toUriString(),
                     title = mediaItem.title,
                     artists = artists,
                 )
@@ -226,8 +227,8 @@ fun MediaControlSheet(
                             onNavigateToTrackDelete = onNavigateToTrackDelete,
                             onNavigateToLoadedItemMetadata = { onNavigateToTrackMetadata(mediaItem.id.value) },
                             onNavigateToLoadedItemDelete = { onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title) },
-                            onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) } },
-                            onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id, it.name ?: "") } },
+                            onNavigateToArtistMetadata = { (mediaItem as? AudioItem)?.artists?.firstOrNull()?.let { onNavigateToArtistMetadata(it.id.value) } },
+                            onNavigateToArtistDelete = { (mediaItem as? AudioItem)?.artists?.firstOrNull()?.let { onNavigateToArtistDelete(it.id.value, it.name ?: "") } },
                             contentPadding = contentPadding.copy(
                                 top = 0.dp,
                             )

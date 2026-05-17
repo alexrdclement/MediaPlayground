@@ -28,5 +28,6 @@ dependencies {
     testImplementation(libs.turbine)
 
     testImplementation(projects.data.track.testFixtures)
+    testImplementation(projects.media.model.testFixtures)
     testImplementation(projects.media.session.testFixtures)
 }

@@ -55,7 +55,7 @@ class PlaylistStateImpl @Inject constructor(
         }
 
         return timelineIds.flatMapLatest { ids ->
-            if (ids.isEmpty()) flowOf(emptyList())
+            if (ids.isEmpty()) flowOf(emptyList<MediaItem>())
             else combine(ids.map { mediaItemRepository.getMediaItemFlow(it) }) { items ->
                 items.filterNotNull()
             }
