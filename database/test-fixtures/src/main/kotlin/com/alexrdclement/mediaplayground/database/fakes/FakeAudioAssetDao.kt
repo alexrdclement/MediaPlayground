@@ -15,7 +15,7 @@ class FakeAudioAssetDao(
     val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
     val audioAssetArtistDao: FakeAudioAssetArtistDao? = null,
     val artistDao: FakeArtistDao? = null,
-    val audioAssetImageDao: FakeAudioAssetImageDao? = null,
+    val mediaItemImageDao: FakeMediaItemImageDao? = null,
     val imageAssetDao: FakeImageAssetDao? = null,
     val mediaItemDao: FakeMediaItemDao = FakeMediaItemDao(),
 ) : AudioAssetDao {
@@ -30,11 +30,11 @@ class FakeAudioAssetDao(
                 .filter { it.audioAssetId == audioAsset.id }
                 .mapNotNull { ref -> artistDao.artists.value.find { it.id == ref.artistId } }
         } else emptyList()
-        val images = if (audioAssetImageDao != null && imageAssetDao != null) {
-            audioAssetImageDao.audioAssetImages
-                .filter { it.audioAssetId == audioAsset.id }
+        val images = if (mediaItemImageDao != null && imageAssetDao != null) {
+            mediaItemImageDao.crossRefs
+                .filter { it.itemId == audioAsset.id }
                 .mapNotNull { ref ->
-                    val img = imageAssetDao.images.value.find { it.id == ref.imageId } ?: return@mapNotNull null
+                    val img = imageAssetDao.images.value.find { it.id == ref.imageAssetId } ?: return@mapNotNull null
                     val mediaAssetImg = mediaAssetDao.mediaAssets[img.id] ?: return@mapNotNull null
                     val imgMediaItem = mediaItemDao.getMediaItemSync(img.id) ?: return@mapNotNull null
                     CompleteImageAsset(imageAsset = img, mediaItem = imgMediaItem, mediaAsset = mediaAssetImg)

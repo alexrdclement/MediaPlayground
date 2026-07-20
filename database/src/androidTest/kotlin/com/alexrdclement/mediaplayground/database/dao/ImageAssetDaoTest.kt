@@ -14,7 +14,7 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeImage3
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageAssetRecord1
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageAssetRecord2
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageAssetRecord3
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteImageAsset
 import com.alexrdclement.mediaplayground.database.model.ImageAsset
 import kotlinx.coroutines.flow.first
@@ -31,7 +31,7 @@ class ImageAssetDaoTest {
 
     private lateinit var db: MediaPlaygroundDatabase
     private lateinit var albumDao: AlbumDao
-    private lateinit var albumImageDao: AlbumImageDao
+    private lateinit var mediaItemImageDao: MediaItemImageDao
     private lateinit var imageAssetDao: ImageAssetDao
     private lateinit var mediaAssetDao: MediaAssetDao
     private lateinit var mediaCollectionDao: MediaCollectionDao
@@ -43,7 +43,7 @@ class ImageAssetDaoTest {
             .inMemoryDatabaseBuilder(context, MediaPlaygroundDatabase::class.java)
             .build()
         albumDao = db.albumDao()
-        albumImageDao = db.albumImageDao()
+        mediaItemImageDao = db.mediaItemImageDao()
         imageAssetDao = db.imageAssetDao()
         mediaAssetDao = db.mediaAssetDao()
         mediaCollectionDao = db.mediaCollectionDao()
@@ -85,14 +85,14 @@ class ImageAssetDaoTest {
         albumDao.insert(album2)
         mediaAssetDao.insert(FakeImageAssetRecord1, FakeImageAssetRecord2, FakeImageAssetRecord3)
         imageAssetDao.insert(FakeImageAsset1, FakeImage2, FakeImage3)
-        albumImageDao.insert(
-            AlbumImageCrossRef(albumId = album1.id, imageId = FakeImageAsset1.id),
-            AlbumImageCrossRef(albumId = album1.id, imageId = FakeImage2.id),
-            AlbumImageCrossRef(albumId = album2.id, imageId = FakeImage3.id),
+        mediaItemImageDao.insert(
+            MediaItemImageCrossRef(itemId = album1.id, imageAssetId = FakeImageAsset1.id),
+            MediaItemImageCrossRef(itemId = album1.id, imageAssetId = FakeImage2.id),
+            MediaItemImageCrossRef(itemId = album2.id, imageAssetId = FakeImage3.id),
         )
 
-        val album1Images = albumImageDao.getImagesForAlbumFlow(album1.id).first()
-        val album2Images = albumImageDao.getImagesForAlbumFlow(album2.id).first()
+        val album1Images = mediaItemImageDao.getImagesForItemFlow(album1.id).first()
+        val album2Images = mediaItemImageDao.getImagesForItemFlow(album2.id).first()
 
         assertEquals(listOf(FakeImageAsset1, FakeImage2), album1Images)
         assertEquals(listOf(FakeImage3), album2Images)
@@ -135,11 +135,11 @@ class ImageAssetDaoTest {
         albumDao.insert(FakeAlbum1)
         mediaAssetDao.insert(FakeImageAssetRecord1)
         imageAssetDao.insert(FakeImageAsset1)
-        albumImageDao.insert(AlbumImageCrossRef(albumId = FakeAlbum1.id, imageId = FakeImageAsset1.id))
+        mediaItemImageDao.insert(MediaItemImageCrossRef(itemId = FakeAlbum1.id, imageAssetId = FakeImageAsset1.id))
 
         imageAssetDao.update(FakeImageAsset1.copy(notes = "Updated notes"))
 
-        val images = albumImageDao.getImagesForAlbumFlow(FakeAlbum1.id).first()
+        val images = mediaItemImageDao.getImagesForItemFlow(FakeAlbum1.id).first()
         assertTrue(images.isNotEmpty())
         assertEquals(FakeImageAsset1.id, images.first().id)
     }

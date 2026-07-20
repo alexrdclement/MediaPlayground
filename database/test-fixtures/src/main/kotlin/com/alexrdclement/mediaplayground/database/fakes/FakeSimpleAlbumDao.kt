@@ -14,7 +14,7 @@ class FakeSimpleAlbumDao(
     private val artistDao: FakeArtistDao,
     private val imageDao: FakeImageAssetDao,
     private val albumArtistDao: FakeAlbumArtistDao,
-    private val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
+    private val mediaItemImageDao: FakeMediaItemImageDao = FakeMediaItemImageDao(),
 ) : SimpleAlbumDao {
 
     val albums = combine(
@@ -27,9 +27,9 @@ class FakeSimpleAlbumDao(
             val mediaCollection = mediaCollections.find { it.id == album.id }
                 ?: return@mapNotNull null
             val mediaItem = mediaItemDao.getMediaItem(album.id) ?: return@mapNotNull null
-            val albumImageIds = albumImageDao.albumImages
-                .filter { it.albumId == album.id }
-                .map { it.imageId }
+            val albumImageIds = mediaItemImageDao.crossRefs
+                .filter { it.itemId == album.id }
+                .map { it.imageAssetId }
             SimpleAlbum(
                 album = album,
                 mediaItem = mediaItem,

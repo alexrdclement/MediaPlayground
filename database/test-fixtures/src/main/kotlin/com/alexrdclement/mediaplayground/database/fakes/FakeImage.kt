@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteImageAsset
 import com.alexrdclement.mediaplayground.database.model.ImageAsset
 
@@ -38,6 +38,6 @@ val FakeCompleteImageAsset3 = CompleteImageAsset(
     mediaAsset = FakeImageAssetRecord3,
 )
 
-val FakeAlbumImage1 = AlbumImageCrossRef(albumId = "1", imageId = "image-1")
-val FakeAlbumImage2 = AlbumImageCrossRef(albumId = "2", imageId = "image-2")
-val FakeAlbumImage3 = AlbumImageCrossRef(albumId = "3", imageId = "image-3")
+val FakeMediaItemImage1 = MediaItemImageCrossRef(itemId = "1", imageAssetId = "image-1")
+val FakeMediaItemImage2 = MediaItemImageCrossRef(itemId = "2", imageAssetId = "image-2")
+val FakeMediaItemImage3 = MediaItemImageCrossRef(itemId = "3", imageAssetId = "image-3")

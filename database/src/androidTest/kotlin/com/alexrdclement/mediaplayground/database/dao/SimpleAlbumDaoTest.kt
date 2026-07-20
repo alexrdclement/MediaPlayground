@@ -8,7 +8,7 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeSimpleAlbum1
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageAssetRecord1
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageAssetRecord2
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.SimpleAlbum
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -23,7 +23,7 @@ class SimpleAlbumDaoTest {
     private lateinit var mediaCollectionDao: MediaCollectionDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
-    private lateinit var albumImageDao: AlbumImageDao
+    private lateinit var mediaItemImageDao: MediaItemImageDao
     private lateinit var imageAssetDao: ImageAssetDao
     private lateinit var simpleAlbumDao: SimpleAlbumDao
     private lateinit var mediaAssetDao: MediaAssetDao
@@ -38,7 +38,7 @@ class SimpleAlbumDaoTest {
         mediaCollectionDao = db.mediaCollectionDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
-        albumImageDao = db.albumImageDao()
+        mediaItemImageDao = db.mediaItemImageDao()
         imageAssetDao = db.imageAssetDao()
         simpleAlbumDao = db.simpleAlbumDao()
         mediaAssetDao = db.mediaAssetDao()
@@ -65,7 +65,7 @@ class SimpleAlbumDaoTest {
         mediaAssetDao.insert(FakeImageAssetRecord1, FakeImageAssetRecord2)
         for (images in simpleAlbum.images) {
             imageAssetDao.insert(images.imageAsset)
-            albumImageDao.insert(AlbumImageCrossRef(albumId = simpleAlbum.album.id, imageId = images.imageAsset.id))
+            mediaItemImageDao.insert(MediaItemImageCrossRef(itemId = simpleAlbum.album.id, imageAssetId = images.imageAsset.id))
         }
     }
 

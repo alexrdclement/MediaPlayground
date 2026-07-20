@@ -5,12 +5,11 @@ import androidx.room.Room
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
-import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
+import com.alexrdclement.mediaplayground.database.dao.MediaItemImageDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
-import com.alexrdclement.mediaplayground.database.dao.AudioAssetImageDao
 import com.alexrdclement.mediaplayground.database.dao.AudioClipDao
 import com.alexrdclement.mediaplayground.database.dao.ClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
@@ -50,13 +49,12 @@ interface DatabaseModule {
         fun provideDatabaseTransactionScope(
             albumDao: AlbumDao,
             albumArtistDao: AlbumArtistDao,
-            albumImageDao: AlbumImageDao,
             albumTrackDao: AlbumTrackDao,
             artistDao: ArtistDao,
             audioAssetArtistDao: AudioAssetArtistDao,
             audioAssetDao: AudioAssetDao,
-            audioAssetImageDao: AudioAssetImageDao,
             audioClipDao: AudioClipDao,
+            mediaItemImageDao: MediaItemImageDao,
             clipDao: ClipDao,
             completeAlbumDao: CompleteAlbumDao,
             completeAudioClipDao: CompleteAudioClipDao,
@@ -72,13 +70,12 @@ interface DatabaseModule {
         ): DatabaseTransactionScope = object : DatabaseTransactionScope {
             override val albumDao = albumDao
             override val albumArtistDao = albumArtistDao
-            override val albumImageDao = albumImageDao
             override val albumTrackDao = albumTrackDao
             override val artistDao = artistDao
             override val audioAssetArtistDao = audioAssetArtistDao
             override val audioAssetDao = audioAssetDao
-            override val audioAssetImageDao = audioAssetImageDao
             override val audioClipDao = audioClipDao
+            override val mediaItemImageDao = mediaItemImageDao
             override val clipDao = clipDao
             override val completeAlbumDao = completeAlbumDao
             override val completeAudioClipDao = completeAudioClipDao

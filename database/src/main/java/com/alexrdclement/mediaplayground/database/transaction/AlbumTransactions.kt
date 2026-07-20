@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.database.transaction
 
 import com.alexrdclement.mediaplayground.database.model.Album
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.MediaCollection
 import com.alexrdclement.mediaplayground.database.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteAlbumPolicy
@@ -20,8 +20,8 @@ suspend fun insertAlbum(
     albumDao.insert(album)
     val albumArtistCrossRefs = artistIds.map { AlbumArtistCrossRef(album.id, it) }
     albumArtistDao.insert(*albumArtistCrossRefs.toTypedArray())
-    val albumImageCrossRefs = imageIds.map { AlbumImageCrossRef(album.id, it) }
-    albumImageDao.insert(*albumImageCrossRefs.toTypedArray())
+    val albumImageCrossRefs = imageIds.map { MediaItemImageCrossRef(album.id, it) }
+    mediaItemImageDao.insert(*albumImageCrossRefs.toTypedArray())
 }
 
 context(scope: DatabaseTransactionScope)
@@ -44,7 +44,7 @@ suspend fun deleteAlbum(
     } else {
         emptyList()
     }
-    albumImageDao.deleteForAlbum(id)
+    mediaItemImageDao.deleteForItem(id)
     albumArtistDao.deleteForAlbum(id)
     albumTrackDao.deleteForAlbum(id)
     albumDao.delete(id)

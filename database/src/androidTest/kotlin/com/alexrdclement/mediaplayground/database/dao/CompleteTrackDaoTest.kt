@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteTrack1
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteTrack
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.database.model.id
@@ -24,7 +24,7 @@ class CompleteTrackDaoTest {
     private lateinit var albumTrackDao: AlbumTrackDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
-    private lateinit var albumImageDao: AlbumImageDao
+    private lateinit var mediaItemImageDao: MediaItemImageDao
     private lateinit var imageAssetDao: ImageAssetDao
     private lateinit var trackDao: TrackDao
     private lateinit var audioAssetDao: AudioAssetDao
@@ -44,7 +44,7 @@ class CompleteTrackDaoTest {
         albumTrackDao = db.albumTrackDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
-        albumImageDao = db.albumImageDao()
+        mediaItemImageDao = db.mediaItemImageDao()
         imageAssetDao = db.imageAssetDao()
         trackDao = db.trackDao()
         audioAssetDao = db.audioAssetDao()
@@ -74,7 +74,7 @@ class CompleteTrackDaoTest {
             for (completeImage in simpleAlbum.images) {
                 mediaAssetDao.insert(completeImage.mediaAsset)
                 imageAssetDao.insert(completeImage.imageAsset)
-                albumImageDao.insert(AlbumImageCrossRef(albumId = simpleAlbum.album.id, imageId = completeImage.imageAsset.id))
+                mediaItemImageDao.insert(MediaItemImageCrossRef(itemId = simpleAlbum.album.id, imageAssetId = completeImage.imageAsset.id))
             }
             albumTrackDao.insert(albumRef.albumTrackCrossRef)
         }

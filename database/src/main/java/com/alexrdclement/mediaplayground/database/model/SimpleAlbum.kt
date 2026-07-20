@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 
+
 data class SimpleAlbum(
     @Embedded
     val album: Album,
@@ -32,9 +33,9 @@ data class SimpleAlbum(
         parentColumn = "id",
         entityColumn = "id",
         associateBy = Junction(
-            value = AlbumImageCrossRef::class,
-            parentColumn = "album_id",
-            entityColumn = "image_id",
+            value = MediaItemImageCrossRef::class,
+            parentColumn = "item_id",
+            entityColumn = "image_asset_id",
         ),
     )
     val images: List<CompleteImageAsset>,

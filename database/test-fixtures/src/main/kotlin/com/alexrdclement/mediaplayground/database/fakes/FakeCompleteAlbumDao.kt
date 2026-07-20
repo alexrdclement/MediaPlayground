@@ -24,7 +24,7 @@ class FakeCompleteAlbumDao(
     val mediaCollectionDao: FakeMediaCollectionDao = FakeMediaCollectionDao(),
     val artistDao: FakeArtistDao,
     val albumArtistDao: FakeAlbumArtistDao,
-    val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
+    val mediaItemImageDao: FakeMediaItemImageDao = FakeMediaItemImageDao(),
     val albumTrackDao: FakeAlbumTrackDao = FakeAlbumTrackDao(),
     val imageDao: FakeImageAssetDao,
     val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
@@ -49,9 +49,9 @@ class FakeCompleteAlbumDao(
             val albumMediaItem = mediaItemDao.getMediaItemSync(album.id) ?: return@mapNotNull null
             val mediaCollection = mediaCollections.find { it.id == album.id }
                 ?: return@mapNotNull null
-            val albumImageIds = albumImageDao.albumImages
-                .filter { it.albumId == album.id }
-                .map { it.imageId }
+            val albumImageIds = mediaItemImageDao.crossRefs
+                .filter { it.itemId == album.id }
+                .map { it.imageAssetId }
             val albumImages = imageDao.images.value
                 .filter { it.id in albumImageIds }
                 .mapNotNull { imageAsset ->
@@ -69,9 +69,9 @@ class FakeCompleteAlbumDao(
                     val refAlbumMediaItem = mediaItemDao.getMediaItemSync(refAlbum.id) ?: return@mapNotNull null
                     val refMediaCollection = mediaCollections.find { it.id == trackCrossRef.albumId }
                         ?: return@mapNotNull null
-                    val refAlbumImageIds = albumImageDao.albumImages
-                        .filter { it.albumId == trackCrossRef.albumId }
-                        .map { it.imageId }
+                    val refAlbumImageIds = mediaItemImageDao.crossRefs
+                        .filter { it.itemId == trackCrossRef.albumId }
+                        .map { it.imageAssetId }
                     val refAlbumImages = imageDao.images.value
                         .filter { it.id in refAlbumImageIds }
                         .mapNotNull { imageAsset ->

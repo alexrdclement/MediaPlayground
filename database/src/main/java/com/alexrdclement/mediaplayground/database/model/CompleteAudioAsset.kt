@@ -33,9 +33,9 @@ data class CompleteAudioAsset(
         parentColumn = "id",
         entityColumn = "id",
         associateBy = Junction(
-            value = AudioAssetImageCrossRef::class,
-            parentColumn = "audio_asset_id",
-            entityColumn = "image_id",
+            value = MediaItemImageCrossRef::class,
+            parentColumn = "item_id",
+            entityColumn = "image_asset_id",
         ),
     )
     val images: List<CompleteImageAsset>,

@@ -15,7 +15,7 @@ import com.alexrdclement.mediaplayground.database.transaction.DatabaseTransactio
 import com.alexrdclement.mediaplayground.database.transaction.deleteAlbum
 import com.alexrdclement.mediaplayground.database.transaction.insertAlbum
 import com.alexrdclement.mediaplayground.database.transaction.updateAlbum
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.media.model.AudioAlbum
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.deletion.DeleteAlbumPolicy
@@ -81,8 +81,8 @@ class LocalAudioAlbumDataStore @Inject constructor(
     }
 
     suspend fun addImagesToAlbum(albumId: AlbumId, imageIds: Set<ImageId>) = databaseTransactionRunner.run {
-        val crossRefs = imageIds.map { AlbumImageCrossRef(albumId.value, it.value) }.toTypedArray()
-        albumImageDao.insert(*crossRefs)
+        val crossRefs = imageIds.map { MediaItemImageCrossRef(albumId.value, it.value) }.toTypedArray()
+        mediaItemImageDao.insert(*crossRefs)
     }
 
     suspend fun updateAlbumTitle(id: AlbumId, title: String) {

@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.alexrdclement.mediaplayground.database.MediaPlaygroundDatabase
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteAlbum1
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.database.model.id
@@ -24,7 +24,7 @@ class CompleteAudioAlbumDaoTest {
     private lateinit var albumTrackDao: AlbumTrackDao
     private lateinit var artistDao: ArtistDao
     private lateinit var albumArtistDao: AlbumArtistDao
-    private lateinit var albumImageDao: AlbumImageDao
+    private lateinit var mediaItemImageDao: MediaItemImageDao
     private lateinit var imageAssetDao: ImageAssetDao
     private lateinit var trackDao: TrackDao
     private lateinit var audioAssetDao: AudioAssetDao
@@ -44,7 +44,7 @@ class CompleteAudioAlbumDaoTest {
         albumTrackDao = db.albumTrackDao()
         artistDao = db.artistDao()
         albumArtistDao = db.albumArtistDao()
-        albumImageDao = db.albumImageDao()
+        mediaItemImageDao = db.mediaItemImageDao()
         imageAssetDao = db.imageAssetDao()
         trackDao = db.trackDao()
         audioAssetDao = db.audioAssetDao()
@@ -71,7 +71,7 @@ class CompleteAudioAlbumDaoTest {
         for (completeImage in simpleAlbum.images) {
             mediaAssetDao.insert(completeImage.mediaAsset)
             imageAssetDao.insert(completeImage.imageAsset)
-            albumImageDao.insert(AlbumImageCrossRef(albumId = simpleAlbum.album.id, imageId = completeImage.imageAsset.id))
+            mediaItemImageDao.insert(MediaItemImageCrossRef(itemId = simpleAlbum.album.id, imageAssetId = completeImage.imageAsset.id))
         }
         for (completeTrack in completeAlbum.tracks) {
             trackDao.insert(completeTrack.track)

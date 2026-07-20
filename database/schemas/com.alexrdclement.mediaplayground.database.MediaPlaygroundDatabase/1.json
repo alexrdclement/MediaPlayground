@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "79626f11520b61264ced629338b3f440",
+    "identityHash": "41707015e255c8bfe0534bc0fca88700",
     "entities": [
       {
         "tableName": "albums",
@@ -110,18 +110,18 @@
         ]
       },
       {
-        "tableName": "album_images",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`album_id` TEXT NOT NULL, `image_id` TEXT NOT NULL, PRIMARY KEY(`album_id`, `image_id`), FOREIGN KEY(`album_id`) REFERENCES `albums`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`image_id`) REFERENCES `image_assets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "media_item_images",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`item_id` TEXT NOT NULL, `image_asset_id` TEXT NOT NULL, PRIMARY KEY(`item_id`, `image_asset_id`), FOREIGN KEY(`item_id`) REFERENCES `media_items`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`image_asset_id`) REFERENCES `image_assets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "albumId",
-            "columnName": "album_id",
+            "fieldPath": "itemId",
+            "columnName": "item_id",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "imageId",
-            "columnName": "image_id",
+            "fieldPath": "imageAssetId",
+            "columnName": "image_asset_id",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -129,37 +129,37 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "album_id",
-            "image_id"
+            "item_id",
+            "image_asset_id"
           ]
         },
         "indices": [
           {
-            "name": "index_album_images_album_id",
+            "name": "index_media_item_images_item_id",
             "unique": false,
             "columnNames": [
-              "album_id"
+              "item_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_album_images_album_id` ON `${TABLE_NAME}` (`album_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_media_item_images_item_id` ON `${TABLE_NAME}` (`item_id`)"
           },
           {
-            "name": "index_album_images_image_id",
+            "name": "index_media_item_images_image_asset_id",
             "unique": false,
             "columnNames": [
-              "image_id"
+              "image_asset_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_album_images_image_id` ON `${TABLE_NAME}` (`image_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_media_item_images_image_asset_id` ON `${TABLE_NAME}` (`image_asset_id`)"
           }
         ],
         "foreignKeys": [
           {
-            "table": "albums",
+            "table": "media_items",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "album_id"
+              "item_id"
             ],
             "referencedColumns": [
               "id"
@@ -170,7 +170,7 @@
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "image_id"
+              "image_asset_id"
             ],
             "referencedColumns": [
               "id"
@@ -413,75 +413,6 @@
             "onUpdate": "NO ACTION",
             "columns": [
               "artist_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
-      },
-      {
-        "tableName": "audio_asset_images",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`audio_asset_id` TEXT NOT NULL, `image_id` TEXT NOT NULL, PRIMARY KEY(`audio_asset_id`, `image_id`), FOREIGN KEY(`audio_asset_id`) REFERENCES `audio_assets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`image_id`) REFERENCES `image_assets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
-        "fields": [
-          {
-            "fieldPath": "audioAssetId",
-            "columnName": "audio_asset_id",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "imageId",
-            "columnName": "image_id",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "audio_asset_id",
-            "image_id"
-          ]
-        },
-        "indices": [
-          {
-            "name": "index_audio_asset_images_audio_asset_id",
-            "unique": false,
-            "columnNames": [
-              "audio_asset_id"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_audio_asset_images_audio_asset_id` ON `${TABLE_NAME}` (`audio_asset_id`)"
-          },
-          {
-            "name": "index_audio_asset_images_image_id",
-            "unique": false,
-            "columnNames": [
-              "image_id"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_audio_asset_images_image_id` ON `${TABLE_NAME}` (`image_id`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "audio_assets",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "audio_asset_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          },
-          {
-            "table": "image_assets",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "image_id"
             ],
             "referencedColumns": [
               "id"
@@ -999,7 +930,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '79626f11520b61264ced629338b3f440')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '41707015e255c8bfe0534bc0fca88700')"
     ]
   }
 }

@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.database.fakes
 
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.CompleteAlbum
 import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
 import com.alexrdclement.mediaplayground.database.model.id
@@ -18,7 +18,7 @@ class FakeCompleteAudioAlbumDaoTest {
     private val mediaItemDao = FakeMediaItemDao()
     private val artistDao = FakeArtistDao()
     private val albumArtistDao = FakeAlbumArtistDao()
-    private val albumImageDao = FakeAlbumImageDao()
+    private val mediaItemImageDao = FakeMediaItemImageDao()
     private val albumTrackDao = FakeAlbumTrackDao()
     private val imageDao = FakeImageAssetDao(mediaItemDao = mediaItemDao)
     private val mediaAssetDao = FakeMediaAssetDao()
@@ -35,7 +35,7 @@ class FakeCompleteAudioAlbumDaoTest {
             mediaCollectionDao = mediaCollectionDao,
             artistDao = artistDao,
             albumArtistDao = albumArtistDao,
-            albumImageDao = albumImageDao,
+            mediaItemImageDao = mediaItemImageDao,
             albumTrackDao = albumTrackDao,
             imageDao = imageDao,
             mediaAssetDao = mediaAssetDao,
@@ -61,7 +61,7 @@ class FakeCompleteAudioAlbumDaoTest {
             mediaItemDao.insert(completeImage.mediaItem)
             mediaAssetDao.insert(completeImage.mediaAsset)
             imageDao.insert(completeImage.imageAsset)
-            albumImageDao.insert(AlbumImageCrossRef(albumId = completeAlbum.id, imageId = completeImage.imageAsset.id))
+            mediaItemImageDao.insert(MediaItemImageCrossRef(itemId = completeAlbum.id, imageAssetId = completeImage.imageAsset.id))
         }
         for (completeTrack in completeAlbum.tracks) {
             mediaItemDao.insert(completeTrack.mediaItem)

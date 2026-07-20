@@ -12,12 +12,11 @@ import com.alexrdclement.mediaplayground.database.converter.MediaItemTypeConvert
 import com.alexrdclement.mediaplayground.database.converter.MediaTypeConverter
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
-import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
+import com.alexrdclement.mediaplayground.database.dao.MediaItemImageDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumTrackDao
 import com.alexrdclement.mediaplayground.database.dao.ArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AudioAssetDao
-import com.alexrdclement.mediaplayground.database.dao.AudioAssetImageDao
 import com.alexrdclement.mediaplayground.database.dao.AudioClipDao
 import com.alexrdclement.mediaplayground.database.dao.ClipDao
 import com.alexrdclement.mediaplayground.database.dao.CompleteAlbumDao
@@ -33,12 +32,11 @@ import com.alexrdclement.mediaplayground.database.dao.TrackClipDao
 import com.alexrdclement.mediaplayground.database.dao.TrackDao
 import com.alexrdclement.mediaplayground.database.model.Album
 import com.alexrdclement.mediaplayground.database.model.AlbumArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AlbumImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.AlbumTrackCrossRef
 import com.alexrdclement.mediaplayground.database.model.Artist
 import com.alexrdclement.mediaplayground.database.model.AudioAsset
 import com.alexrdclement.mediaplayground.database.model.AudioAssetArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AudioAssetImageCrossRef
 import com.alexrdclement.mediaplayground.database.model.AudioClip
 import com.alexrdclement.mediaplayground.database.model.Clip
 import com.alexrdclement.mediaplayground.database.model.ImageAsset
@@ -53,12 +51,11 @@ import com.alexrdclement.mediaplayground.database.model.TrackClipCrossRef
     entities = [
         Album::class,
         AlbumArtistCrossRef::class,
-        AlbumImageCrossRef::class,
+        MediaItemImageCrossRef::class,
         AlbumTrackCrossRef::class,
         Artist::class,
         AudioAsset::class,
         AudioAssetArtistCrossRef::class,
-        AudioAssetImageCrossRef::class,
         AudioClip::class,
         Clip::class,
         ImageAsset::class,
@@ -84,11 +81,10 @@ abstract class MediaPlaygroundDatabase : RoomDatabase() {
     abstract fun albumDao(): AlbumDao
     abstract fun albumArtistDao(): AlbumArtistDao
     abstract fun albumTrackDao(): AlbumTrackDao
-    abstract fun albumImageDao(): AlbumImageDao
+    abstract fun mediaItemImageDao(): MediaItemImageDao
     abstract fun artistDao(): ArtistDao
     abstract fun audioAssetArtistDao(): AudioAssetArtistDao
     abstract fun audioAssetDao(): AudioAssetDao
-    abstract fun audioAssetImageDao(): AudioAssetImageDao
     abstract fun audioClipDao(): AudioClipDao
     abstract fun clipDao(): ClipDao
     abstract fun completeAlbumDao(): CompleteAlbumDao

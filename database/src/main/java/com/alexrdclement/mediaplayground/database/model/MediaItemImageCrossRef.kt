@@ -6,30 +6,30 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 
 @Entity(
-    tableName = "audio_asset_images",
-    primaryKeys = ["audio_asset_id", "image_id"],
+    tableName = "media_item_images",
+    primaryKeys = ["item_id", "image_asset_id"],
     foreignKeys = [
         ForeignKey(
-            entity = AudioAsset::class,
+            entity = MediaItem::class,
             parentColumns = ["id"],
-            childColumns = ["audio_asset_id"],
+            childColumns = ["item_id"],
             onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
             entity = ImageAsset::class,
             parentColumns = ["id"],
-            childColumns = ["image_id"],
+            childColumns = ["image_asset_id"],
             onDelete = ForeignKey.CASCADE,
         ),
     ],
     indices = [
-        Index(value = ["audio_asset_id"]),
-        Index(value = ["image_id"]),
+        Index(value = ["item_id"]),
+        Index(value = ["image_asset_id"]),
     ],
 )
-data class AudioAssetImageCrossRef(
-    @ColumnInfo(name = "audio_asset_id")
-    val audioAssetId: String,
-    @ColumnInfo(name = "image_id")
-    val imageId: String,
+data class MediaItemImageCrossRef(
+    @ColumnInfo(name = "item_id")
+    val itemId: String,
+    @ColumnInfo(name = "image_asset_id")
+    val imageAssetId: String,
 )

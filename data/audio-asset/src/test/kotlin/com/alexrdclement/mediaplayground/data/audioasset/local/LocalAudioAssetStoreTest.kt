@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.data.audioasset.local
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionScope
 import com.alexrdclement.mediaplayground.database.model.AudioAssetArtistCrossRef
-import com.alexrdclement.mediaplayground.database.model.AudioAssetImageCrossRef
+import com.alexrdclement.mediaplayground.database.model.MediaItemImageCrossRef
 import com.alexrdclement.media.store.FakeMediaStoreTransactionRunner
 import com.alexrdclement.mediaplayground.media.model.FakeLocalMediaAsset1
 import com.alexrdclement.mediaplayground.media.model.FakeMediaAsset1
@@ -105,11 +105,11 @@ class LocalAudioAssetStoreTest {
         }
 
         val expectedImageId = FakeLocalMediaAsset1.images.first().id.value
-        val expectedCrossRef = AudioAssetImageCrossRef(
-            audioAssetId = FakeLocalMediaAsset1.id.value,
-            imageId = expectedImageId,
+        val expectedCrossRef = MediaItemImageCrossRef(
+            itemId = FakeLocalMediaAsset1.id.value,
+            imageAssetId = expectedImageId,
         )
-        assertTrue(expectedCrossRef in fixture.transactionScope.audioAssetImageDao.audioAssetImages)
+        assertTrue(expectedCrossRef in fixture.transactionScope.mediaItemImageDao.crossRefs)
     }
 
     @Test
@@ -123,6 +123,6 @@ class LocalAudioAssetStoreTest {
         }
 
         assertTrue(fixture.transactionScope.audioAssetArtistDao.audioAssetArtists.isEmpty())
-        assertTrue(fixture.transactionScope.audioAssetImageDao.audioAssetImages.isEmpty())
+        assertTrue(fixture.transactionScope.mediaItemImageDao.crossRefs.isEmpty())
     }
 }

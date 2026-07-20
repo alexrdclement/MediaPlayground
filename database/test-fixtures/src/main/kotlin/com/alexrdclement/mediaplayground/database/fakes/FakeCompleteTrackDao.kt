@@ -23,7 +23,7 @@ class FakeCompleteTrackDao(
     val mediaCollectionDao: FakeMediaCollectionDao = FakeMediaCollectionDao(),
     val artistDao: FakeArtistDao,
     val albumArtistDao: FakeAlbumArtistDao,
-    val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
+    val mediaItemImageDao: FakeMediaItemImageDao = FakeMediaItemImageDao(),
     val albumTrackDao: FakeAlbumTrackDao = FakeAlbumTrackDao(),
     val imageDao: FakeImageAssetDao,
     val mediaAssetDao: FakeMediaAssetDao = FakeMediaAssetDao(),
@@ -53,9 +53,9 @@ class FakeCompleteTrackDao(
                 val albumMediaItem = mediaItemDao.getMediaItemSync(album.id) ?: return@mapNotNull null
                 val mediaCollection = mediaCollections.find { it.id == crossRef.albumId }
                     ?: return@mapNotNull null
-                val albumImageIds = albumImageDao.albumImages
-                    .filter { it.albumId == crossRef.albumId }
-                    .map { it.imageId }
+                val albumImageIds = mediaItemImageDao.crossRefs
+                    .filter { it.itemId == crossRef.albumId }
+                    .map { it.imageAssetId }
                 val images = imageDao.images.value
                     .filter { it.id in albumImageIds }
                     .mapNotNull { imageAsset ->
