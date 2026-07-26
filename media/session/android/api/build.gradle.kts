@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.media.session"
+    namespace = "com.alexrdclement.mediaplayground.media.session.android.api"
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.media.session"
+    namespace = "com.alexrdclement.mediaplayground.media.session.api"
 }
 
 dependencies {

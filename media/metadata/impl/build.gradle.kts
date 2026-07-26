@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.media.metadata"
+    namespace = "com.alexrdclement.mediaplayground.media.metadata.impl"
 }
 
 dependencies {

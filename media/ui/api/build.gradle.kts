@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.media.ui"
+    namespace = "com.alexrdclement.mediaplayground.media.ui.api"
 }
 
 dependencies {
