@@ -14,6 +14,6 @@ dependencies {
     implementation(libs.paging)
     implementation(libs.paging.testing)
 
-    testImplementation(kotlin("test"))
+    testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.kotlinx.coroutines.test)
 }

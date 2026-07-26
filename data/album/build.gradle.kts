@@ -16,6 +16,7 @@ dependencies {
 
     implementation(projects.data.disk)
     implementation(projects.database)
+    testImplementation(libs.kotlin.test.junit)
 
     testImplementation(libs.maindispatcher.rule)
     testImplementation(projects.data.album.testFixtures)

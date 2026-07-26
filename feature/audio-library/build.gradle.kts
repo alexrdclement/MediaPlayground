@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.media.model)
     implementation(projects.media.session.api)
 
+    testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.maindispatcher.rule)
     testImplementation(libs.turbine)
