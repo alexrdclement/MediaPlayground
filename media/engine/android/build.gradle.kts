@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.mediaplayground.media.engine"
+    namespace = "com.alexrdclement.mediaplayground.media.engine.android"
 }
 
 dependencies {
