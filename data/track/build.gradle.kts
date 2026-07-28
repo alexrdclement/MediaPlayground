@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.database)
     implementation(projects.media.import.api)
     implementation(projects.model.result)
+    testImplementation(libs.kotlin.test.junit)
 
     testImplementation(libs.maindispatcher.rule)
     testImplementation(projects.data.album)
