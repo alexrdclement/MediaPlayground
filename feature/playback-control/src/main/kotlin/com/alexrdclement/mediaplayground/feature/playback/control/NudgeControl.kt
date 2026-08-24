@@ -32,7 +32,7 @@ fun NudgeControlRow(
         Text(text = label)
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+            horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         ) {
             Button(
                 onClick = onDecrease,

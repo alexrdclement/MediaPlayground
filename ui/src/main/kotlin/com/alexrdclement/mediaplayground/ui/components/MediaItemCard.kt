@@ -30,6 +30,7 @@ import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.core.SurfaceStyle
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.theme.PaletteTheme
@@ -48,7 +49,7 @@ fun MediaItemCard(
     Surface(
         onClick = onClick,
         onLongClick = onLongClick?.let { { it(touchPosition) } },
-        borderStyle = PaletteTheme.styles.border.surface,
+        style = SurfaceStyle(borderStyle = PaletteTheme.component.core.border.surface),
         modifier = modifier.pointerInput(Unit) {
             awaitEachGesture {
                 awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
@@ -85,14 +86,14 @@ fun MediaItemCard(
             ) {
                 Text(
                     text = mediaItem.title,
-                    style = PaletteTheme.styles.text.titleMedium,
+                    style = PaletteTheme.component.core.text.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
                 )
                 Text(
                     text = artistNamesOrDefault(mediaItem.artists),
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()

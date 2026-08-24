@@ -29,7 +29,7 @@ fun <T : CatalogItem> CatalogScreen(
         topBar = {
             TopBar(
                 title = title?.let {
-                    { Text(title, style = PaletteTheme.styles.text.titleMedium) }
+                    { Text(title, style = PaletteTheme.component.core.text.titleMedium) }
                 },
                 navButton = onNavigateBack?.let {
                     { BackNavigationButton(onNavigateBack) }
@@ -46,7 +46,7 @@ fun <T : CatalogItem> CatalogScreen(
             contentPadding = innerPadding,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = PaletteTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         )
     }
 }

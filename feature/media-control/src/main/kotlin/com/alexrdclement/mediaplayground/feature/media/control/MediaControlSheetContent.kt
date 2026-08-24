@@ -138,10 +138,10 @@ fun MediaControlSheetContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = PaletteTheme.spacing.medium)
+                .padding(bottom = PaletteTheme.semantic.dimension.spacing.medium)
         ) {
             HorizontalDivider()
-            Spacer(height = PaletteTheme.spacing.medium)
+            Spacer(height = PaletteTheme.semantic.dimension.spacing.medium)
             TimeLabeledSeekbar(
                 playheadState = playheadState,
                 timelineState = timelineState,

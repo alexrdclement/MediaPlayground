@@ -163,7 +163,17 @@ fun MediaControlSheet(
                     isPlaying = isPlaying,
                     onPlayPauseClick = onPlayPauseClick,
                     state = mediaControlSheetState,
-                    contentPadding = contentPadding.calculateHorizontalPaddingValues(),
+                    style = PaletteTheme.component.media.mediaControlSheet.let { base ->
+                        base.copy(
+                            controlBarStyle = base.controlBarStyle.copy(
+                                minContentSize = DpSize(
+                                    width = MediaControlSheetPartialExpandHeight,
+                                    height = MediaControlSheetPartialExpandHeight,
+                                ),
+                            ),
+                            contentPadding = contentPadding.calculateHorizontalPaddingValues(),
+                        )
+                    },
                     onControlBarClick = {
                         coroutineScope.launch {
                             if (mediaControlSheetState.isExpanded) {
@@ -173,17 +183,13 @@ fun MediaControlSheet(
                             }
                         }
                     },
-                    minContentSize = DpSize(
-                        width = MediaControlSheetPartialExpandHeight,
-                        height = MediaControlSheetPartialExpandHeight,
-                    ),
-                    maxContentSize = maxContentSize,
+                    expandedContentSize = maxContentSize,
                     aboveControlBar = {
                         val statusBarsPadding = WindowInsets.statusBars.asPaddingValues()
                         val statusBarTopPadding = statusBarsPadding.calculateTopPadding()
                         Box(
                             modifier = Modifier
-                                .background(PaletteTheme.colorScheme.surface)
+                                .background(PaletteTheme.semantic.color.surface)
                                 .fillMaxWidth()
                                 .layout { measureables, constraints ->
                                     val placeables = measureables.measure(constraints)
@@ -205,7 +211,7 @@ fun MediaControlSheet(
                             .graphicsLayer {
                                 alpha = mediaControlSheetState.partialToFullProgress
                             }
-                            .background(PaletteTheme.colorScheme.surface)
+                            .background(PaletteTheme.semantic.color.surface)
                     ) {
                         MediaControlSheetContent(
                             overlapState = overlapState,

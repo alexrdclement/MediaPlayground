@@ -11,6 +11,7 @@ import dev.zacsweers.metrox.viewmodel.metroViewModel
 import com.alexrdclement.mediaplayground.media.ui.CameraPreview
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.core.SurfaceStyle
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.mohamedrejeb.calf.permissions.Camera
@@ -39,7 +40,7 @@ fun CameraScreen(
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        color = PaletteTheme.colorScheme.surface,
+        style = SurfaceStyle(color = PaletteTheme.semantic.color.surface),
     ) {
         when (cameraPermissionState.status) {
             is PermissionStatus.Denied -> {

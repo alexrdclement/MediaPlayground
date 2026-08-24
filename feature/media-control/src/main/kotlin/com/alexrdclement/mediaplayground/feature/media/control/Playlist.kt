@@ -43,11 +43,11 @@ fun Playlist(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .background(PaletteTheme.colorScheme.surface)
+            .background(PaletteTheme.semantic.color.surface)
     ) {
         stickyHeader {
             var titleMenuExpanded by remember { mutableStateOf(false) }
@@ -85,8 +85,8 @@ fun Playlist(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(PaletteTheme.colorScheme.surface)
-                    .padding(top = PaletteTheme.spacing.medium)
+                    .background(PaletteTheme.semantic.color.surface)
+                    .padding(top = PaletteTheme.semantic.dimension.spacing.medium)
             )
         }
         items(
