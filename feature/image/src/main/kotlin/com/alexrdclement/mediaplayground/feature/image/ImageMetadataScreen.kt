@@ -33,7 +33,6 @@ import com.alexrdclement.palette.components.layout.TopBar
 import com.alexrdclement.palette.components.navigation.BackNavigationButton
 import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
@@ -79,15 +78,15 @@ fun ImageMetadataScreen(
     Scaffold(
         topBar = {
             TopBar(
-                title = { Text("Image", style = PaletteTheme.styles.text.headline) },
+                title = { Text("Image", style = PaletteTheme.component.core.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
                 actions = if (uiState is ImageMetadataUiState.Loaded) {
                     {
                         Button(
-                            style = ButtonStyleToken.Secondary,
+                            style = PaletteTheme.component.core.button.secondary,
                             onClick = { onNavigateToDelete(uiState.image.uri) },
                         ) {
-                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge)
                         }
                     }
                 } else null,
@@ -103,15 +102,15 @@ fun ImageMetadataScreen(
                             .mediaControlSheetPadding(uiState.isMediaItemLoaded)
                     ) {
                         Button(
-                            style = ButtonStyleToken.Primary,
+                            style = PaletteTheme.component.core.button.primary,
                             onClick = { onSaveClick(notesState.text.toString().ifBlank { null }) },
                             enabled = !uiState.isSaving,
                             modifier = Modifier
-                                .padding(PaletteTheme.spacing.medium),
+                                .padding(PaletteTheme.semantic.dimension.spacing.medium),
                         ) {
                             Text(
                                 text = if (uiState.isSaving) "Saving\u2026" else "Save",
-                                style = PaletteTheme.styles.text.labelLarge,
+                                style = PaletteTheme.component.core.text.labelLarge,
                             )
                         }
                     }
@@ -138,9 +137,9 @@ private fun MetadataField(
     label: String,
     value: String?,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-        Text(label, style = PaletteTheme.styles.text.titleMedium)
-        Text(value ?: "Unknown", style = PaletteTheme.styles.text.bodyMedium)
+    Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
+        Text(label, style = PaletteTheme.component.core.text.titleMedium)
+        Text(value ?: "Unknown", style = PaletteTheme.component.core.text.bodyMedium)
     }
 }
 
@@ -152,8 +151,8 @@ private fun LoadedContent(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
-        contentPadding = contentPadding.plus(PaletteTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
+        contentPadding = contentPadding.plus(PaletteTheme.semantic.dimension.spacing.medium),
         modifier = modifier,
     ) {
         item {
@@ -197,11 +196,11 @@ private fun LoadedContent(
             )
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Notes", style = PaletteTheme.styles.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
+                Text("Notes", style = PaletteTheme.component.core.text.titleMedium)
                 TextField(
                     state = notesState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.textField,
                     lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
                     modifier = Modifier.fillMaxWidth(),
                 )

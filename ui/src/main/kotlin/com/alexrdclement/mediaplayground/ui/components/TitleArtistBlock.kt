@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.copy
+import com.alexrdclement.palette.components.core.copy
 
 @Composable
 fun TitleArtistBlock(
@@ -40,14 +40,14 @@ fun TitleArtistBlock(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         modifier = modifier
     ) {
         Box {
             var titleTouchPosition by remember { mutableStateOf(Offset.Zero) }
             Text(
                 text = title,
-                style = PaletteTheme.styles.text.titleLarge.copy(
+                style = PaletteTheme.component.core.text.titleLarge.copy(
                     textAlign = titleTextAlign,
                 ),
                 maxLines = titleMaxLines,
@@ -59,7 +59,7 @@ fun TitleArtistBlock(
                     }
                     .combinedClickable(
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = PaletteTheme.indication,
+                        indication = PaletteTheme.semantic.indication,
                         onClick = {},
                         onLongClick = { onTitleLongClick(titleTouchPosition) },
                     )
@@ -74,7 +74,7 @@ fun TitleArtistBlock(
                 var artistsTouchPosition by remember { mutableStateOf(Offset.Zero) }
                 Text(
                     text = artists,
-                    style = PaletteTheme.styles.text.bodyLarge.copy(
+                    style = PaletteTheme.component.core.text.bodyLarge.copy(
                         textAlign = artistTextAlign,
                     ),
                     maxLines = artistMaxLines,
@@ -87,7 +87,7 @@ fun TitleArtistBlock(
                         }
                         .combinedClickable(
                             interactionSource = remember { MutableInteractionSource() },
-                            indication = PaletteTheme.indication,
+                            indication = PaletteTheme.semantic.indication,
                             onClick = {},
                             onLongClick = { onArtistsLongClick(artistsTouchPosition) },
                         )

@@ -41,7 +41,6 @@ import com.alexrdclement.palette.components.layout.TopBar
 import com.alexrdclement.palette.components.navigation.BackNavigationButton
 import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
@@ -95,15 +94,15 @@ fun AlbumMetadataScreen(
     Scaffold(
         topBar = {
             TopBar(
-                title = { Text("Album", style = PaletteTheme.styles.text.headline) },
+                title = { Text("Album", style = PaletteTheme.component.core.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
                 actions = if (uiState is AlbumMetadataUiState.Loaded) {
                     {
                         Button(
-                            style = ButtonStyleToken.Secondary,
+                            style = PaletteTheme.component.core.button.secondary,
                             onClick = { onNavigateToDelete(uiState.album.title) },
                         ) {
-                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge)
                         }
                     }
                 } else null,
@@ -119,7 +118,7 @@ fun AlbumMetadataScreen(
                             .mediaControlSheetPadding(uiState.isMediaItemLoaded)
                     ) {
                         Button(
-                            style = ButtonStyleToken.Primary,
+                            style = PaletteTheme.component.core.button.primary,
                             onClick = {
                                 onSaveClick(
                                     titleState.text.toString(),
@@ -128,11 +127,11 @@ fun AlbumMetadataScreen(
                             },
                             enabled = !uiState.isSaving,
                             modifier = Modifier
-                                .padding(PaletteTheme.spacing.medium),
+                                .padding(PaletteTheme.semantic.dimension.spacing.medium),
                         ) {
                             Text(
                                 text = if (uiState.isSaving) "Saving\u2026" else "Save",
-                                style = PaletteTheme.styles.text.labelLarge,
+                                style = PaletteTheme.component.core.text.labelLarge,
                             )
                         }
                     }
@@ -168,23 +167,23 @@ private fun LoadedContent(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
-        contentPadding = contentPadding.plus(PaletteTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
+        contentPadding = contentPadding.plus(PaletteTheme.semantic.dimension.spacing.medium),
         modifier = modifier,
     ) {
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Title", style = PaletteTheme.styles.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
+                Text("Title", style = PaletteTheme.component.core.text.titleMedium)
                 TextField(
                     state = titleState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.textField,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
         if (state.album.artists.isNotEmpty()) {
             item {
-                Text("Artists", style = PaletteTheme.styles.text.titleMedium)
+                Text("Artists", style = PaletteTheme.component.core.text.titleMedium)
             }
             items(state.album.artists, key = { it.id }) { artist ->
                 ArtistRow(
@@ -195,7 +194,7 @@ private fun LoadedContent(
         }
         if (state.album.images.isNotEmpty()) {
             item {
-                Text("Images", style = PaletteTheme.styles.text.titleMedium)
+                Text("Images", style = PaletteTheme.component.core.text.titleMedium)
             }
             items(state.album.images, key = { it.id.value }) { image ->
                 ImageRow(
@@ -205,11 +204,11 @@ private fun LoadedContent(
             }
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Notes", style = PaletteTheme.styles.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
+                Text("Notes", style = PaletteTheme.component.core.text.titleMedium)
                 TextField(
                     state = notesState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.textField,
                     lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -230,14 +229,14 @@ private fun ArtistRow(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = PaletteTheme.spacing.small),
+            modifier = Modifier.padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
         ) {
             Text(
                 text = artist.name ?: "Unknown Artist",
-                style = PaletteTheme.styles.text.bodyMedium,
+                style = PaletteTheme.component.core.text.bodyMedium,
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Edit \u2192", style = PaletteTheme.styles.text.bodyMedium)
+            Text("Edit \u2192", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
 }
@@ -254,16 +253,16 @@ private fun ImageRow(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = PaletteTheme.spacing.small),
+            modifier = Modifier.padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
         ) {
             Text(
                 text = image.uri,
-                style = PaletteTheme.styles.text.bodyMedium,
+                style = PaletteTheme.component.core.text.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier.weight(1f),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("View \u2192", style = PaletteTheme.styles.text.bodyMedium)
+            Text("View \u2192", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
 }

@@ -30,7 +30,7 @@ fun TransportControlBar(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-            PaletteTheme.spacing.medium,
+            PaletteTheme.semantic.dimension.spacing.medium,
             alignment = Alignment.CenterHorizontally,
         ),
         modifier = modifier
