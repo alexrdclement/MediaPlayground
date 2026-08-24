@@ -30,7 +30,6 @@ import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.SurfaceStyle
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.theme.PaletteTheme
@@ -49,7 +48,7 @@ fun MediaItemCard(
     Surface(
         onClick = onClick,
         onLongClick = onLongClick?.let { { it(touchPosition) } },
-        style = SurfaceStyle(borderStyle = PaletteTheme.component.core.border.surface),
+        style = PaletteTheme.component.core.surface.container,
         modifier = modifier.pointerInput(Unit) {
             awaitEachGesture {
                 awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
