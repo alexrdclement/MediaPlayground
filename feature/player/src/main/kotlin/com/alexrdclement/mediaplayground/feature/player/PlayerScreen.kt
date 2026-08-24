@@ -8,7 +8,6 @@ import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import com.alexrdclement.mediaplayground.media.ui.MediaPlayer
 import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.SurfaceStyle
 import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
@@ -29,7 +28,7 @@ fun PlayerScreen(
         modifier = Modifier
             .statusBarsPadding()
             .fillMaxSize(),
-        style = SurfaceStyle(color = PaletteTheme.semantic.color.surface),
+        style = PaletteTheme.component.core.surface.default,
     ) {
         if (mediaSessionState != null) {
             MediaPlayer(

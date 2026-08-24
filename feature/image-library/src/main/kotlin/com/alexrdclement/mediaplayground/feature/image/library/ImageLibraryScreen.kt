@@ -36,7 +36,6 @@ import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.ButtonDefaults
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.layout.Scaffold
 import com.alexrdclement.palette.components.layout.TopBar
@@ -90,9 +89,7 @@ fun ImageLibraryScreen(
                         is ImageLibraryUiState.Content -> {
                             Button(
                                 onClick = onImportClick,
-                                style = PaletteTheme.component.core.button.secondary.copy(
-                                    contentPadding = ButtonDefaults.ContentPadding,
-                                ),
+                                style = PaletteTheme.component.core.button.secondary,
                                 modifier = Modifier
                                     .wrapContentSize()
                             ) {
