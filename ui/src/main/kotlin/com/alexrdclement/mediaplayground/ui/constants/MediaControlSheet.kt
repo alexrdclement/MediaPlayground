@@ -2,19 +2,30 @@ package com.alexrdclement.mediaplayground.ui.constants
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.palette.theme.PaletteTheme
 
-val MediaControlSheetPartialExpandHeight = 64.dp
+/**
+ * Collapsed (peek) height of the media control sheet, sourced from the palette theme so it stays
+ * in sync with the control bar's minimum content size.
+ */
+val MediaControlSheetPeekHeight: Dp
+    @Composable get() = PaletteTheme.component.media.mediaControlBar.minContentSize.height
 
-fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean) = this.then(
-    if (isMediaItemLoaded) {
-        Modifier.padding(bottom = MediaControlSheetPartialExpandHeight)
-    } else {
-        Modifier
-    }
-)
+@Composable
+fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean): Modifier =
+    this.then(
+        if (isMediaItemLoaded) {
+            Modifier.padding(bottom = MediaControlSheetPeekHeight)
+        } else {
+            Modifier
+        }
+    )
 
+@Composable
 fun mediaControlSheetPaddingValues(isMediaItemLoaded: Boolean) = PaddingValues(
-    bottom = if (isMediaItemLoaded) MediaControlSheetPartialExpandHeight else 0.dp
+    bottom = if (isMediaItemLoaded) MediaControlSheetPeekHeight else 0.dp
 )
