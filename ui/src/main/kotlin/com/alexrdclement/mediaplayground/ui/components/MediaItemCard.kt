@@ -75,7 +75,8 @@ fun MediaItemCard(
                     onClick = onPlayPauseClick,
                     modifier = Modifier
                         .size(24.dp)
-                        .align(BiasAlignment(.8f, .8f))
+                        .align(BiasAlignment(.8f, .8f)),
+                    style = PaletteTheme.component.media.playPauseButton,
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))

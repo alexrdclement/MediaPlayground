@@ -51,8 +51,9 @@ fun CameraScreen(
                 ) {
                     Button(
                         onClick = cameraPermissionState::launchPermissionRequest,
+                        style = PaletteTheme.component.core.button.primary,
                     ) {
-                        Text("Request permission")
+                        Text("Request permission", style = PaletteTheme.component.core.text.bodyMedium)
                     }
                 }
             }

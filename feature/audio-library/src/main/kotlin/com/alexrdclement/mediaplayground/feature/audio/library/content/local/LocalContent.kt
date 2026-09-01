@@ -88,8 +88,9 @@ private fun EmptyContent(
     ) {
         Button(
             onClick = onImportClick,
+            style = PaletteTheme.component.core.button.primary,
         ) {
-            Text("Import local audio")
+            Text("Import local audio", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
 }

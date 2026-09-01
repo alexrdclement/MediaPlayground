@@ -101,8 +101,10 @@ fun ImageLibraryScreen(
                         }
                     }
                 },
+                style = PaletteTheme.component.layout.topBar,
             )
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
             ImageLibraryUiState.Loading -> {}
@@ -135,8 +137,8 @@ private fun EmptyContent(
         modifier = modifier
             .padding(contentPadding),
     ) {
-        Button(onClick = onImportClick) {
-            Text("Import local images")
+        Button(onClick = onImportClick, style = PaletteTheme.component.core.button.primary) {
+            Text("Import local images", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
 }

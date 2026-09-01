@@ -38,6 +38,7 @@ fun TrackCardWide(
         modifier = modifier,
         enabled = isEnabled,
         onClick = onPlayClick,
+        style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -56,7 +57,8 @@ fun TrackCardWide(
                 )
                 PlayPauseButton(
                     isEnabled = isEnabled,
-                    onClick = onPlayClick
+                    onClick = onPlayClick,
+                    style = PaletteTheme.component.media.playPauseButton,
                 )
             }
             Spacer(modifier = Modifier.width(PaletteTheme.semantic.dimension.spacing.medium))
@@ -64,9 +66,9 @@ fun TrackCardWide(
                 verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
                 horizontalAlignment = Alignment.Start,
             ) {
-                Text(text = track.title)
-                Text(text = artistNamesOrDefault(track.artists))
-                Text(text = track.simpleAlbum.name)
+                Text(text = track.title, style = PaletteTheme.component.core.text.bodyMedium)
+                Text(text = artistNamesOrDefault(track.artists), style = PaletteTheme.component.core.text.bodyMedium)
+                Text(text = track.simpleAlbum.name, style = PaletteTheme.component.core.text.bodyMedium)
             }
         }
     }

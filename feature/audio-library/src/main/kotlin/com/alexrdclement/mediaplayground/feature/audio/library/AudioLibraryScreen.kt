@@ -103,9 +103,11 @@ fun AudioLibraryScreen(
                         text = "Audio Library",
                         style = PaletteTheme.component.core.text.headline,
                     )
-                }
+                },
+                style = PaletteTheme.component.layout.topBar,
             )
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
             AudioLibraryUiState.InitialState -> {}
