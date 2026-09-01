@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.palette.components.layout.dialog.DialogContent
+import com.alexrdclement.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
@@ -40,6 +41,7 @@ fun PlaybackControlDialogContent(
     DialogContent(
         title = "Playback",
         modifier = modifier,
+        style = PaletteTheme.component.layout.dialogContent,
     ) {
         NudgeControlRow(
             label = "Speed",

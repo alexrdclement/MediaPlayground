@@ -140,7 +140,7 @@ fun MediaControlSheetContent(
                 .fillMaxWidth()
                 .padding(bottom = PaletteTheme.semantic.dimension.spacing.medium)
         ) {
-            HorizontalDivider()
+            HorizontalDivider(style = PaletteTheme.component.core.divider)
             Spacer(height = PaletteTheme.semantic.dimension.spacing.medium)
             TimeLabeledSeekbar(
                 playheadState = playheadState,

@@ -96,7 +96,7 @@ fun TrackMetadataScreen(
         topBar = {
             TopBar(
                 title = { Text("Track", style = PaletteTheme.component.core.text.headline) },
-                navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                navButton = { BackNavigationButton(onClick = onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) },
                 actions = if (uiState is TrackMetadataUiState.Loaded) {
                     {
                         Button(
@@ -107,6 +107,7 @@ fun TrackMetadataScreen(
                         }
                     }
                 } else null,
+                style = PaletteTheme.component.layout.topBar,
             )
         },
         floatingAction = {
@@ -116,7 +117,8 @@ fun TrackMetadataScreen(
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .mediaControlSheetPadding(uiState.isMediaItemLoaded)
+                            .mediaControlSheetPadding(uiState.isMediaItemLoaded),
+                        style = PaletteTheme.component.layout.floatingAction,
                     ) {
                         Button(
                             style = PaletteTheme.component.core.button.primary,
@@ -141,10 +143,11 @@ fun TrackMetadataScreen(
                 else -> Unit
             }
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
-            TrackMetadataUiState.Loading -> IndeterminateProgressIndicator()
-            TrackMetadataUiState.Error -> Text("Failed to load track.")
+            TrackMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
+            TrackMetadataUiState.Error -> Text("Failed to load track.", style = PaletteTheme.component.core.text.bodyMedium)
             is TrackMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 titleState = titleState,
@@ -227,6 +230,7 @@ private fun ArtistRow(
     Surface(
         onClick = onNavigateToMetadata,
         modifier = Modifier.fillMaxWidth(),
+        style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

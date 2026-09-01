@@ -198,7 +198,8 @@ private fun LoadedContent(
                     onClick = onAlbumPlayPauseClick,
                     modifier = Modifier
                         .size(72.dp)
-                        .padding(vertical = PaletteTheme.semantic.dimension.spacing.small)
+                        .padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
+                    style = PaletteTheme.component.media.playPauseButton,
                 )
             }
             items(

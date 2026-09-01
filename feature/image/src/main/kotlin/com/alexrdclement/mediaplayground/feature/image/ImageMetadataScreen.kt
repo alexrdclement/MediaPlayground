@@ -79,7 +79,7 @@ fun ImageMetadataScreen(
         topBar = {
             TopBar(
                 title = { Text("Image", style = PaletteTheme.component.core.text.headline) },
-                navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                navButton = { BackNavigationButton(onClick = onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) },
                 actions = if (uiState is ImageMetadataUiState.Loaded) {
                     {
                         Button(
@@ -90,6 +90,7 @@ fun ImageMetadataScreen(
                         }
                     }
                 } else null,
+                style = PaletteTheme.component.layout.topBar,
             )
         },
         floatingAction = {
@@ -99,7 +100,8 @@ fun ImageMetadataScreen(
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .mediaControlSheetPadding(uiState.isMediaItemLoaded)
+                            .mediaControlSheetPadding(uiState.isMediaItemLoaded),
+                        style = PaletteTheme.component.layout.floatingAction,
                     ) {
                         Button(
                             style = PaletteTheme.component.core.button.primary,
@@ -118,10 +120,11 @@ fun ImageMetadataScreen(
                 else -> Unit
             }
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
-            ImageMetadataUiState.Loading -> IndeterminateProgressIndicator()
-            ImageMetadataUiState.Error -> Text("Failed to load image.")
+            ImageMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
+            ImageMetadataUiState.Error -> Text("Failed to load image.", style = PaletteTheme.component.core.text.bodyMedium)
             is ImageMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 notesState = notesState,
