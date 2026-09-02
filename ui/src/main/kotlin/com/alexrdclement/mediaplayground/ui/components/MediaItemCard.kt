@@ -56,7 +56,7 @@ fun MediaItemCard(
         },
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(PaletteTheme.semantic.dimension.spacing.medium),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -79,9 +79,9 @@ fun MediaItemCard(
                     style = PaletteTheme.component.media.playPauseButton,
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(PaletteTheme.semantic.dimension.spacing.medium))
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(

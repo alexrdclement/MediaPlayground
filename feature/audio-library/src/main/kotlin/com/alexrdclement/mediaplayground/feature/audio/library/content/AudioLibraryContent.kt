@@ -17,7 +17,7 @@ import com.alexrdclement.palette.theme.PaletteTheme
 @Composable
 fun AudioLibraryContent(
     headerText: String,
-    headerPadding: PaddingValues = PaddingValues(0.dp),
+    headerPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
     headerAction: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {

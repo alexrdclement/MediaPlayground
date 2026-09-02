@@ -40,7 +40,7 @@ fun TransportControlBar(
         SkipBackButton(
             onClick = onSkipBackClick,
             modifier = Modifier
-                .size(48.dp),
+                .size(PaletteTheme.semantic.dimension.size.touchTargetMin),
             style = PaletteTheme.component.media.skipButton,
         )
         PlayPauseButton(
@@ -54,7 +54,7 @@ fun TransportControlBar(
         SkipButton(
             onClick = onSkipClick,
             modifier = Modifier
-                .size(48.dp),
+                .size(PaletteTheme.semantic.dimension.size.touchTargetMin),
             style = PaletteTheme.component.media.skipButton,
         )
     }

@@ -51,7 +51,7 @@ fun MediaItemRow(
     itemOverlayContent: (@Composable BoxScope.(MediaItemUi, Boolean, Offset, () -> Unit) -> Unit)? = null,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
         modifier = modifier
     ) {
         if (title != null) {
@@ -64,7 +64,7 @@ fun MediaItemRow(
 
         LazyRow(
             state = lazyListState,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
             contentPadding = contentPadding,
             modifier = Modifier,
         ) {
