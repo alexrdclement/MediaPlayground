@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.TrackId
@@ -242,7 +241,7 @@ private fun ArtistRow(
                 text = artist.name ?: "Unknown Artist",
                 style = PaletteTheme.component.core.text.bodyMedium,
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(PaletteTheme.semantic.dimension.spacing.small))
             Text(
                 text = "Edit \u2192",
                 style = PaletteTheme.component.core.text.bodyMedium,

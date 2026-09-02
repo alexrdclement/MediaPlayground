@@ -23,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.Image
@@ -240,7 +239,7 @@ private fun ArtistRow(
                 text = artist.name ?: "Unknown Artist",
                 style = PaletteTheme.component.core.text.bodyMedium,
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(PaletteTheme.semantic.dimension.spacing.small))
             Text("Edit \u2192", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
@@ -267,7 +266,7 @@ private fun ImageRow(
                 maxLines = 1,
                 modifier = Modifier.weight(1f),
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(PaletteTheme.semantic.dimension.spacing.small))
             Text("View \u2192", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }

@@ -131,7 +131,7 @@ fun ImageLibraryScreen(
 private fun EmptyContent(
     onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -151,7 +151,7 @@ private fun ImageGrid(
     onNavigateToImageMetadata: (imageIdValue: String) -> Unit,
     onNavigateToImageDelete: (imageId: String, displayName: String) -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
 ) {
     val images = uiState.images.collectAsLazyPagingItems()
     LazyVerticalGrid(

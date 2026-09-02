@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.alexrdclement.palette.theme.PaletteTheme
 
 /**
@@ -27,5 +26,5 @@ fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean): Modifier =
 
 @Composable
 fun mediaControlSheetPaddingValues(isMediaItemLoaded: Boolean) = PaddingValues(
-    bottom = if (isMediaItemLoaded) MediaControlSheetPeekHeight else 0.dp
+    bottom = if (isMediaItemLoaded) MediaControlSheetPeekHeight else PaletteTheme.semantic.dimension.spacing.none
 )
