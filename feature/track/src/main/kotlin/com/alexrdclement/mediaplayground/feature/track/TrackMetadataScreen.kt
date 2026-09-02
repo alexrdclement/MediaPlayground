@@ -36,6 +36,7 @@ import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.core.TextField
+import com.alexrdclement.palette.components.core.copy
 import com.alexrdclement.palette.components.layout.FloatingAction
 import com.alexrdclement.palette.components.layout.Scaffold
 import com.alexrdclement.palette.components.layout.TopBar
@@ -103,7 +104,7 @@ fun TrackMetadataScreen(
                             style = PaletteTheme.component.core.button.secondary,
                             onClick = { onNavigateToDelete(uiState.track.title) },
                         ) {
-                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge)
+                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.secondary))
                         }
                     }
                 } else null,
@@ -135,7 +136,7 @@ fun TrackMetadataScreen(
                         ) {
                             Text(
                                 text = if (uiState.isSaving) "Saving\u2026" else "Save",
-                                style = PaletteTheme.component.core.text.labelLarge,
+                                style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.onPrimary),
                             )
                         }
                     }
