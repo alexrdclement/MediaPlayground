@@ -24,6 +24,7 @@ import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.core.copy
 import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -52,7 +53,7 @@ internal fun LocalContent(
                 ) {
                     Text(
                         text = "Import",
-                        style = PaletteTheme.component.core.text.bodySmall
+                        style = PaletteTheme.component.core.text.bodySmall.copy(color = PaletteTheme.semantic.color.secondary)
                     )
                 }
             }
@@ -90,7 +91,7 @@ private fun EmptyContent(
             onClick = onImportClick,
             style = PaletteTheme.component.core.button.primary,
         ) {
-            Text("Import local audio", style = PaletteTheme.component.core.text.bodyMedium)
+            Text("Import local audio", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
         }
     }
 }
