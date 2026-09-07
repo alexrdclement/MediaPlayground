@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.alexrdclement.android.library.test.fixtures.get().pluginId)
+    id(libs.plugins.embarrasdf.android.library.test.fixtures.get().pluginId)
 }
 
 android {

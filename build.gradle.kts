@@ -8,7 +8,7 @@ buildscript {
 }
 
 plugins {
-    alias(libs.plugins.alexrdclement.github.release)
+    alias(libs.plugins.embarrasdf.github.release)
 }
 
 githubRelease {

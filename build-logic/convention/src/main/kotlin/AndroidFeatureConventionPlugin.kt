@@ -8,7 +8,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply {
-                apply("com.alexrdclement.gradle.plugin.android.library")
+                apply("com.embarrasdf.gradle.plugin.android.library")
                 apply("dev.zacsweers.metro")
             }
 

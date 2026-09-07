@@ -1,6 +1,6 @@
 plugins {
     id(libs.plugins.mediaplayground.android.feature.get().pluginId)
-    id(libs.plugins.alexrdclement.android.library.compose.get().pluginId)
+    id(libs.plugins.embarrasdf.android.library.compose.get().pluginId)
 }
 
 android {
