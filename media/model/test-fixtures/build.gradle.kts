@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.alexrdclement.jvm.library.get().pluginId)
+    id(libs.plugins.embarrasdf.jvm.library.get().pluginId)
 }
 
 dependencies {

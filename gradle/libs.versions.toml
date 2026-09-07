@@ -9,7 +9,7 @@ appcompat = "1.7.1"
 calf = "0.11.0"
 camerax = "1.6.0"
 coil = "3.4.0"
-gradle-plugins = "0.0.111"
+embarrasdf-gradle-plugins = "0.0.127"
 kotlin-test = "2.4.10"
 kotlinx-collections-immutable = "0.4.0"
 kotlinx-coroutines = "1.10.2"
@@ -81,17 +81,17 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
 
 [plugins]
-alexrdclement-android-application = { id = "com.alexrdclement.gradle.plugin.android.application", version.ref = "gradle-plugins" }
-alexrdclement-android-application-compose = { id = "com.alexrdclement.gradle.plugin.android.application.compose", version.ref = "gradle-plugins" }
-alexrdclement-android-library = { id = "com.alexrdclement.gradle.plugin.android.library", version.ref = "gradle-plugins" }
-alexrdclement-android-library-compose = { id = "com.alexrdclement.gradle.plugin.android.library.compose", version.ref = "gradle-plugins" }
-alexrdclement-android-library-test-fixtures = { id = "com.alexrdclement.gradle.plugin.android.library.test.fixtures", version.ref = "gradle-plugins" }
-alexrdclement-android-room = { id = "com.alexrdclement.gradle.plugin.android.room", version.ref = "gradle-plugins" }
-alexrdclement-android-test = { id = "com.alexrdclement.gradle.plugin.android.test", version.ref = "gradle-plugins" }
-alexrdclement-github-release = { id = "com.alexrdclement.gradle.plugin.github.release", version.ref = "gradle-plugins" }
-alexrdclement-jvm-library = { id = "com.alexrdclement.gradle.plugin.jvm.library", version.ref = "gradle-plugins" }
-alexrdclement-kotlin-multiplatform-library = { id = "com.alexrdclement.gradle.plugin.kotlin.multiplatform.library", version.ref = "gradle-plugins" }
-alexrdclement-kotlin-serialization = { id = "com.alexrdclement.gradle.plugin.kotlin.serialization", version.ref = "gradle-plugins" }
+embarrasdf-android-application = { id = "com.embarrasdf.gradle.plugin.android.application", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-application-compose = { id = "com.embarrasdf.gradle.plugin.android.application.compose", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-library = { id = "com.embarrasdf.gradle.plugin.android.library", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-library-compose = { id = "com.embarrasdf.gradle.plugin.android.library.compose", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-library-test-fixtures = { id = "com.embarrasdf.gradle.plugin.android.library.test.fixtures", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-room = { id = "com.embarrasdf.gradle.plugin.android.room", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-test = { id = "com.embarrasdf.gradle.plugin.android.test", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-github-release = { id = "com.embarrasdf.gradle.plugin.github.release", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-jvm-library = { id = "com.embarrasdf.gradle.plugin.jvm.library", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-kotlin-multiplatform-library = { id = "com.embarrasdf.gradle.plugin.kotlin.multiplatform.library", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-kotlin-serialization = { id = "com.embarrasdf.gradle.plugin.kotlin.serialization", version.ref = "embarrasdf-gradle-plugins" }
 mediaplayground-android-feature = { id = "mediaplayground.android.feature" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 

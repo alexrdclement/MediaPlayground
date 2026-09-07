@@ -1,8 +1,8 @@
 plugins {
-    id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
+    id(libs.plugins.embarrasdf.android.library.asProvider().get().pluginId)
     alias(libs.plugins.metro)
-    id(libs.plugins.alexrdclement.android.room.get().pluginId)
-    id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
+    id(libs.plugins.embarrasdf.android.room.get().pluginId)
+    id(libs.plugins.embarrasdf.kotlin.serialization.get().pluginId)
 }
 
 android {

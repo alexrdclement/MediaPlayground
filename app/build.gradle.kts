@@ -1,8 +1,8 @@
 plugins {
     id(libs.plugins.mediaplayground.android.feature.get().pluginId)
-    id(libs.plugins.alexrdclement.android.library.compose.get().pluginId)
+    id(libs.plugins.embarrasdf.android.library.compose.get().pluginId)
     alias(libs.plugins.metro)
-    id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
+    id(libs.plugins.embarrasdf.kotlin.serialization.get().pluginId)
 }
 
 android {
