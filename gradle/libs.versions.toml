@@ -28,7 +28,7 @@ palette = "0.0.115"
 room = "2.8.4"
 trace = "0.0.5"
 turbine = "1.2.1"
-uievent = "0.0.7"
+uievent = "0.0.16"
 
 [libraries]
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx-activity" }
