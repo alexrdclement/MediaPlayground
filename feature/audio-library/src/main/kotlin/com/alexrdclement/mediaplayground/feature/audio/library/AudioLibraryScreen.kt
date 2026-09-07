@@ -101,11 +101,13 @@ fun AudioLibraryScreen(
                 title = {
                     Text(
                         text = "Audio Library",
-                        style = PaletteTheme.styles.text.headline,
+                        style = PaletteTheme.component.core.text.headline,
                     )
-                }
+                },
+                style = PaletteTheme.component.layout.topBar,
             )
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
             AudioLibraryUiState.InitialState -> {}
@@ -138,12 +140,12 @@ fun ContentReady(
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
-    val contentPadding = PaddingValues(horizontal = PaletteTheme.spacing.medium)
+    val contentPadding = PaddingValues(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
         .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
     val scrollState = rememberScrollState()
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)

@@ -39,7 +39,7 @@ import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.media.PlayPauseButton
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.copy
+import com.alexrdclement.palette.components.core.copy
 
 @Composable
 fun PlaylistItem(
@@ -85,13 +85,14 @@ fun PlaylistItem(
                     awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
                 }
             },
+        style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(vertical = PaletteTheme.spacing.small)
-                .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha),
+                .padding(vertical = PaletteTheme.semantic.dimension.spacing.small)
+                .alpha(if (isPlayable) 1f else PaletteTheme.semantic.color.disabledContentAlpha),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -105,7 +106,8 @@ fun PlaylistItem(
                         isEnabled = isPlayable,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(12.dp)
+                            .padding(12.dp),
+                        style = PaletteTheme.component.media.playPauseButton,
                     )
                 } else {
                     MediaItemArtwork(
@@ -121,18 +123,18 @@ fun PlaylistItem(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = PaletteTheme.spacing.small)
+                    .padding(horizontal = PaletteTheme.semantic.dimension.spacing.small)
             ) {
                 Text(
                     text = item.title,
-                    style = PaletteTheme.styles.text.titleMedium,
+                    style = PaletteTheme.component.core.text.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
                 )
                 Text(
                     text = artistNamesOrDefault(item.artists),
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
@@ -140,7 +142,7 @@ fun PlaylistItem(
             }
             Text(
                 text = remember { item.duration.formatShort() },
-                style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
+                style = PaletteTheme.component.core.text.bodyMedium.copy(textAlign = TextAlign.Center),
                 modifier = Modifier
                     .height(IntrinsicSize.Max)
                     .width(64.dp),

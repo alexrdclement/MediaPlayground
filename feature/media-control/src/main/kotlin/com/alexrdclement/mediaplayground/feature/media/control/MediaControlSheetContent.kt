@@ -19,7 +19,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
@@ -68,7 +67,7 @@ fun MediaControlSheetContent(
     onNavigateToArtistMetadata: () -> Unit = {},
     onNavigateToArtistDelete: () -> Unit = {},
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
     overlapState: MediaControlOverlapState? = null,
 ) {
     val nestedScrollConnection = remember(overlapState) {
@@ -138,10 +137,10 @@ fun MediaControlSheetContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = PaletteTheme.spacing.medium)
+                .padding(bottom = PaletteTheme.semantic.dimension.spacing.medium)
         ) {
-            HorizontalDivider()
-            Spacer(height = PaletteTheme.spacing.medium)
+            HorizontalDivider(style = PaletteTheme.component.core.divider)
+            Spacer(height = PaletteTheme.semantic.dimension.spacing.medium)
             TimeLabeledSeekbar(
                 playheadState = playheadState,
                 timelineState = timelineState,

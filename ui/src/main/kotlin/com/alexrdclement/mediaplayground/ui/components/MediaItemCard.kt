@@ -48,7 +48,7 @@ fun MediaItemCard(
     Surface(
         onClick = onClick,
         onLongClick = onLongClick?.let { { it(touchPosition) } },
-        borderStyle = PaletteTheme.styles.border.surface,
+        style = PaletteTheme.component.core.surface.container,
         modifier = modifier.pointerInput(Unit) {
             awaitEachGesture {
                 awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
@@ -56,7 +56,7 @@ fun MediaItemCard(
         },
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(PaletteTheme.semantic.dimension.spacing.medium),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -75,24 +75,25 @@ fun MediaItemCard(
                     onClick = onPlayPauseClick,
                     modifier = Modifier
                         .size(24.dp)
-                        .align(BiasAlignment(.8f, .8f))
+                        .align(BiasAlignment(.8f, .8f)),
+                    style = PaletteTheme.component.media.playPauseButton,
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(PaletteTheme.semantic.dimension.spacing.medium))
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
                     text = mediaItem.title,
-                    style = PaletteTheme.styles.text.titleMedium,
+                    style = PaletteTheme.component.core.text.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
                 )
                 Text(
                     text = artistNamesOrDefault(mediaItem.artists),
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()

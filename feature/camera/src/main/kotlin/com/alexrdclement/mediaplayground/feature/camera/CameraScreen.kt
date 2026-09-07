@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
+import com.alexrdclement.palette.components.core.copy
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import com.alexrdclement.mediaplayground.media.ui.CameraPreview
 import com.alexrdclement.palette.components.core.Button
@@ -39,7 +40,7 @@ fun CameraScreen(
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        color = PaletteTheme.colorScheme.surface,
+        style = PaletteTheme.component.core.surface.default,
     ) {
         when (cameraPermissionState.status) {
             is PermissionStatus.Denied -> {
@@ -51,8 +52,9 @@ fun CameraScreen(
                 ) {
                     Button(
                         onClick = cameraPermissionState::launchPermissionRequest,
+                        style = PaletteTheme.component.core.button.primary,
                     ) {
-                        Text("Request permission")
+                        Text("Request permission", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
                     }
                 }
             }

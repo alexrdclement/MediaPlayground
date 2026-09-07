@@ -30,7 +30,7 @@ fun TransportControlBar(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-            PaletteTheme.spacing.medium,
+            PaletteTheme.semantic.dimension.spacing.medium,
             alignment = Alignment.CenterHorizontally,
         ),
         modifier = modifier
@@ -40,19 +40,22 @@ fun TransportControlBar(
         SkipBackButton(
             onClick = onSkipBackClick,
             modifier = Modifier
-                .size(48.dp)
+                .size(PaletteTheme.semantic.dimension.size.touchTargetMin),
+            style = PaletteTheme.component.media.skipButton,
         )
         PlayPauseButton(
             isPlaying = transportState.isPlaying,
             onClick = onPlayPauseClick,
             onLongClick = onPlayPauseLongClick,
             modifier = Modifier
-                .size(72.dp)
+                .size(72.dp),
+            style = PaletteTheme.component.media.playPauseButton,
         )
         SkipButton(
             onClick = onSkipClick,
             modifier = Modifier
-                .size(48.dp)
+                .size(PaletteTheme.semantic.dimension.size.touchTargetMin),
+            style = PaletteTheme.component.media.skipButton,
         )
     }
 }

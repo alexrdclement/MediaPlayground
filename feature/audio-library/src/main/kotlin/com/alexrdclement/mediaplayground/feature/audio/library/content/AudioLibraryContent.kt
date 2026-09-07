@@ -17,15 +17,15 @@ import com.alexrdclement.palette.theme.PaletteTheme
 @Composable
 fun AudioLibraryContent(
     headerText: String,
-    headerPadding: PaddingValues = PaddingValues(0.dp),
+    headerPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
     headerAction: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PaletteTheme.spacing.small)
+            .padding(vertical = PaletteTheme.semantic.dimension.spacing.small)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -37,7 +37,7 @@ fun AudioLibraryContent(
         ) {
             Text(
                 text = headerText,
-                style = PaletteTheme.styles.text.titleLarge,
+                style = PaletteTheme.component.core.text.titleLarge,
             )
             headerAction?.invoke()
         }

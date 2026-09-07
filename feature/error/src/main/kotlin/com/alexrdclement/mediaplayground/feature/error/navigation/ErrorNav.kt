@@ -6,6 +6,7 @@ import com.alexrdclement.palette.components.layout.dialog.ErrorDialogContent
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.navigation.NavGraphBuilder
 import com.alexrdclement.palette.navigation.NavKey
+import com.alexrdclement.palette.theme.PaletteTheme
 
 fun NavGraphBuilder.errorNavGraph() {
     route(ErrorGraph(""))
@@ -20,6 +21,7 @@ fun EntryProviderScope<NavKey>.errorEntryProvider(
         ErrorDialogContent(
             message = route.message,
             onDismissRequest = navController::goBack,
+            style = PaletteTheme.component.layout.dialogContent,
         )
     }
 }

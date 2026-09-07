@@ -29,16 +29,18 @@ fun <T : CatalogItem> CatalogScreen(
         topBar = {
             TopBar(
                 title = title?.let {
-                    { Text(title, style = PaletteTheme.styles.text.titleMedium) }
+                    { Text(title, style = PaletteTheme.component.core.text.titleMedium) }
                 },
                 navButton = onNavigateBack?.let {
-                    { BackNavigationButton(onNavigateBack) }
+                    { BackNavigationButton(onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) }
                 },
                 actions = actions,
+                style = PaletteTheme.component.layout.topBar,
             )
         },
         modifier = Modifier
-            .safeDrawingPadding()
+            .safeDrawingPadding(),
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         Catalog(
             items = items,
@@ -46,7 +48,8 @@ fun <T : CatalogItem> CatalogScreen(
             contentPadding = innerPadding,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = PaletteTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium),
+            style = PaletteTheme.component.layout.catalog,
         )
     }
 }

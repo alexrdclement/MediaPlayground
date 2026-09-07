@@ -6,6 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.palette.components.layout.dialog.DeleteConfirmationDialogContent
 import com.alexrdclement.palette.components.layout.dialog.IndeterminateProgressDialogContent
+import com.alexrdclement.palette.components.layout.dialog.ProgressDialogContentStyle
+import com.alexrdclement.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
@@ -28,9 +30,14 @@ fun ArtistDeleteScreen(
             contentTitle = displayName,
             onConfirm = viewModel::onDeleteConfirmed,
             onDismissRequest = onNavigateBack,
+            style = PaletteTheme.component.layout.dialogContent,
         )
         DeleteState.Deleting, DeleteState.Deleted -> IndeterminateProgressDialogContent(
             title = "Deleting",
+            style = ProgressDialogContentStyle(
+                dialogContentStyle = PaletteTheme.component.layout.dialogContent,
+                progressIndicatorStyle = PaletteTheme.component.core.progressIndicator,
+            ),
         )
     }
 }

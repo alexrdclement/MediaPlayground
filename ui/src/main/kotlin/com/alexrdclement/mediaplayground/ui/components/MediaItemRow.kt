@@ -51,20 +51,20 @@ fun MediaItemRow(
     itemOverlayContent: (@Composable BoxScope.(MediaItemUi, Boolean, Offset, () -> Unit) -> Unit)? = null,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
         modifier = modifier
     ) {
         if (title != null) {
             Text(
                 text = title,
-                style = PaletteTheme.styles.text.titleMedium,
+                style = PaletteTheme.component.core.text.titleMedium,
                 modifier = Modifier.padding(contentPadding),
             )
         }
 
         LazyRow(
             state = lazyListState,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
             contentPadding = contentPadding,
             modifier = Modifier,
         ) {
@@ -109,7 +109,7 @@ fun MediaItemRow(
 
             if (mediaItems.loadState.append == LoadState.Loading) {
                 item {
-                    IndeterminateProgressIndicator()
+                    IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
                 }
             }
         }

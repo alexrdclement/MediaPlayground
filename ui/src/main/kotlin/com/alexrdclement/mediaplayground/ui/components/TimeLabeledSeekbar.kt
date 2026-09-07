@@ -46,7 +46,7 @@ fun TimeLabeledSeekbar(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         modifier = modifier
     ) {
         Seekbar(
@@ -56,21 +56,21 @@ fun TimeLabeledSeekbar(
             onSeek = onSeek,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = PaletteTheme.spacing.large)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.large)
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = PaletteTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         ) {
             Text(
                 text = displayPosition.formatShort(),
-                style = PaletteTheme.styles.text.bodySmall,
+                style = PaletteTheme.component.core.text.bodySmall,
             )
             Text(
                 text = remember(timelineState) { (timelineState?.duration ?: Duration.ZERO).formatShort() },
-                style = PaletteTheme.styles.text.bodySmall,
+                style = PaletteTheme.component.core.text.bodySmall,
             )
         }
     }

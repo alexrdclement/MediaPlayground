@@ -28,7 +28,7 @@ fun PlayerScreen(
         modifier = Modifier
             .statusBarsPadding()
             .fillMaxSize(),
-        color = PaletteTheme.colorScheme.surface,
+        style = PaletteTheme.component.core.surface.default,
     ) {
         if (mediaSessionState != null) {
             MediaPlayer(

@@ -129,7 +129,7 @@ private fun LoadedContent(
     BoxWithConstraints {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
             contentPadding = WindowInsets.safeDrawing.asPaddingValues().plus(
                 mediaControlSheetPaddingValues(state.isMediaItemLoaded),
             ),
@@ -188,7 +188,7 @@ private fun LoadedContent(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = PaletteTheme.spacing.small)
+                        .padding(vertical = PaletteTheme.semantic.dimension.spacing.small)
                 )
             }
             item {
@@ -198,7 +198,8 @@ private fun LoadedContent(
                     onClick = onAlbumPlayPauseClick,
                     modifier = Modifier
                         .size(72.dp)
-                        .padding(vertical = PaletteTheme.spacing.small)
+                        .padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
+                    style = PaletteTheme.component.media.playPauseButton,
                 )
             }
             items(
