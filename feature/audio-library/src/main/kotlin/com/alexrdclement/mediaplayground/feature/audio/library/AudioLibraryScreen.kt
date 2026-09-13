@@ -120,9 +120,9 @@ fun AudioLibraryScreen(
                 onNavigateToAlbumDelete = onNavigateToAlbumDelete,
                 onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                 onNavigateToTrackDelete = onNavigateToTrackDelete,
+                contentPadding = innerPadding,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
             )
         }
     }
@@ -135,20 +135,24 @@ fun ContentReady(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
-    val contentPadding = PaddingValues(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
+    val rowContentPadding = PaddingValues(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
         .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
     val scrollState = rememberScrollState()
     Column(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
+        // Padding applied inside the scroll so content scrolls under the top bar, matching the
+        // overlay layout Scaffold's content padding is meant for.
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
+            .padding(contentPadding)
     ) {
         LocalContent(
             localContentState = uiState.localContentState,
@@ -159,7 +163,7 @@ fun ContentReady(
             onNavigateToAlbumDelete = onNavigateToAlbumDelete,
             onNavigateToTrackMetadata = onNavigateToTrackMetadata,
             onNavigateToTrackDelete = onNavigateToTrackDelete,
-            contentPadding = contentPadding,
+            contentPadding = rowContentPadding,
         )
         Spacer(
             modifier = Modifier
