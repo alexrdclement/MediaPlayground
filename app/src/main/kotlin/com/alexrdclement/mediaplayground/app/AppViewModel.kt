@@ -3,9 +3,9 @@ package com.alexrdclement.mediaplayground.app
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexrdclement.logging.LogLevel
-import com.alexrdclement.logging.Logger
-import com.alexrdclement.uievent.toUiEvent
+import com.embarrasdf.logging.LogLevel
+import com.embarrasdf.logging.Logger
+import com.embarrasdf.uievent.toUiEvent
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

@@ -7,8 +7,8 @@ import com.alexrdclement.mediaplayground.media.model.Album
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
-import com.alexrdclement.uievent.UiEventState
-import com.alexrdclement.uievent.fire
+import com.embarrasdf.uievent.UiEventState
+import com.embarrasdf.uievent.fire
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject

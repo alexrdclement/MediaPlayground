@@ -1,8 +1,8 @@
 package com.alexrdclement.mediaplayground.app.di
 
 import androidx.lifecycle.ViewModel
-import com.alexrdclement.logging.Logger
-import com.alexrdclement.logging.LoggerImpl
+import com.embarrasdf.logging.Logger
+import com.embarrasdf.logging.LoggerImpl
 import com.alexrdclement.mediaplayground.app.AppViewModel
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer

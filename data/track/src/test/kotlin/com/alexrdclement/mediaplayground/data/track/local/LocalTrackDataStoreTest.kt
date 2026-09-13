@@ -12,7 +12,7 @@ import com.alexrdclement.mediaplayground.media.model.FakeLocalTrack1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalTrack2
 import com.alexrdclement.mediaplayground.media.model.FakeSimpleArtist1
 import com.alexrdclement.mediaplayground.media.model.FakeSimpleArtist2
-import com.alexrdclement.testing.MainDispatcherRule
+import com.embarrasdf.testing.MainDispatcherRule
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

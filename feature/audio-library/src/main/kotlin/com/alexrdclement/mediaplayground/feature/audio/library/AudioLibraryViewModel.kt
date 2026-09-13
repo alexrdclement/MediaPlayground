@@ -17,9 +17,9 @@ import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.media.model.Album
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.logging.Logger
-import com.alexrdclement.logging.error
-import com.alexrdclement.logging.infoString
+import com.embarrasdf.logging.Logger
+import com.embarrasdf.logging.error
+import com.embarrasdf.logging.infoString
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted

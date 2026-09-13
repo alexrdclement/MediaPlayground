@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.data.track.local
 
-import com.alexrdclement.logging.Loggable
+import com.embarrasdf.logging.Loggable
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.model.Track
 

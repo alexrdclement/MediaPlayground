@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.feature.album
 
-import com.alexrdclement.logging.Loggable
+import com.embarrasdf.logging.Loggable
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError as EnginePlaylistError
 
 sealed class AlbumUiError(

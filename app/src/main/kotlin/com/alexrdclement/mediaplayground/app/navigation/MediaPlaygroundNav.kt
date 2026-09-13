@@ -58,7 +58,7 @@ import com.alexrdclement.palette.navigation.navGraph
 import com.alexrdclement.palette.navigation.rememberNavController
 import com.alexrdclement.palette.navigation.rememberNavState
 import com.alexrdclement.palette.navigation.toPathSegment
-import com.alexrdclement.uievent.UiEventState
+import com.embarrasdf.uievent.UiEventState
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

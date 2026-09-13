@@ -15,8 +15,8 @@ import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.media.model.largeImageUrl
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
-import com.alexrdclement.logging.Logger
-import com.alexrdclement.logging.error
+import com.embarrasdf.logging.Logger
+import com.embarrasdf.logging.error
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject

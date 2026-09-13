@@ -19,16 +19,16 @@ kotlinx-io = "0.9.1"
 kotlinx-serialization-json = "1.11.0"
 lifecycle-runtime-compose = "2.10.0"
 lifecycle-runtime-ktx = "2.10.0"
-logging = "0.0.22"
-maindispatcher-rule = "0.0.13"
+logging = "0.0.26"
+maindispatcher-rule = "0.0.36"
 media3 = "1.11.1"
 metro = "1.4.3"
 paging = "3.5.1"
 palette = "0.0.115"
 room = "2.8.5"
-trace = "0.0.5"
+trace = "0.0.17"
 turbine = "1.2.1"
-uievent = "0.0.7"
+uievent = "0.0.19"
 
 [libraries]
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx-activity" }
@@ -55,10 +55,10 @@ kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", v
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
-loggable = { group = "com.alexrdclement.logging", name = "loggable", version.ref = "logging" }
-logger-api = { group = "com.alexrdclement.logging", name = "logger-api", version.ref = "logging" }
-logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
-maindispatcher-rule = { group = "com.alexrdclement.testing", name = "maindispatcher-rule", version.ref = "maindispatcher-rule" }
+loggable = { group = "com.embarrasdf.logging", name = "loggable", version.ref = "logging" }
+logger-api = { group = "com.embarrasdf.logging", name = "logger-api", version.ref = "logging" }
+logger-impl = { group = "com.embarrasdf.logging", name = "logger-impl", version.ref = "logging" }
+maindispatcher-rule = { group = "com.embarrasdf.testing", name = "maindispatcher-rule", version.ref = "maindispatcher-rule" }
 metro-gradle-plugin = { group = "dev.zacsweers.metro", name = "gradle-plugin", version.ref = "metro" }
 metrox-viewmodel-compose = { group = "dev.zacsweers.metro", name = "metrox-viewmodel-compose", version.ref = "metro" }
 media3-cast = { group = "androidx.media3", name = "media3-cast", version.ref = "media3" }
@@ -76,9 +76,9 @@ palette-components = { group = "com.alexrdclement.palette", name = "palette-comp
 palette-navigation = { group = "com.alexrdclement.palette", name = "palette-navigation", version.ref = "palette" }
 palette-theme = { group = "com.alexrdclement.palette", name = "palette-theme", version.ref = "palette" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
-trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }
+trace = { group = "com.embarrasdf.trace", name = "trace", version.ref = "trace" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
+uievent = { group = "com.embarrasdf.uievent", name = "uievent", version.ref = "uievent" }
 
 [plugins]
 embarrasdf-android-application = { id = "com.embarrasdf.gradle.plugin.android.application", version.ref = "embarrasdf-gradle-plugins" }

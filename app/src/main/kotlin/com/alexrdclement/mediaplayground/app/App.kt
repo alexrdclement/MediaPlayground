@@ -7,7 +7,7 @@ import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
-import com.alexrdclement.uievent.UiEventState
+import com.embarrasdf.uievent.UiEventState
 
 @Composable
 fun App(
