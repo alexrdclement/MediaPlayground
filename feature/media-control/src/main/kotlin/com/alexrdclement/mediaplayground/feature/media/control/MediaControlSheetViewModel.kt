@@ -2,8 +2,8 @@ package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexrdclement.logging.Logger
-import com.alexrdclement.logging.error
+import com.embarrasdf.logging.Logger
+import com.embarrasdf.logging.error
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError

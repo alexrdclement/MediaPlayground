@@ -1,6 +1,6 @@
 package com.alexrdclement.mediaplayground.media.mediaimport.model
 
-import com.alexrdclement.logging.Loggable
+import com.embarrasdf.logging.Loggable
 
 
 sealed class MediaImportError : Loggable {

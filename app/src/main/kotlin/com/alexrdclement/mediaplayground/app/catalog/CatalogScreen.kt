@@ -13,7 +13,7 @@ import com.alexrdclement.palette.components.layout.catalog.Catalog
 import com.alexrdclement.palette.components.layout.catalog.CatalogItem
 import com.alexrdclement.palette.components.navigation.BackNavigationButton
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.trace.ReportDrawn
+import com.embarrasdf.trace.ReportDrawn
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(

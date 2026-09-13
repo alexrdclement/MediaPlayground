@@ -4,7 +4,7 @@ import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
-import com.alexrdclement.testing.MainDispatcherRule
+import com.embarrasdf.testing.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

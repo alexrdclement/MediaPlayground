@@ -92,9 +92,9 @@ val includeLogging = localProps.getProperty("includeLogging")?.toBoolean() ?: fa
 if (includeLogging && file("../logging").exists()) {
     includeBuild("../logging") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.logging:logger-api")).using(project(":logger-api"))
-            substitute(module("com.alexrdclement.logging:logger-impl")).using(project(":logger-impl"))
-            substitute(module("com.alexrdclement.logging:loggable")).using(project(":loggable"))
+            substitute(module("com.embarrasdf.logging:logger-api")).using(project(":logger-api"))
+            substitute(module("com.embarrasdf.logging:logger-impl")).using(project(":logger-impl"))
+            substitute(module("com.embarrasdf.logging:loggable")).using(project(":loggable"))
         }
     }
 }
@@ -103,8 +103,8 @@ val includeTesting = localProps.getProperty("includeTesting")?.toBoolean() ?: fa
 if (includeTesting && file("../testing").exists()) {
     includeBuild("../testing") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.testing:maindispatcher-rule")).using(project(":maindispatcher-rule"))
-            substitute(module("com.alexrdclement.testing:maindispatcher-extension")).using(project(":maindispatcher-extension"))
+            substitute(module("com.embarrasdf.testing:maindispatcher-rule")).using(project(":maindispatcher-rule"))
+            substitute(module("com.embarrasdf.testing:maindispatcher-extension")).using(project(":maindispatcher-extension"))
         }
     }
 }
@@ -113,7 +113,7 @@ val includeUievent = localProps.getProperty("includeUievent")?.toBoolean() ?: fa
 if (includeUievent && file("../uievent").exists()) {
     includeBuild("../uievent") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.uievent:uievent")).using(project(":uievent"))
+            substitute(module("com.embarrasdf.uievent:uievent")).using(project(":uievent"))
         }
     }
 }

@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.data.artist.local
 import com.alexrdclement.mediaplayground.data.artist.local.mapper.toArtistEntity
 import com.alexrdclement.mediaplayground.database.fakes.FakeArtistDao
 import com.alexrdclement.mediaplayground.media.model.FakeSimpleArtist1
-import com.alexrdclement.testing.MainDispatcherRule
+import com.embarrasdf.testing.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
