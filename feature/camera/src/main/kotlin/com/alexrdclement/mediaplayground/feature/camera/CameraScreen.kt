@@ -2,7 +2,7 @@ package com.alexrdclement.mediaplayground.feature.camera
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,9 +46,11 @@ fun CameraScreen(
             is PermissionStatus.Denied -> {
                 Box(
                     contentAlignment = Alignment.Center,
+                    // safeDrawing rather than statusBars: insetting only the top shifts the
+                    // centered content down by half the status bar height.
                     modifier = Modifier
                         .fillMaxSize()
-                        .statusBarsPadding()
+                        .safeDrawingPadding()
                 ) {
                     Button(
                         onClick = cameraPermissionState::launchPermissionRequest,

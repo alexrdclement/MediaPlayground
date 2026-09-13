@@ -21,22 +21,27 @@ fun <T : CatalogItem> CatalogScreen(
     onItemClick: (T) -> Unit,
     title: String? = null,
     onNavigateBack: (() -> Unit)? = null,
-    actions: @Composable () -> Unit = {}
+    actions: (@Composable () -> Unit)? = null,
 ) {
     ReportDrawn()
 
     Scaffold(
+        // Only show a top bar when there is something in it. An empty TopBar still reserves its
+        // minimum height, which offsets the Scaffold's content padding and pushes the vertically
+        // centered catalog off center.
         topBar = {
-            TopBar(
-                title = title?.let {
-                    { Text(title, style = PaletteTheme.component.core.text.titleMedium) }
-                },
-                navButton = onNavigateBack?.let {
-                    { BackNavigationButton(onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) }
-                },
-                actions = actions,
-                style = PaletteTheme.component.layout.topBar,
-            )
+            if (title != null || onNavigateBack != null || actions != null) {
+                TopBar(
+                    title = title?.let {
+                        { Text(title, style = PaletteTheme.component.core.text.titleMedium) }
+                    },
+                    navButton = onNavigateBack?.let {
+                        { BackNavigationButton(onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) }
+                    },
+                    actions = actions,
+                    style = PaletteTheme.component.layout.topBar,
+                )
+            }
         },
         modifier = Modifier
             .safeDrawingPadding(),
