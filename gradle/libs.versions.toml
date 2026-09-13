@@ -26,7 +26,7 @@ metro = "1.4.3"
 paging = "3.5.1"
 palette = "0.0.115"
 room = "2.8.5"
-trace = "0.0.5"
+trace = "0.0.14"
 turbine = "1.2.1"
 uievent = "0.0.7"
 
