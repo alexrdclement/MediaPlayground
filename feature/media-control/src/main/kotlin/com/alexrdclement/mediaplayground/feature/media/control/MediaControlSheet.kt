@@ -19,8 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,19 +32,19 @@ import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.largeImageUrl
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.palette.components.layout.PeekSheetState
-import com.alexrdclement.palette.components.media.model.Artist
-import com.alexrdclement.palette.components.util.calculateHorizontalPaddingValues
-import com.alexrdclement.palette.components.util.copy
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.layout.PeekSheetState
+import com.embarrasdf.palette.components.media.model.Artist
+import com.embarrasdf.palette.components.util.calculateHorizontalPaddingValues
+import com.embarrasdf.palette.components.util.copy
+import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import kotlin.time.Duration
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.coroutines.launch
 import com.alexrdclement.mediaplayground.ui.R as UiR
-import com.alexrdclement.palette.components.media.MediaControlSheet as MediaControlSheetComponent
-import com.alexrdclement.palette.components.media.model.MediaItem as UiMediaItem
+import com.embarrasdf.palette.components.media.MediaControlSheet as MediaControlSheetComponent
+import com.embarrasdf.palette.components.media.model.MediaItem as UiMediaItem
 
 @Composable
 fun MediaControlSheet(

@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.PaletteTheme
 
 /**
  * Collapsed (peek) height of the media control sheet, sourced from the palette theme so it stays

@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
@@ -36,10 +35,11 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingVa
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.media.PlayPauseButton
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
 fun AlbumScreen(

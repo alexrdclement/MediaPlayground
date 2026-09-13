@@ -35,13 +35,13 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
-import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.core.copy
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Button
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.components.layout.Scaffold
+import com.embarrasdf.palette.components.layout.TopBar
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 

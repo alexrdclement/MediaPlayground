@@ -2,10 +2,10 @@ package com.alexrdclement.mediaplayground.feature.album
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.menu.ContextMenu
-import com.alexrdclement.palette.components.menu.DropdownMenuItem
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.menu.ContextMenu
+import com.embarrasdf.palette.components.menu.DropdownMenuItem
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun AlbumContextMenu(

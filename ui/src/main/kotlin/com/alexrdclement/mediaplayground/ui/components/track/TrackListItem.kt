@@ -21,9 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,11 +31,11 @@ import com.alexrdclement.mediaplayground.media.model.SimpleTrack
 import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.media.PlayPauseButton
-import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.components.core.copy
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun TrackListItem(

@@ -28,10 +28,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.IndeterminateProgressIndicator
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
 
 val MediaItemWidthDefault = 280.dp

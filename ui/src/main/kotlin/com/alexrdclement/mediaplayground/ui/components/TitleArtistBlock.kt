@@ -20,9 +20,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.components.core.copy
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun TitleArtistBlock(

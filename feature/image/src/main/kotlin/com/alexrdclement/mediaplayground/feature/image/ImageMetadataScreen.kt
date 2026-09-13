@@ -2,13 +2,13 @@ package com.alexrdclement.mediaplayground.feature.image
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.isImeVisible
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -23,17 +23,17 @@ import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
-import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.core.TextField
-import com.alexrdclement.palette.components.core.copy
-import com.alexrdclement.palette.components.layout.FloatingAction
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.components.navigation.BackNavigationButton
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Button
+import com.embarrasdf.palette.components.core.IndeterminateProgressIndicator
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextField
+import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.components.layout.FloatingAction
+import com.embarrasdf.palette.components.layout.Scaffold
+import com.embarrasdf.palette.components.layout.TopBar
+import com.embarrasdf.palette.components.navigation.BackNavigationButton
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable

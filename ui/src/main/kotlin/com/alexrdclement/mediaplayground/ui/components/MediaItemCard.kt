@@ -29,10 +29,10 @@ import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.media.PlayPauseButton
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun MediaItemCard(

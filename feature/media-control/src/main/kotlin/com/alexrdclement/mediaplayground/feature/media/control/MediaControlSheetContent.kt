@@ -1,12 +1,12 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
-import androidx.compose.runtime.Stable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,7 +19,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
-import kotlin.math.roundToInt
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
@@ -29,14 +28,15 @@ import com.alexrdclement.mediaplayground.ui.components.TransportControlBar
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
-import com.alexrdclement.palette.components.core.HorizontalDivider
-import com.alexrdclement.palette.components.media.model.Artist
-import com.alexrdclement.palette.components.media.model.MediaItem
-import com.alexrdclement.palette.components.util.Spacer
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.HorizontalDivider
+import com.embarrasdf.palette.components.media.model.Artist
+import com.embarrasdf.palette.components.media.model.MediaItem
+import com.embarrasdf.palette.components.util.Spacer
+import com.embarrasdf.palette.theme.PaletteTheme
+import kotlin.math.roundToInt
+import kotlin.time.Duration
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlin.time.Duration
 
 @Stable
 class MediaControlOverlapState(val maxOverlapPx: Float) {
