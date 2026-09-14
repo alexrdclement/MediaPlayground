@@ -19,6 +19,7 @@ import com.alexrdclement.mediaplayground.feature.audio.library.TrackContextMenu
 import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
 import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
+import com.alexrdclement.mediaplayground.ui.theme.component.media.mediaItemRow
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
@@ -120,8 +121,10 @@ private fun Content(
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Imported albums",
-            itemWidth = MediaItemWidthCompact,
-            contentPadding = contentPadding,
+            style = PaletteTheme.component.media.mediaItemRow.copy(
+                contentPadding = contentPadding,
+                itemWidth = MediaItemWidthCompact,
+            ),
             itemOverlayContent = { mediaItemUi, expanded, offset, onDismiss ->
                 AlbumContextMenu(
                     expanded = expanded,
@@ -137,8 +140,10 @@ private fun Content(
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Imported tracks",
-            itemWidth = MediaItemWidthCompact,
-            contentPadding = contentPadding,
+            style = PaletteTheme.component.media.mediaItemRow.copy(
+                contentPadding = contentPadding,
+                itemWidth = MediaItemWidthCompact,
+            ),
             itemOverlayContent = { mediaItemUi, expanded, offset, onDismiss ->
                 TrackContextMenu(
                     expanded = expanded,

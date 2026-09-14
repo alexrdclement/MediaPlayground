@@ -31,6 +31,7 @@ import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
+import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingValues
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
@@ -216,6 +217,7 @@ private fun LoadedContent(
                         isPlaying = trackUi.isPlaying,
                         onClick = { onTrackClick(trackUi) },
                         onPlayPauseClick = { onTrackPlayPauseClick(trackUi) },
+                        style = PaletteTheme.component.media.trackListItem,
                         onLongClick = { offset ->
                             trackOptionsTouchOffset = offset
                             trackOptionsExpanded = true

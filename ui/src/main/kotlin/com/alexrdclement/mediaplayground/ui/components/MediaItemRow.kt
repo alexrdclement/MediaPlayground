@@ -26,15 +26,28 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.theme.component.media.mediaItemRow
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
 import com.embarrasdf.palette.components.core.IndeterminateProgressIndicator
+import com.embarrasdf.palette.components.core.ProgressIndicatorStyle
 import com.embarrasdf.palette.components.core.Surface
 import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextStyle
 import com.embarrasdf.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
 
 val MediaItemWidthDefault = 280.dp
 val MediaItemWidthCompact = 200.dp
+
+data class MediaItemRowStyle(
+    val contentPadding: PaddingValues = PaddingValues(0.dp),
+    val contentSpacing: Dp = 16.dp,
+    val itemSpacing: Dp = 16.dp,
+    val itemWidth: Dp = MediaItemWidthDefault,
+    val titleStyle: TextStyle = TextStyle(),
+    val itemStyle: MediaItemCardStyle = MediaItemCardStyle(),
+    val progressIndicatorStyle: ProgressIndicatorStyle = ProgressIndicatorStyle(),
+)
 
 @Composable
 fun MediaItemRow(
@@ -42,29 +55,28 @@ fun MediaItemRow(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
+    style: MediaItemRowStyle = MediaItemRowStyle(),
     lazyListState: LazyListState = rememberLazyListState(),
-    contentPadding: PaddingValues = PaddingValues(),
-    itemWidth: Dp = MediaItemWidthDefault,
     title: String? = null,
     onItemLongClick: ((MediaItemUi) -> Unit)? = null,
     itemOverlayContent: (@Composable BoxScope.(MediaItemUi, Boolean, Offset, () -> Unit) -> Unit)? = null,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
         modifier = modifier
     ) {
         if (title != null) {
             Text(
                 text = title,
-                style = PaletteTheme.component.core.text.titleMedium,
-                modifier = Modifier.padding(contentPadding),
+                style = style.titleStyle,
+                modifier = Modifier.padding(style.contentPadding),
             )
         }
 
         LazyRow(
             state = lazyListState,
-            horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
-            contentPadding = contentPadding,
+            horizontalArrangement = Arrangement.spacedBy(style.itemSpacing),
+            contentPadding = style.contentPadding,
             modifier = Modifier,
         ) {
             items(
@@ -87,7 +99,8 @@ fun MediaItemRow(
                                 dropdownExpanded = true
                                 onItemLongClick?.invoke(mediaItem)
                             },
-                            modifier = Modifier.width(itemWidth),
+                            modifier = Modifier.width(style.itemWidth),
+                            style = style.itemStyle,
                         )
                         if (dropdownExpanded) {
                             itemOverlayContent(this, mediaItem, true, touchOffset) { dropdownExpanded = false }
@@ -101,14 +114,15 @@ fun MediaItemRow(
                         onClick = { onItemClick(mediaItem) },
                         onPlayPauseClick = { onItemPlayPauseClick(mediaItem) },
                         onLongClick = onItemLongClick?.let { { it(mediaItem) } },
-                        modifier = Modifier.width(itemWidth),
+                        modifier = Modifier.width(style.itemWidth),
+                        style = style.itemStyle,
                     )
                 }
             }
 
             if (mediaItems.loadState.append == LoadState.Loading) {
                 item {
-                    IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
+                    IndeterminateProgressIndicator(style = style.progressIndicatorStyle)
                 }
             }
         }
@@ -126,6 +140,7 @@ private fun Preview() {
                 mediaItems = tracks.collectAsLazyPagingItems(),
                 onItemClick = {},
                 onItemPlayPauseClick = {},
+                style = PaletteTheme.component.media.mediaItemRow,
             )
         }
     }

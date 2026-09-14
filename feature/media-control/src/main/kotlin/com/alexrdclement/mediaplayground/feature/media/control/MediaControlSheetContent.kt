@@ -25,6 +25,7 @@ import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbar
 import com.alexrdclement.mediaplayground.ui.components.TransportControlBar
+import com.alexrdclement.mediaplayground.ui.theme.component.media.transportControlBar
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
@@ -156,6 +157,7 @@ fun MediaControlSheetContent(
                 onPlayPauseLongClick = onPlayPauseLongClick,
                 onSkipClick = onSkipClick,
                 onSkipBackClick = onSkipBackClick,
+                style = PaletteTheme.component.media.transportControlBar,
             )
         }
     }
