@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -81,7 +82,7 @@ fun TrackListItem(
                         isEnabled = isPlayable,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(12.dp),
+                            .padding(PaddingValues(PaletteTheme.semantic.dimension.spacing.small)),
                         style = PaletteTheme.component.media.playPauseButton,
                     )
                 } else {
