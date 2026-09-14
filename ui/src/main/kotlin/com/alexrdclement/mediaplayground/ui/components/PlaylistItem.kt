@@ -1,4 +1,4 @@
-package com.alexrdclement.mediaplayground.feature.media.control
+package com.alexrdclement.mediaplayground.ui.components
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -26,29 +26,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
-import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.theme.component.media.playlistItem
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
 import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.core.SurfaceStyle
 import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.components.core.TextStyle
 import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.components.media.PlayPauseButtonStyle
 import com.embarrasdf.palette.theme.PaletteTheme
+
+data class PlaylistItemStyle(
+    val contentPadding: PaddingValues = PaddingValues(vertical = 8.dp),
+    val leadingContentSize: Dp = 52.dp,
+    val playPauseButtonPadding: PaddingValues = PaddingValues(8.dp),
+    val textPadding: PaddingValues = PaddingValues(horizontal = 8.dp),
+    val durationWidth: Dp = 64.dp,
+    val disabledContentAlpha: Float = 0.38f,
+    val titleStyle: TextStyle = TextStyle(),
+    val artistStyle: TextStyle = TextStyle(),
+    val durationStyle: TextStyle = TextStyle(),
+    val playPauseButtonStyle: PlayPauseButtonStyle = PlayPauseButtonStyle(),
+    val surfaceStyle: SurfaceStyle = SurfaceStyle(),
+)
 
 @Composable
 fun PlaylistItem(
     item: MediaItemUi,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
-    onLongClick: ((Offset) -> Unit)? = null,
     modifier: Modifier = Modifier,
+    style: PlaylistItemStyle = PlaylistItemStyle(),
+    onLongClick: ((Offset) -> Unit)? = null,
 ) {
     PlaylistItem(
         item = item.mediaItem,
@@ -57,8 +74,9 @@ fun PlaylistItem(
         isPlaying = item.isPlaying,
         onClick = onClick,
         onPlayPauseClick = onPlayPauseClick,
-        onLongClick = onLongClick,
         modifier = modifier,
+        style = style,
+        onLongClick = onLongClick,
     )
 }
 
@@ -70,8 +88,9 @@ fun PlaylistItem(
     isPlaying: Boolean,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
-    onLongClick: ((Offset) -> Unit)? = null,
     modifier: Modifier = Modifier,
+    style: PlaylistItemStyle = PlaylistItemStyle(),
+    onLongClick: ((Offset) -> Unit)? = null,
 ) {
     var touchPosition by remember { mutableStateOf(Offset.Zero) }
     Surface(
@@ -86,19 +105,19 @@ fun PlaylistItem(
                     awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
                 }
             },
-        style = PaletteTheme.component.core.surface.default,
+        style = style.surfaceStyle,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(vertical = PaletteTheme.semantic.dimension.spacing.small)
-                .alpha(if (isPlayable) 1f else PaletteTheme.semantic.color.disabledContentAlpha),
+                .padding(style.contentPadding)
+                .alpha(if (isPlayable) 1f else style.disabledContentAlpha),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(52.dp)
+                    .size(style.leadingContentSize)
             ) {
                 if (isLoaded) {
                     PlayPauseButton(
@@ -107,8 +126,8 @@ fun PlaylistItem(
                         isEnabled = isPlayable,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(PaddingValues(PaletteTheme.semantic.dimension.spacing.small)),
-                        style = PaletteTheme.component.media.playPauseButton,
+                            .padding(style.playPauseButtonPadding),
+                        style = style.playPauseButtonStyle,
                     )
                 } else {
                     MediaItemArtwork(
@@ -124,18 +143,18 @@ fun PlaylistItem(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = PaletteTheme.semantic.dimension.spacing.small)
+                    .padding(style.textPadding)
             ) {
                 Text(
                     text = item.title,
-                    style = PaletteTheme.component.core.text.titleMedium,
+                    style = style.titleStyle,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
                 )
                 Text(
                     text = artistNamesOrDefault(item.artists),
-                    style = PaletteTheme.component.core.text.bodyMedium,
+                    style = style.artistStyle,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
@@ -143,10 +162,10 @@ fun PlaylistItem(
             }
             Text(
                 text = remember { item.duration.formatShort() },
-                style = PaletteTheme.component.core.text.bodyMedium.copy(textAlign = TextAlign.Center),
+                style = style.durationStyle,
                 modifier = Modifier
                     .height(IntrinsicSize.Max)
-                    .width(64.dp),
+                    .width(style.durationWidth),
             )
         }
     }
@@ -163,6 +182,7 @@ private fun PreviewNotLoaded() {
             isPlaying = false,
             onClick = {},
             onPlayPauseClick = {},
+            style = PaletteTheme.component.media.playlistItem,
         )
     }
 }
@@ -178,6 +198,7 @@ private fun PreviewLoaded() {
             isPlaying = false,
             onClick = {},
             onPlayPauseClick = {},
+            style = PaletteTheme.component.media.playlistItem,
         )
     }
 }
