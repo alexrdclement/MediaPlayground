@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
@@ -127,9 +126,6 @@ private fun Preview() {
                 mediaItems = tracks.collectAsLazyPagingItems(),
                 onItemClick = {},
                 onItemPlayPauseClick = {},
-                modifier = Modifier
-                    .height(360.dp)
-                    .padding(16.dp)
             )
         }
     }

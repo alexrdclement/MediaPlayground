@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -106,7 +107,7 @@ fun PlaylistItem(
                         isEnabled = isPlayable,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(12.dp),
+                            .padding(PaddingValues(PaletteTheme.semantic.dimension.spacing.small)),
                         style = PaletteTheme.component.media.playPauseButton,
                     )
                 } else {
@@ -153,11 +154,26 @@ fun PlaylistItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun Preview() {
+private fun PreviewNotLoaded() {
     PaletteTheme {
         PlaylistItem(
             item = PreviewTrack1,
             isLoaded = false,
+            isPlayable = false,
+            isPlaying = false,
+            onClick = {},
+            onPlayPauseClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewLoaded() {
+    PaletteTheme {
+        PlaylistItem(
+            item = PreviewTrack1,
+            isLoaded = true,
             isPlayable = false,
             isPlaying = false,
             onClick = {},
