@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.embarrasdf.palette.components.core.ButtonDefaults
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.theme.PaletteTheme
 
@@ -32,7 +32,7 @@ fun AudioLibraryContent(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .sizeIn(minHeight = 40.dp) // Match min button height
+                .sizeIn(minHeight = ButtonDefaults.MinHeight)
                 .padding(headerPadding)
         ) {
             Text(
