@@ -1,12 +1,12 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
-import androidx.compose.runtime.Stable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,25 +19,25 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import kotlin.math.roundToInt
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbar
 import com.alexrdclement.mediaplayground.ui.components.TransportControlBar
+import com.alexrdclement.mediaplayground.ui.theme.component.media.transportControlBar
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
-import com.alexrdclement.palette.components.core.HorizontalDivider
-import com.alexrdclement.palette.components.media.model.Artist
-import com.alexrdclement.palette.components.media.model.MediaItem
-import com.alexrdclement.palette.components.util.Spacer
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.HorizontalDivider
+import com.embarrasdf.palette.components.media.model.Artist
+import com.embarrasdf.palette.components.media.model.MediaItem
+import com.embarrasdf.palette.components.util.Spacer
+import com.embarrasdf.palette.theme.PaletteTheme
+import kotlin.math.roundToInt
+import kotlin.time.Duration
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlin.time.Duration
 
 @Stable
 class MediaControlOverlapState(val maxOverlapPx: Float) {
@@ -68,7 +68,7 @@ fun MediaControlSheetContent(
     onNavigateToArtistMetadata: () -> Unit = {},
     onNavigateToArtistDelete: () -> Unit = {},
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
     overlapState: MediaControlOverlapState? = null,
 ) {
     val nestedScrollConnection = remember(overlapState) {
@@ -138,10 +138,10 @@ fun MediaControlSheetContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = PaletteTheme.spacing.medium)
+                .padding(bottom = PaletteTheme.semantic.dimension.spacing.medium)
         ) {
-            HorizontalDivider()
-            Spacer(height = PaletteTheme.spacing.medium)
+            HorizontalDivider(style = PaletteTheme.component.core.divider)
+            Spacer(height = PaletteTheme.semantic.dimension.spacing.medium)
             TimeLabeledSeekbar(
                 playheadState = playheadState,
                 timelineState = timelineState,
@@ -157,6 +157,7 @@ fun MediaControlSheetContent(
                 onPlayPauseLongClick = onPlayPauseLongClick,
                 onSkipClick = onSkipClick,
                 onSkipBackClick = onSkipBackClick,
+                style = PaletteTheme.component.media.transportControlBar,
             )
         }
     }

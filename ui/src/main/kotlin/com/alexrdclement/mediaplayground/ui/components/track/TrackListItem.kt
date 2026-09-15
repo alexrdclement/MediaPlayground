@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,21 +22,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.SimpleTrack
+import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleTrack1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
 import com.alexrdclement.mediaplayground.ui.util.formatShort
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.media.PlayPauseButton
-import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.copy
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.core.SurfaceStyle
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextStyle
+import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.components.media.PlayPauseButtonStyle
+import com.embarrasdf.palette.theme.PaletteTheme
+
+data class TrackListItemStyle(
+    val contentPadding: PaddingValues = PaddingValues(vertical = 8.dp),
+    val leadingContentSize: Dp = 52.dp,
+    val playPauseButtonPadding: PaddingValues = PaddingValues(8.dp),
+    val textPadding: PaddingValues = PaddingValues(horizontal = 8.dp),
+    val durationWidth: Dp = 64.dp,
+    val disabledContentAlpha: Float = 0.38f,
+    val titleStyle: TextStyle = TextStyle(),
+    val artistStyle: TextStyle = TextStyle(),
+    val trackNumberStyle: TextStyle = TextStyle(),
+    val durationStyle: TextStyle = TextStyle(),
+    val playPauseButtonStyle: PlayPauseButtonStyle = PlayPauseButtonStyle(),
+    val surfaceStyle: SurfaceStyle = SurfaceStyle(),
+)
 
 @Composable
 fun TrackListItem(
@@ -45,6 +64,7 @@ fun TrackListItem(
     isPlaying: Boolean,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
+    style: TrackListItemStyle = TrackListItemStyle(),
     onLongClick: ((Offset) -> Unit)? = null,
 ) {
     var touchPosition by remember { mutableStateOf(Offset.Zero) }
@@ -60,18 +80,19 @@ fun TrackListItem(
                     awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
                 }
             },
+        style = style.surfaceStyle,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(vertical = PaletteTheme.spacing.small)
-                .alpha(if (isPlayable) 1f else PaletteTheme.colorScheme.disabledContentAlpha),
+                .padding(style.contentPadding)
+                .alpha(if (isPlayable) 1f else style.disabledContentAlpha),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(52.dp)
+                    .size(style.leadingContentSize)
             ) {
                 if (isLoaded) {
                     PlayPauseButton(
@@ -80,12 +101,13 @@ fun TrackListItem(
                         isEnabled = isPlayable,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(12.dp)
+                            .padding(style.playPauseButtonPadding),
+                        style = style.playPauseButtonStyle,
                     )
                 } else {
                     Text(
                         text = track.trackNumber.toString(),
-                        style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
+                        style = style.trackNumberStyle,
                         modifier = Modifier
                     )
                 }
@@ -95,18 +117,18 @@ fun TrackListItem(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = PaletteTheme.spacing.small)
+                    .padding(style.textPadding)
             ) {
                 Text(
                     text = track.name,
-                    style = PaletteTheme.styles.text.titleMedium,
+                    style = style.titleStyle,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
                 )
                 Text(
                     text = artistNamesOrDefault(track.artists),
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = style.artistStyle,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee()
@@ -114,10 +136,10 @@ fun TrackListItem(
             }
             Text(
                 text = remember { track.duration.formatShort() },
-                style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
+                style = style.durationStyle,
                 modifier = Modifier
                     .height(IntrinsicSize.Max)
-                    .width(64.dp),
+                    .width(style.durationWidth),
             )
         }
     }
@@ -134,6 +156,7 @@ private fun Preview() {
             isPlaying = false,
             onClick = {},
             onPlayPauseClick = {},
+            style = PaletteTheme.component.media.trackListItem,
         )
     }
 }

@@ -18,8 +18,8 @@ import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.ui.Seekbar
 import com.alexrdclement.mediaplayground.media.ui.rememberPlayheadPosition
 import com.alexrdclement.mediaplayground.ui.util.formatShort
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -46,7 +46,7 @@ fun TimeLabeledSeekbar(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         modifier = modifier
     ) {
         Seekbar(
@@ -56,21 +56,21 @@ fun TimeLabeledSeekbar(
             onSeek = onSeek,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = PaletteTheme.spacing.large)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.large)
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = PaletteTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         ) {
             Text(
                 text = displayPosition.formatShort(),
-                style = PaletteTheme.styles.text.bodySmall,
+                style = PaletteTheme.component.core.text.bodySmall,
             )
             Text(
                 text = remember(timelineState) { (timelineState?.duration ?: Duration.ZERO).formatShort() },
-                style = PaletteTheme.styles.text.bodySmall,
+                style = PaletteTheme.component.core.text.bodySmall,
             )
         }
     }

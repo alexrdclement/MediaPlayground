@@ -17,14 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.tooling.preview.Preview
+import com.alexrdclement.mediaplayground.ui.components.PlaylistItem
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.theme.component.media.playlistItem
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.palette.components.media.model.Artist
-import com.alexrdclement.palette.components.media.model.MediaItem
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.media.model.Artist
+import com.embarrasdf.palette.components.media.model.MediaItem
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -43,11 +45,11 @@ fun Playlist(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .background(PaletteTheme.colorScheme.surface)
+            .background(PaletteTheme.semantic.color.surface)
     ) {
         stickyHeader {
             var titleMenuExpanded by remember { mutableStateOf(false) }
@@ -85,8 +87,8 @@ fun Playlist(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(PaletteTheme.colorScheme.surface)
-                    .padding(top = PaletteTheme.spacing.medium)
+                    .background(PaletteTheme.semantic.color.surface)
+                    .padding(top = PaletteTheme.semantic.dimension.spacing.medium)
             )
         }
         items(
@@ -100,6 +102,7 @@ fun Playlist(
                     item = item,
                     onClick = { onItemClick(item) },
                     onPlayPauseClick = { onItemPlayPauseClick(item) },
+                    style = PaletteTheme.component.media.playlistItem,
                     onLongClick = { offset ->
                         touchOffset = offset
                         menuExpanded = true

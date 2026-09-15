@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import coil3.compose.AsyncImage
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun MediaItemArtwork(
@@ -17,7 +17,7 @@ fun MediaItemArtwork(
             model = imageUrl,
             contentDescription = null,
             modifier = modifier
-                .alpha(if (isEnabled) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
+                .alpha(if (isEnabled) 1f else PaletteTheme.semantic.color.disabledContentAlpha)
         )
     } else {
         // TODO: fallback image

@@ -3,11 +3,11 @@ package com.alexrdclement.mediaplayground.app
 import androidx.compose.runtime.Composable
 import com.alexrdclement.mediaplayground.app.navigation.MediaPlaygroundNav
 import com.alexrdclement.mediaplayground.app.navigation.rememberMediaPlaygroundNavController
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.navigation.NavController
-import com.alexrdclement.palette.theme.PaletteTheme
-import dev.zacsweers.metrox.viewmodel.metroViewModel
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.navigation.NavController
+import com.embarrasdf.palette.theme.PaletteTheme
 import com.embarrasdf.uievent.UiEventState
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
 fun App(
@@ -26,7 +26,7 @@ fun App(
     errorMessages: UiEventState<String> = UiEventState(),
 ) {
     PaletteTheme {
-        Surface {
+        Surface(style = PaletteTheme.component.core.surface.default) {
             MediaPlaygroundNav(
                 navController = navController,
                 errorMessages = errorMessages,

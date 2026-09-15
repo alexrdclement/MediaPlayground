@@ -24,7 +24,7 @@ maindispatcher-rule = "0.0.36"
 media3 = "1.11.1"
 metro = "1.4.3"
 paging = "3.5.1"
-palette = "0.0.115"
+palette = "0.0.179"
 room = "2.8.5"
 trace = "0.0.17"
 turbine = "1.2.1"
@@ -72,9 +72,9 @@ media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "medi
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 paging-testing = { group = "androidx.paging", name = "paging-testing", version.ref = "paging" }
-palette-components = { group = "com.alexrdclement.palette", name = "palette-components", version.ref = "palette" }
-palette-navigation = { group = "com.alexrdclement.palette", name = "palette-navigation", version.ref = "palette" }
-palette-theme = { group = "com.alexrdclement.palette", name = "palette-theme", version.ref = "palette" }
+palette-components = { group = "com.embarrasdf.palette", name = "palette-components", version.ref = "palette" }
+palette-navigation = { group = "com.embarrasdf.palette", name = "palette-navigation", version.ref = "palette" }
+palette-theme = { group = "com.embarrasdf.palette", name = "palette-theme", version.ref = "palette" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 trace = { group = "com.embarrasdf.trace", name = "trace", version.ref = "trace" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }

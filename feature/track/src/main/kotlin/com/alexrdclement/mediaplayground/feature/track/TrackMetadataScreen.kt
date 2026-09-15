@@ -2,18 +2,18 @@ package com.alexrdclement.mediaplayground.feature.track
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -25,24 +25,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
-import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.core.TextField
-import com.alexrdclement.palette.components.layout.FloatingAction
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.components.navigation.BackNavigationButton
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
+import com.embarrasdf.palette.components.core.Button
+import com.embarrasdf.palette.components.core.IndeterminateProgressIndicator
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextField
+import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.components.layout.FloatingAction
+import com.embarrasdf.palette.components.layout.Scaffold
+import com.embarrasdf.palette.components.layout.TopBar
+import com.embarrasdf.palette.components.navigation.BackNavigationButton
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
@@ -96,18 +95,19 @@ fun TrackMetadataScreen(
     Scaffold(
         topBar = {
             TopBar(
-                title = { Text("Track", style = PaletteTheme.styles.text.headline) },
-                navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                title = { Text("Track", style = PaletteTheme.component.core.text.headline) },
+                navButton = { BackNavigationButton(onClick = onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) },
                 actions = if (uiState is TrackMetadataUiState.Loaded) {
                     {
                         Button(
-                            style = ButtonStyleToken.Secondary,
+                            style = PaletteTheme.component.core.button.secondary,
                             onClick = { onNavigateToDelete(uiState.track.title) },
                         ) {
-                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.secondary))
                         }
                     }
                 } else null,
+                style = PaletteTheme.component.layout.topBar,
             )
         },
         floatingAction = {
@@ -117,10 +117,11 @@ fun TrackMetadataScreen(
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .mediaControlSheetPadding(uiState.isMediaItemLoaded)
+                            .mediaControlSheetPadding(uiState.isMediaItemLoaded),
+                        style = PaletteTheme.component.layout.floatingAction,
                     ) {
                         Button(
-                            style = ButtonStyleToken.Primary,
+                            style = PaletteTheme.component.core.button.primary,
                             onClick = {
                                 onSaveClick(
                                     titleState.text.toString(),
@@ -130,11 +131,11 @@ fun TrackMetadataScreen(
                             },
                             enabled = !uiState.isSaving,
                             modifier = Modifier
-                                .padding(PaletteTheme.spacing.medium),
+                                .padding(PaletteTheme.semantic.dimension.spacing.medium),
                         ) {
                             Text(
                                 text = if (uiState.isSaving) "Saving\u2026" else "Save",
-                                style = PaletteTheme.styles.text.labelLarge,
+                                style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.onPrimary),
                             )
                         }
                     }
@@ -142,10 +143,11 @@ fun TrackMetadataScreen(
                 else -> Unit
             }
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
-            TrackMetadataUiState.Loading -> IndeterminateProgressIndicator()
-            TrackMetadataUiState.Error -> Text("Failed to load track.")
+            TrackMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
+            TrackMetadataUiState.Error -> Text("Failed to load track.", style = PaletteTheme.component.core.text.bodyMedium)
             is TrackMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 titleState = titleState,
@@ -170,26 +172,26 @@ private fun LoadedContent(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
-        contentPadding = contentPadding.plus(PaletteTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
+        contentPadding = contentPadding.plus(PaletteTheme.semantic.dimension.spacing.medium),
         modifier = modifier,
     ) {
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Title", style = PaletteTheme.styles.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
+                Text("Title", style = PaletteTheme.component.core.text.titleMedium)
                 TextField(
                     state = titleState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.textField,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Track Number", style = PaletteTheme.styles.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
+                Text("Track Number", style = PaletteTheme.component.core.text.titleMedium)
                 TextField(
                     state = trackNumberState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.textField,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -197,7 +199,7 @@ private fun LoadedContent(
         }
         if (state.track.artists.isNotEmpty()) {
             item {
-                Text("Artists", style = PaletteTheme.styles.text.titleMedium)
+                Text("Artists", style = PaletteTheme.component.core.text.titleMedium)
             }
             items(state.track.artists, key = { it.id }) { artist ->
                 ArtistRow(
@@ -207,11 +209,11 @@ private fun LoadedContent(
             }
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Notes", style = PaletteTheme.styles.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
+                Text("Notes", style = PaletteTheme.component.core.text.titleMedium)
                 TextField(
                     state = notesState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.textField,
                     lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -228,20 +230,21 @@ private fun ArtistRow(
     Surface(
         onClick = onNavigateToMetadata,
         modifier = Modifier.fillMaxWidth(),
+        style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = PaletteTheme.spacing.small),
+            modifier = Modifier.padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
         ) {
             Text(
                 text = artist.name ?: "Unknown Artist",
-                style = PaletteTheme.styles.text.bodyMedium,
+                style = PaletteTheme.component.core.text.bodyMedium,
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(PaletteTheme.semantic.dimension.spacing.small))
             Text(
                 text = "Edit \u2192",
-                style = PaletteTheme.styles.text.bodyMedium,
+                style = PaletteTheme.component.core.text.bodyMedium,
             )
         }
     }

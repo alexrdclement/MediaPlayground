@@ -20,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
@@ -31,11 +30,12 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.layout.Scaffold
+import com.embarrasdf.palette.components.layout.TopBar
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
 private const val MediaPickerAudioMimeType = "audio/*"
@@ -101,11 +101,13 @@ fun AudioLibraryScreen(
                 title = {
                     Text(
                         text = "Audio Library",
-                        style = PaletteTheme.styles.text.headline,
+                        style = PaletteTheme.component.core.text.headline,
                     )
-                }
+                },
+                style = PaletteTheme.component.layout.topBar,
             )
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
             AudioLibraryUiState.InitialState -> {}
@@ -118,9 +120,9 @@ fun AudioLibraryScreen(
                 onNavigateToAlbumDelete = onNavigateToAlbumDelete,
                 onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                 onNavigateToTrackDelete = onNavigateToTrackDelete,
+                contentPadding = innerPadding,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
             )
         }
     }
@@ -133,20 +135,24 @@ fun ContentReady(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
-    val contentPadding = PaddingValues(horizontal = PaletteTheme.spacing.medium)
+    val rowContentPadding = PaddingValues(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
         .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
     val scrollState = rememberScrollState()
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
+        // Padding applied inside the scroll so content scrolls under the top bar, matching the
+        // overlay layout Scaffold's content padding is meant for.
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
+            .padding(contentPadding)
     ) {
         LocalContent(
             localContentState = uiState.localContentState,
@@ -157,7 +163,7 @@ fun ContentReady(
             onNavigateToAlbumDelete = onNavigateToAlbumDelete,
             onNavigateToTrackMetadata = onNavigateToTrackMetadata,
             onNavigateToTrackDelete = onNavigateToTrackDelete,
-            contentPadding = contentPadding,
+            contentPadding = rowContentPadding,
         )
         Spacer(
             modifier = Modifier

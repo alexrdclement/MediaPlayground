@@ -1,8 +1,8 @@
 package com.alexrdclement.mediaplayground.feature.track.navigation
 
-import com.alexrdclement.palette.navigation.NavKey
-import com.alexrdclement.palette.navigation.PathSegment
-import com.alexrdclement.palette.navigation.toPathSegment
+import com.embarrasdf.palette.navigation.NavKey
+import com.embarrasdf.palette.navigation.PathSegment
+import com.embarrasdf.palette.navigation.toPathSegment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

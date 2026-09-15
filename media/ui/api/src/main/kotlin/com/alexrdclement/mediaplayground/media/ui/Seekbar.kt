@@ -13,8 +13,8 @@ import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
-import com.alexrdclement.palette.components.core.Slider
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Slider
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -84,6 +84,7 @@ fun Seekbar(
             }
             onSeek(seekDuration * seekValue.toDouble())
         },
+        style = PaletteTheme.component.core.slider,
         modifier = modifier,
     )
 }
