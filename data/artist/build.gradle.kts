@@ -13,7 +13,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(projects.database)
-    testImplementation(libs.kotlin.test.junit)
 
     testImplementation(libs.maindispatcher.rule)
     testImplementation(projects.database.testFixtures)

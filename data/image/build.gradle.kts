@@ -17,7 +17,6 @@ dependencies {
     implementation(projects.data.disk)
     implementation(projects.database)
     implementation(projects.media.import.api)
-    testImplementation(libs.kotlin.test.junit)
 
     testImplementation(libs.maindispatcher.rule)
     testImplementation(projects.data.disk.testFixtures)
