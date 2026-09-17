@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.mediaplayground.media.ui.theme.component.media.seekbar
 import com.alexrdclement.mediaplayground.ui.components.MediaItemCardStyle
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRowStyle
 import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbarStyle
@@ -121,5 +122,5 @@ val MediaStyles.timeLabeledSeekbar: TimeLabeledSeekbarStyle
             horizontal = PaletteTheme.semantic.dimension.spacing.medium,
         ),
         labelStyle = PaletteTheme.component.core.text.bodySmall,
-        seekbarStyle = PaletteTheme.component.core.slider,
+        seekbarStyle = seekbar,
     )

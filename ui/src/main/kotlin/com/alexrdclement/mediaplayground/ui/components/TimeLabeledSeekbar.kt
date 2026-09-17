@@ -19,10 +19,10 @@ import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.ui.Seekbar
+import com.alexrdclement.mediaplayground.media.ui.SeekbarStyle
 import com.alexrdclement.mediaplayground.media.ui.rememberPlayheadPosition
 import com.alexrdclement.mediaplayground.ui.theme.component.media.timeLabeledSeekbar
 import com.alexrdclement.mediaplayground.ui.util.formatShort
-import com.embarrasdf.palette.components.core.SliderStyle
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.core.TextStyle
 import com.embarrasdf.palette.theme.PaletteTheme
@@ -34,7 +34,7 @@ data class TimeLabeledSeekbarStyle(
     val seekbarPadding: PaddingValues = PaddingValues(horizontal = 24.dp),
     val labelPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
     val labelStyle: TextStyle = TextStyle(),
-    val seekbarStyle: SliderStyle = SliderStyle(),
+    val seekbarStyle: SeekbarStyle = SeekbarStyle(),
 )
 
 @Composable
