@@ -1,5 +1,6 @@
 package com.alexrdclement.mediaplayground.ui.components
 
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -18,11 +19,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.alexrdclement.mediaplayground.ui.theme.component.media.titleArtistBlock
 import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.components.core.TextStyle
 import com.embarrasdf.palette.theme.PaletteTheme
+
+data class TitleArtistBlockStyle(
+    val contentSpacing: Dp = 8.dp,
+    val titleMaxLines: Int = 1,
+    val artistMaxLines: Int = 1,
+    val titleStyle: TextStyle = TextStyle(),
+    val artistStyle: TextStyle = TextStyle(),
+    val indication: Indication? = null,
+)
 
 @Composable
 fun TitleArtistBlock(
@@ -31,26 +43,21 @@ fun TitleArtistBlock(
     onTitleLongClick: (Offset) -> Unit,
     onArtistsLongClick: (Offset) -> Unit,
     modifier: Modifier = Modifier,
-    titleMaxLines: Int = 1,
-    artistMaxLines: Int = 1,
-    titleTextAlign: TextAlign = TextAlign.Center,
-    artistTextAlign: TextAlign = TextAlign.Center,
+    style: TitleArtistBlockStyle = TitleArtistBlockStyle(),
     titleOverlay: @Composable BoxScope.() -> Unit = {},
     artistsOverlay: @Composable BoxScope.() -> Unit = {},
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
         modifier = modifier
     ) {
         Box {
             var titleTouchPosition by remember { mutableStateOf(Offset.Zero) }
             Text(
                 text = title,
-                style = PaletteTheme.component.core.text.titleLarge.copy(
-                    textAlign = titleTextAlign,
-                ),
-                maxLines = titleMaxLines,
+                style = style.titleStyle,
+                maxLines = style.titleMaxLines,
                 modifier = Modifier
                     .pointerInput(Unit) {
                         awaitEachGesture {
@@ -59,12 +66,12 @@ fun TitleArtistBlock(
                     }
                     .combinedClickable(
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = PaletteTheme.semantic.indication,
+                        indication = style.indication,
                         onClick = {},
                         onLongClick = { onTitleLongClick(titleTouchPosition) },
                     )
                     .then(
-                        if (titleMaxLines > 1) Modifier else Modifier.basicMarquee()
+                        if (style.titleMaxLines > 1) Modifier else Modifier.basicMarquee()
                     )
             )
             titleOverlay()
@@ -74,10 +81,8 @@ fun TitleArtistBlock(
                 var artistsTouchPosition by remember { mutableStateOf(Offset.Zero) }
                 Text(
                     text = artists,
-                    style = PaletteTheme.component.core.text.bodyLarge.copy(
-                        textAlign = artistTextAlign,
-                    ),
-                    maxLines = artistMaxLines,
+                    style = style.artistStyle,
+                    maxLines = style.artistMaxLines,
                     modifier = Modifier
                         .pointerInput(Unit) {
                             awaitEachGesture {
@@ -87,12 +92,12 @@ fun TitleArtistBlock(
                         }
                         .combinedClickable(
                             interactionSource = remember { MutableInteractionSource() },
-                            indication = PaletteTheme.semantic.indication,
+                            indication = style.indication,
                             onClick = {},
                             onLongClick = { onArtistsLongClick(artistsTouchPosition) },
                         )
                         .then(
-                            if (artistMaxLines > 1) Modifier else Modifier.basicMarquee()
+                            if (style.artistMaxLines > 1) Modifier else Modifier.basicMarquee()
                         )
                 )
                 artistsOverlay()
@@ -110,6 +115,7 @@ fun MediaItemTitleArtistPreview() {
             artists = "Artist Name",
             onTitleLongClick = {},
             onArtistsLongClick = {},
+            style = PaletteTheme.component.media.titleArtistBlock,
         )
     }
 }

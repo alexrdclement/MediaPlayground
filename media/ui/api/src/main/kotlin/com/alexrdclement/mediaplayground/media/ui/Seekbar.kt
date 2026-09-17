@@ -14,6 +14,7 @@ import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.embarrasdf.palette.components.core.Slider
+import com.embarrasdf.palette.components.core.SliderStyle
 import com.embarrasdf.palette.theme.PaletteTheme
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -27,6 +28,7 @@ fun Seekbar(
     transportState: TransportState,
     onSeek: (Duration) -> Unit,
     modifier: Modifier = Modifier,
+    style: SliderStyle = SliderStyle(),
     playbackRateState: PlaybackRateState? = null,
 ) {
     val timelineDuration = timelineState?.duration
@@ -43,6 +45,7 @@ fun Seekbar(
         timelineDuration = timelineDuration,
         onSeek = onSeek,
         modifier = modifier,
+        style = style,
     )
 }
 
@@ -53,6 +56,7 @@ fun Seekbar(
     timelineDuration: Duration?,
     onSeek: (Duration) -> Unit,
     modifier: Modifier = Modifier,
+    style: SliderStyle = SliderStyle(),
 ) {
     var isDragging by remember { mutableStateOf(false) }
     var isSeeking by remember { mutableStateOf(false) }
@@ -84,7 +88,7 @@ fun Seekbar(
             }
             onSeek(seekDuration * seekValue.toDouble())
         },
-        style = PaletteTheme.component.core.slider,
+        style = style,
         modifier = modifier,
     )
 }
@@ -103,6 +107,7 @@ private fun SeekbarPreview() {
             ),
             transportState = TransportState.Stopped,
             onSeek = {},
+            style = PaletteTheme.component.core.slider,
         )
     }
 }

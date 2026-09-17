@@ -30,6 +30,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
+import com.alexrdclement.mediaplayground.ui.theme.component.media.playPauseButtonSizePrimary
+import com.alexrdclement.mediaplayground.ui.theme.component.media.titleArtistBlock
 import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
 import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingValues
@@ -171,6 +173,7 @@ private fun LoadedContent(
                             artistOptionsItem = Pair(artist.id, artist.name ?: "")
                         }
                     },
+                    style = PaletteTheme.component.media.titleArtistBlock,
                     titleOverlay = {
                         AlbumContextMenu(
                             expanded = albumOptionsExpanded,
@@ -202,7 +205,7 @@ private fun LoadedContent(
                     isEnabled = state.isAlbumPlayable,
                     onClick = onAlbumPlayPauseClick,
                     modifier = Modifier
-                        .size(72.dp)
+                        .size(PaletteTheme.component.media.playPauseButtonSizePrimary)
                         .padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
                     style = PaletteTheme.component.media.playPauseButton,
                 )
