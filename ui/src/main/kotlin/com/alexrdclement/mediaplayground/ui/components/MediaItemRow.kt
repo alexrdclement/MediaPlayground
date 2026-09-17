@@ -36,14 +36,11 @@ import com.embarrasdf.palette.components.core.TextStyle
 import com.embarrasdf.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
 
-val MediaItemWidthDefault = 280.dp
-val MediaItemWidthCompact = 200.dp
-
 data class MediaItemRowStyle(
     val contentPadding: PaddingValues = PaddingValues(0.dp),
     val contentSpacing: Dp = 16.dp,
     val itemSpacing: Dp = 16.dp,
-    val itemWidth: Dp = MediaItemWidthDefault,
+    val itemWidth: Dp = 280.dp,
     val titleStyle: TextStyle = TextStyle(),
     val itemStyle: MediaItemCardStyle = MediaItemCardStyle(),
     val progressIndicatorStyle: ProgressIndicatorStyle = ProgressIndicatorStyle(),

@@ -17,10 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.mediaplayground.ui.components.PlaylistItem
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
+import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
-import com.alexrdclement.mediaplayground.ui.theme.component.media.playlistItem
+import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
@@ -98,11 +98,11 @@ fun Playlist(
             var menuExpanded by remember { mutableStateOf(false) }
             var touchOffset by remember { mutableStateOf(Offset.Zero) }
             Box {
-                PlaylistItem(
+                TrackListItem(
                     item = item,
                     onClick = { onItemClick(item) },
                     onPlayPauseClick = { onItemPlayPauseClick(item) },
-                    style = PaletteTheme.component.media.playlistItem,
+                    style = PaletteTheme.component.media.trackListItem,
                     onLongClick = { offset ->
                         touchOffset = offset
                         menuExpanded = true
