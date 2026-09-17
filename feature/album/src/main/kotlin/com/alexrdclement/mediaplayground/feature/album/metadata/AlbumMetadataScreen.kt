@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -231,15 +229,15 @@ private fun ArtistRow(
         style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
         ) {
             Text(
                 text = artist.name ?: "Unknown Artist",
                 style = PaletteTheme.component.core.text.bodyMedium,
+                modifier = Modifier.weight(1f),
             )
-            Spacer(modifier = Modifier.width(PaletteTheme.semantic.dimension.spacing.small))
             Text("Edit \u2192", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
@@ -256,7 +254,7 @@ private fun ImageRow(
         style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
         ) {
@@ -266,7 +264,6 @@ private fun ImageRow(
                 maxLines = 1,
                 modifier = Modifier.weight(1f),
             )
-            Spacer(modifier = Modifier.width(PaletteTheme.semantic.dimension.spacing.small))
             Text("View \u2192", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
