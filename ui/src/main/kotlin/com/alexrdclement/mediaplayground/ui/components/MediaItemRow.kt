@@ -133,7 +133,7 @@ fun MediaItemRow(
 @Composable
 private fun Preview() {
     PaletteTheme {
-        Surface {
+        Surface(style = PaletteTheme.component.core.surface.default) {
             val tracks = flowOf(PagingData.from(PreviewTracksUi1))
             MediaItemRow(
                 title = "Saved tracks",
