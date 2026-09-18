@@ -65,7 +65,7 @@ jobs:
 
     if: github.ref == 'refs/heads/main'
 
-    runs-on: macos-15
+    runs-on: macos-26
     needs: [ build_and_test ]
     timeout-minutes: 30
 
