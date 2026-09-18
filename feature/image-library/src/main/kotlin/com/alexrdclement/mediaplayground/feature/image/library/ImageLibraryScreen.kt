@@ -114,12 +114,14 @@ fun ImageLibraryScreen(
         },
         style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
+        val emptyStyle = PaletteTheme.component.media.imageLibraryEmptyContent
+        val gridStyle = PaletteTheme.component.media.imageGrid
         when (uiState) {
             ImageLibraryUiState.Loading -> {}
             ImageLibraryUiState.Empty -> EmptyContent(
                 onImportClick = onImportClick,
-                style = PaletteTheme.component.media.imageLibraryEmptyContent.copy(
-                    contentPadding = innerPadding,
+                style = emptyStyle.copy(
+                    contentPadding = emptyStyle.contentPadding.plus(innerPadding),
                 ),
                 modifier = Modifier
                     .fillMaxSize()
@@ -128,8 +130,8 @@ fun ImageLibraryScreen(
                 uiState = uiState,
                 onNavigateToImageMetadata = onNavigateToImageMetadata,
                 onNavigateToImageDelete = onNavigateToImageDelete,
-                style = PaletteTheme.component.media.imageGrid.copy(
-                    contentPadding = innerPadding,
+                style = gridStyle.copy(
+                    contentPadding = gridStyle.contentPadding.plus(innerPadding),
                 ),
                 modifier = Modifier
                     .fillMaxSize()

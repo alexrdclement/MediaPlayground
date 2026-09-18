@@ -37,6 +37,7 @@ import com.embarrasdf.palette.components.media.model.Artist
 import com.embarrasdf.palette.components.util.calculateHorizontalPaddingValues
 import com.embarrasdf.palette.components.util.copy
 import com.alexrdclement.mediaplayground.feature.media.control.theme.component.media.mediaControlSheetContent
+import com.embarrasdf.palette.components.util.plus
 import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlin.math.roundToInt
@@ -157,13 +158,16 @@ fun MediaControlSheet(
                 val overlapState = remember(artworkHeightPx) { MediaControlOverlapState(artworkHeightPx) }
 
                 val contentPadding = WindowInsets.safeDrawing.asPaddingValues()
+                val sheetStyle = PaletteTheme.component.media.mediaControlSheet
+                val sheetContentStyle = PaletteTheme.component.media.mediaControlSheetContent
                 MediaControlSheetComponent(
                     mediaItem = uiMediaItem,
                     isPlaying = isPlaying,
                     onPlayPauseClick = onPlayPauseClick,
                     state = mediaControlSheetState,
-                    style = PaletteTheme.component.media.mediaControlSheet.copy(
-                        contentPadding = contentPadding.calculateHorizontalPaddingValues(),
+                    style = sheetStyle.copy(
+                        contentPadding = sheetStyle.contentPadding
+                            .plus(contentPadding.calculateHorizontalPaddingValues()),
                     ),
                     onControlBarClick = {
                         coroutineScope.launch {
@@ -225,9 +229,13 @@ fun MediaControlSheet(
                             onNavigateToLoadedItemDelete = { onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title) },
                             onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) } },
                             onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id, it.name ?: "") } },
-                            style = PaletteTheme.component.media.mediaControlSheetContent.copy(
-                                contentPadding = contentPadding.copy(
-                                    top = PaletteTheme.semantic.dimension.spacing.none,
+                            // The sheet's own top edge is the control bar, so drop the top inset
+                            // before laying it over the style's padding.
+                            style = sheetContentStyle.copy(
+                                contentPadding = sheetContentStyle.contentPadding.plus(
+                                    contentPadding.copy(
+                                        top = PaletteTheme.semantic.dimension.spacing.none,
+                                    ),
                                 ),
                             ),
                         )
