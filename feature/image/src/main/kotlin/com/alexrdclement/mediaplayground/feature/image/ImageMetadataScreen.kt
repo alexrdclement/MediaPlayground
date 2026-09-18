@@ -22,20 +22,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
+import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
+import com.alexrdclement.mediaplayground.ui.theme.component.layout.metadataContent
 import com.embarrasdf.palette.components.core.Button
 import com.embarrasdf.palette.components.core.IndeterminateProgressIndicator
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.core.TextField
 import com.embarrasdf.palette.components.core.copy
 import com.embarrasdf.palette.components.layout.FloatingAction
-import com.embarrasdf.palette.components.layout.Scaffold
-import com.embarrasdf.palette.components.layout.TopBar
-import com.embarrasdf.palette.components.navigation.BackNavigationButton
 import com.embarrasdf.palette.components.util.plus
-import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
-import com.alexrdclement.mediaplayground.ui.theme.component.layout.metadataContent
 import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.layout.Scaffold
+import com.embarrasdf.palette.theme.components.layout.TopBar
+import com.embarrasdf.palette.theme.components.navigation.BackNavigationButton
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
@@ -82,7 +82,7 @@ fun ImageMetadataScreen(
         topBar = {
             TopBar(
                 title = { Text("Image", style = PaletteTheme.component.core.text.headline) },
-                navButton = { BackNavigationButton(onClick = onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) },
+                navButton = { BackNavigationButton(onClick = onNavigateBack) },
                 actions = if (uiState is ImageMetadataUiState.Loaded) {
                     {
                         Button(
@@ -93,7 +93,6 @@ fun ImageMetadataScreen(
                         }
                     }
                 } else null,
-                style = PaletteTheme.component.layout.topBar,
             )
         },
         floatingAction = {
@@ -123,7 +122,6 @@ fun ImageMetadataScreen(
                 else -> Unit
             }
         },
-        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         val contentStyle = PaletteTheme.component.layout.metadataContent
         when (uiState) {

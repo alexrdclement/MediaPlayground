@@ -6,8 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.ui.MediaPlayer
-import com.embarrasdf.palette.components.core.Surface
-import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.core.Surface
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
@@ -28,7 +27,6 @@ fun PlayerScreen(
         modifier = Modifier
             .statusBarsPadding()
             .fillMaxSize(),
-        style = PaletteTheme.component.core.surface.default,
     ) {
         if (mediaSessionState != null) {
             MediaPlayer(

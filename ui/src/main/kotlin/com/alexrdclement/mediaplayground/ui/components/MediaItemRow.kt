@@ -30,10 +30,10 @@ import com.alexrdclement.mediaplayground.ui.theme.component.media.mediaItemRow
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
 import com.embarrasdf.palette.components.core.IndeterminateProgressIndicator
 import com.embarrasdf.palette.components.core.ProgressIndicatorStyle
-import com.embarrasdf.palette.components.core.Surface
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.core.TextStyle
 import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.core.Surface
 import kotlinx.coroutines.flow.flowOf
 
 data class MediaItemRowStyle(
@@ -130,7 +130,7 @@ fun MediaItemRow(
 @Composable
 private fun Preview() {
     PaletteTheme {
-        Surface(style = PaletteTheme.component.core.surface.default) {
+        Surface {
             val tracks = flowOf(PagingData.from(PreviewTracksUi1))
             MediaItemRow(
                 title = "Saved tracks",

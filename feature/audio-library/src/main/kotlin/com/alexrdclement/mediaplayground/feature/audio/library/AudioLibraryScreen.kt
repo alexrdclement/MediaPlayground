@@ -18,13 +18,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
+import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStyle
+import com.alexrdclement.mediaplayground.feature.audio.library.theme.component.media.contentReady
 import com.alexrdclement.mediaplayground.media.model.Album
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.Track
@@ -33,12 +35,10 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
 import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.components.layout.Scaffold
-import com.embarrasdf.palette.components.layout.TopBar
 import com.embarrasdf.palette.components.util.plus
-import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStyle
-import com.alexrdclement.mediaplayground.feature.audio.library.theme.component.media.contentReady
 import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.layout.Scaffold
+import com.embarrasdf.palette.theme.components.layout.TopBar
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
@@ -108,10 +108,8 @@ fun AudioLibraryScreen(
                         style = PaletteTheme.component.core.text.headline,
                     )
                 },
-                style = PaletteTheme.component.layout.topBar,
             )
         },
-        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         val contentStyle = PaletteTheme.component.media.contentReady
         when (uiState) {

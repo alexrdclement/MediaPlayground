@@ -75,6 +75,7 @@ paging-testing = { group = "androidx.paging", name = "paging-testing", version.r
 palette-components = { group = "com.embarrasdf.palette", name = "palette-components", version.ref = "palette" }
 palette-navigation = { group = "com.embarrasdf.palette", name = "palette-navigation", version.ref = "palette" }
 palette-theme = { group = "com.embarrasdf.palette", name = "palette-theme", version.ref = "palette" }
+palette-theme-components = { group = "com.embarrasdf.palette", name = "palette-theme-components", version.ref = "palette" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 trace = { group = "com.embarrasdf.trace", name = "trace", version.ref = "trace" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
