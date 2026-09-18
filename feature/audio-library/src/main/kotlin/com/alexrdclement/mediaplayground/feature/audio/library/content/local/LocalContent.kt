@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
@@ -17,17 +19,39 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.feature.audio.library.AlbumContextMenu
 import com.alexrdclement.mediaplayground.feature.audio.library.TrackContextMenu
 import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContent
+import com.alexrdclement.mediaplayground.feature.audio.library.content.AudioLibraryContentStyle
+import com.alexrdclement.mediaplayground.feature.audio.library.theme.component.media.localContent
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRow
-import com.alexrdclement.mediaplayground.ui.components.MediaItemWidthCompact
+import com.alexrdclement.mediaplayground.ui.components.MediaItemRowStyle
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.ButtonDefaults
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
+import com.embarrasdf.palette.components.core.Button
+import com.embarrasdf.palette.components.core.ButtonStyle
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextStyle
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
+
+data class LocalContentStyle(
+    val contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
+    val headerStyle: AudioLibraryContentStyle = AudioLibraryContentStyle(),
+    val importButtonStyle: ButtonStyle = ButtonStyle(),
+    val importButtonTextStyle: TextStyle = TextStyle(),
+    val emptyContentStyle: LocalEmptyContentStyle = LocalEmptyContentStyle(),
+    val mediaContentStyle: LocalMediaContentStyle = LocalMediaContentStyle(),
+)
+
+data class LocalEmptyContentStyle(
+    val contentPadding: PaddingValues = PaddingValues(vertical = 8.dp),
+    val buttonStyle: ButtonStyle = ButtonStyle(),
+    val buttonTextStyle: TextStyle = TextStyle(),
+)
+
+data class LocalMediaContentStyle(
+    val contentSpacing: Dp = 16.dp,
+    val itemRowStyle: MediaItemRowStyle = MediaItemRowStyle(),
+)
 
 @Composable
 internal fun LocalContent(
@@ -35,7 +59,7 @@ internal fun LocalContent(
     onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    contentPadding: PaddingValues = PaddingValues(horizontal = PaletteTheme.spacing.medium),
+    style: LocalContentStyle = LocalContentStyle(),
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
@@ -43,19 +67,18 @@ internal fun LocalContent(
 ) {
     AudioLibraryContent(
         headerText = "Imported",
-        headerPadding = contentPadding,
+        style = style.headerStyle.copy(headerPadding = style.contentPadding),
         headerAction = {
             when (localContentState) {
                 LocalContentState.Empty -> {}
                 is LocalContentState.Content -> Button(
                     onClick = onImportClick,
-                    contentPadding = ButtonDefaults.ContentPaddingDefault,
-                    style = ButtonStyleToken.Secondary,
+                    style = style.importButtonStyle,
                     modifier = Modifier.wrapContentSize(),
                 ) {
                     Text(
                         text = "Import",
-                        style = PaletteTheme.styles.text.bodySmall
+                        style = style.importButtonTextStyle,
                     )
                 }
             }
@@ -64,6 +87,7 @@ internal fun LocalContent(
         when (localContentState) {
             LocalContentState.Empty -> EmptyContent(
                 onImportClick = onImportClick,
+                style = style.emptyContentStyle,
             )
             is LocalContentState.Content -> Content(
                 localContentState = localContentState,
@@ -73,7 +97,11 @@ internal fun LocalContent(
                 onNavigateToAlbumDelete = onNavigateToAlbumDelete,
                 onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                 onNavigateToTrackDelete = onNavigateToTrackDelete,
-                contentPadding = contentPadding,
+                style = style.mediaContentStyle.copy(
+                    itemRowStyle = style.mediaContentStyle.itemRowStyle.copy(
+                        contentPadding = style.contentPadding,
+                    ),
+                ),
             )
         }
     }
@@ -82,17 +110,19 @@ internal fun LocalContent(
 @Composable
 private fun EmptyContent(
     onImportClick: () -> Unit,
+    style: LocalEmptyContentStyle = LocalEmptyContentStyle(),
 ) {
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PaletteTheme.spacing.small),
+            .padding(style.contentPadding),
     ) {
         Button(
             onClick = onImportClick,
+            style = style.buttonStyle,
         ) {
-            Text("Import local audio")
+            Text("Import local audio", style = style.buttonTextStyle)
         }
     }
 }
@@ -102,14 +132,14 @@ private fun Content(
     localContentState: LocalContentState.Content,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    contentPadding: PaddingValues,
+    style: LocalMediaContentStyle = LocalMediaContentStyle(),
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -121,8 +151,7 @@ private fun Content(
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Imported albums",
-            itemWidth = MediaItemWidthCompact,
-            contentPadding = contentPadding,
+            style = style.itemRowStyle,
             itemOverlayContent = { mediaItemUi, expanded, offset, onDismiss ->
                 AlbumContextMenu(
                     expanded = expanded,
@@ -138,8 +167,7 @@ private fun Content(
             onItemClick = onItemClick,
             onItemPlayPauseClick = onItemPlayPauseClick,
             title = "Imported tracks",
-            itemWidth = MediaItemWidthCompact,
-            contentPadding = contentPadding,
+            style = style.itemRowStyle,
             itemOverlayContent = { mediaItemUi, expanded, offset, onDismiss ->
                 TrackContextMenu(
                     expanded = expanded,
@@ -162,6 +190,7 @@ private fun EmptyPreview() {
             onImportClick = {},
             onItemClick = {},
             onItemPlayPauseClick = {},
+            style = PaletteTheme.component.media.localContent,
         )
     }
 }
@@ -178,6 +207,7 @@ private fun ContentPreview() {
             onImportClick = {},
             onItemClick = {},
             onItemPlayPauseClick = {},
+            style = PaletteTheme.component.media.localContent,
         )
     }
 }

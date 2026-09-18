@@ -27,19 +27,22 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingValues
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
+import com.alexrdclement.mediaplayground.ui.theme.component.media.playPauseButtonSizePrimary
+import com.alexrdclement.mediaplayground.ui.theme.component.media.titleArtistBlock
+import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.media.PlayPauseButton
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.core.Surface
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
 fun AlbumScreen(
@@ -92,7 +95,10 @@ fun AlbumScreen(
     LaunchedEffect(uiState) {
         if (uiState is AlbumUiState.NotFound) onNavigateBack()
     }
-    Surface {
+    Surface(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
         when (uiState) {
             AlbumUiState.Loading, AlbumUiState.NotFound -> {}
             is AlbumUiState.Success -> LoadedContent(
@@ -129,7 +135,7 @@ private fun LoadedContent(
     BoxWithConstraints {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
             contentPadding = WindowInsets.safeDrawing.asPaddingValues().plus(
                 mediaControlSheetPaddingValues(state.isMediaItemLoaded),
             ),
@@ -166,6 +172,7 @@ private fun LoadedContent(
                             artistOptionsItem = Pair(artist.id, artist.name ?: "")
                         }
                     },
+                    style = PaletteTheme.component.media.titleArtistBlock,
                     titleOverlay = {
                         AlbumContextMenu(
                             expanded = albumOptionsExpanded,
@@ -188,7 +195,7 @@ private fun LoadedContent(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = PaletteTheme.spacing.small)
+                        .padding(vertical = PaletteTheme.semantic.dimension.spacing.small)
                 )
             }
             item {
@@ -197,8 +204,9 @@ private fun LoadedContent(
                     isEnabled = state.isAlbumPlayable,
                     onClick = onAlbumPlayPauseClick,
                     modifier = Modifier
-                        .size(72.dp)
-                        .padding(vertical = PaletteTheme.spacing.small)
+                        .size(PaletteTheme.component.media.playPauseButtonSizePrimary)
+                        .padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
+                    style = PaletteTheme.component.media.playPauseButton,
                 )
             }
             items(
@@ -215,6 +223,7 @@ private fun LoadedContent(
                         isPlaying = trackUi.isPlaying,
                         onClick = { onTrackClick(trackUi) },
                         onPlayPauseClick = { onTrackPlayPauseClick(trackUi) },
+                        style = PaletteTheme.component.media.trackListItem,
                         onLongClick = { offset ->
                             trackOptionsTouchOffset = offset
                             trackOptionsExpanded = true

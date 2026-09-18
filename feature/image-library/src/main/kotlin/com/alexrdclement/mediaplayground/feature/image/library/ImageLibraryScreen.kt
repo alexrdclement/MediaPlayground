@@ -3,6 +3,7 @@ package com.alexrdclement.mediaplayground.feature.image.library
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -28,21 +29,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.alexrdclement.mediaplayground.feature.image.library.theme.component.media.imageGrid
+import com.alexrdclement.mediaplayground.feature.image.library.theme.component.media.imageLibraryEmptyContent
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
-import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.ButtonDefaults
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
+import com.embarrasdf.palette.components.core.Button
+import com.embarrasdf.palette.components.core.ButtonStyle
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextStyle
+import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.layout.Scaffold
+import com.embarrasdf.palette.theme.components.layout.TopBar
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
@@ -81,7 +86,7 @@ fun ImageLibraryScreen(
                 title = {
                     Text(
                         text = "Image Library",
-                        style = PaletteTheme.styles.text.headline,
+                        style = PaletteTheme.component.core.text.headline,
                     )
                 },
                 actions = {
@@ -91,14 +96,13 @@ fun ImageLibraryScreen(
                         is ImageLibraryUiState.Content -> {
                             Button(
                                 onClick = onImportClick,
-                                contentPadding = ButtonDefaults.ContentPaddingDefault,
-                                style = ButtonStyleToken.Secondary,
+                                style = PaletteTheme.component.core.button.secondary,
                                 modifier = Modifier
                                     .wrapContentSize()
                             ) {
                                 Text(
                                     text = "Import",
-                                    style = PaletteTheme.styles.text.bodySmall,
+                                    style = PaletteTheme.component.core.text.bodySmall.copy(color = PaletteTheme.semantic.color.secondary),
                                 )
                             }
                         }
@@ -107,11 +111,15 @@ fun ImageLibraryScreen(
             )
         },
     ) { innerPadding ->
+        val emptyStyle = PaletteTheme.component.media.imageLibraryEmptyContent
+        val gridStyle = PaletteTheme.component.media.imageGrid
         when (uiState) {
             ImageLibraryUiState.Loading -> {}
             ImageLibraryUiState.Empty -> EmptyContent(
                 onImportClick = onImportClick,
-                contentPadding = innerPadding,
+                style = emptyStyle.copy(
+                    contentPadding = emptyStyle.contentPadding.plus(innerPadding),
+                ),
                 modifier = Modifier
                     .fillMaxSize()
             )
@@ -119,7 +127,9 @@ fun ImageLibraryScreen(
                 uiState = uiState,
                 onNavigateToImageMetadata = onNavigateToImageMetadata,
                 onNavigateToImageDelete = onNavigateToImageDelete,
-                contentPadding = innerPadding,
+                style = gridStyle.copy(
+                    contentPadding = gridStyle.contentPadding.plus(innerPadding),
+                ),
                 modifier = Modifier
                     .fillMaxSize()
             )
@@ -127,22 +137,35 @@ fun ImageLibraryScreen(
     }
 }
 
+data class ImageLibraryEmptyContentStyle(
+    val contentPadding: PaddingValues = PaddingValues(0.dp),
+    val buttonStyle: ButtonStyle = ButtonStyle(),
+    val buttonTextStyle: TextStyle = TextStyle(),
+)
+
 @Composable
 private fun EmptyContent(
     onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    style: ImageLibraryEmptyContentStyle = ImageLibraryEmptyContentStyle(),
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .padding(contentPadding),
+            .padding(style.contentPadding),
     ) {
-        Button(onClick = onImportClick) {
-            Text("Import local images")
+        Button(onClick = onImportClick, style = style.buttonStyle) {
+            Text("Import local images", style = style.buttonTextStyle)
         }
     }
 }
+
+data class ImageGridStyle(
+    val contentPadding: PaddingValues = PaddingValues(0.dp),
+    val minItemWidth: Dp = 120.dp,
+    val itemSpacing: Dp = 8.dp,
+    val indication: Indication? = null,
+)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -151,14 +174,14 @@ private fun ImageGrid(
     onNavigateToImageMetadata: (imageIdValue: String) -> Unit,
     onNavigateToImageDelete: (imageId: String, displayName: String) -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    style: ImageGridStyle = ImageGridStyle(),
 ) {
     val images = uiState.images.collectAsLazyPagingItems()
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 120.dp),
-        contentPadding = contentPadding.plus(WindowInsets.navigationBars.asPaddingValues()),
-        horizontalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        columns = GridCells.Adaptive(minSize = style.minItemWidth),
+        contentPadding = style.contentPadding.plus(WindowInsets.navigationBars.asPaddingValues()),
+        horizontalArrangement = Arrangement.spacedBy(style.itemSpacing),
+        verticalArrangement = Arrangement.spacedBy(style.itemSpacing),
         modifier = modifier,
     ) {
         items(images.itemCount) { index ->
@@ -176,7 +199,7 @@ private fun ImageGrid(
                         }
                         .combinedClickable(
                             interactionSource = remember { MutableInteractionSource() },
-                            indication = PaletteTheme.indication,
+                            indication = style.indication,
                             onClick = {},
                             onLongClick = { dropdownExpanded = true },
                         ),

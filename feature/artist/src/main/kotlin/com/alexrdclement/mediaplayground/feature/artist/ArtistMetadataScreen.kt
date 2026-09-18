@@ -2,14 +2,14 @@ package com.alexrdclement.mediaplayground.feature.artist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -19,19 +19,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
+import com.alexrdclement.mediaplayground.ui.theme.component.layout.metadataContent
 import com.alexrdclement.mediaplayground.ui.util.PreviewSimpleArtist1
-import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.core.TextField
-import com.alexrdclement.palette.components.layout.FloatingAction
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.components.navigation.BackNavigationButton
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
+import com.embarrasdf.palette.components.core.Button
+import com.embarrasdf.palette.components.core.IndeterminateProgressIndicator
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextField
+import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.components.layout.FloatingAction
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.layout.Scaffold
+import com.embarrasdf.palette.theme.components.layout.TopBar
+import com.embarrasdf.palette.theme.components.navigation.BackNavigationButton
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
@@ -79,15 +81,15 @@ fun ArtistMetadataScreen(
     Scaffold(
         topBar = {
             TopBar(
-                title = { Text("Artist", style = PaletteTheme.styles.text.headline) },
+                title = { Text("Artist", style = PaletteTheme.component.core.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
                 actions = if (uiState is ArtistMetadataUiState.Loaded) {
                     {
                         Button(
-                            style = ButtonStyleToken.Secondary,
+                            style = PaletteTheme.component.core.button.secondary,
                             onClick = { onNavigateToDelete(uiState.artist.name ?: "") },
                         ) {
-                            Text("Delete", style = PaletteTheme.styles.text.labelLarge)
+                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.secondary))
                         }
                     }
                 } else null,
@@ -100,10 +102,11 @@ fun ArtistMetadataScreen(
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .mediaControlSheetPadding(uiState.isMediaItemLoaded)
+                            .mediaControlSheetPadding(uiState.isMediaItemLoaded),
+                        style = PaletteTheme.component.layout.floatingAction,
                     ) {
                         Button(
-                            style = ButtonStyleToken.Primary,
+                            style = PaletteTheme.component.core.button.primary,
                             onClick = {
                                 onSaveClick(
                                     nameState.text.toString(),
@@ -112,11 +115,11 @@ fun ArtistMetadataScreen(
                             },
                             enabled = !uiState.isSaving,
                             modifier = Modifier
-                                .padding(PaletteTheme.spacing.medium),
+                                .padding(PaletteTheme.semantic.dimension.spacing.medium),
                         ) {
                             Text(
                                 text = if (uiState.isSaving) "Saving\u2026" else "Save",
-                                style = PaletteTheme.styles.text.labelLarge,
+                                style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.onPrimary),
                             )
                         }
                     }
@@ -125,14 +128,17 @@ fun ArtistMetadataScreen(
             }
         },
     ) { innerPadding ->
+        val contentStyle = PaletteTheme.component.layout.metadataContent
         when (uiState) {
-            ArtistMetadataUiState.Loading -> IndeterminateProgressIndicator()
-            ArtistMetadataUiState.Error -> Text("Failed to load artist.")
+            ArtistMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
+            ArtistMetadataUiState.Error -> Text("Failed to load artist.", style = PaletteTheme.component.core.text.bodyMedium)
             is ArtistMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 nameState = nameState,
                 notesState = notesState,
-                contentPadding = innerPadding,
+                style = contentStyle.copy(
+                    contentPadding = contentStyle.contentPadding.plus(innerPadding),
+                ),
                 modifier = Modifier.fillMaxSize(),
             )
         }
@@ -144,30 +150,30 @@ private fun LoadedContent(
     state: ArtistMetadataUiState.Loaded,
     nameState: TextFieldState,
     notesState: TextFieldState,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    style: MetadataContentStyle = MetadataContentStyle(),
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
-        contentPadding = contentPadding.plus(PaletteTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
+        contentPadding = style.contentPadding,
         modifier = modifier,
     ) {
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Name", style = PaletteTheme.styles.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
+                Text("Name", style = style.labelStyle)
                 TextField(
                     state = nameState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = style.textFieldStyle,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small)) {
-                Text("Notes", style = PaletteTheme.styles.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
+                Text("Notes", style = style.labelStyle)
                 TextField(
                     state = notesState,
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = style.textFieldStyle,
                     lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
                     modifier = Modifier.fillMaxWidth(),
                 )

@@ -19,11 +19,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.paging.PagingData
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContent
 import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentState
+import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStyle
+import com.alexrdclement.mediaplayground.feature.audio.library.theme.component.media.contentReady
 import com.alexrdclement.mediaplayground.media.model.Album
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.Track
@@ -31,11 +34,12 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.layout.Scaffold
+import com.embarrasdf.palette.theme.components.layout.TopBar
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
 private const val MediaPickerAudioMimeType = "audio/*"
@@ -101,12 +105,13 @@ fun AudioLibraryScreen(
                 title = {
                     Text(
                         text = "Audio Library",
-                        style = PaletteTheme.styles.text.headline,
+                        style = PaletteTheme.component.core.text.headline,
                     )
-                }
+                },
             )
         },
     ) { innerPadding ->
+        val contentStyle = PaletteTheme.component.media.contentReady
         when (uiState) {
             AudioLibraryUiState.InitialState -> {}
             is AudioLibraryUiState.ContentReady -> ContentReady(
@@ -118,13 +123,21 @@ fun AudioLibraryScreen(
                 onNavigateToAlbumDelete = onNavigateToAlbumDelete,
                 onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                 onNavigateToTrackDelete = onNavigateToTrackDelete,
+                style = contentStyle.copy(
+                    contentPadding = contentStyle.contentPadding.plus(innerPadding),
+                ),
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
             )
         }
     }
 }
+
+data class ContentReadyStyle(
+    val contentPadding: PaddingValues = PaddingValues(0.dp),
+    val contentSpacing: Dp = 8.dp,
+    val localContentStyle: LocalContentStyle = LocalContentStyle(),
+)
 
 @Composable
 fun ContentReady(
@@ -133,20 +146,21 @@ fun ContentReady(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
+    style: ContentReadyStyle = ContentReadyStyle(),
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
-    val contentPadding = PaddingValues(horizontal = PaletteTheme.spacing.medium)
-        .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
-        .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
     val scrollState = rememberScrollState()
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
+        // Padding applied inside the scroll so content scrolls under the top bar, matching the
+        // overlay layout Scaffold's content padding is meant for.
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
+            .padding(style.contentPadding)
     ) {
         LocalContent(
             localContentState = uiState.localContentState,
@@ -157,7 +171,11 @@ fun ContentReady(
             onNavigateToAlbumDelete = onNavigateToAlbumDelete,
             onNavigateToTrackMetadata = onNavigateToTrackMetadata,
             onNavigateToTrackDelete = onNavigateToTrackDelete,
-            contentPadding = contentPadding,
+            style = style.localContentStyle.copy(
+                contentPadding = style.localContentStyle.contentPadding
+                    .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
+                    .plus(horizontal = WindowInsets.displayCutout.asPaddingValues()),
+            ),
         )
         Spacer(
             modifier = Modifier

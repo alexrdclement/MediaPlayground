@@ -10,13 +10,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.engine.isPlaying
-import com.alexrdclement.palette.components.media.PlayPauseButton
-import com.alexrdclement.palette.components.media.SkipBackButton
-import com.alexrdclement.palette.components.media.SkipButton
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.mediaplayground.ui.theme.component.media.transportControlBar
+import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.components.media.PlayPauseButtonStyle
+import com.embarrasdf.palette.components.media.SkipBackButton
+import com.embarrasdf.palette.components.media.SkipButton
+import com.embarrasdf.palette.components.media.SkipButtonStyle
+import com.embarrasdf.palette.theme.PaletteTheme
+
+data class TransportControlBarStyle(
+    val contentSpacing: Dp = 16.dp,
+    val skipButtonSize: Dp = 48.dp,
+    val playPauseButtonSize: Dp = 72.dp,
+    val playPauseButtonStyle: PlayPauseButtonStyle = PlayPauseButtonStyle(),
+    val skipButtonStyle: SkipButtonStyle = SkipButtonStyle(),
+)
 
 @Composable
 fun TransportControlBar(
@@ -25,12 +37,13 @@ fun TransportControlBar(
     onPlayPauseClick: () -> Unit,
     onSkipClick: () -> Unit,
     modifier: Modifier = Modifier,
+    style: TransportControlBarStyle = TransportControlBarStyle(),
     onPlayPauseLongClick: (() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-            PaletteTheme.spacing.medium,
+            style.contentSpacing,
             alignment = Alignment.CenterHorizontally,
         ),
         modifier = modifier
@@ -40,19 +53,22 @@ fun TransportControlBar(
         SkipBackButton(
             onClick = onSkipBackClick,
             modifier = Modifier
-                .size(48.dp)
+                .size(style.skipButtonSize),
+            style = style.skipButtonStyle,
         )
         PlayPauseButton(
             isPlaying = transportState.isPlaying,
             onClick = onPlayPauseClick,
             onLongClick = onPlayPauseLongClick,
             modifier = Modifier
-                .size(72.dp)
+                .size(style.playPauseButtonSize),
+            style = style.playPauseButtonStyle,
         )
         SkipButton(
             onClick = onSkipClick,
             modifier = Modifier
-                .size(48.dp)
+                .size(style.skipButtonSize),
+            style = style.skipButtonStyle,
         )
     }
 }
@@ -66,6 +82,7 @@ private fun Preview() {
             onSkipBackClick = {},
             onPlayPauseClick = {},
             onSkipClick = {},
+            style = PaletteTheme.component.media.transportControlBar,
         )
     }
 }

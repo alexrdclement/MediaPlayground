@@ -2,6 +2,7 @@ package com.alexrdclement.mediaplayground.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,17 +12,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.ui.Seekbar
+import com.alexrdclement.mediaplayground.media.ui.SeekbarStyle
 import com.alexrdclement.mediaplayground.media.ui.rememberPlayheadPosition
+import com.alexrdclement.mediaplayground.ui.theme.component.media.timeLabeledSeekbar
 import com.alexrdclement.mediaplayground.ui.util.formatShort
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextStyle
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+
+data class TimeLabeledSeekbarStyle(
+    val contentSpacing: Dp = 8.dp,
+    val seekbarPadding: PaddingValues = PaddingValues(horizontal = 24.dp),
+    val labelPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
+    val labelStyle: TextStyle = TextStyle(),
+    val seekbarStyle: SeekbarStyle = SeekbarStyle(),
+)
 
 @Composable
 fun TimeLabeledSeekbar(
@@ -30,6 +44,7 @@ fun TimeLabeledSeekbar(
     transportState: TransportState,
     onSeek: (Duration) -> Unit,
     modifier: Modifier = Modifier,
+    style: TimeLabeledSeekbarStyle = TimeLabeledSeekbarStyle(),
     playbackRateState: PlaybackRateState? = null,
 ) {
     val timelineDuration = timelineState?.duration
@@ -46,7 +61,7 @@ fun TimeLabeledSeekbar(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
         modifier = modifier
     ) {
         Seekbar(
@@ -56,21 +71,22 @@ fun TimeLabeledSeekbar(
             onSeek = onSeek,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = PaletteTheme.spacing.large)
+                .padding(style.seekbarPadding),
+            style = style.seekbarStyle,
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = PaletteTheme.spacing.medium)
+                .padding(style.labelPadding)
         ) {
             Text(
                 text = displayPosition.formatShort(),
-                style = PaletteTheme.styles.text.bodySmall,
+                style = style.labelStyle,
             )
             Text(
                 text = remember(timelineState) { (timelineState?.duration ?: Duration.ZERO).formatShort() },
-                style = PaletteTheme.styles.text.bodySmall,
+                style = style.labelStyle,
             )
         }
     }
@@ -85,6 +101,7 @@ private fun TimeLabeledSeekbarPreview() {
             timelineState = null,
             transportState = TransportState.Stopped,
             onSeek = {},
+            style = PaletteTheme.component.media.timeLabeledSeekbar,
         )
     }
 }

@@ -10,34 +10,44 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.ButtonDefaults
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextStyle
+
+data class AudioLibraryContentStyle(
+    val contentPadding: PaddingValues = PaddingValues(vertical = 8.dp),
+    val contentSpacing: Dp = 8.dp,
+    val headerPadding: PaddingValues = PaddingValues(0.dp),
+    val headerMinHeight: Dp = ButtonDefaults.MinHeight,
+    val headerTextStyle: TextStyle = TextStyle(),
+)
 
 @Composable
 fun AudioLibraryContent(
     headerText: String,
-    headerPadding: PaddingValues = PaddingValues(0.dp),
+    style: AudioLibraryContentStyle = AudioLibraryContentStyle(),
     headerAction: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PaletteTheme.spacing.small)
+            .padding(style.contentPadding)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .sizeIn(minHeight = 40.dp) // Match min button height
-                .padding(headerPadding)
+                .sizeIn(minHeight = style.headerMinHeight)
+                .padding(style.headerPadding)
         ) {
             Text(
                 text = headerText,
-                style = PaletteTheme.styles.text.titleLarge,
+                style = style.headerTextStyle,
             )
             headerAction?.invoke()
         }
