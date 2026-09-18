@@ -36,6 +36,7 @@ import com.embarrasdf.palette.components.layout.PeekSheetState
 import com.embarrasdf.palette.components.media.model.Artist
 import com.embarrasdf.palette.components.util.calculateHorizontalPaddingValues
 import com.embarrasdf.palette.components.util.copy
+import com.alexrdclement.mediaplayground.feature.media.control.theme.component.media.mediaControlSheetContent
 import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlin.math.roundToInt
@@ -224,9 +225,11 @@ fun MediaControlSheet(
                             onNavigateToLoadedItemDelete = { onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title) },
                             onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) } },
                             onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id, it.name ?: "") } },
-                            contentPadding = contentPadding.copy(
-                                top = PaletteTheme.semantic.dimension.spacing.none,
-                            )
+                            style = PaletteTheme.component.media.mediaControlSheetContent.copy(
+                                contentPadding = contentPadding.copy(
+                                    top = PaletteTheme.semantic.dimension.spacing.none,
+                                ),
+                            ),
                         )
                     }
                 }

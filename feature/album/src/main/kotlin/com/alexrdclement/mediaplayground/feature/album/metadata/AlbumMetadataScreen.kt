@@ -38,6 +38,8 @@ import com.embarrasdf.palette.components.layout.Scaffold
 import com.embarrasdf.palette.components.layout.TopBar
 import com.embarrasdf.palette.components.navigation.BackNavigationButton
 import com.embarrasdf.palette.components.util.plus
+import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
+import com.alexrdclement.mediaplayground.ui.theme.component.layout.metadataContent
 import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
@@ -141,6 +143,7 @@ fun AlbumMetadataScreen(
         },
         style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
+        val contentStyle = PaletteTheme.component.layout.metadataContent
         when (uiState) {
             AlbumMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
             AlbumMetadataUiState.Error -> Text("Failed to load album.", style = PaletteTheme.component.core.text.bodyMedium)
@@ -150,7 +153,9 @@ fun AlbumMetadataScreen(
                 notesState = notesState,
                 onNavigateToArtistMetadata = onNavigateToArtistMetadata,
                 onNavigateToImageMetadata = onNavigateToImageMetadata,
-                contentPadding = innerPadding,
+                style = contentStyle.copy(
+                    contentPadding = contentStyle.contentPadding.plus(innerPadding),
+                ),
                 modifier = Modifier.fillMaxSize(),
             )
         }
@@ -164,27 +169,27 @@ private fun LoadedContent(
     notesState: TextFieldState,
     onNavigateToArtistMetadata: (artistId: String) -> Unit,
     onNavigateToImageMetadata: (imageIdValue: String) -> Unit,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    style: MetadataContentStyle = MetadataContentStyle(),
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
-        contentPadding = contentPadding.plus(PaletteTheme.semantic.dimension.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
+        contentPadding = style.contentPadding,
         modifier = modifier,
     ) {
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
-                Text("Title", style = PaletteTheme.component.core.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
+                Text("Title", style = style.labelStyle)
                 TextField(
                     state = titleState,
-                    style = PaletteTheme.component.core.textField,
+                    style = style.textFieldStyle,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
         if (state.album.artists.isNotEmpty()) {
             item {
-                Text("Artists", style = PaletteTheme.component.core.text.titleMedium)
+                Text("Artists", style = style.labelStyle)
             }
             items(state.album.artists, key = { it.id }) { artist ->
                 ArtistRow(
@@ -195,7 +200,7 @@ private fun LoadedContent(
         }
         if (state.album.images.isNotEmpty()) {
             item {
-                Text("Images", style = PaletteTheme.component.core.text.titleMedium)
+                Text("Images", style = style.labelStyle)
             }
             items(state.album.images, key = { it.id.value }) { image ->
                 ImageRow(
@@ -205,11 +210,11 @@ private fun LoadedContent(
             }
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
-                Text("Notes", style = PaletteTheme.component.core.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
+                Text("Notes", style = style.labelStyle)
                 TextField(
                     state = notesState,
-                    style = PaletteTheme.component.core.textField,
+                    style = style.textFieldStyle,
                     lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
                     modifier = Modifier.fillMaxWidth(),
                 )

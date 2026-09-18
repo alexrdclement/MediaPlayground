@@ -33,6 +33,8 @@ import com.embarrasdf.palette.components.layout.Scaffold
 import com.embarrasdf.palette.components.layout.TopBar
 import com.embarrasdf.palette.components.navigation.BackNavigationButton
 import com.embarrasdf.palette.components.util.plus
+import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
+import com.alexrdclement.mediaplayground.ui.theme.component.layout.metadataContent
 import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
@@ -123,13 +125,16 @@ fun ImageMetadataScreen(
         },
         style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
+        val contentStyle = PaletteTheme.component.layout.metadataContent
         when (uiState) {
             ImageMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
             ImageMetadataUiState.Error -> Text("Failed to load image.", style = PaletteTheme.component.core.text.bodyMedium)
             is ImageMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 notesState = notesState,
-                contentPadding = innerPadding,
+                style = contentStyle.copy(
+                    contentPadding = contentStyle.contentPadding.plus(innerPadding),
+                ),
                 modifier = Modifier.fillMaxSize(),
             )
         }
@@ -151,12 +156,12 @@ private fun MetadataField(
 private fun LoadedContent(
     state: ImageMetadataUiState.Loaded,
     notesState: TextFieldState,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    style: MetadataContentStyle = MetadataContentStyle(),
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
-        contentPadding = contentPadding.plus(PaletteTheme.semantic.dimension.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
+        contentPadding = style.contentPadding,
         modifier = modifier,
     ) {
         item {
@@ -200,11 +205,11 @@ private fun LoadedContent(
             )
         }
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
-                Text("Notes", style = PaletteTheme.component.core.text.titleMedium)
+            Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
+                Text("Notes", style = style.labelStyle)
                 TextField(
                     state = notesState,
-                    style = PaletteTheme.component.core.textField,
+                    style = style.textFieldStyle,
                     lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 5),
                     modifier = Modifier.fillMaxWidth(),
                 )

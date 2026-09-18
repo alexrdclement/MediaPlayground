@@ -18,6 +18,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
@@ -34,6 +36,8 @@ import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.layout.Scaffold
 import com.embarrasdf.palette.components.layout.TopBar
 import com.embarrasdf.palette.components.util.plus
+import com.alexrdclement.mediaplayground.feature.audio.library.content.local.LocalContentStyle
+import com.alexrdclement.mediaplayground.feature.audio.library.theme.component.media.contentReady
 import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
@@ -120,13 +124,21 @@ fun AudioLibraryScreen(
                 onNavigateToAlbumDelete = onNavigateToAlbumDelete,
                 onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                 onNavigateToTrackDelete = onNavigateToTrackDelete,
-                contentPadding = innerPadding,
+                style = PaletteTheme.component.media.contentReady.copy(
+                    contentPadding = innerPadding,
+                ),
                 modifier = Modifier
                     .fillMaxSize()
             )
         }
     }
 }
+
+data class ContentReadyStyle(
+    val contentPadding: PaddingValues = PaddingValues(0.dp),
+    val contentSpacing: Dp = 8.dp,
+    val localContentStyle: LocalContentStyle = LocalContentStyle(),
+)
 
 @Composable
 fun ContentReady(
@@ -135,24 +147,21 @@ fun ContentReady(
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
+    style: ContentReadyStyle = ContentReadyStyle(),
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
-    val rowContentPadding = PaddingValues(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
-        .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
-        .plus(horizontal = WindowInsets.displayCutout.asPaddingValues())
     val scrollState = rememberScrollState()
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
         // Padding applied inside the scroll so content scrolls under the top bar, matching the
         // overlay layout Scaffold's content padding is meant for.
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(contentPadding)
+            .padding(style.contentPadding)
     ) {
         LocalContent(
             localContentState = uiState.localContentState,
@@ -163,7 +172,11 @@ fun ContentReady(
             onNavigateToAlbumDelete = onNavigateToAlbumDelete,
             onNavigateToTrackMetadata = onNavigateToTrackMetadata,
             onNavigateToTrackDelete = onNavigateToTrackDelete,
-            contentPadding = rowContentPadding,
+            style = style.localContentStyle.copy(
+                contentPadding = style.localContentStyle.contentPadding
+                    .plus(horizontal = WindowInsets.navigationBars.asPaddingValues())
+                    .plus(horizontal = WindowInsets.displayCutout.asPaddingValues()),
+            ),
         )
         Spacer(
             modifier = Modifier

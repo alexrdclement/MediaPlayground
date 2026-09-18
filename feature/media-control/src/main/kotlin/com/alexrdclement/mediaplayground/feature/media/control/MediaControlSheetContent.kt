@@ -13,6 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -24,12 +26,14 @@ import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbar
+import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbarStyle
 import com.alexrdclement.mediaplayground.ui.components.TransportControlBar
-import com.alexrdclement.mediaplayground.ui.theme.component.media.timeLabeledSeekbar
-import com.alexrdclement.mediaplayground.ui.theme.component.media.transportControlBar
+import com.alexrdclement.mediaplayground.ui.components.TransportControlBarStyle
+import com.alexrdclement.mediaplayground.feature.media.control.theme.component.media.mediaControlSheetContent
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
+import com.embarrasdf.palette.components.core.DividerStyle
 import com.embarrasdf.palette.components.core.HorizontalDivider
 import com.embarrasdf.palette.components.media.model.Artist
 import com.embarrasdf.palette.components.media.model.MediaItem
@@ -46,6 +50,15 @@ class MediaControlOverlapState(val maxOverlapPx: Float) {
         internal set
     val overlapFraction: Float get() = if (maxOverlapPx > 0f) overlapPx / maxOverlapPx else 0f
 }
+
+data class MediaControlSheetContentStyle(
+    val contentPadding: PaddingValues = PaddingValues(0.dp),
+    val controlsPadding: PaddingValues = PaddingValues(bottom = 16.dp),
+    val controlsSpacing: Dp = 16.dp,
+    val dividerStyle: DividerStyle = DividerStyle(),
+    val seekbarStyle: TimeLabeledSeekbarStyle = TimeLabeledSeekbarStyle(),
+    val transportControlBarStyle: TransportControlBarStyle = TransportControlBarStyle(),
+)
 
 @Composable
 fun MediaControlSheetContent(
@@ -69,7 +82,7 @@ fun MediaControlSheetContent(
     onNavigateToArtistMetadata: () -> Unit = {},
     onNavigateToArtistDelete: () -> Unit = {},
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
+    style: MediaControlSheetContentStyle = MediaControlSheetContentStyle(),
     overlapState: MediaControlOverlapState? = null,
 ) {
     val nestedScrollConnection = remember(overlapState) {
@@ -108,7 +121,7 @@ fun MediaControlSheetContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(contentPadding)
+            .padding(style.contentPadding)
     ) {
         Playlist(
             loadedMediaItem = loadedMediaItem,
@@ -139,10 +152,10 @@ fun MediaControlSheetContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = PaletteTheme.semantic.dimension.spacing.medium)
+                .padding(style.controlsPadding)
         ) {
-            HorizontalDivider(style = PaletteTheme.component.core.divider)
-            Spacer(height = PaletteTheme.semantic.dimension.spacing.medium)
+            HorizontalDivider(style = style.dividerStyle)
+            Spacer(height = style.controlsSpacing)
             TimeLabeledSeekbar(
                 playheadState = playheadState,
                 timelineState = timelineState,
@@ -151,7 +164,7 @@ fun MediaControlSheetContent(
                 onSeek = onSeek,
                 modifier = Modifier
                     .fillMaxWidth(),
-                style = PaletteTheme.component.media.timeLabeledSeekbar,
+                style = style.seekbarStyle,
             )
             TransportControlBar(
                 transportState = transportState,
@@ -159,7 +172,7 @@ fun MediaControlSheetContent(
                 onPlayPauseLongClick = onPlayPauseLongClick,
                 onSkipClick = onSkipClick,
                 onSkipBackClick = onSkipBackClick,
-                style = PaletteTheme.component.media.transportControlBar,
+                style = style.transportControlBarStyle,
             )
         }
     }
@@ -197,6 +210,7 @@ private fun Preview() {
             onSeek = {},
             onItemClick = {},
             onItemPlayPauseClick = {},
+            style = PaletteTheme.component.media.mediaControlSheetContent,
         )
     }
 }
