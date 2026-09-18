@@ -9,7 +9,7 @@ appcompat = "1.8.0"
 calf = "0.14.0"
 camerax = "1.6.2"
 coil = "3.6.2"
-embarrasdf-gradle-plugins = "0.0.130"
+embarrasdf-gradle-plugins = "0.0.131"
 kotlin-test = "2.4.20"
 kotlinx-collections-immutable = "0.5.2"
 kotlinx-coroutines = "1.11.0"
@@ -17,7 +17,6 @@ kotlinx-coroutines-android = "1.11.0"
 kotlinx-datetime = "0.8.0-0.6.x-compat"
 kotlinx-io = "0.9.1"
 kotlinx-serialization-json = "1.11.0"
-lifecycle-runtime-compose = "2.11.0"
 lifecycle-runtime-ktx = "2.11.0"
 logging = "0.0.26"
 maindispatcher-rule = "0.0.36"
@@ -53,7 +52,6 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version.ref = "kotlinx-io" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 loggable = { group = "com.embarrasdf.logging", name = "loggable", version.ref = "logging" }
 logger-api = { group = "com.embarrasdf.logging", name = "logger-api", version.ref = "logging" }

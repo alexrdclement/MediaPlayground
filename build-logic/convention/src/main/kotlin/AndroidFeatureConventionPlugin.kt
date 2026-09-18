@@ -14,7 +14,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
             dependencies {
                 add("implementation", libs.findLibrary("metrox-viewmodel-compose").get())
-                add("implementation", libs.findLibrary("lifecycle-runtime-compose").get())
 
                 add("implementation", project(":ui"))
 
