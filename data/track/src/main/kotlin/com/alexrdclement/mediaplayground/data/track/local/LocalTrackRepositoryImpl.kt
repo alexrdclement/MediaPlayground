@@ -53,37 +53,38 @@ class LocalTrackRepositoryImpl @Inject constructor(
         return trackImportProgress
     }
 
-    override fun getTrackFlow(id: TrackId): Flow<Track?> =
-        localTrackDataStore.getTrackFlow(id)
+    override fun getTrackFlow(id: TrackId): Flow<Track?> = localTrackDataStore.getTrackFlow(id)
 
-    override suspend fun getTrack(id: TrackId): Track? =
-        localTrackDataStore.getTrack(id)
+    override suspend fun getTrack(id: TrackId): Track? = localTrackDataStore.getTrack(id)
 
-    override fun getTrackCountFlow(): Flow<Int> =
-        localTrackDataStore.getTrackCountFlow()
+    override fun getTrackCountFlow(): Flow<Int> = localTrackDataStore.getTrackCountFlow()
 
     override fun getTrackPagingData(config: PagingConfig): Flow<PagingData<Track>> =
         localTrackDataStore.getTrackPagingData(config)
 
-    override suspend fun updateTrackTitle(id: TrackId, title: String) =
-        localTrackDataStore.updateTrackTitle(id, title)
+    override suspend fun updateTrackTitle(
+        id: TrackId,
+        title: String,
+    ) = localTrackDataStore.updateTrackTitle(id, title)
 
-    override suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?) =
-        localTrackDataStore.updateTrackNumber(id, trackNumber)
+    override suspend fun updateTrackNumber(
+        id: TrackId,
+        trackNumber: Int?,
+    ) = localTrackDataStore.updateTrackNumber(id, trackNumber)
 
-    override suspend fun updateTrackNotes(id: TrackId, notes: String?) =
-        localTrackDataStore.updateTrackNotes(id, notes)
+    override suspend fun updateTrackNotes(
+        id: TrackId,
+        notes: String?,
+    ) = localTrackDataStore.updateTrackNotes(id, notes)
 
     override suspend fun deleteTrack(id: TrackId) {
         val track = localTrackDataStore.getTrack(id) ?: return
         localTrackDataStore.deleteTrack(track)
     }
 
-    override suspend fun putTrack(track: Track) =
-        localTrackDataStore.putTrack(track)
+    override suspend fun putTrack(track: Track) = localTrackDataStore.putTrack(track)
 
-    override suspend fun deleteTrack(track: Track) =
-        localTrackDataStore.deleteTrack(track)
+    override suspend fun deleteTrack(track: Track) = localTrackDataStore.deleteTrack(track)
 
     private fun importTracksFromDiskFlow(uris: List<Uri>): Flow<Map<Uri, TrackImportState>> {
         return channelFlow {
@@ -107,7 +108,9 @@ class LocalTrackRepositoryImpl @Inject constructor(
             mediaImporter.importTracksFromDisk(
                 uris = uris,
                 getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
-                getImagePath = { imageId, extension -> Path(pathProvider.getImagesDir(), "${imageId.value}.$extension") },
+                getImagePath = { imageId, extension ->
+                    Path(pathProvider.getImagesDir(), "${imageId.value}.$extension")
+                },
                 getArtistByName = { artistName ->
                     localArtistRepository.getArtistByName(artistName)
                 },

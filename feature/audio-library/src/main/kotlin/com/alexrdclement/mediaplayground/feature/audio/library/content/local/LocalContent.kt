@@ -55,11 +55,11 @@ internal fun LocalContent(
                 ) {
                     Text(
                         text = "Import",
-                        style = PaletteTheme.styles.text.bodySmall
+                        style = PaletteTheme.styles.text.bodySmall,
                     )
                 }
             }
-        }
+        },
     ) {
         when (localContentState) {
             LocalContentState.Empty -> EmptyContent(
@@ -80,9 +80,7 @@ internal fun LocalContent(
 }
 
 @Composable
-private fun EmptyContent(
-    onImportClick: () -> Unit,
-) {
+private fun EmptyContent(onImportClick: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -111,7 +109,7 @@ private fun Content(
     Column(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         val albums = localContentState.albums.collectAsLazyPagingItems()
         val tracks = localContentState.tracks.collectAsLazyPagingItems()
@@ -129,7 +127,9 @@ private fun Content(
                     offset = offset,
                     onDismissRequest = onDismiss,
                     onNavigateToMetadata = { onNavigateToAlbumMetadata(mediaItemUi.mediaItem.id.value) },
-                    onNavigateToDelete = { onNavigateToAlbumDelete(mediaItemUi.mediaItem.id.value, mediaItemUi.mediaItem.title) },
+                    onNavigateToDelete = {
+                        onNavigateToAlbumDelete(mediaItemUi.mediaItem.id.value, mediaItemUi.mediaItem.title)
+                    },
                 )
             },
         )
@@ -146,7 +146,9 @@ private fun Content(
                     offset = offset,
                     onDismissRequest = onDismiss,
                     onNavigateToMetadata = { onNavigateToTrackMetadata(mediaItemUi.mediaItem.id.value) },
-                    onNavigateToDelete = { onNavigateToTrackDelete(mediaItemUi.mediaItem.id.value, mediaItemUi.mediaItem.title) },
+                    onNavigateToDelete = {
+                        onNavigateToTrackDelete(mediaItemUi.mediaItem.id.value, mediaItemUi.mediaItem.title)
+                    },
                 )
             },
         )

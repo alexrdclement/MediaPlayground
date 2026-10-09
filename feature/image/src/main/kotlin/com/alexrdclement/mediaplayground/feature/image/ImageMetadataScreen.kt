@@ -2,13 +2,13 @@ package com.alexrdclement.mediaplayground.feature.image
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.isImeVisible
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -42,11 +42,12 @@ fun ImageMetadataScreen(
     onNavigateBack: () -> Unit,
     onNavigateToDelete: (displayName: String) -> Unit = {},
 ) {
-    val viewModel: ImageMetadataViewModel = assistedMetroViewModel<ImageMetadataViewModel, ImageMetadataViewModel.Factory>(
-        key = imageId.value,
-    ) {
-        create(imageId.value)
-    }
+    val viewModel: ImageMetadataViewModel =
+        assistedMetroViewModel<ImageMetadataViewModel, ImageMetadataViewModel.Factory>(
+            key = imageId.value,
+        ) {
+            create(imageId.value)
+        }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(ImageMetadataUiState.Loading)
     LaunchedEffect(Unit) {
         viewModel.savedEvent.collect { onNavigateBack() }
@@ -90,7 +91,9 @@ fun ImageMetadataScreen(
                             Text("Delete", style = PaletteTheme.styles.text.labelLarge)
                         }
                     }
-                } else null,
+                } else {
+                    null
+                },
             )
         },
         floatingAction = {
@@ -100,7 +103,7 @@ fun ImageMetadataScreen(
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .mediaControlSheetPadding(uiState.isMediaItemLoaded)
+                            .mediaControlSheetPadding(uiState.isMediaItemLoaded),
                     ) {
                         Button(
                             style = ButtonStyleToken.Primary,
@@ -160,7 +163,7 @@ private fun LoadedContent(
             MediaItemArtwork(
                 imageUrl = state.image.uri,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
         }
         item {
@@ -169,9 +172,11 @@ private fun LoadedContent(
         item {
             MetadataField(
                 label = "Dimensions",
-                value = if (state.image.widthPx != null && state.image.heightPx != null)
+                value = if (state.image.widthPx != null && state.image.heightPx != null) {
                     "${state.image.widthPx} \u00d7 ${state.image.heightPx}"
-                else null,
+                } else {
+                    null
+                },
             )
         }
         item {

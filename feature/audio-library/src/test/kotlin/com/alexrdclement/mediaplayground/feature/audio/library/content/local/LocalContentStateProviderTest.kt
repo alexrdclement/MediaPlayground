@@ -39,7 +39,7 @@ class LocalContentStateProviderTest {
     fun noTracksOrAlbums_returnsEmpty() = runTest {
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
-            pagingConfig = PagingConfig(pageSize = 10)
+            pagingConfig = PagingConfig(pageSize = 10),
         ).test {
             assertTrue(awaitItem() is LocalContentState.Empty)
             cancelAndIgnoreRemainingEvents()
@@ -53,7 +53,7 @@ class LocalContentStateProviderTest {
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
-            pagingConfig = PagingConfig(pageSize = 10)
+            pagingConfig = PagingConfig(pageSize = 10),
         ).test {
             assertTrue(awaitItem() is LocalContentState.Content)
             cancelAndIgnoreRemainingEvents()
@@ -69,7 +69,7 @@ class LocalContentStateProviderTest {
 
         localContentStateProvider.flow(
             coroutineScope = CoroutineScope(this.testScheduler),
-            pagingConfig = PagingConfig(pageSize = 10)
+            pagingConfig = PagingConfig(pageSize = 10),
         ).test {
             val firstItem = awaitItem()
             assertTrue(firstItem is LocalContentState.Content)

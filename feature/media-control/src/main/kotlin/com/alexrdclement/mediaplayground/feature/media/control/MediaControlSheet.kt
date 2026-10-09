@@ -19,8 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -121,7 +121,7 @@ fun MediaControlSheet(
             val artists by derivedStateOf {
                 mediaItem.artists.map {
                     Artist(
-                        name = it.name ?: fallbackArtistName
+                        name = it.name ?: fallbackArtistName,
                     )
                 }
             }
@@ -192,7 +192,7 @@ fun MediaControlSheet(
                                     layout(constraints.maxWidth, topPadding.toPx().roundToInt()) {
                                         placeables.place(0, 0)
                                     }
-                                }
+                                },
                         )
                     },
                     modifier = Modifier
@@ -205,7 +205,7 @@ fun MediaControlSheet(
                             .graphicsLayer {
                                 alpha = mediaControlSheetState.partialToFullProgress
                             }
-                            .background(PaletteTheme.colorScheme.surface)
+                            .background(PaletteTheme.colorScheme.surface),
                     ) {
                         MediaControlSheetContent(
                             overlapState = overlapState,
@@ -225,12 +225,23 @@ fun MediaControlSheet(
                             onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                             onNavigateToTrackDelete = onNavigateToTrackDelete,
                             onNavigateToLoadedItemMetadata = { onNavigateToTrackMetadata(mediaItem.id.value) },
-                            onNavigateToLoadedItemDelete = { onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title) },
-                            onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) } },
-                            onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id, it.name ?: "") } },
+                            onNavigateToLoadedItemDelete = {
+                                onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title)
+                            },
+                            onNavigateToArtistMetadata = {
+                                mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) }
+                            },
+                            onNavigateToArtistDelete = {
+                                mediaItem.artists.firstOrNull()?.let {
+                                    onNavigateToArtistDelete(
+                                        it.id,
+                                        it.name ?: "",
+                                    )
+                                }
+                            },
                             contentPadding = contentPadding.copy(
                                 top = 0.dp,
-                            )
+                            ),
                         )
                     }
                 }

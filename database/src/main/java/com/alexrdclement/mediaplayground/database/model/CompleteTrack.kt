@@ -9,7 +9,7 @@ data class CompleteTrack(
     val track: Track,
     @Relation(
         parentColumn = "album_id",
-        entityColumn = "id"
+        entityColumn = "id",
     )
     val album: Album,
     @Relation(

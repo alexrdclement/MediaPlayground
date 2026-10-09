@@ -11,9 +11,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.io.files.Path
 import java.util.UUID
 
-fun MediaMetadata.Audio.toSimpleArtist(
-    name: String,
-): SimpleArtist {
+fun MediaMetadata.Audio.toSimpleArtist(name: String): SimpleArtist {
     return SimpleArtist(
         id = UUID.randomUUID().toString(),
         name = name,

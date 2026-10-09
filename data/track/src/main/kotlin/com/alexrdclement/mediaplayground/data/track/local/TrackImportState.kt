@@ -1,8 +1,8 @@
 package com.alexrdclement.mediaplayground.data.track.local
 
-import com.embarrasdf.logging.Loggable
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
 import com.alexrdclement.mediaplayground.media.model.Track
+import com.embarrasdf.logging.Loggable
 
 sealed class TrackImportState {
     object InProgress : TrackImportState()

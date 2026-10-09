@@ -22,12 +22,18 @@ class LocalArtistDataStore @Inject constructor(
         return artistDao.getArtistByName(name)?.toSimpleArtist()
     }
 
-    suspend fun updateArtistName(artistId: String, name: String?) {
+    suspend fun updateArtistName(
+        artistId: String,
+        name: String?,
+    ) {
         val artist = artistDao.getArtist(artistId) ?: return
         artistDao.update(artist.copy(name = name))
     }
 
-    suspend fun updateArtistNotes(artistId: String, notes: String?) {
+    suspend fun updateArtistNotes(
+        artistId: String,
+        notes: String?,
+    ) {
         val artist = artistDao.getArtist(artistId) ?: return
         artistDao.update(artist.copy(notes = notes))
     }

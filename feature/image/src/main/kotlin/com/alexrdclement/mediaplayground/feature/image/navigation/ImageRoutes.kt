@@ -27,4 +27,3 @@ data class ImageDeleteRoute(
     override val pathSegment: PathSegment = imageIdValue.toPathSegment()
     val imageId: ImageId get() = ImageId(imageIdValue)
 }
-

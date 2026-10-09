@@ -37,4 +37,3 @@ data class AlbumDeleteRoute(
     override val pathSegment: PathSegment = albumIdValue.toPathSegment()
     val albumId: AlbumId get() = AlbumId(albumIdValue)
 }
-

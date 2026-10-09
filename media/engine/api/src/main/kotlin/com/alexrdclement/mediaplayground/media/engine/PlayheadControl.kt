@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.media.engine
 
-import kotlin.time.Duration
 import kotlinx.coroutines.flow.Flow
+import kotlin.time.Duration
 
 interface PlayheadControl {
     fun getPlayheadState(): Flow<PlayheadState>

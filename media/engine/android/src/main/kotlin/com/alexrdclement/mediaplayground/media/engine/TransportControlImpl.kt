@@ -1,14 +1,14 @@
 package com.alexrdclement.mediaplayground.media.engine
 
 import androidx.media3.common.Player
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import dev.zacsweers.metro.Inject
 
 class TransportControlImpl @Inject constructor(
     private val mediaControllerHolder: MediaControllerHolder,
-): TransportControl {
+) : TransportControl {
 
     override fun getTransportState(): Flow<TransportState> {
         return callbackFlow {
@@ -26,7 +26,10 @@ class TransportControlImpl @Inject constructor(
                     trySend(state)
                 }
 
-                override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+                override fun onPlayWhenReadyChanged(
+                    playWhenReady: Boolean,
+                    reason: Int,
+                ) {
                     val state = mapPlaybackState(mediaController.playbackState, playWhenReady = playWhenReady)
                     trySend(state)
                 }
@@ -51,7 +54,10 @@ class TransportControlImpl @Inject constructor(
         mediaControllerHolder.getMediaController().stop()
     }
 
-    private fun mapPlaybackState(state: Int, playWhenReady: Boolean): TransportState {
+    private fun mapPlaybackState(
+        state: Int,
+        playWhenReady: Boolean,
+    ): TransportState {
         return when (state) {
             Player.STATE_IDLE -> TransportState.Stopped
             Player.STATE_BUFFERING -> TransportState.Buffering

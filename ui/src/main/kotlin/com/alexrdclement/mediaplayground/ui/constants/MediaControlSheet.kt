@@ -12,9 +12,9 @@ fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean) = this.then(
         Modifier.padding(bottom = MediaControlSheetPartialExpandHeight)
     } else {
         Modifier
-    }
+    },
 )
 
 fun mediaControlSheetPaddingValues(isMediaItemLoaded: Boolean) = PaddingValues(
-    bottom = if (isMediaItemLoaded) MediaControlSheetPartialExpandHeight else 0.dp
+    bottom = if (isMediaItemLoaded) MediaControlSheetPartialExpandHeight else 0.dp,
 )

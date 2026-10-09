@@ -2,9 +2,9 @@ package com.alexrdclement.mediaplayground.media.engine.fakes
 
 import com.alexrdclement.mediaplayground.media.engine.PlayheadControl
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
-import kotlin.time.Duration
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlin.time.Duration
 
 class FakePlayheadControl : PlayheadControl {
 

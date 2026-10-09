@@ -3,9 +3,7 @@ package com.alexrdclement.mediaplayground.ui.util
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
-fun Duration.formatShort(
-    minDurationUnit: DurationUnit = DurationUnit.SECONDS,
-): String {
+fun Duration.formatShort(minDurationUnit: DurationUnit = DurationUnit.SECONDS): String {
     val daysPart = this.inWholeDays
     val hoursPart = this.inWholeHours % 24
     val minutesPart = this.inWholeMinutes % 60
@@ -25,7 +23,7 @@ fun Duration.formatShort(
         minutesPart > 0 -> if (minDurationUnit == DurationUnit.MINUTES) {
             minutesPart.formatMinutes()
         } else {
-            "${minutesPart}:${secondsPart.toString().padStart(2, '0')}"
+            "$minutesPart:${secondsPart.toString().padStart(2, '0')}"
         }
         secondsPart > 0 -> if (minDurationUnit == DurationUnit.SECONDS) {
             secondsPart.formatSeconds()
@@ -51,21 +49,20 @@ fun Duration.formatShort(
     }
 }
 
+private const val DaySuffix = "d"
+private const val HourSuffix = "h"
+private const val MinuteSuffix = "m"
+private const val SecondSuffix = "s"
+private const val MilliSuffix = "ms"
+private const val MicroSuffix = "µs"
+private const val NanoSuffix = "ns"
 
-private const val daySuffix = "d"
-private const val hourSuffix = "h"
-private const val minuteSuffix = "m"
-private const val secondSuffix = "s"
-private const val milliSuffix = "ms"
-private const val microSuffix = "µs"
-private const val nanoSuffix = "ns"
-
-private fun Long.formatDays(): String = this.formatWithSuffix(daySuffix)
-private fun Long.formatHours(): String = this.formatWithSuffix(hourSuffix)
-private fun Long.formatMinutes(): String = this.formatWithSuffix(minuteSuffix)
-private fun Long.formatSeconds(): String = this.formatWithSuffix(secondSuffix)
-private fun Long.formatMilliseconds(): String = this.formatWithSuffix(milliSuffix)
-private fun Long.formatMicroseconds(): String = this.formatWithSuffix(microSuffix)
-private fun Long.formatNanoseconds(): String = this.formatWithSuffix(nanoSuffix)
+private fun Long.formatDays(): String = this.formatWithSuffix(DaySuffix)
+private fun Long.formatHours(): String = this.formatWithSuffix(HourSuffix)
+private fun Long.formatMinutes(): String = this.formatWithSuffix(MinuteSuffix)
+private fun Long.formatSeconds(): String = this.formatWithSuffix(SecondSuffix)
+private fun Long.formatMilliseconds(): String = this.formatWithSuffix(MilliSuffix)
+private fun Long.formatMicroseconds(): String = this.formatWithSuffix(MicroSuffix)
+private fun Long.formatNanoseconds(): String = this.formatWithSuffix(NanoSuffix)
 
 private fun Long.formatWithSuffix(suffix: String) = "$this$suffix"

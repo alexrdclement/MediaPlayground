@@ -29,28 +29,18 @@ interface DaoModule {
         fun provideArtistDao(database: MediaPlaygroundDatabase): ArtistDao = database.artistDao()
 
         @Provides
-        fun provideCompleteTrackDao(
-            database: MediaPlaygroundDatabase,
-        ): CompleteTrackDao = database.completeTrackDao()
+        fun provideCompleteTrackDao(database: MediaPlaygroundDatabase): CompleteTrackDao = database.completeTrackDao()
 
         @Provides
-        fun provideCompleteAlbumDao(
-            database: MediaPlaygroundDatabase,
-        ): CompleteAlbumDao = database.completeAlbumDao()
+        fun provideCompleteAlbumDao(database: MediaPlaygroundDatabase): CompleteAlbumDao = database.completeAlbumDao()
 
         @Provides
-        fun provideAlbumArtistDao(
-            database: MediaPlaygroundDatabase,
-        ): AlbumArtistDao = database.albumArtistDao()
+        fun provideAlbumArtistDao(database: MediaPlaygroundDatabase): AlbumArtistDao = database.albumArtistDao()
 
         @Provides
-        fun provideSimpleAlbumDao(
-            database: MediaPlaygroundDatabase,
-        ): SimpleAlbumDao = database.simpleAlbumDao()
+        fun provideSimpleAlbumDao(database: MediaPlaygroundDatabase): SimpleAlbumDao = database.simpleAlbumDao()
 
         @Provides
-        fun provideAlbumImageDao(
-            database: MediaPlaygroundDatabase,
-        ): AlbumImageDao = database.albumImageDao()
+        fun provideAlbumImageDao(database: MediaPlaygroundDatabase): AlbumImageDao = database.albumImageDao()
     }
 }

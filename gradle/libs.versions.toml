@@ -88,6 +88,7 @@ embarrasdf-android-library-compose = { id = "com.embarrasdf.gradle.plugin.androi
 embarrasdf-android-library-test-fixtures = { id = "com.embarrasdf.gradle.plugin.android.library.test.fixtures", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-android-room = { id = "com.embarrasdf.gradle.plugin.android.room", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-android-test = { id = "com.embarrasdf.gradle.plugin.android.test", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-format = { id = "com.embarrasdf.gradle.plugin.format", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-github-release = { id = "com.embarrasdf.gradle.plugin.github.release", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-jvm-library = { id = "com.embarrasdf.gradle.plugin.jvm.library", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-kotlin-multiplatform-library = { id = "com.embarrasdf.gradle.plugin.kotlin.multiplatform.library", version.ref = "embarrasdf-gradle-plugins" }

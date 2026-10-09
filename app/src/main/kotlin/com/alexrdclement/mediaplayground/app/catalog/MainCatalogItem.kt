@@ -6,7 +6,8 @@ enum class MainCatalogItem : CatalogItem {
     AudioLibrary,
     Camera,
     ImageLibrary,
-    Player;
+    Player,
+    ;
 
     override val title = this.name
 }
