@@ -45,12 +45,12 @@ class ArtistMetadataViewModel(
     val savedEvent = UiEventState<Unit?>()
     val deletedEvent = UiEventState<Unit?>()
 
-    private val _isSaving = MutableStateFlow(false)
+    private val isSaving = MutableStateFlow(false)
     private var hasLoaded = false
 
     val uiState: StateFlow<ArtistMetadataUiState> = combine(
         artistRepository.getArtistFlow(artistId),
-        _isSaving,
+        isSaving,
         mediaSessionState.loadedMediaItem,
     ) { artist, isSaving, loadedMediaItem ->
         if (artist == null) ArtistMetadataUiState.Error
@@ -72,15 +72,15 @@ class ArtistMetadataViewModel(
         name: String,
         notes: String?,
     ) {
-        if (_isSaving.value) return
-        _isSaving.value = true
+        if (isSaving.value) return
+        isSaving.value = true
         viewModelScope.launch {
             try {
                 artistRepository.updateArtistName(artistId, name.ifBlank { null })
                 artistRepository.updateArtistNotes(artistId, notes)
                 savedEvent.fire()
             } finally {
-                _isSaving.value = false
+                isSaving.value = false
             }
         }
     }

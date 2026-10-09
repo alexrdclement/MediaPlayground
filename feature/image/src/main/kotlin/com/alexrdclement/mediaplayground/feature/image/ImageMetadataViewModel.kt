@@ -48,12 +48,12 @@ class ImageMetadataViewModel(
     val savedEvent = UiEventState<Unit?>()
     val deletedEvent = UiEventState<Unit?>()
 
-    private val _isSaving = MutableStateFlow(false)
+    private val isSaving = MutableStateFlow(false)
     private var hasLoaded = false
 
     val uiState: StateFlow<ImageMetadataUiState> = combine(
         imageRepository.getImageFlow(imageId),
-        _isSaving,
+        isSaving,
         mediaSessionState.loadedMediaItem,
     ) { image, isSaving, loadedMediaItem ->
         if (image == null) ImageMetadataUiState.Error
@@ -74,14 +74,14 @@ class ImageMetadataViewModel(
     fun onSaveClick(
         notes: String?,
     ) {
-        if (_isSaving.value) return
-        _isSaving.value = true
+        if (isSaving.value) return
+        isSaving.value = true
         viewModelScope.launch {
             try {
                 imageRepository.updateImageNotes(imageId, notes)
                 savedEvent.fire()
             } finally {
-                _isSaving.value = false
+                isSaving.value = false
             }
         }
     }

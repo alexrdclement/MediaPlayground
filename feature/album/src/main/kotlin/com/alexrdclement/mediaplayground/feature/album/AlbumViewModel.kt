@@ -50,10 +50,10 @@ class AlbumViewModel(
         private fun tag(methodName: String) = "$Tag#$methodName"
     }
 
-    private val _hasLoadedAlbum = MutableStateFlow(false)
+    private val hasLoadedAlbum = MutableStateFlow(false)
 
     private val album = albumRepository.getAlbumFlow(albumId)
-        .onEach { if (it != null) _hasLoadedAlbum.value = true }
+        .onEach { if (it != null) hasLoadedAlbum.value = true }
         .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5_000L),
@@ -77,7 +77,7 @@ class AlbumViewModel(
         album,
         isPlaying,
         loadedMediaItem,
-        _hasLoadedAlbum,
+        hasLoadedAlbum,
     ) { album, isPlaying, loadedMediaItem, hasLoadedAlbum ->
         if (album == null) {
             return@combine if (hasLoadedAlbum) AlbumUiState.NotFound else AlbumUiState.Loading
