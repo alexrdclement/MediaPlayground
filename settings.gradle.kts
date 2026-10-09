@@ -1,8 +1,5 @@
 pluginManagement {
     includeBuild("build-logic")
-    if (file("../gradle-plugins").exists()) {
-        includeBuild("../gradle-plugins")
-    }
     repositories {
         google()
         mavenCentral()
@@ -11,6 +8,9 @@ pluginManagement {
 }
 
 plugins {
+    // Builds against ../gradle-plugins from source when local.properties sets
+    // includeGradlePlugins=true; otherwise uses the published plugins, like CI.
+    id("com.embarrasdf.gradle.plugin.settings") version "0.0.134"
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
@@ -19,13 +19,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-    }
-    versionCatalogs {
-        if (file("../gradle-plugins").exists()) {
-            create("embarrasdfPluginLibs") {
-                from(files("../gradle-plugins/gradle/libs.versions.toml"))
-            }
-        }
     }
 }
 
