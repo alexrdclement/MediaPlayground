@@ -8,6 +8,7 @@ buildscript {
 }
 
 plugins {
+    alias(libs.plugins.embarrasdf.format)
     alias(libs.plugins.embarrasdf.github.release)
 }
 
