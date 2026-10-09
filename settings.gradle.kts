@@ -1,8 +1,11 @@
 pluginManagement {
-    includeBuild("build-logic")
-    if (file("../gradle-plugins").exists()) {
-        includeBuild("../gradle-plugins")
+    val embarrasdfGradlePluginsVersion = file("gradle/libs.versions.toml").readLines()
+        .first { it.startsWith("embarrasdf-gradle-plugins") }
+        .substringAfter('"').substringBefore('"')
+    plugins {
+        id("com.embarrasdf.gradle.plugin.settings") version embarrasdfGradlePluginsVersion
     }
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -11,6 +14,7 @@ pluginManagement {
 }
 
 plugins {
+    id("com.embarrasdf.gradle.plugin.settings")
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
@@ -19,13 +23,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-    }
-    versionCatalogs {
-        if (file("../gradle-plugins").exists()) {
-            create("embarrasdfPluginLibs") {
-                from(files("../gradle-plugins/gradle/libs.versions.toml"))
-            }
-        }
     }
 }
 
