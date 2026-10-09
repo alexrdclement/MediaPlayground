@@ -52,20 +52,20 @@ fun Duration.formatShort(
 }
 
 
-private const val daySuffix = "d"
-private const val hourSuffix = "h"
-private const val minuteSuffix = "m"
-private const val secondSuffix = "s"
-private const val milliSuffix = "ms"
-private const val microSuffix = "µs"
-private const val nanoSuffix = "ns"
+private const val DaySuffix = "d"
+private const val HourSuffix = "h"
+private const val MinuteSuffix = "m"
+private const val SecondSuffix = "s"
+private const val MilliSuffix = "ms"
+private const val MicroSuffix = "µs"
+private const val NanoSuffix = "ns"
 
-private fun Long.formatDays(): String = this.formatWithSuffix(daySuffix)
-private fun Long.formatHours(): String = this.formatWithSuffix(hourSuffix)
-private fun Long.formatMinutes(): String = this.formatWithSuffix(minuteSuffix)
-private fun Long.formatSeconds(): String = this.formatWithSuffix(secondSuffix)
-private fun Long.formatMilliseconds(): String = this.formatWithSuffix(milliSuffix)
-private fun Long.formatMicroseconds(): String = this.formatWithSuffix(microSuffix)
-private fun Long.formatNanoseconds(): String = this.formatWithSuffix(nanoSuffix)
+private fun Long.formatDays(): String = this.formatWithSuffix(DaySuffix)
+private fun Long.formatHours(): String = this.formatWithSuffix(HourSuffix)
+private fun Long.formatMinutes(): String = this.formatWithSuffix(MinuteSuffix)
+private fun Long.formatSeconds(): String = this.formatWithSuffix(SecondSuffix)
+private fun Long.formatMilliseconds(): String = this.formatWithSuffix(MilliSuffix)
+private fun Long.formatMicroseconds(): String = this.formatWithSuffix(MicroSuffix)
+private fun Long.formatNanoseconds(): String = this.formatWithSuffix(NanoSuffix)
 
 private fun Long.formatWithSuffix(suffix: String) = "$this$suffix"

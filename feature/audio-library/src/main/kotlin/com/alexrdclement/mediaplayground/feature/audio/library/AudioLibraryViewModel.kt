@@ -41,10 +41,10 @@ class AudioLibraryViewModel @Inject constructor(
     private companion object {
         val pagingConfig = PagingConfig(pageSize = 10)
 
-        private const val tag = "AudioLibraryViewModel"
-        private const val onItemClickTag = "$tag#onItemClick"
-        private const val onPlayPauseClickTag = "$tag#onPlayPauseClick"
-        private const val onMediaImportItemSelectedTag = "$tag#onMediaImportItemSelected"
+        private const val Tag = "AudioLibraryViewModel"
+        private const val OnItemClickTag = "$Tag#onItemClick"
+        private const val OnPlayPauseClickTag = "$Tag#onPlayPauseClick"
+        private const val OnMediaImportItemSelectedTag = "$Tag#onMediaImportItemSelected"
     }
 
     private var importStateJob: Job? = null
@@ -85,7 +85,7 @@ class AudioLibraryViewModel @Inject constructor(
                             transportControl.play()
                         }
                     } catch (e: PlaylistError) {
-                        logger.error(onItemClickTag) {
+                        logger.error(OnItemClickTag) {
                             AudioLibraryUiError.PlaylistError(error = e)
                         }
                     }
@@ -107,7 +107,7 @@ class AudioLibraryViewModel @Inject constructor(
                     transportControl.play()
                 }
             } catch (e: PlaylistError) {
-                logger.error(onPlayPauseClickTag) {
+                logger.error(OnPlayPauseClickTag) {
                     AudioLibraryUiError.PlaylistError(error = e)
                 }
             }
@@ -128,7 +128,7 @@ class AudioLibraryViewModel @Inject constructor(
             .takeWhile { resultsByUri ->
                 val failuresByUri = mapToFailures(resultsByUri)
                 failuresByUri.forEach { (uri, failure) ->
-                    logger.error(onMediaImportItemSelectedTag) {
+                    logger.error(OnMediaImportItemSelectedTag) {
                         AudioLibraryUiError.ImportFailure(uri, failure.error)
                     }
                 }
@@ -140,7 +140,7 @@ class AudioLibraryViewModel @Inject constructor(
                     if (importedUris.contains(uri)) continue
                     importedUris.add(uri)
 
-                    logger.infoString(onMediaImportItemSelectedTag) {
+                    logger.infoString(OnMediaImportItemSelectedTag) {
                         "Imported track ${success.track.title} from $uri"
                     }
                 }

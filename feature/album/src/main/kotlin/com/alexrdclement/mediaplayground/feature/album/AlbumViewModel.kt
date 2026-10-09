@@ -46,8 +46,8 @@ class AlbumViewModel(
     private val albumId = AlbumId(albumIdValue)
 
     private companion object {
-        private const val tag = "AlbumViewModel"
-        private fun tag(methodName: String) = "$tag#$methodName"
+        private const val Tag = "AlbumViewModel"
+        private fun tag(methodName: String) = "$Tag#$methodName"
     }
 
     private val _hasLoadedAlbum = MutableStateFlow(false)

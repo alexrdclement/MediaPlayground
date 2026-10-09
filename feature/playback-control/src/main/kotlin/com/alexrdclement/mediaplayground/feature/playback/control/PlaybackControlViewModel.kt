@@ -25,7 +25,7 @@ class PlaybackControlViewModel @Inject constructor(
         .map {
             PlaybackRateControl(
                 value = it.speed,
-                decrementEnabled = it.speed >= MIN_VALUE,
+                decrementEnabled = it.speed >= MinValue,
             )
         }.stateIn(
             scope = viewModelScope,
@@ -37,7 +37,7 @@ class PlaybackControlViewModel @Inject constructor(
         .map {
             PlaybackPitchControl(
                 value = it.pitch,
-                decrementEnabled = it.pitch >= MIN_VALUE,
+                decrementEnabled = it.pitch >= MinValue,
             )
         }.stateIn(
             scope = viewModelScope,
@@ -73,13 +73,13 @@ class PlaybackControlViewModel @Inject constructor(
         }
     }
 
-    private fun NudgeControl.decrementValue() = (value - STEP).roundTo1Decimal().coerceAtLeast(MIN_VALUE)
+    private fun NudgeControl.decrementValue() = (value - STEP).roundTo1Decimal().coerceAtLeast(MinValue)
     private fun NudgeControl.incrementValue() = (value + STEP).roundTo1Decimal()
 
     private fun Float.roundTo1Decimal(): Float = (this * 10).roundToInt() / 10f
 
     private companion object {
-        private const val MIN_VALUE = 0.1f
+        private const val MinValue = 0.1f
         private const val STEP = 0.1f
     }
 }

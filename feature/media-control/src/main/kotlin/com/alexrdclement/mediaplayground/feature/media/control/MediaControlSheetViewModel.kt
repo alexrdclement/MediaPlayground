@@ -41,8 +41,8 @@ class MediaControlSheetViewModel @Inject constructor(
 ) : ViewModel() {
 
     private companion object {
-        private const val tag = "MediaControlSheetViewModel"
-        private const val onAlbumPlayPauseClickTag = "$tag#onAlbumPlayPauseClick"
+        private const val Tag = "MediaControlSheetViewModel"
+        private const val OnAlbumPlayPauseClickTag = "$Tag#onAlbumPlayPauseClick"
     }
 
     val transportState = mediaSessionState.transportState
@@ -142,7 +142,7 @@ class MediaControlSheetViewModel @Inject constructor(
                     }
                 }
             } catch (e: PlaylistError) {
-                logger.error(tag = onAlbumPlayPauseClickTag) {
+                logger.error(tag = OnAlbumPlayPauseClickTag) {
                     MediaControlSheetError.PlaylistError(e)
                 }
             }
