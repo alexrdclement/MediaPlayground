@@ -10,9 +10,7 @@ fun NavGraphBuilder.cameraNavGraph() {
     route(CameraGraph)
 }
 
-fun EntryProviderScope<NavKey>.cameraEntryProvider(
-    navController: NavController,
-) {
+fun EntryProviderScope<NavKey>.cameraEntryProvider(navController: NavController) {
     entry<CameraGraph> {
         CameraScreen()
     }

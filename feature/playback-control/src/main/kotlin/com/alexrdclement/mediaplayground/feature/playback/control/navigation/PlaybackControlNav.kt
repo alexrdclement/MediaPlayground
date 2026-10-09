@@ -11,9 +11,7 @@ fun NavGraphBuilder.playbackControlNavGraph() {
     route(PlaybackControlRoute)
 }
 
-fun EntryProviderScope<NavKey>.playbackControlEntryProvider(
-    navController: NavController,
-) {
+fun EntryProviderScope<NavKey>.playbackControlEntryProvider(navController: NavController) {
     entry<PlaybackControlRoute>(
         metadata = DialogSceneStrategy.dialog(),
     ) {

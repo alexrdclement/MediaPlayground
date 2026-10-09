@@ -3,9 +3,7 @@ package com.alexrdclement.mediaplayground.ui.util
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
-fun Duration.formatShort(
-    minDurationUnit: DurationUnit = DurationUnit.SECONDS,
-): String {
+fun Duration.formatShort(minDurationUnit: DurationUnit = DurationUnit.SECONDS): String {
     val daysPart = this.inWholeDays
     val hoursPart = this.inWholeHours % 24
     val minutesPart = this.inWholeMinutes % 60
@@ -25,7 +23,7 @@ fun Duration.formatShort(
         minutesPart > 0 -> if (minDurationUnit == DurationUnit.MINUTES) {
             minutesPart.formatMinutes()
         } else {
-            "${minutesPart}:${secondsPart.toString().padStart(2, '0')}"
+            "$minutesPart:${secondsPart.toString().padStart(2, '0')}"
         }
         secondsPart > 0 -> if (minDurationUnit == DurationUnit.SECONDS) {
             secondsPart.formatSeconds()
@@ -50,7 +48,6 @@ fun Duration.formatShort(
         }
     }
 }
-
 
 private const val DaySuffix = "d"
 private const val HourSuffix = "h"

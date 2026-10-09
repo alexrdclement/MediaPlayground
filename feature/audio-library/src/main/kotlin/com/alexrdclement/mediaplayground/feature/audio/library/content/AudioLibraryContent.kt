@@ -25,7 +25,7 @@ fun AudioLibraryContent(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PaletteTheme.spacing.small)
+            .padding(vertical = PaletteTheme.spacing.small),
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -33,7 +33,7 @@ fun AudioLibraryContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .sizeIn(minHeight = 40.dp) // Match min button height
-                .padding(headerPadding)
+                .padding(headerPadding),
         ) {
             Text(
                 text = headerText,

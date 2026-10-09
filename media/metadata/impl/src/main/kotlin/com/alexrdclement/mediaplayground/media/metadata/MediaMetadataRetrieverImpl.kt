@@ -24,7 +24,6 @@ class MediaMetadataRetrieverImpl @Inject constructor(
                 mimeType = mimeType,
                 extension = extension,
             )
-
             else -> audioMetadataRetriever.getAudioMetadata(
                 contentUri = contentUri,
                 mimeType = mimeType,

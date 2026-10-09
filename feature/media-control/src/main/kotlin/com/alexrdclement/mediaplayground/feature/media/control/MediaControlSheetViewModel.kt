@@ -2,8 +2,6 @@ package com.alexrdclement.mediaplayground.feature.media.control
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.embarrasdf.logging.Logger
-import com.embarrasdf.logging.error
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
@@ -20,6 +18,8 @@ import com.alexrdclement.mediaplayground.media.session.playlistState
 import com.alexrdclement.mediaplayground.media.session.timelineState
 import com.alexrdclement.mediaplayground.media.session.transportState
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.embarrasdf.logging.Logger
+import com.embarrasdf.logging.error
 import dev.zacsweers.metro.Inject
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf

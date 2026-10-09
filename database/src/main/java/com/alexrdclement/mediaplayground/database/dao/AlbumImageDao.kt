@@ -20,10 +20,12 @@ interface AlbumImageDao {
     @Query("DELETE FROM album_images WHERE album_id = :albumId")
     suspend fun deleteForAlbum(albumId: String)
 
-    @Query("""
+    @Query(
+        """
         SELECT images.* FROM images
         INNER JOIN album_images ON images.id = album_images.image_id
         WHERE album_images.album_id = :albumId
-    """)
+    """,
+    )
     fun getImagesForAlbumFlow(albumId: String): Flow<List<Image>>
 }

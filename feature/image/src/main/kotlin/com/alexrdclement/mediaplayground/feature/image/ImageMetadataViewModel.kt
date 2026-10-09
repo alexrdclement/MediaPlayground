@@ -56,24 +56,28 @@ class ImageMetadataViewModel(
         isSaving,
         mediaSessionState.loadedMediaItem,
     ) { image, isSaving, loadedMediaItem ->
-        if (image == null) ImageMetadataUiState.Error
-        else ImageMetadataUiState.Loaded(
-            image = image,
-            isSaving = isSaving,
-            isMediaItemLoaded = loadedMediaItem != null,
-        )
+        if (image == null) {
+            ImageMetadataUiState.Error
+        } else {
+            ImageMetadataUiState.Loaded(
+                image = image,
+                isSaving = isSaving,
+                isMediaItemLoaded = loadedMediaItem != null,
+            )
+        }
     }.onEach { state ->
-        if (state is ImageMetadataUiState.Loaded) hasLoaded = true
-        else if (state is ImageMetadataUiState.Error && hasLoaded) deletedEvent.fire()
+        if (state is ImageMetadataUiState.Loaded) {
+            hasLoaded = true
+        } else if (state is ImageMetadataUiState.Error && hasLoaded) {
+            deletedEvent.fire()
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ImageMetadataUiState.Loading,
     )
 
-    fun onSaveClick(
-        notes: String?,
-    ) {
+    fun onSaveClick(notes: String?) {
         if (isSaving.value) return
         isSaving.value = true
         viewModelScope.launch {

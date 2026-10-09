@@ -56,15 +56,21 @@ class AlbumMetadataViewModel(
         isSaving,
         mediaSessionState.loadedMediaItem,
     ) { album, isSaving, loadedMediaItem ->
-        if (album == null) AlbumMetadataUiState.Error
-        else AlbumMetadataUiState.Loaded(
-            album = album,
-            isSaving = isSaving,
-            isMediaItemLoaded = loadedMediaItem != null,
-        )
+        if (album == null) {
+            AlbumMetadataUiState.Error
+        } else {
+            AlbumMetadataUiState.Loaded(
+                album = album,
+                isSaving = isSaving,
+                isMediaItemLoaded = loadedMediaItem != null,
+            )
+        }
     }.onEach { state ->
-        if (state is AlbumMetadataUiState.Loaded) hasLoaded = true
-        else if (state is AlbumMetadataUiState.Error && hasLoaded) deletedEvent.fire()
+        if (state is AlbumMetadataUiState.Loaded) {
+            hasLoaded = true
+        } else if (state is AlbumMetadataUiState.Error && hasLoaded) {
+            deletedEvent.fire()
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

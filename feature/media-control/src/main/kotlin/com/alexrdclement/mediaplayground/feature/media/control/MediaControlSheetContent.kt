@@ -1,12 +1,12 @@
 package com.alexrdclement.mediaplayground.feature.media.control
 
-import androidx.compose.runtime.Stable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,7 +20,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlin.math.roundToInt
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
@@ -37,6 +36,7 @@ import com.alexrdclement.palette.components.util.Spacer
 import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import kotlin.math.roundToInt
 import kotlin.time.Duration
 
 @Stable
@@ -73,7 +73,10 @@ fun MediaControlSheetContent(
 ) {
     val nestedScrollConnection = remember(overlapState) {
         object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+            override fun onPreScroll(
+                available: Offset,
+                source: NestedScrollSource,
+            ): Offset {
                 val state = overlapState ?: return Offset.Zero
                 if (available.y < 0f) {
                     val canConsume = state.maxOverlapPx - state.overlapPx
@@ -107,7 +110,7 @@ fun MediaControlSheetContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(contentPadding)
+            .padding(contentPadding),
     ) {
         Playlist(
             loadedMediaItem = loadedMediaItem,
@@ -127,7 +130,7 @@ fun MediaControlSheetContent(
                 .layout { measurable, constraints ->
                     val extraHeight = overlapState?.overlapPx?.roundToInt() ?: 0
                     val placeable = measurable.measure(
-                        constraints.copy(maxHeight = constraints.maxHeight + extraHeight)
+                        constraints.copy(maxHeight = constraints.maxHeight + extraHeight),
                     )
                     layout(placeable.width, constraints.maxHeight) {
                         placeable.place(0, -extraHeight)
@@ -138,7 +141,7 @@ fun MediaControlSheetContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = PaletteTheme.spacing.medium)
+                .padding(bottom = PaletteTheme.spacing.medium),
         ) {
             HorizontalDivider()
             Spacer(height = PaletteTheme.spacing.medium)
@@ -149,7 +152,7 @@ fun MediaControlSheetContent(
                 playbackRateState = playbackRateState,
                 onSeek = onSeek,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
             TransportControlBar(
                 transportState = transportState,
@@ -171,7 +174,7 @@ private fun Preview() {
                 artworkThumbnailUrl = null,
                 artworkLargeUrl = null,
                 title = "Title",
-                artists = listOf(Artist("Artist 1"), Artist("Artist 2"))
+                artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
             ),
             playlist = persistentListOf(
                 MediaItemUi.from(

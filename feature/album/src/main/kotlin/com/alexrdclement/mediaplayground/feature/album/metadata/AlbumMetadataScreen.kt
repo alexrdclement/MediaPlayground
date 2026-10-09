@@ -2,18 +2,18 @@ package com.alexrdclement.mediaplayground.feature.album.metadata
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -31,8 +31,8 @@ import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
 import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.IndeterminateProgressIndicator
+import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.core.TextField
 import com.alexrdclement.palette.components.layout.FloatingAction
@@ -52,11 +52,12 @@ fun AlbumMetadataScreen(
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
     onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
 ) {
-    val viewModel: AlbumMetadataViewModel = assistedMetroViewModel<AlbumMetadataViewModel, AlbumMetadataViewModel.Factory>(
-        key = albumId.value,
-    ) {
-        create(albumId.value)
-    }
+    val viewModel: AlbumMetadataViewModel =
+        assistedMetroViewModel<AlbumMetadataViewModel, AlbumMetadataViewModel.Factory>(
+            key = albumId.value,
+        ) {
+            create(albumId.value)
+        }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumMetadataUiState.Loading)
     LaunchedEffect(Unit) {
         viewModel.savedEvent.collect { onNavigateBack() }
@@ -106,7 +107,9 @@ fun AlbumMetadataScreen(
                             Text("Delete", style = PaletteTheme.styles.text.labelLarge)
                         }
                     }
-                } else null,
+                } else {
+                    null
+                },
             )
         },
         floatingAction = {
@@ -116,7 +119,7 @@ fun AlbumMetadataScreen(
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .mediaControlSheetPadding(uiState.isMediaItemLoaded)
+                            .mediaControlSheetPadding(uiState.isMediaItemLoaded),
                     ) {
                         Button(
                             style = ButtonStyleToken.Primary,

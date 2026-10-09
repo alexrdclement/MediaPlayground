@@ -2,14 +2,14 @@ package com.alexrdclement.mediaplayground.feature.artist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -40,11 +40,12 @@ fun ArtistMetadataScreen(
     onNavigateBack: () -> Unit,
     onNavigateToDelete: (displayName: String) -> Unit = {},
 ) {
-    val viewModel: ArtistMetadataViewModel = assistedMetroViewModel<ArtistMetadataViewModel, ArtistMetadataViewModel.Factory>(
-        key = artistId,
-    ) {
-        create(artistId)
-    }
+    val viewModel: ArtistMetadataViewModel =
+        assistedMetroViewModel<ArtistMetadataViewModel, ArtistMetadataViewModel.Factory>(
+            key = artistId,
+        ) {
+            create(artistId)
+        }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(ArtistMetadataUiState.Loading)
     LaunchedEffect(Unit) {
         viewModel.savedEvent.collect { onNavigateBack() }
@@ -90,7 +91,9 @@ fun ArtistMetadataScreen(
                             Text("Delete", style = PaletteTheme.styles.text.labelLarge)
                         }
                     }
-                } else null,
+                } else {
+                    null
+                },
             )
         },
         floatingAction = {
@@ -100,7 +103,7 @@ fun ArtistMetadataScreen(
                     FloatingAction(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .mediaControlSheetPadding(uiState.isMediaItemLoaded)
+                            .mediaControlSheetPadding(uiState.isMediaItemLoaded),
                     ) {
                         Button(
                             style = ButtonStyleToken.Primary,

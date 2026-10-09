@@ -53,15 +53,21 @@ class ArtistMetadataViewModel(
         isSaving,
         mediaSessionState.loadedMediaItem,
     ) { artist, isSaving, loadedMediaItem ->
-        if (artist == null) ArtistMetadataUiState.Error
-        else ArtistMetadataUiState.Loaded(
-            artist = artist,
-            isSaving = isSaving,
-            isMediaItemLoaded = loadedMediaItem != null,
-        )
+        if (artist == null) {
+            ArtistMetadataUiState.Error
+        } else {
+            ArtistMetadataUiState.Loaded(
+                artist = artist,
+                isSaving = isSaving,
+                isMediaItemLoaded = loadedMediaItem != null,
+            )
+        }
     }.onEach { state ->
-        if (state is ArtistMetadataUiState.Loaded) hasLoaded = true
-        else if (state is ArtistMetadataUiState.Error && hasLoaded) deletedEvent.fire()
+        if (state is ArtistMetadataUiState.Loaded) {
+            hasLoaded = true
+        } else if (state is ArtistMetadataUiState.Error && hasLoaded) {
+            deletedEvent.fire()
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

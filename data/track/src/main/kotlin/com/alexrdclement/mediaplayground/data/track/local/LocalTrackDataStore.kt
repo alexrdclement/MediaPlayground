@@ -4,12 +4,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.data.track.local.mapper.toAlbumEntity
 import com.alexrdclement.mediaplayground.data.track.local.mapper.toArtistEntity
 import com.alexrdclement.mediaplayground.data.track.local.mapper.toImageEntity
 import com.alexrdclement.mediaplayground.data.track.local.mapper.toTrack
 import com.alexrdclement.mediaplayground.data.track.local.mapper.toTrackEntity
-import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.database.dao.AlbumArtistDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumDao
 import com.alexrdclement.mediaplayground.database.dao.AlbumImageDao
@@ -125,17 +125,26 @@ class LocalTrackDataStore @Inject constructor(
         }
     }
 
-    suspend fun updateTrackTitle(id: TrackId, title: String) {
+    suspend fun updateTrackTitle(
+        id: TrackId,
+        title: String,
+    ) {
         val track = trackDao.getTrack(id.value) ?: return
         trackDao.update(track.copy(title = title))
     }
 
-    suspend fun updateTrackNumber(id: TrackId, trackNumber: Int?) {
+    suspend fun updateTrackNumber(
+        id: TrackId,
+        trackNumber: Int?,
+    ) {
         val track = trackDao.getTrack(id.value) ?: return
         trackDao.update(track.copy(trackNumber = trackNumber))
     }
 
-    suspend fun updateTrackNotes(id: TrackId, notes: String?) {
+    suspend fun updateTrackNotes(
+        id: TrackId,
+        notes: String?,
+    ) {
         val track = trackDao.getTrack(id.value) ?: return
         trackDao.update(track.copy(notes = notes))
     }

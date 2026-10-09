@@ -1,9 +1,6 @@
 package com.alexrdclement.mediaplayground.data.track.local
 
 import com.alexrdclement.mediaplayground.data.track.fixtures.LocalTrackDataStoreFixture
-import com.alexrdclement.mediaplayground.media.model.Source
-import com.alexrdclement.mediaplayground.media.model.mapper.toSimpleAlbum
-import com.alexrdclement.mediaplayground.media.model.mapper.toSimpleTrack
 import com.alexrdclement.mediaplayground.media.model.FakeImage1
 import com.alexrdclement.mediaplayground.media.model.FakeImage2
 import com.alexrdclement.mediaplayground.media.model.FakeLocalSimpleAlbum1
@@ -12,6 +9,9 @@ import com.alexrdclement.mediaplayground.media.model.FakeLocalTrack1
 import com.alexrdclement.mediaplayground.media.model.FakeLocalTrack2
 import com.alexrdclement.mediaplayground.media.model.FakeSimpleArtist1
 import com.alexrdclement.mediaplayground.media.model.FakeSimpleArtist2
+import com.alexrdclement.mediaplayground.media.model.Source
+import com.alexrdclement.mediaplayground.media.model.mapper.toSimpleAlbum
+import com.alexrdclement.mediaplayground.media.model.mapper.toSimpleTrack
 import com.embarrasdf.testing.MainDispatcherRule
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.first

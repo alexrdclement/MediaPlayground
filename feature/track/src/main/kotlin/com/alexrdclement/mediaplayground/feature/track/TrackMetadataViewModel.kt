@@ -56,15 +56,21 @@ class TrackMetadataViewModel(
         isSaving,
         mediaSessionState.loadedMediaItem,
     ) { track, isSaving, loadedMediaItem ->
-        if (track == null) TrackMetadataUiState.Error
-        else TrackMetadataUiState.Loaded(
-            track = track,
-            isSaving = isSaving,
-            isMediaItemLoaded = loadedMediaItem != null,
-        )
+        if (track == null) {
+            TrackMetadataUiState.Error
+        } else {
+            TrackMetadataUiState.Loaded(
+                track = track,
+                isSaving = isSaving,
+                isMediaItemLoaded = loadedMediaItem != null,
+            )
+        }
     }.onEach { state ->
-        if (state is TrackMetadataUiState.Loaded) hasLoaded = true
-        else if (state is TrackMetadataUiState.Error && hasLoaded) deletedEvent.fire()
+        if (state is TrackMetadataUiState.Loaded) {
+            hasLoaded = true
+        } else if (state is TrackMetadataUiState.Error && hasLoaded) {
+            deletedEvent.fire()
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

@@ -5,18 +5,18 @@ import androidx.media3.common.Timeline
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.MediaItemId
 import com.alexrdclement.mediaplayground.media.model.TrackId
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import dev.zacsweers.metro.Inject
 
 class PlaylistStateImpl @Inject constructor(
     private val mediaControllerHolder: MediaControllerHolder,
     private val mediaItemRepository: MediaItemRepository,
-): PlaylistState {
+) : PlaylistState {
 
     override fun getLoadedMediaItemId(): Flow<MediaItemId?> {
         return callbackFlow {
@@ -28,7 +28,7 @@ class PlaylistStateImpl @Inject constructor(
             val listener = object : Player.Listener {
                 override fun onMediaItemTransition(
                     mediaItem: androidx.media3.common.MediaItem?,
-                    reason: Int
+                    reason: Int,
                 ) {
                     trySend(mediaItem?.mediaId?.let { TrackId(it) })
                 }
@@ -46,7 +46,10 @@ class PlaylistStateImpl @Inject constructor(
             val mediaController = mediaControllerHolder.getMediaController()
             send(mediaController.currentTimeline.getMediaIds())
             val listener = object : Player.Listener {
-                override fun onTimelineChanged(timeline: Timeline, reason: Int) {
+                override fun onTimelineChanged(
+                    timeline: Timeline,
+                    reason: Int,
+                ) {
                     trySend(timeline.getMediaIds())
                 }
             }
@@ -55,9 +58,12 @@ class PlaylistStateImpl @Inject constructor(
         }
 
         return timelineIds.flatMapLatest { ids ->
-            if (ids.isEmpty()) flowOf(emptyList())
-            else combine(ids.map { mediaItemRepository.getMediaItemFlow(it) }) { items ->
-                items.filterNotNull()
+            if (ids.isEmpty()) {
+                flowOf(emptyList())
+            } else {
+                combine(ids.map { mediaItemRepository.getMediaItemFlow(it) }) { items ->
+                    items.filterNotNull()
+                }
             }
         }
     }

@@ -8,9 +8,7 @@ import com.alexrdclement.palette.components.layout.dialog.DialogContent
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
-fun PlaybackControlScreen(
-    onDismissRequest: () -> Unit,
-) {
+fun PlaybackControlScreen(onDismissRequest: () -> Unit) {
     val viewModel = metroViewModel<PlaybackControlViewModel>()
     val rateControl by viewModel.rateControl.collectAsStateWithLifecycle()
     val pitchControl by viewModel.pitchControl.collectAsStateWithLifecycle()

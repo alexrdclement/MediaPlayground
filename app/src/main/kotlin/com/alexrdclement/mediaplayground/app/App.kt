@@ -6,13 +6,11 @@ import com.alexrdclement.mediaplayground.app.navigation.rememberMediaPlaygroundN
 import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.theme.PaletteTheme
-import dev.zacsweers.metrox.viewmodel.metroViewModel
 import com.embarrasdf.uievent.UiEventState
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
-fun App(
-    navController: NavController = rememberMediaPlaygroundNavController(),
-) {
+fun App(navController: NavController = rememberMediaPlaygroundNavController()) {
     val viewModel = metroViewModel<AppViewModel>()
     App(
         navController = navController,
