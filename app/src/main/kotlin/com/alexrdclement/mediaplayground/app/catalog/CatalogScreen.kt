@@ -21,7 +21,7 @@ fun <T : CatalogItem> CatalogScreen(
     onItemClick: (T) -> Unit,
     title: String? = null,
     onNavigateBack: (() -> Unit)? = null,
-    actions: @Composable () -> Unit = {}
+    actions: @Composable () -> Unit = {},
 ) {
     ReportDrawn()
 
@@ -38,7 +38,7 @@ fun <T : CatalogItem> CatalogScreen(
             )
         },
         modifier = Modifier
-            .safeDrawingPadding()
+            .safeDrawingPadding(),
     ) { innerPadding ->
         Catalog(
             items = items,
@@ -46,7 +46,7 @@ fun <T : CatalogItem> CatalogScreen(
             contentPadding = innerPadding,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = PaletteTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.spacing.medium),
         )
     }
 }
@@ -57,7 +57,7 @@ private fun Preview() {
     PaletteTheme {
         CatalogScreen(
             items = MainCatalogItem.entries.toList(),
-            onItemClick = {}
+            onItemClick = {},
         )
     }
 }
@@ -74,4 +74,3 @@ private fun WithNavPreview() {
         )
     }
 }
-

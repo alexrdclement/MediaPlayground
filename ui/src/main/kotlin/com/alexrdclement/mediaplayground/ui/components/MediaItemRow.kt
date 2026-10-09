@@ -52,7 +52,7 @@ fun MediaItemRow(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         if (title != null) {
             Text(
@@ -70,7 +70,7 @@ fun MediaItemRow(
         ) {
             items(
                 count = mediaItems.itemCount,
-                key = mediaItems.itemKey { it.mediaItem.id.value }
+                key = mediaItems.itemKey { it.mediaItem.id.value },
             ) { index ->
                 val mediaItem = mediaItems[index] ?: return@items
                 if (itemOverlayContent != null) {
@@ -129,7 +129,7 @@ private fun Preview() {
                 onItemPlayPauseClick = {},
                 modifier = Modifier
                     .height(360.dp)
-                    .padding(16.dp)
+                    .padding(16.dp),
             )
         }
     }

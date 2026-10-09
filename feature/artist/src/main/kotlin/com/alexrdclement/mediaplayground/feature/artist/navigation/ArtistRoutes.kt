@@ -24,4 +24,3 @@ data class ArtistDeleteRoute(
 ) : ArtistNavRoute {
     override val pathSegment: PathSegment = artistIdValue.toPathSegment()
 }
-

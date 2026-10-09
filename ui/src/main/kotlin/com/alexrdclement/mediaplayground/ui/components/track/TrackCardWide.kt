@@ -32,7 +32,7 @@ fun TrackCardWide(
     track: Track,
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isEnabled: Boolean = remember(track) { track.uri != null }
+    isEnabled: Boolean = remember(track) { track.uri != null },
 ) {
     Surface(
         modifier = modifier,
@@ -45,18 +45,18 @@ fun TrackCardWide(
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.size(64.dp)
+                modifier = Modifier.size(64.dp),
             ) {
                 MediaItemArtwork(
                     imageUrl = track.thumbnailImageUrl,
                     isEnabled = isEnabled,
                     modifier = Modifier
                         .aspectRatio(1f)
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 )
                 PlayPauseButton(
                     isEnabled = isEnabled,
-                    onClick = onPlayClick
+                    onClick = onPlayClick,
                 )
             }
             Spacer(modifier = Modifier.width(PaletteTheme.spacing.medium))
@@ -80,7 +80,7 @@ private fun Preview() {
             track = PreviewTrack1,
             onPlayClick = {},
             modifier = Modifier.fillMaxWidth(),
-            isEnabled = true
+            isEnabled = true,
         )
     }
 }

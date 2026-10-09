@@ -17,7 +17,7 @@ fun MediaItemArtwork(
             model = imageUrl,
             contentDescription = null,
             modifier = modifier
-                .alpha(if (isEnabled) 1f else PaletteTheme.colorScheme.disabledContentAlpha)
+                .alpha(if (isEnabled) 1f else PaletteTheme.colorScheme.disabledContentAlpha),
         )
     } else {
         // TODO: fallback image

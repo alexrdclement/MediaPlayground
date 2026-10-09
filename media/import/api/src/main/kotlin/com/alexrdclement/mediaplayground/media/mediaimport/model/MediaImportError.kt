@@ -2,7 +2,6 @@ package com.alexrdclement.mediaplayground.media.mediaimport.model
 
 import com.embarrasdf.logging.Loggable
 
-
 sealed class MediaImportError : Loggable {
     data object MkdirError : MediaImportError()
     data object InputFileError : MediaImportError()

@@ -48,23 +48,29 @@ class TrackMetadataViewModel(
     val savedEvent = UiEventState<Unit?>()
     val deletedEvent = UiEventState<Unit?>()
 
-    private val _isSaving = MutableStateFlow(false)
+    private val isSaving = MutableStateFlow(false)
     private var hasLoaded = false
 
     val uiState: StateFlow<TrackMetadataUiState> = combine(
         trackRepository.getTrackFlow(trackId),
-        _isSaving,
+        isSaving,
         mediaSessionState.loadedMediaItem,
     ) { track, isSaving, loadedMediaItem ->
-        if (track == null) TrackMetadataUiState.Error
-        else TrackMetadataUiState.Loaded(
-            track = track,
-            isSaving = isSaving,
-            isMediaItemLoaded = loadedMediaItem != null,
-        )
+        if (track == null) {
+            TrackMetadataUiState.Error
+        } else {
+            TrackMetadataUiState.Loaded(
+                track = track,
+                isSaving = isSaving,
+                isMediaItemLoaded = loadedMediaItem != null,
+            )
+        }
     }.onEach { state ->
-        if (state is TrackMetadataUiState.Loaded) hasLoaded = true
-        else if (state is TrackMetadataUiState.Error && hasLoaded) deletedEvent.fire()
+        if (state is TrackMetadataUiState.Loaded) {
+            hasLoaded = true
+        } else if (state is TrackMetadataUiState.Error && hasLoaded) {
+            deletedEvent.fire()
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -76,8 +82,8 @@ class TrackMetadataViewModel(
         trackNumber: Int?,
         notes: String?,
     ) {
-        if (_isSaving.value) return
-        _isSaving.value = true
+        if (isSaving.value) return
+        isSaving.value = true
         viewModelScope.launch {
             try {
                 trackRepository.updateTrackTitle(trackId, title)
@@ -85,7 +91,7 @@ class TrackMetadataViewModel(
                 trackRepository.updateTrackNotes(trackId, notes)
                 savedEvent.fire()
             } finally {
-                _isSaving.value = false
+                isSaving.value = false
             }
         }
     }

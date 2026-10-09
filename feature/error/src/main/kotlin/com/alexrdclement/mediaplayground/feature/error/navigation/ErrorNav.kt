@@ -11,9 +11,7 @@ fun NavGraphBuilder.errorNavGraph() {
     route(ErrorGraph(""))
 }
 
-fun EntryProviderScope<NavKey>.errorEntryProvider(
-    navController: NavController,
-) {
+fun EntryProviderScope<NavKey>.errorEntryProvider(navController: NavController) {
     entry<ErrorGraph>(
         metadata = DialogSceneStrategy.dialog(),
     ) { route ->

@@ -10,9 +10,7 @@ fun NavGraphBuilder.playerNavGraph() {
     route(PlayerGraph)
 }
 
-fun EntryProviderScope<NavKey>.playerEntryProvider(
-    navController: NavController,
-) {
+fun EntryProviderScope<NavKey>.playerEntryProvider(navController: NavController) {
     entry<PlayerGraph> {
         PlayerScreen()
     }

@@ -9,7 +9,7 @@ import com.alexrdclement.palette.components.media.model.Artist
 @Composable
 @JvmName("artistNamesOrDefaultArtist")
 fun artistNamesOrDefault(artists: List<Artist>): String {
-    return artistNamesOrDefault(artists.map { it.name})
+    return artistNamesOrDefault(artists.map { it.name })
 }
 
 @Composable

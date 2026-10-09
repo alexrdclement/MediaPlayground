@@ -47,7 +47,7 @@ fun Playlist(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .background(PaletteTheme.colorScheme.surface)
+            .background(PaletteTheme.colorScheme.surface),
     ) {
         stickyHeader {
             var titleMenuExpanded by remember { mutableStateOf(false) }
@@ -86,7 +86,7 @@ fun Playlist(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(PaletteTheme.colorScheme.surface)
-                    .padding(top = PaletteTheme.spacing.medium)
+                    .padding(top = PaletteTheme.spacing.medium),
             )
         }
         items(
@@ -110,7 +110,9 @@ fun Playlist(
                     offset = touchOffset,
                     onDismissRequest = { menuExpanded = false },
                     onNavigateToMetadata = { onNavigateToTrackMetadata(item.mediaItem.id.value) },
-                    onNavigateToDelete = { onNavigateToTrackDelete(item.mediaItem.id.value, item.mediaItem.title ?: "") },
+                    onNavigateToDelete = {
+                        onNavigateToTrackDelete(item.mediaItem.id.value, item.mediaItem.title ?: "")
+                    },
                 )
             }
         }
@@ -126,7 +128,7 @@ private fun Preview() {
                 artworkThumbnailUrl = null,
                 artworkLargeUrl = null,
                 title = "Title",
-                artists = listOf(Artist("Artist 1"), Artist("Artist 2"))
+                artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
             ),
             playlist = persistentListOf(
                 MediaItemUi.from(

@@ -53,11 +53,14 @@ class LocalImageDataStore @Inject constructor(
                 cameraMake = mediaMetadata?.cameraMake,
                 cameraModel = mediaMetadata?.cameraModel,
                 notes = notes,
-            )
+            ),
         )
     }
 
-    suspend fun updateImageNotes(imageId: ImageId, notes: String?) {
+    suspend fun updateImageNotes(
+        imageId: ImageId,
+        notes: String?,
+    ) {
         val image = imageDao.getImage(imageId.value) ?: return
         imageDao.update(image.copy(notes = notes))
     }

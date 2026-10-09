@@ -104,7 +104,9 @@ if (includeTesting && file("../testing").exists()) {
     includeBuild("../testing") {
         dependencySubstitution {
             substitute(module("com.embarrasdf.testing:maindispatcher-rule")).using(project(":maindispatcher-rule"))
-            substitute(module("com.embarrasdf.testing:maindispatcher-extension")).using(project(":maindispatcher-extension"))
+            substitute(
+                module("com.embarrasdf.testing:maindispatcher-extension"),
+            ).using(project(":maindispatcher-extension"))
         }
     }
 }

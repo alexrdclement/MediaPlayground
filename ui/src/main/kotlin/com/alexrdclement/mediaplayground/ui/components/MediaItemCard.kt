@@ -61,13 +61,13 @@ fun MediaItemCard(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .aspectRatio(1f, matchHeightConstraintsFirst = false)
+                    .aspectRatio(1f, matchHeightConstraintsFirst = false),
             ) {
                 MediaItemArtwork(
                     imageUrl = mediaItem.thumbnailImageUrl,
                     modifier = Modifier
                         .aspectRatio(1f)
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 )
                 PlayPauseButton(
                     isPlaying = isPlaying,
@@ -75,7 +75,7 @@ fun MediaItemCard(
                     onClick = onPlayPauseClick,
                     modifier = Modifier
                         .size(24.dp)
-                        .align(BiasAlignment(.8f, .8f))
+                        .align(BiasAlignment(.8f, .8f)),
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -88,14 +88,14 @@ fun MediaItemCard(
                     style = PaletteTheme.styles.text.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
-                        .basicMarquee()
+                        .basicMarquee(),
                 )
                 Text(
                     text = artistNamesOrDefault(mediaItem.artists),
                     style = PaletteTheme.styles.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
-                        .basicMarquee()
+                        .basicMarquee(),
                 )
             }
         }

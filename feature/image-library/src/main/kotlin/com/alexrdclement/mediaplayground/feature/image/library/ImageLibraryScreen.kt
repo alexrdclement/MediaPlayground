@@ -56,7 +56,7 @@ fun ImageLibraryScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(ImageLibraryUiState.Loading)
     val mediaPickerLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetMultipleContents()
+        ActivityResultContracts.GetMultipleContents(),
     ) {
         viewModel.onImportItemsSelected(it)
     }
@@ -94,7 +94,7 @@ fun ImageLibraryScreen(
                                 contentPadding = ButtonDefaults.ContentPaddingDefault,
                                 style = ButtonStyleToken.Secondary,
                                 modifier = Modifier
-                                    .wrapContentSize()
+                                    .wrapContentSize(),
                             ) {
                                 Text(
                                     text = "Import",
@@ -113,7 +113,7 @@ fun ImageLibraryScreen(
                 onImportClick = onImportClick,
                 contentPadding = innerPadding,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
             )
             is ImageLibraryUiState.Content -> ImageGrid(
                 uiState = uiState,
@@ -121,7 +121,7 @@ fun ImageLibraryScreen(
                 onNavigateToImageDelete = onNavigateToImageDelete,
                 contentPadding = innerPadding,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
             )
         }
     }

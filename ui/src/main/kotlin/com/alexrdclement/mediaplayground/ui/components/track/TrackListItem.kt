@@ -21,9 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,7 +71,7 @@ fun TrackListItem(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(52.dp)
+                    .size(52.dp),
             ) {
                 if (isLoaded) {
                     PlayPauseButton(
@@ -80,13 +80,13 @@ fun TrackListItem(
                         isEnabled = isPlayable,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(12.dp)
+                            .padding(12.dp),
                     )
                 } else {
                     Text(
                         text = track.trackNumber.toString(),
                         style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
-                        modifier = Modifier
+                        modifier = Modifier,
                     )
                 }
             }
@@ -95,21 +95,21 @@ fun TrackListItem(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = PaletteTheme.spacing.small)
+                    .padding(horizontal = PaletteTheme.spacing.small),
             ) {
                 Text(
                     text = track.name,
                     style = PaletteTheme.styles.text.titleMedium,
                     maxLines = 1,
                     modifier = Modifier
-                        .basicMarquee()
+                        .basicMarquee(),
                 )
                 Text(
                     text = artistNamesOrDefault(track.artists),
                     style = PaletteTheme.styles.text.bodyMedium,
                     maxLines = 1,
                     modifier = Modifier
-                        .basicMarquee()
+                        .basicMarquee(),
                 )
             }
             Text(

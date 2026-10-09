@@ -35,24 +35,24 @@ fun TransportControlBar(
         ),
         modifier = modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Min)
+            .height(IntrinsicSize.Min),
     ) {
         SkipBackButton(
             onClick = onSkipBackClick,
             modifier = Modifier
-                .size(48.dp)
+                .size(48.dp),
         )
         PlayPauseButton(
             isPlaying = transportState.isPlaying,
             onClick = onPlayPauseClick,
             onLongClick = onPlayPauseLongClick,
             modifier = Modifier
-                .size(72.dp)
+                .size(72.dp),
         )
         SkipButton(
             onClick = onSkipClick,
             modifier = Modifier
-                .size(48.dp)
+                .size(48.dp),
         )
     }
 }

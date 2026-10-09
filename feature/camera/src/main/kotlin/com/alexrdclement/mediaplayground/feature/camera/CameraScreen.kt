@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
-import dev.zacsweers.metrox.viewmodel.metroViewModel
 import com.alexrdclement.mediaplayground.media.ui.CameraPreview
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Surface
@@ -18,11 +17,10 @@ import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission
 import com.mohamedrejeb.calf.permissions.PermissionStatus
 import com.mohamedrejeb.calf.permissions.rememberPermissionState
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
-fun CameraScreen(
-    viewModel: CameraViewModel = metroViewModel(),
-) {
+fun CameraScreen(viewModel: CameraViewModel = metroViewModel()) {
     val mediaSessionState = viewModel.mediaSessionState
     CameraScreen(
         mediaSessionState = mediaSessionState,
@@ -31,9 +29,7 @@ fun CameraScreen(
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CameraScreen(
-    mediaSessionState: MediaSessionState?,
-) {
+fun CameraScreen(mediaSessionState: MediaSessionState?) {
     val cameraPermissionState = rememberPermissionState(Permission.Camera)
 
     Surface(
@@ -47,7 +43,7 @@ fun CameraScreen(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .fillMaxSize()
-                        .statusBarsPadding()
+                        .statusBarsPadding(),
                 ) {
                     Button(
                         onClick = cameraPermissionState::launchPermissionRequest,
@@ -56,13 +52,12 @@ fun CameraScreen(
                     }
                 }
             }
-
             PermissionStatus.Granted -> {
                 CameraPreview(
                     onReady = {},
                     onError = {},
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 )
             }
         }

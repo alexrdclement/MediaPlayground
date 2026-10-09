@@ -145,7 +145,7 @@ class MediaImporterImpl @Inject constructor(
         return ImportData(
             uri = uri,
             mediaMetadata = mediaMetadata,
-            simpleAlbum = simpleAlbum
+            simpleAlbum = simpleAlbum,
         )
     }
 
