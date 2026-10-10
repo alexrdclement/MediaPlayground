@@ -10,7 +10,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.alexrdclement.mediaplayground.app.App
 import com.alexrdclement.mediaplayground.app.di.MetroApp
 import com.alexrdclement.mediaplayground.app.navigation.rememberMediaPlaygroundNavController
-import com.alexrdclement.palette.navigation.NavController
+import com.embarrasdf.palette.navigation.NavController
 import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 
 class MainActivity : ComponentActivity() {

@@ -2,9 +2,10 @@ package com.alexrdclement.mediaplayground.feature.album
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.menu.ContextMenu
-import com.alexrdclement.palette.components.menu.DropdownMenuItem
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.menu.ContextMenu
+import com.embarrasdf.palette.components.menu.DropdownMenuItem
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun TrackContextMenu(
@@ -18,20 +19,23 @@ fun TrackContextMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
         offset = offset,
+        style = PaletteTheme.component.menu.dropdownMenu,
     ) {
         DropdownMenuItem(
-            text = { Text("Metadata") },
+            text = { Text("Metadata", style = PaletteTheme.component.core.text.bodyMedium) },
             onClick = {
                 onDismissRequest()
                 onNavigateToMetadata()
             },
+            style = PaletteTheme.component.menu.dropdownMenuItem,
         )
         DropdownMenuItem(
-            text = { Text("Delete") },
+            text = { Text("Delete", style = PaletteTheme.component.core.text.bodyMedium) },
             onClick = {
                 onDismissRequest()
                 onNavigateToDelete()
             },
+            style = PaletteTheme.component.menu.dropdownMenuItem,
         )
     }
 }

@@ -6,9 +6,9 @@ import com.alexrdclement.mediaplayground.media.model.Album
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.TrackId
-import com.alexrdclement.palette.navigation.NavController
-import com.alexrdclement.palette.navigation.NavGraphBuilder
-import com.alexrdclement.palette.navigation.NavKey
+import com.embarrasdf.palette.navigation.NavController
+import com.embarrasdf.palette.navigation.NavGraphBuilder
+import com.embarrasdf.palette.navigation.NavKey
 
 fun NavGraphBuilder.audioLibraryNavGraph() {
     route(AudioLibraryGraph)

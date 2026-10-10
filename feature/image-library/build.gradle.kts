@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.palette.components)
     implementation(libs.palette.navigation)
     implementation(libs.palette.theme)
+    implementation(libs.palette.theme.components)
 
     implementation(projects.data.image)
     implementation(projects.media.model)
