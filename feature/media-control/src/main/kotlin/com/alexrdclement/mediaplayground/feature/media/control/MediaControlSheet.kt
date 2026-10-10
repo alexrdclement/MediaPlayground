@@ -32,7 +32,6 @@ import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.largeImageUrl
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUrl
-import com.alexrdclement.mediaplayground.ui.constants.MediaControlSheetPartialExpandHeight
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.palette.components.layout.PeekSheetState
 import com.alexrdclement.palette.components.media.model.Artist
@@ -163,17 +162,9 @@ fun MediaControlSheet(
                     isPlaying = isPlaying,
                     onPlayPauseClick = onPlayPauseClick,
                     state = mediaControlSheetState,
-                    style = PaletteTheme.component.media.mediaControlSheet.let { base ->
-                        base.copy(
-                            controlBarStyle = base.controlBarStyle.copy(
-                                minContentSize = DpSize(
-                                    width = MediaControlSheetPartialExpandHeight,
-                                    height = MediaControlSheetPartialExpandHeight,
-                                ),
-                            ),
-                            contentPadding = contentPadding.calculateHorizontalPaddingValues(),
-                        )
-                    },
+                    style = PaletteTheme.component.media.mediaControlSheet.copy(
+                        contentPadding = contentPadding.calculateHorizontalPaddingValues(),
+                    ),
                     onControlBarClick = {
                         coroutineScope.launch {
                             if (mediaControlSheetState.isExpanded) {
