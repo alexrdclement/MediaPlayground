@@ -1,8 +1,9 @@
 package com.alexrdclement.mediaplayground.app.catalog
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,6 +13,8 @@ import com.embarrasdf.palette.components.layout.TopBar
 import com.embarrasdf.palette.components.layout.catalog.Catalog
 import com.embarrasdf.palette.components.layout.catalog.CatalogItem
 import com.embarrasdf.palette.components.navigation.BackNavigationButton
+import com.embarrasdf.palette.components.util.horizontalPaddingValues
+import com.embarrasdf.palette.components.util.plus
 import com.embarrasdf.palette.theme.PaletteTheme
 import com.embarrasdf.trace.ReportDrawn
 
@@ -21,36 +24,29 @@ fun <T : CatalogItem> CatalogScreen(
     onItemClick: (T) -> Unit,
     title: String? = null,
     onNavigateBack: (() -> Unit)? = null,
-    actions: (@Composable () -> Unit)? = null,
+    actions: @Composable () -> Unit = {}
 ) {
     ReportDrawn()
 
     Scaffold(
-        // Only show a top bar when there is something in it. An empty TopBar still reserves its
-        // minimum height, which offsets the Scaffold's content padding and pushes the vertically
-        // centered catalog off center.
         topBar = {
-            if (title != null || onNavigateBack != null || actions != null) {
-                TopBar(
-                    title = title?.let {
-                        { Text(title, style = PaletteTheme.component.core.text.titleMedium) }
-                    },
-                    navButton = onNavigateBack?.let {
-                        { BackNavigationButton(onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) }
-                    },
-                    actions = actions,
-                    style = PaletteTheme.component.layout.topBar,
-                )
-            }
+            TopBar(
+                title = title?.let {
+                    { Text(title, style = PaletteTheme.component.core.text.titleMedium) }
+                },
+                navButton = onNavigateBack?.let {
+                    { BackNavigationButton(onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) }
+                },
+                actions = actions,
+                style = PaletteTheme.component.layout.topBar,
+            )
         },
-        modifier = Modifier
-            .safeDrawingPadding(),
         style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         Catalog(
             items = items,
             onItemClick = onItemClick,
-            contentPadding = innerPadding,
+            contentPadding = innerPadding.plus(WindowInsets.safeDrawing.horizontalPaddingValues()),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium),
