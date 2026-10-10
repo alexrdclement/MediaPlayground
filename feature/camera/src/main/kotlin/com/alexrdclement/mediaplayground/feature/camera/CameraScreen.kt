@@ -10,7 +10,6 @@ import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.ui.CameraPreview
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.SurfaceStyle
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.mohamedrejeb.calf.permissions.Camera
@@ -36,7 +35,7 @@ fun CameraScreen(mediaSessionState: MediaSessionState?) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        style = SurfaceStyle(color = PaletteTheme.semantic.color.surface),
+        style = PaletteTheme.component.core.surface.default,
     ) {
         when (cameraPermissionState.status) {
             is PermissionStatus.Denied -> {

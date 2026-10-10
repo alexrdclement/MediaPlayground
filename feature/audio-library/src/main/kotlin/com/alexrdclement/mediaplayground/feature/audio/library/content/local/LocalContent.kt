@@ -23,7 +23,6 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
 import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.ButtonDefaults
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
 import kotlinx.coroutines.flow.flowOf
@@ -48,9 +47,7 @@ internal fun LocalContent(
                 LocalContentState.Empty -> {}
                 is LocalContentState.Content -> Button(
                     onClick = onImportClick,
-                    style = PaletteTheme.component.core.button.secondary.copy(
-                        contentPadding = ButtonDefaults.ContentPadding,
-                    ),
+                    style = PaletteTheme.component.core.button.secondary,
                     modifier = Modifier.wrapContentSize(),
                 ) {
                     Text(
