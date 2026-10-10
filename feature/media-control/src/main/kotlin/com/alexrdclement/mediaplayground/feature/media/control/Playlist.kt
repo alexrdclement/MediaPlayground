@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
 import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.theme.component.media.titleArtistBlock
 import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
@@ -67,6 +68,7 @@ fun Playlist(
                     artistMenuOffset = offset
                     artistMenuExpanded = true
                 },
+                style = PaletteTheme.component.media.titleArtistBlock,
                 titleOverlay = {
                     TrackContextMenu(
                         expanded = titleMenuExpanded,

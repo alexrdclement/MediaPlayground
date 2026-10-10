@@ -35,6 +35,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
+import com.alexrdclement.mediaplayground.ui.theme.component.media.mediaItemGridMinItemWidth
 import com.embarrasdf.palette.components.core.Button
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.core.copy
@@ -155,7 +156,9 @@ private fun ImageGrid(
 ) {
     val images = uiState.images.collectAsLazyPagingItems()
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 120.dp),
+        columns = GridCells.Adaptive(
+            minSize = PaletteTheme.component.media.mediaItemGridMinItemWidth,
+        ),
         contentPadding = contentPadding.plus(WindowInsets.navigationBars.asPaddingValues()),
         horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
