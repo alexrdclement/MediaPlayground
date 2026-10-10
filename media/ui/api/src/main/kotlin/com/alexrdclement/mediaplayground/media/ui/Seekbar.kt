@@ -84,6 +84,7 @@ fun Seekbar(
             }
             onSeek(seekDuration * seekValue.toDouble())
         },
+        style = PaletteTheme.component.core.slider,
         modifier = modifier,
     )
 }
