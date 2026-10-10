@@ -7,9 +7,9 @@ import com.alexrdclement.mediaplayground.feature.album.delete.AlbumDeleteScreen
 import com.alexrdclement.mediaplayground.feature.album.metadata.AlbumMetadataScreen
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.ImageId
-import com.alexrdclement.palette.navigation.NavController
-import com.alexrdclement.palette.navigation.NavGraphBuilder
-import com.alexrdclement.palette.navigation.NavKey
+import com.embarrasdf.palette.navigation.NavController
+import com.embarrasdf.palette.navigation.NavGraphBuilder
+import com.embarrasdf.palette.navigation.NavKey
 
 fun NavGraphBuilder.albumNavGraph() {
     wildcardRoute<AlbumRoute> { pathSegment ->

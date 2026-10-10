@@ -18,8 +18,8 @@ import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.ui.Seekbar
 import com.alexrdclement.mediaplayground.media.ui.rememberPlayheadPosition
 import com.alexrdclement.mediaplayground.ui.util.formatShort
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 

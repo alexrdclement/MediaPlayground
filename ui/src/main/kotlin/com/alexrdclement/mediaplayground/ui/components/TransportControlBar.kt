@@ -13,10 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.engine.TransportState
 import com.alexrdclement.mediaplayground.media.engine.isPlaying
-import com.alexrdclement.palette.components.media.PlayPauseButton
-import com.alexrdclement.palette.components.media.SkipBackButton
-import com.alexrdclement.palette.components.media.SkipButton
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.components.media.SkipBackButton
+import com.embarrasdf.palette.components.media.SkipButton
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun TransportControlBar(

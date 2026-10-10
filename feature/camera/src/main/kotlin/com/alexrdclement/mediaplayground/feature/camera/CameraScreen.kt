@@ -8,11 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.ui.CameraPreview
-import com.alexrdclement.palette.components.core.Button
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.core.copy
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Button
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.copy
+import com.embarrasdf.palette.theme.PaletteTheme
 import com.mohamedrejeb.calf.permissions.Camera
 import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission

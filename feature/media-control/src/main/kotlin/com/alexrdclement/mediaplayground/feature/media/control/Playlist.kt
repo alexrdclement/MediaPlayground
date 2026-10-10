@@ -22,9 +22,9 @@ import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.alexrdclement.palette.components.media.model.Artist
-import com.alexrdclement.palette.components.media.model.MediaItem
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.media.model.Artist
+import com.embarrasdf.palette.components.media.model.MediaItem
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 

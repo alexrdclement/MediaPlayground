@@ -30,11 +30,11 @@ import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbumsUi1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTracksUi1
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.layout.Scaffold
+import com.embarrasdf.palette.components.layout.TopBar
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 

@@ -6,13 +6,13 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.components.layout.catalog.Catalog
-import com.alexrdclement.palette.components.layout.catalog.CatalogItem
-import com.alexrdclement.palette.components.navigation.BackNavigationButton
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.layout.Scaffold
+import com.embarrasdf.palette.components.layout.TopBar
+import com.embarrasdf.palette.components.layout.catalog.Catalog
+import com.embarrasdf.palette.components.layout.catalog.CatalogItem
+import com.embarrasdf.palette.components.navigation.BackNavigationButton
+import com.embarrasdf.palette.theme.PaletteTheme
 import com.embarrasdf.trace.ReportDrawn
 
 @Composable
