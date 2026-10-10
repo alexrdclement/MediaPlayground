@@ -37,6 +37,7 @@ import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.core.copy
 import com.alexrdclement.palette.components.layout.Scaffold
 import com.alexrdclement.palette.components.layout.TopBar
 import com.alexrdclement.palette.components.util.plus
@@ -95,7 +96,7 @@ fun ImageLibraryScreen(
                             ) {
                                 Text(
                                     text = "Import",
-                                    style = PaletteTheme.component.core.text.bodySmall,
+                                    style = PaletteTheme.component.core.text.bodySmall.copy(color = PaletteTheme.semantic.color.secondary),
                                 )
                             }
                         }
@@ -138,7 +139,7 @@ private fun EmptyContent(
             .padding(contentPadding),
     ) {
         Button(onClick = onImportClick, style = PaletteTheme.component.core.button.primary) {
-            Text("Import local images", style = PaletteTheme.component.core.text.bodyMedium)
+            Text("Import local images", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
         }
     }
 }

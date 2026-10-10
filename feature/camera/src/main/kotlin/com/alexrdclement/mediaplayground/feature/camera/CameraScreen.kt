@@ -11,6 +11,7 @@ import com.alexrdclement.mediaplayground.media.ui.CameraPreview
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.core.copy
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.mohamedrejeb.calf.permissions.Camera
 import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
@@ -49,7 +50,7 @@ fun CameraScreen(mediaSessionState: MediaSessionState?) {
                         onClick = cameraPermissionState::launchPermissionRequest,
                         style = PaletteTheme.component.core.button.primary,
                     ) {
-                        Text("Request permission", style = PaletteTheme.component.core.text.bodyMedium)
+                        Text("Request permission", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
                     }
                 }
             }

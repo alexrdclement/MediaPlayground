@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.core.copy
 import com.alexrdclement.palette.theme.PaletteTheme
 
 interface NudgeControl {
@@ -39,7 +40,7 @@ fun NudgeControlRow(
                 enabled = control.decrementEnabled,
                 style = PaletteTheme.component.core.button.primary,
             ) {
-                Text("-", style = PaletteTheme.component.core.text.bodyMedium)
+                Text("-", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
             }
             Text("%.1f".format(control.value), style = PaletteTheme.component.core.text.bodyMedium)
             Button(
@@ -47,7 +48,7 @@ fun NudgeControlRow(
                 enabled = control.incrementEnabled,
                 style = PaletteTheme.component.core.button.primary,
             ) {
-                Text("+", style = PaletteTheme.component.core.text.bodyMedium)
+                Text("+", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
             }
         }
     }
