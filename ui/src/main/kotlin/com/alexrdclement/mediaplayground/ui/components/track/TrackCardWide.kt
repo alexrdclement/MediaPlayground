@@ -51,7 +51,7 @@ fun TrackCardWide(
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
     style: TrackCardWideStyle = TrackCardWideStyle(),
-    isEnabled: Boolean = remember(track) { track.uri != null }
+    isEnabled: Boolean = remember(track) { track.uri != null },
 ) {
     Surface(
         modifier = modifier,
@@ -65,7 +65,7 @@ fun TrackCardWide(
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.size(style.artworkSize)
+                modifier = Modifier.size(style.artworkSize),
             ) {
                 MediaItemArtwork(
                     imageUrl = track.thumbnailImageUrl,
@@ -102,7 +102,7 @@ private fun Preview() {
             onPlayClick = {},
             modifier = Modifier.fillMaxWidth(),
             style = PaletteTheme.component.media.trackCardWide,
-            isEnabled = true
+            isEnabled = true,
         )
     }
 }

@@ -51,7 +51,12 @@ fun CameraScreen(mediaSessionState: MediaSessionState?) {
                         onClick = cameraPermissionState::launchPermissionRequest,
                         style = PaletteTheme.component.core.button.primary,
                     ) {
-                        Text("Request permission", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
+                        Text(
+                            "Request permission",
+                            style = PaletteTheme.component.core.text.bodyMedium.copy(
+                                color = PaletteTheme.semantic.color.onPrimary,
+                            ),
+                        )
                     }
                 }
             }

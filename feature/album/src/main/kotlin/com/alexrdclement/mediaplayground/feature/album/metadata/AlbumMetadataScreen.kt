@@ -103,7 +103,12 @@ fun AlbumMetadataScreen(
                             style = PaletteTheme.component.core.button.secondary,
                             onClick = { onNavigateToDelete(uiState.album.title) },
                         ) {
-                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.secondary))
+                            Text(
+                                "Delete",
+                                style = PaletteTheme.component.core.text.labelLarge.copy(
+                                    color = PaletteTheme.semantic.color.secondary,
+                                ),
+                            )
                         }
                     }
                 } else {
@@ -135,7 +140,9 @@ fun AlbumMetadataScreen(
                         ) {
                             Text(
                                 text = if (uiState.isSaving) "Saving\u2026" else "Save",
-                                style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.onPrimary),
+                                style = PaletteTheme.component.core.text.labelLarge.copy(
+                                    color = PaletteTheme.semantic.color.onPrimary,
+                                ),
                             )
                         }
                     }
@@ -146,8 +153,13 @@ fun AlbumMetadataScreen(
     ) { innerPadding ->
         val contentStyle = PaletteTheme.component.layout.metadataContent
         when (uiState) {
-            AlbumMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
-            AlbumMetadataUiState.Error -> Text("Failed to load album.", style = PaletteTheme.component.core.text.bodyMedium)
+            AlbumMetadataUiState.Loading -> IndeterminateProgressIndicator(
+                style = PaletteTheme.component.core.progressIndicator,
+            )
+            AlbumMetadataUiState.Error -> Text(
+                "Failed to load album.",
+                style = PaletteTheme.component.core.text.bodyMedium,
+            )
             is AlbumMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 titleState = titleState,

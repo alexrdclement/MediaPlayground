@@ -35,7 +35,7 @@ fun AudioLibraryContent(
         verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(style.contentPadding)
+            .padding(style.contentPadding),
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -43,7 +43,7 @@ fun AudioLibraryContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .sizeIn(minHeight = style.headerMinHeight)
-                .padding(style.headerPadding)
+                .padding(style.headerPadding),
         ) {
             Text(
                 text = headerText,

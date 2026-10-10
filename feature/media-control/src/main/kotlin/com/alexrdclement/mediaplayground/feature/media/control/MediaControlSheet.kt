@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexrdclement.mediaplayground.feature.media.control.theme.component.media.mediaControlSheetContent
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
@@ -36,14 +37,13 @@ import com.embarrasdf.palette.components.layout.PeekSheetState
 import com.embarrasdf.palette.components.media.model.Artist
 import com.embarrasdf.palette.components.util.calculateHorizontalPaddingValues
 import com.embarrasdf.palette.components.util.copy
-import com.alexrdclement.mediaplayground.feature.media.control.theme.component.media.mediaControlSheetContent
 import com.embarrasdf.palette.components.util.plus
 import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
-import kotlin.math.roundToInt
-import kotlin.time.Duration
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
+import kotlin.time.Duration
 import com.alexrdclement.mediaplayground.ui.R as UiR
 import com.embarrasdf.palette.components.media.MediaControlSheet as MediaControlSheetComponent
 import com.embarrasdf.palette.components.media.model.MediaItem as UiMediaItem
@@ -226,9 +226,20 @@ fun MediaControlSheet(
                             onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                             onNavigateToTrackDelete = onNavigateToTrackDelete,
                             onNavigateToLoadedItemMetadata = { onNavigateToTrackMetadata(mediaItem.id.value) },
-                            onNavigateToLoadedItemDelete = { onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title) },
-                            onNavigateToArtistMetadata = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) } },
-                            onNavigateToArtistDelete = { mediaItem.artists.firstOrNull()?.let { onNavigateToArtistDelete(it.id, it.name ?: "") } },
+                            onNavigateToLoadedItemDelete = {
+                                onNavigateToTrackDelete(mediaItem.id.value, mediaItem.title)
+                            },
+                            onNavigateToArtistMetadata = {
+                                mediaItem.artists.firstOrNull()?.let { onNavigateToArtistMetadata(it.id) }
+                            },
+                            onNavigateToArtistDelete = {
+                                mediaItem.artists.firstOrNull()?.let {
+                                    onNavigateToArtistDelete(
+                                        it.id,
+                                        it.name ?: "",
+                                    )
+                                }
+                            },
                             // The sheet's own top edge is the control bar, so drop the top inset
                             // before laying it over the style's padding.
                             style = sheetContentStyle.copy(

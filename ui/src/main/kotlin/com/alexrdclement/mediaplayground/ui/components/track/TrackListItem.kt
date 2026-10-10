@@ -158,7 +158,7 @@ fun TrackListItem(
                 imageUrl = item.thumbnailImageUrl,
                 modifier = Modifier
                     .aspectRatio(1f)
-                    .fillMaxSize()
+                    .fillMaxSize(),
             )
         },
     )
@@ -204,7 +204,7 @@ private fun TrackListItem(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(style.leadingContentSize)
+                    .size(style.leadingContentSize),
             ) {
                 if (isLoaded) {
                     PlayPauseButton(
@@ -225,7 +225,7 @@ private fun TrackListItem(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(style.textPadding)
+                    .padding(style.textPadding),
             ) {
                 Text(
                     text = title,

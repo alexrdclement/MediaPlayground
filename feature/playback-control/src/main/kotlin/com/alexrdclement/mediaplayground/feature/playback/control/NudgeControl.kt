@@ -40,7 +40,12 @@ fun NudgeControlRow(
                 enabled = control.decrementEnabled,
                 style = PaletteTheme.component.core.button.primary,
             ) {
-                Text("-", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
+                Text(
+                    "-",
+                    style = PaletteTheme.component.core.text.bodyMedium.copy(
+                        color = PaletteTheme.semantic.color.onPrimary,
+                    ),
+                )
             }
             Text("%.1f".format(control.value), style = PaletteTheme.component.core.text.bodyMedium)
             Button(
@@ -48,7 +53,12 @@ fun NudgeControlRow(
                 enabled = control.incrementEnabled,
                 style = PaletteTheme.component.core.button.primary,
             ) {
-                Text("+", style = PaletteTheme.component.core.text.bodyMedium.copy(color = PaletteTheme.semantic.color.onPrimary))
+                Text(
+                    "+",
+                    style = PaletteTheme.component.core.text.bodyMedium.copy(
+                        color = PaletteTheme.semantic.color.onPrimary,
+                    ),
+                )
             }
         }
     }

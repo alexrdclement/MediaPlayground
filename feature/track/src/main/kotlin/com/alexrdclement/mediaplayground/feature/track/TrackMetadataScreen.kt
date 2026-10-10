@@ -103,7 +103,12 @@ fun TrackMetadataScreen(
                             style = PaletteTheme.component.core.button.secondary,
                             onClick = { onNavigateToDelete(uiState.track.title) },
                         ) {
-                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.secondary))
+                            Text(
+                                "Delete",
+                                style = PaletteTheme.component.core.text.labelLarge.copy(
+                                    color = PaletteTheme.semantic.color.secondary,
+                                ),
+                            )
                         }
                     }
                 } else {
@@ -136,7 +141,9 @@ fun TrackMetadataScreen(
                         ) {
                             Text(
                                 text = if (uiState.isSaving) "Saving\u2026" else "Save",
-                                style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.onPrimary),
+                                style = PaletteTheme.component.core.text.labelLarge.copy(
+                                    color = PaletteTheme.semantic.color.onPrimary,
+                                ),
                             )
                         }
                     }
@@ -147,8 +154,13 @@ fun TrackMetadataScreen(
     ) { innerPadding ->
         val contentStyle = PaletteTheme.component.layout.metadataContent
         when (uiState) {
-            TrackMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
-            TrackMetadataUiState.Error -> Text("Failed to load track.", style = PaletteTheme.component.core.text.bodyMedium)
+            TrackMetadataUiState.Loading -> IndeterminateProgressIndicator(
+                style = PaletteTheme.component.core.progressIndicator,
+            )
+            TrackMetadataUiState.Error -> Text(
+                "Failed to load track.",
+                style = PaletteTheme.component.core.text.bodyMedium,
+            )
             is TrackMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 titleState = titleState,

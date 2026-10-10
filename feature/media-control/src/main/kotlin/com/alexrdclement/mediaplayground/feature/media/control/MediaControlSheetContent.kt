@@ -13,14 +13,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.alexrdclement.mediaplayground.feature.media.control.theme.component.media.mediaControlSheetContent
 import com.alexrdclement.mediaplayground.media.engine.PlaybackRateState
 import com.alexrdclement.mediaplayground.media.engine.PlayheadState
 import com.alexrdclement.mediaplayground.media.engine.TimelineState
@@ -29,7 +30,6 @@ import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbar
 import com.alexrdclement.mediaplayground.ui.components.TimeLabeledSeekbarStyle
 import com.alexrdclement.mediaplayground.ui.components.TransportControlBar
 import com.alexrdclement.mediaplayground.ui.components.TransportControlBarStyle
-import com.alexrdclement.mediaplayground.feature.media.control.theme.component.media.mediaControlSheetContent
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack2
@@ -39,10 +39,10 @@ import com.embarrasdf.palette.components.media.model.Artist
 import com.embarrasdf.palette.components.media.model.MediaItem
 import com.embarrasdf.palette.components.util.Spacer
 import com.embarrasdf.palette.theme.PaletteTheme
-import kotlin.math.roundToInt
-import kotlin.time.Duration
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import kotlin.math.roundToInt
+import kotlin.time.Duration
 
 @Stable
 class MediaControlOverlapState(val maxOverlapPx: Float) {
@@ -124,7 +124,7 @@ fun MediaControlSheetContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(style.contentPadding)
+            .padding(style.contentPadding),
     ) {
         Playlist(
             loadedMediaItem = loadedMediaItem,
@@ -155,7 +155,7 @@ fun MediaControlSheetContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(style.controlsPadding)
+                .padding(style.controlsPadding),
         ) {
             HorizontalDivider(style = style.dividerStyle)
             Spacer(height = style.controlsSpacing)

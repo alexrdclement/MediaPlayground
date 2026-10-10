@@ -24,7 +24,7 @@ fun <T : CatalogItem> CatalogScreen(
     onItemClick: (T) -> Unit,
     title: String? = null,
     onNavigateBack: (() -> Unit)? = null,
-    actions: @Composable () -> Unit = {}
+    actions: @Composable () -> Unit = {},
 ) {
     ReportDrawn()
 

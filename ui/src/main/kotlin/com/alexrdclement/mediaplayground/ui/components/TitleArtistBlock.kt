@@ -50,7 +50,7 @@ fun TitleArtistBlock(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Box {
             var titleTouchPosition by remember { mutableStateOf(Offset.Zero) }
@@ -71,8 +71,8 @@ fun TitleArtistBlock(
                         onLongClick = { onTitleLongClick(titleTouchPosition) },
                     )
                     .then(
-                        if (style.titleMaxLines > 1) Modifier else Modifier.basicMarquee()
-                    )
+                        if (style.titleMaxLines > 1) Modifier else Modifier.basicMarquee(),
+                    ),
             )
             titleOverlay()
         }
@@ -97,8 +97,8 @@ fun TitleArtistBlock(
                             onLongClick = { onArtistsLongClick(artistsTouchPosition) },
                         )
                         .then(
-                            if (style.artistMaxLines > 1) Modifier else Modifier.basicMarquee()
-                        )
+                            if (style.artistMaxLines > 1) Modifier else Modifier.basicMarquee(),
+                        ),
                 )
                 artistsOverlay()
             }

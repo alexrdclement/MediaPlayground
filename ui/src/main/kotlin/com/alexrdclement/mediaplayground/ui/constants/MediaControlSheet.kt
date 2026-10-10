@@ -15,14 +15,13 @@ val MediaControlSheetPeekHeight: Dp
     @Composable get() = PaletteTheme.component.media.mediaControlBar.minContentSize.height
 
 @Composable
-fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean): Modifier =
-    this.then(
-        if (isMediaItemLoaded) {
-            Modifier.padding(bottom = MediaControlSheetPeekHeight)
-        } else {
-            Modifier
-        },
-    )
+fun Modifier.mediaControlSheetPadding(isMediaItemLoaded: Boolean): Modifier = this.then(
+    if (isMediaItemLoaded) {
+        Modifier.padding(bottom = MediaControlSheetPeekHeight)
+    } else {
+        Modifier
+    },
+)
 
 @Composable
 fun mediaControlSheetPaddingValues(isMediaItemLoaded: Boolean) = PaddingValues(

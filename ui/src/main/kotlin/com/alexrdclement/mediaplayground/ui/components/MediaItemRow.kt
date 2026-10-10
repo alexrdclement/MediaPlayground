@@ -60,7 +60,7 @@ fun MediaItemRow(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
-        modifier = modifier
+        modifier = modifier,
     ) {
         if (title != null) {
             Text(

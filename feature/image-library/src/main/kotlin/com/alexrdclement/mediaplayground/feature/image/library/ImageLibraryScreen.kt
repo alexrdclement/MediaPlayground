@@ -102,7 +102,9 @@ fun ImageLibraryScreen(
                             ) {
                                 Text(
                                     text = "Import",
-                                    style = PaletteTheme.component.core.text.bodySmall.copy(color = PaletteTheme.semantic.color.secondary),
+                                    style = PaletteTheme.component.core.text.bodySmall.copy(
+                                        color = PaletteTheme.semantic.color.secondary,
+                                    ),
                                 )
                             }
                         }

@@ -159,7 +159,7 @@ fun ContentReady(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(style.contentPadding)
+            .padding(style.contentPadding),
     ) {
         LocalContent(
             localContentState = uiState.localContentState,

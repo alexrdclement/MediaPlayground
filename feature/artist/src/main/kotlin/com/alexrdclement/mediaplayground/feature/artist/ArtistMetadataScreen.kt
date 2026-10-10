@@ -90,7 +90,12 @@ fun ArtistMetadataScreen(
                             style = PaletteTheme.component.core.button.secondary,
                             onClick = { onNavigateToDelete(uiState.artist.name ?: "") },
                         ) {
-                            Text("Delete", style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.secondary))
+                            Text(
+                                "Delete",
+                                style = PaletteTheme.component.core.text.labelLarge.copy(
+                                    color = PaletteTheme.semantic.color.secondary,
+                                ),
+                            )
                         }
                     }
                 } else {
@@ -122,7 +127,9 @@ fun ArtistMetadataScreen(
                         ) {
                             Text(
                                 text = if (uiState.isSaving) "Saving\u2026" else "Save",
-                                style = PaletteTheme.component.core.text.labelLarge.copy(color = PaletteTheme.semantic.color.onPrimary),
+                                style = PaletteTheme.component.core.text.labelLarge.copy(
+                                    color = PaletteTheme.semantic.color.onPrimary,
+                                ),
                             )
                         }
                     }
@@ -133,8 +140,13 @@ fun ArtistMetadataScreen(
     ) { innerPadding ->
         val contentStyle = PaletteTheme.component.layout.metadataContent
         when (uiState) {
-            ArtistMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
-            ArtistMetadataUiState.Error -> Text("Failed to load artist.", style = PaletteTheme.component.core.text.bodyMedium)
+            ArtistMetadataUiState.Loading -> IndeterminateProgressIndicator(
+                style = PaletteTheme.component.core.progressIndicator,
+            )
+            ArtistMetadataUiState.Error -> Text(
+                "Failed to load artist.",
+                style = PaletteTheme.component.core.text.bodyMedium,
+            )
             is ArtistMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 nameState = nameState,

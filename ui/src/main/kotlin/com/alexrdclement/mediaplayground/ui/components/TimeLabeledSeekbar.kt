@@ -62,7 +62,7 @@ fun TimeLabeledSeekbar(
 
     Column(
         verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Seekbar(
             currentPosition = currentPosition,
@@ -78,7 +78,7 @@ fun TimeLabeledSeekbar(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(style.labelPadding)
+                .padding(style.labelPadding),
         ) {
             Text(
                 text = displayPosition.formatShort(),
