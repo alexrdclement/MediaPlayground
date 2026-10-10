@@ -93,7 +93,11 @@ fun AlbumScreen(
     LaunchedEffect(uiState) {
         if (uiState is AlbumUiState.NotFound) onNavigateBack()
     }
-    Surface {
+    Surface(
+        modifier = Modifier
+            .fillMaxSize(),
+        style = PaletteTheme.component.core.surface.default,
+    ) {
         when (uiState) {
             AlbumUiState.Loading, AlbumUiState.NotFound -> {}
             is AlbumUiState.Success -> LoadedContent(
