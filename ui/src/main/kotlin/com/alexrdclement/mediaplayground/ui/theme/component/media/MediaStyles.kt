@@ -6,7 +6,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.ui.components.MediaItemCardStyle
 import com.alexrdclement.mediaplayground.ui.components.MediaItemRowStyle
-import com.alexrdclement.mediaplayground.ui.components.PlaylistItemStyle
 import com.alexrdclement.mediaplayground.ui.components.TransportControlBarStyle
 import com.alexrdclement.mediaplayground.ui.components.track.TrackCardWideStyle
 import com.alexrdclement.mediaplayground.ui.components.track.TrackListItemStyle
@@ -40,26 +39,10 @@ val MediaStyles.mediaItemRow: MediaItemRowStyle
         contentPadding = PaddingValues(PaletteTheme.semantic.dimension.spacing.none),
         contentSpacing = PaletteTheme.semantic.dimension.spacing.medium,
         itemSpacing = PaletteTheme.semantic.dimension.spacing.medium,
+        itemWidth = 200.dp,
         titleStyle = PaletteTheme.component.core.text.titleMedium,
         itemStyle = mediaItemCard,
         progressIndicatorStyle = PaletteTheme.component.core.progressIndicator,
-    )
-
-val MediaStyles.playlistItem: PlaylistItemStyle
-    @Composable get() = PlaylistItemStyle(
-        contentPadding = PaddingValues(vertical = PaletteTheme.semantic.dimension.spacing.small),
-        leadingContentSize = 52.dp,
-        playPauseButtonPadding = PaddingValues(PaletteTheme.semantic.dimension.spacing.small),
-        textPadding = PaddingValues(horizontal = PaletteTheme.semantic.dimension.spacing.small),
-        durationWidth = 64.dp,
-        disabledContentAlpha = PaletteTheme.semantic.color.disabledContentAlpha,
-        titleStyle = PaletteTheme.component.core.text.titleMedium,
-        artistStyle = PaletteTheme.component.core.text.bodyMedium,
-        durationStyle = PaletteTheme.component.core.text.bodyMedium.copy(
-            textAlign = TextAlign.Center,
-        ),
-        playPauseButtonStyle = playPauseButton,
-        surfaceStyle = PaletteTheme.component.core.surface.default,
     )
 
 val MediaStyles.trackListItem: TrackListItemStyle
