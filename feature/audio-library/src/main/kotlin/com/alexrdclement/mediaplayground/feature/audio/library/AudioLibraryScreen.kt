@@ -112,6 +112,7 @@ fun AudioLibraryScreen(
         },
         style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
+        val contentStyle = PaletteTheme.component.media.contentReady
         when (uiState) {
             AudioLibraryUiState.InitialState -> {}
             is AudioLibraryUiState.ContentReady -> ContentReady(
@@ -123,8 +124,8 @@ fun AudioLibraryScreen(
                 onNavigateToAlbumDelete = onNavigateToAlbumDelete,
                 onNavigateToTrackMetadata = onNavigateToTrackMetadata,
                 onNavigateToTrackDelete = onNavigateToTrackDelete,
-                style = PaletteTheme.component.media.contentReady.copy(
-                    contentPadding = innerPadding,
+                style = contentStyle.copy(
+                    contentPadding = contentStyle.contentPadding.plus(innerPadding),
                 ),
                 modifier = Modifier
                     .fillMaxSize(),
