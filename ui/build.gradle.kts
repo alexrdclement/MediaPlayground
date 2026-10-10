@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.paging.compose)
     implementation(libs.palette.components)
     implementation(libs.palette.theme)
+    implementation(libs.palette.theme.components)
 
     implementation(projects.media.engine.api)
     implementation(projects.media.model)

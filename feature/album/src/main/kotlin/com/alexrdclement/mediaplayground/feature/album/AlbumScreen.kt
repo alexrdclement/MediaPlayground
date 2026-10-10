@@ -30,18 +30,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
 import com.alexrdclement.mediaplayground.ui.components.TitleArtistBlock
-import com.alexrdclement.mediaplayground.ui.theme.component.media.playPauseButtonSizePrimary
-import com.alexrdclement.mediaplayground.ui.theme.component.media.titleArtistBlock
 import com.alexrdclement.mediaplayground.ui.components.track.TrackListItem
-import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPaddingValues
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
+import com.alexrdclement.mediaplayground.ui.theme.component.media.playPauseButtonSizePrimary
+import com.alexrdclement.mediaplayground.ui.theme.component.media.titleArtistBlock
+import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
 import com.alexrdclement.mediaplayground.ui.util.artistNamesOrDefault
-import com.embarrasdf.palette.components.core.Surface
 import com.embarrasdf.palette.components.media.PlayPauseButton
 import com.embarrasdf.palette.components.util.plus
 import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.core.Surface
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @Composable
@@ -98,7 +98,6 @@ fun AlbumScreen(
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        style = PaletteTheme.component.core.surface.default,
     ) {
         when (uiState) {
             AlbumUiState.Loading, AlbumUiState.NotFound -> {}

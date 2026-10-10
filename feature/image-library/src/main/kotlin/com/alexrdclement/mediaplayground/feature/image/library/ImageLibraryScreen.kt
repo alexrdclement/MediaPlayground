@@ -26,29 +26,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.alexrdclement.mediaplayground.feature.image.library.theme.component.media.imageGrid
+import com.alexrdclement.mediaplayground.feature.image.library.theme.component.media.imageLibraryEmptyContent
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
-import com.alexrdclement.mediaplayground.feature.image.library.theme.component.media.imageGrid
-import com.alexrdclement.mediaplayground.feature.image.library.theme.component.media.imageLibraryEmptyContent
 import com.embarrasdf.palette.components.core.Button
 import com.embarrasdf.palette.components.core.ButtonStyle
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.core.TextStyle
 import com.embarrasdf.palette.components.core.copy
-import com.embarrasdf.palette.components.layout.Scaffold
-import com.embarrasdf.palette.components.layout.TopBar
 import com.embarrasdf.palette.components.util.plus
 import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.layout.Scaffold
+import com.embarrasdf.palette.theme.components.layout.TopBar
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
@@ -109,10 +108,8 @@ fun ImageLibraryScreen(
                         }
                     }
                 },
-                style = PaletteTheme.component.layout.topBar,
             )
         },
-        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         val emptyStyle = PaletteTheme.component.media.imageLibraryEmptyContent
         val gridStyle = PaletteTheme.component.media.imageGrid
