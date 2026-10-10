@@ -7,7 +7,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.embarrasdf.palette.components.layout.dialog.DeleteConfirmationDialogContent
 import com.embarrasdf.palette.components.layout.dialog.IndeterminateProgressDialogContent
-import com.embarrasdf.palette.components.layout.dialog.ProgressDialogContentStyle
 import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
@@ -35,10 +34,7 @@ fun ImageDeleteScreen(
         )
         DeleteState.Deleting, DeleteState.Deleted -> IndeterminateProgressDialogContent(
             title = "Deleting",
-            style = ProgressDialogContentStyle(
-                dialogContentStyle = PaletteTheme.component.layout.dialogContent,
-                progressIndicatorStyle = PaletteTheme.component.core.progressIndicator,
-            ),
+            style = PaletteTheme.component.layout.progressDialogContent,
         )
     }
 }

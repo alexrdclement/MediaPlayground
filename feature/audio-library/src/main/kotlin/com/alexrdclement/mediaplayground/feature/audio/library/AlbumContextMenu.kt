@@ -27,7 +27,7 @@ internal fun AlbumContextMenu(
                 onDismissRequest()
                 onNavigateToMetadata()
             },
-            style = PaletteTheme.component.menu.dropdownMenu.itemStyle,
+            style = PaletteTheme.component.menu.dropdownMenuItem,
         )
         DropdownMenuItem(
             text = { Text("Delete", style = PaletteTheme.component.core.text.bodyMedium) },
@@ -35,7 +35,7 @@ internal fun AlbumContextMenu(
                 onDismissRequest()
                 onNavigateToDelete()
             },
-            style = PaletteTheme.component.menu.dropdownMenu.itemStyle,
+            style = PaletteTheme.component.menu.dropdownMenuItem,
         )
     }
 }
