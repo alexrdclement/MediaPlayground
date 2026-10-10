@@ -26,7 +26,6 @@ import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.ButtonDefaults
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -35,7 +34,7 @@ internal fun LocalContent(
     onImportClick: () -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
-    contentPadding: PaddingValues = PaddingValues(horizontal = PaletteTheme.spacing.medium),
+    contentPadding: PaddingValues = PaddingValues(horizontal = PaletteTheme.semantic.dimension.spacing.medium),
     onNavigateToAlbumMetadata: (albumIdValue: String) -> Unit = {},
     onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToTrackMetadata: (trackIdValue: String) -> Unit = {},
@@ -49,13 +48,14 @@ internal fun LocalContent(
                 LocalContentState.Empty -> {}
                 is LocalContentState.Content -> Button(
                     onClick = onImportClick,
-                    contentPadding = ButtonDefaults.ContentPaddingDefault,
-                    style = ButtonStyleToken.Secondary,
+                    style = PaletteTheme.component.core.button.secondary.copy(
+                        contentPadding = ButtonDefaults.ContentPadding,
+                    ),
                     modifier = Modifier.wrapContentSize(),
                 ) {
                     Text(
                         text = "Import",
-                        style = PaletteTheme.styles.text.bodySmall,
+                        style = PaletteTheme.component.core.text.bodySmall,
                     )
                 }
             }
@@ -85,7 +85,7 @@ private fun EmptyContent(onImportClick: () -> Unit) {
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PaletteTheme.spacing.small),
+            .padding(vertical = PaletteTheme.semantic.dimension.spacing.small),
     ) {
         Button(
             onClick = onImportClick,
@@ -107,7 +107,7 @@ private fun Content(
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
         modifier = Modifier
             .fillMaxSize(),
     ) {

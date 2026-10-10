@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.ui.MediaPlayer
 import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.components.core.SurfaceStyle
 import com.alexrdclement.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 
@@ -24,7 +25,7 @@ fun PlayerScreen(mediaSessionState: MediaSessionState?) {
         modifier = Modifier
             .statusBarsPadding()
             .fillMaxSize(),
-        color = PaletteTheme.colorScheme.surface,
+        style = SurfaceStyle(color = PaletteTheme.semantic.color.surface),
     ) {
         if (mediaSessionState != null) {
             MediaPlayer(
