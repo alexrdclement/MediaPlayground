@@ -29,7 +29,7 @@ fun NudgeControlRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth(),
     ) {
-        Text(text = label)
+        Text(text = label, style = PaletteTheme.component.core.text.bodyMedium)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
@@ -37,15 +37,17 @@ fun NudgeControlRow(
             Button(
                 onClick = onDecrease,
                 enabled = control.decrementEnabled,
+                style = PaletteTheme.component.core.button.primary,
             ) {
-                Text("-")
+                Text("-", style = PaletteTheme.component.core.text.bodyMedium)
             }
-            Text("%.1f".format(control.value))
+            Text("%.1f".format(control.value), style = PaletteTheme.component.core.text.bodyMedium)
             Button(
                 onClick = onIncrease,
                 enabled = control.incrementEnabled,
+                style = PaletteTheme.component.core.button.primary,
             ) {
-                Text("+")
+                Text("+", style = PaletteTheme.component.core.text.bodyMedium)
             }
         }
     }

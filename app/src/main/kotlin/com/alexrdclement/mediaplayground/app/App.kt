@@ -24,7 +24,7 @@ fun App(
     errorMessages: UiEventState<String> = UiEventState(),
 ) {
     PaletteTheme {
-        Surface {
+        Surface(style = PaletteTheme.component.core.surface.default) {
             MediaPlaygroundNav(
                 navController = navController,
                 errorMessages = errorMessages,

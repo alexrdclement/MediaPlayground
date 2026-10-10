@@ -60,6 +60,7 @@ fun TrackListItem(
                     awaitFirstDown(requireUnconsumed = false).also { touchPosition = it.position }
                 }
             },
+        style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -81,6 +82,7 @@ fun TrackListItem(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(12.dp),
+                        style = PaletteTheme.component.media.playPauseButton,
                     )
                 } else {
                     Text(

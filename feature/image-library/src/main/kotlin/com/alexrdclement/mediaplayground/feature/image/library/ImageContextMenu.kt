@@ -5,6 +5,7 @@ import androidx.compose.ui.geometry.Offset
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.menu.ContextMenu
 import com.alexrdclement.palette.components.menu.DropdownMenuItem
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 internal fun ImageContextMenu(
@@ -18,20 +19,23 @@ internal fun ImageContextMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
         offset = offset,
+        style = PaletteTheme.component.menu.dropdownMenu,
     ) {
         DropdownMenuItem(
-            text = { Text("Metadata") },
+            text = { Text("Metadata", style = PaletteTheme.component.core.text.bodyMedium) },
             onClick = {
                 onDismissRequest()
                 onNavigateToMetadata()
             },
+            style = PaletteTheme.component.menu.dropdownMenu.itemStyle,
         )
         DropdownMenuItem(
-            text = { Text("Delete") },
+            text = { Text("Delete", style = PaletteTheme.component.core.text.bodyMedium) },
             onClick = {
                 onDismissRequest()
                 onNavigateToDelete()
             },
+            style = PaletteTheme.component.menu.dropdownMenu.itemStyle,
         )
     }
 }

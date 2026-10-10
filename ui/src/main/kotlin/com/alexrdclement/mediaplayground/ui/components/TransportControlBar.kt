@@ -41,6 +41,7 @@ fun TransportControlBar(
             onClick = onSkipBackClick,
             modifier = Modifier
                 .size(48.dp),
+            style = PaletteTheme.component.media.skipButton,
         )
         PlayPauseButton(
             isPlaying = transportState.isPlaying,
@@ -48,11 +49,13 @@ fun TransportControlBar(
             onLongClick = onPlayPauseLongClick,
             modifier = Modifier
                 .size(72.dp),
+            style = PaletteTheme.component.media.playPauseButton,
         )
         SkipButton(
             onClick = onSkipClick,
             modifier = Modifier
                 .size(48.dp),
+            style = PaletteTheme.component.media.skipButton,
         )
     }
 }

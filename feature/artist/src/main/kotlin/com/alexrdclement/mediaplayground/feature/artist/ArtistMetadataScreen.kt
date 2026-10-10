@@ -80,7 +80,7 @@ fun ArtistMetadataScreen(
         topBar = {
             TopBar(
                 title = { Text("Artist", style = PaletteTheme.component.core.text.headline) },
-                navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                navButton = { BackNavigationButton(onClick = onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) },
                 actions = if (uiState is ArtistMetadataUiState.Loaded) {
                     {
                         Button(
@@ -93,6 +93,7 @@ fun ArtistMetadataScreen(
                 } else {
                     null
                 },
+                style = PaletteTheme.component.layout.topBar,
             )
         },
         floatingAction = {
@@ -103,6 +104,7 @@ fun ArtistMetadataScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .mediaControlSheetPadding(uiState.isMediaItemLoaded),
+                        style = PaletteTheme.component.layout.floatingAction,
                     ) {
                         Button(
                             style = PaletteTheme.component.core.button.primary,
@@ -126,10 +128,11 @@ fun ArtistMetadataScreen(
                 else -> Unit
             }
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
-            ArtistMetadataUiState.Loading -> IndeterminateProgressIndicator()
-            ArtistMetadataUiState.Error -> Text("Failed to load artist.")
+            ArtistMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
+            ArtistMetadataUiState.Error -> Text("Failed to load artist.", style = PaletteTheme.component.core.text.bodyMedium)
             is ArtistMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 nameState = nameState,

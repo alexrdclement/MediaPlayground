@@ -96,7 +96,7 @@ fun AlbumMetadataScreen(
         topBar = {
             TopBar(
                 title = { Text("Album", style = PaletteTheme.component.core.text.headline) },
-                navButton = { BackNavigationButton(onClick = onNavigateBack) },
+                navButton = { BackNavigationButton(onClick = onNavigateBack, style = PaletteTheme.component.navigation.backNavigationButton) },
                 actions = if (uiState is AlbumMetadataUiState.Loaded) {
                     {
                         Button(
@@ -109,6 +109,7 @@ fun AlbumMetadataScreen(
                 } else {
                     null
                 },
+                style = PaletteTheme.component.layout.topBar,
             )
         },
         floatingAction = {
@@ -119,6 +120,7 @@ fun AlbumMetadataScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .mediaControlSheetPadding(uiState.isMediaItemLoaded),
+                        style = PaletteTheme.component.layout.floatingAction,
                     ) {
                         Button(
                             style = PaletteTheme.component.core.button.primary,
@@ -142,10 +144,11 @@ fun AlbumMetadataScreen(
                 else -> Unit
             }
         },
+        style = PaletteTheme.component.layout.scaffold,
     ) { innerPadding ->
         when (uiState) {
-            AlbumMetadataUiState.Loading -> IndeterminateProgressIndicator()
-            AlbumMetadataUiState.Error -> Text("Failed to load album.")
+            AlbumMetadataUiState.Loading -> IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
+            AlbumMetadataUiState.Error -> Text("Failed to load album.", style = PaletteTheme.component.core.text.bodyMedium)
             is AlbumMetadataUiState.Loaded -> LoadedContent(
                 state = uiState,
                 titleState = titleState,
@@ -228,6 +231,7 @@ private fun ArtistRow(
     Surface(
         onClick = onNavigateToMetadata,
         modifier = Modifier.fillMaxWidth(),
+        style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -252,6 +256,7 @@ private fun ImageRow(
     Surface(
         onClick = onNavigateToMetadata,
         modifier = Modifier.fillMaxWidth(),
+        style = PaletteTheme.component.core.surface.default,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

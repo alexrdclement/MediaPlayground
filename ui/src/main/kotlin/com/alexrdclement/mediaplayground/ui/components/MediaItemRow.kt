@@ -109,7 +109,7 @@ fun MediaItemRow(
 
             if (mediaItems.loadState.append == LoadState.Loading) {
                 item {
-                    IndeterminateProgressIndicator()
+                    IndeterminateProgressIndicator(style = PaletteTheme.component.core.progressIndicator)
                 }
             }
         }
