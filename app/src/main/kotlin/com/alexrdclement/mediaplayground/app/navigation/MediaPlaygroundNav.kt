@@ -15,6 +15,7 @@ import com.alexrdclement.mediaplayground.app.catalog.navigation.mainCatalogEntry
 import com.alexrdclement.mediaplayground.app.catalog.navigation.mainCatalogNavGraph
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumDeleteRoute
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumMetadataRoute
+import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumNavigationCallbacks
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumRoute
 import com.alexrdclement.mediaplayground.feature.album.navigation.albumEntryProvider
 import com.alexrdclement.mediaplayground.feature.album.navigation.albumNavGraph
@@ -23,6 +24,7 @@ import com.alexrdclement.mediaplayground.feature.artist.navigation.ArtistMetadat
 import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadataEntryProvider
 import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadataNavGraph
 import com.alexrdclement.mediaplayground.feature.audio.library.navigation.AudioLibraryGraph
+import com.alexrdclement.mediaplayground.feature.audio.library.navigation.AudioLibraryNavigationCallbacks
 import com.alexrdclement.mediaplayground.feature.audio.library.navigation.audioLibraryEntryProvider
 import com.alexrdclement.mediaplayground.feature.audio.library.navigation.audioLibraryNavGraph
 import com.alexrdclement.mediaplayground.feature.camera.navigation.CameraGraph
@@ -163,8 +165,23 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
     coroutineScope: kotlinx.coroutines.CoroutineScope,
     mediaControlSheetState: PeekSheetState,
 ) {
-    mainCatalogEntryProvider(
+    mainCatalogEntries(navController = navController)
+    audioLibraryEntries(
         navController = navController,
+        coroutineScope = coroutineScope,
+        mediaControlSheetState = mediaControlSheetState,
+    )
+    albumEntries(navController = navController)
+    metadataEntries(navController = navController)
+    imageLibraryEntries(navController = navController)
+    playbackControlEntryProvider()
+    playerEntryProvider()
+    cameraEntryProvider()
+    errorEntryProvider(navController)
+}
+
+private fun EntryProviderScope<NavKey>.mainCatalogEntries(navController: NavController) {
+    mainCatalogEntryProvider(
         onItemClick = { item ->
             when (item) {
                 MainCatalogItem.AudioLibrary -> navController.navigate(AudioLibraryGraph)
@@ -174,53 +191,69 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
             }
         },
     )
+}
+
+private fun EntryProviderScope<NavKey>.audioLibraryEntries(
+    navController: NavController,
+    coroutineScope: kotlinx.coroutines.CoroutineScope,
+    mediaControlSheetState: PeekSheetState,
+) {
     audioLibraryEntryProvider(
-        navController = navController,
-        onNavigateToPlayer = { _ ->
-            coroutineScope.launch {
-                mediaControlSheetState.expand()
-            }
-        },
-        onNavigateToAlbum = { album ->
-            navController.navigate(AlbumRoute(albumIdValue = album.id.value))
-        },
-        onNavigateToTrackMetadata = { trackId ->
-            navController.navigate(TrackMetadataRoute(trackIdValue = trackId.value))
-        },
-        onNavigateToAlbumMetadata = { albumId ->
-            navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
-        },
-        onNavigateToAlbumDelete = { albumId, displayName ->
-            navController.navigate(AlbumDeleteRoute(albumIdValue = albumId, displayName = displayName))
-        },
-        onNavigateToTrackDelete = { trackId, displayName ->
-            navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
-        },
+        callbacks = AudioLibraryNavigationCallbacks(
+            onNavigateToPlayer = { _ ->
+                coroutineScope.launch {
+                    mediaControlSheetState.expand()
+                }
+            },
+            onNavigateToAlbum = { album ->
+                navController.navigate(AlbumRoute(albumIdValue = album.id.value))
+            },
+            onNavigateToTrackMetadata = { trackId ->
+                navController.navigate(TrackMetadataRoute(trackIdValue = trackId.value))
+            },
+            onNavigateToAlbumMetadata = { albumId ->
+                navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
+            },
+            onNavigateToAlbumDelete = { albumId, displayName ->
+                navController.navigate(AlbumDeleteRoute(albumIdValue = albumId, displayName = displayName))
+            },
+            onNavigateToTrackDelete = { trackId, displayName ->
+                navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
+            },
+        ),
     )
+}
+
+private fun EntryProviderScope<NavKey>.albumEntries(navController: NavController) {
     albumEntryProvider(
         navController = navController,
-        onNavigateToAlbumMetadata = { albumId ->
-            navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
-        },
-        onNavigateToAlbumDelete = { albumId, displayName ->
-            navController.navigate(AlbumDeleteRoute(albumIdValue = albumId, displayName = displayName))
-        },
-        onNavigateToArtistMetadata = { artistId ->
-            navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
-        },
-        onNavigateToArtistDelete = { artistId, displayName ->
-            navController.navigate(ArtistDeleteRoute(artistIdValue = artistId, displayName = displayName))
-        },
-        onNavigateToTrackMetadata = { trackId ->
-            navController.navigate(TrackMetadataRoute(trackIdValue = trackId))
-        },
-        onNavigateToTrackDelete = { trackId, displayName ->
-            navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
-        },
-        onNavigateToImageMetadata = { imageId ->
-            navController.navigate(ImageMetadataRoute(imageIdValue = imageId.value))
-        },
+        callbacks = AlbumNavigationCallbacks(
+            onNavigateToAlbumMetadata = { albumId ->
+                navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
+            },
+            onNavigateToAlbumDelete = { albumId, displayName ->
+                navController.navigate(AlbumDeleteRoute(albumIdValue = albumId, displayName = displayName))
+            },
+            onNavigateToArtistMetadata = { artistId ->
+                navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
+            },
+            onNavigateToArtistDelete = { artistId, displayName ->
+                navController.navigate(ArtistDeleteRoute(artistIdValue = artistId, displayName = displayName))
+            },
+            onNavigateToTrackMetadata = { trackId ->
+                navController.navigate(TrackMetadataRoute(trackIdValue = trackId))
+            },
+            onNavigateToTrackDelete = { trackId, displayName ->
+                navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
+            },
+            onNavigateToImageMetadata = { imageId ->
+                navController.navigate(ImageMetadataRoute(imageIdValue = imageId.value))
+            },
+        ),
     )
+}
+
+private fun EntryProviderScope<NavKey>.metadataEntries(navController: NavController) {
     trackMetadataEntryProvider(
         navController = navController,
         onNavigateToTrackDelete = { trackId, displayName ->
@@ -236,8 +269,16 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
             navController.navigate(ArtistDeleteRoute(artistIdValue = artistId, displayName = displayName))
         },
     )
-    imageLibraryEntryProvider(
+    imageMetadataEntryProvider(
         navController = navController,
+        onNavigateToImageDelete = { imageId, displayName ->
+            navController.navigate(ImageDeleteRoute(imageIdValue = imageId, displayName = displayName))
+        },
+    )
+}
+
+private fun EntryProviderScope<NavKey>.imageLibraryEntries(navController: NavController) {
+    imageLibraryEntryProvider(
         onNavigateToImageMetadata = { imageId ->
             navController.navigate(ImageMetadataRoute(imageIdValue = imageId.value))
         },
@@ -245,14 +286,4 @@ fun EntryProviderScope<NavKey>.mediaPlaygroundEntryProvider(
             navController.navigate(ImageDeleteRoute(imageIdValue = imageId, displayName = displayName))
         },
     )
-    imageMetadataEntryProvider(
-        navController = navController,
-        onNavigateToImageDelete = { imageId, displayName ->
-            navController.navigate(ImageDeleteRoute(imageIdValue = imageId, displayName = displayName))
-        },
-    )
-    playbackControlEntryProvider(navController)
-    playerEntryProvider(navController)
-    cameraEntryProvider(navController)
-    errorEntryProvider(navController)
 }

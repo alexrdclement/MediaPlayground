@@ -6,7 +6,6 @@ import com.alexrdclement.mediaplayground.media.model.Album
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.TrackId
-import com.embarrasdf.palette.navigation.NavController
 import com.embarrasdf.palette.navigation.NavGraphBuilder
 import com.embarrasdf.palette.navigation.NavKey
 
@@ -14,23 +13,24 @@ fun NavGraphBuilder.audioLibraryNavGraph() {
     route(AudioLibraryGraph)
 }
 
-fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
-    navController: NavController,
-    onNavigateToPlayer: (MediaItem) -> Unit,
-    onNavigateToAlbum: (Album) -> Unit,
-    onNavigateToTrackMetadata: (TrackId) -> Unit = {},
-    onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},
-    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
-    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
-) {
+data class AudioLibraryNavigationCallbacks(
+    val onNavigateToPlayer: (MediaItem) -> Unit,
+    val onNavigateToAlbum: (Album) -> Unit,
+    val onNavigateToTrackMetadata: (TrackId) -> Unit = {},
+    val onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},
+    val onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    val onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
+)
+
+fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(callbacks: AudioLibraryNavigationCallbacks) {
     entry<AudioLibraryGraph> {
         AudioLibraryScreen(
-            onNavigateToPlayer = onNavigateToPlayer,
-            onNavigateToAlbum = onNavigateToAlbum,
-            onNavigateToTrackMetadata = { onNavigateToTrackMetadata(TrackId(it)) },
-            onNavigateToAlbumMetadata = { onNavigateToAlbumMetadata(AlbumId(it)) },
-            onNavigateToAlbumDelete = onNavigateToAlbumDelete,
-            onNavigateToTrackDelete = onNavigateToTrackDelete,
+            onNavigateToPlayer = callbacks.onNavigateToPlayer,
+            onNavigateToAlbum = callbacks.onNavigateToAlbum,
+            onNavigateToTrackMetadata = { trackId -> callbacks.onNavigateToTrackMetadata(TrackId(trackId)) },
+            onNavigateToAlbumMetadata = { albumId -> callbacks.onNavigateToAlbumMetadata(AlbumId(albumId)) },
+            onNavigateToAlbumDelete = callbacks.onNavigateToAlbumDelete,
+            onNavigateToTrackDelete = callbacks.onNavigateToTrackDelete,
         )
     }
 }

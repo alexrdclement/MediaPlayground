@@ -27,17 +27,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
+data class LocalTrackDaos @Inject constructor(
+    val artistDao: ArtistDao,
+    val albumDao: AlbumDao,
+    val imageDao: ImageDao,
+    val albumImageDao: AlbumImageDao,
+    val trackDao: TrackDao,
+    val albumArtistDao: AlbumArtistDao,
+    val completeTrackDao: CompleteTrackDao,
+)
+
 class LocalTrackDataStore @Inject constructor(
     private val transactionRunner: DatabaseTransactionRunner,
-    private val artistDao: ArtistDao,
-    private val albumDao: AlbumDao,
-    private val imageDao: ImageDao,
-    private val albumImageDao: AlbumImageDao,
-    private val trackDao: TrackDao,
-    private val albumArtistDao: AlbumArtistDao,
-    private val completeTrackDao: CompleteTrackDao,
+    daos: LocalTrackDaos,
     private val pathProvider: PathProvider,
 ) {
+    private val artistDao = daos.artistDao
+    private val albumDao = daos.albumDao
+    private val imageDao = daos.imageDao
+    private val albumImageDao = daos.albumImageDao
+    private val trackDao = daos.trackDao
+    private val albumArtistDao = daos.albumArtistDao
+    private val completeTrackDao = daos.completeTrackDao
+
     suspend fun putTrack(track: Track) {
         transactionRunner.run {
             track.artists.forEach {
@@ -46,18 +58,21 @@ class LocalTrackDataStore @Inject constructor(
 
             albumDao.insert(track.simpleAlbum.toAlbumEntity(source = track.source))
 
-            val albumArtistCrossRef = track.artists.map { artist ->
-                AlbumArtistCrossRef(albumId = track.simpleAlbum.id.value, artistId = artist.id)
+            track.artists.forEach { artist ->
+                albumArtistDao.insert(
+                    AlbumArtistCrossRef(albumId = track.simpleAlbum.id.value, artistId = artist.id),
+                )
             }
-            albumArtistDao.insert(*albumArtistCrossRef.toTypedArray())
 
-            val images = track.simpleAlbum.images.map { it.toImageEntity() }
-            imageDao.insert(*images.toTypedArray())
-
-            val albumImageCrossRefs = track.simpleAlbum.images.map { image ->
-                AlbumImageCrossRef(albumId = track.simpleAlbum.id.value, imageId = image.id.value)
+            track.simpleAlbum.images.forEach { image ->
+                imageDao.insert(image.toImageEntity())
             }
-            albumImageDao.insert(*albumImageCrossRefs.toTypedArray())
+
+            track.simpleAlbum.images.forEach { image ->
+                albumImageDao.insert(
+                    AlbumImageCrossRef(albumId = track.simpleAlbum.id.value, imageId = image.id.value),
+                )
+            }
 
             trackDao.insert(track.toTrackEntity())
         }
@@ -72,7 +87,7 @@ class LocalTrackDataStore @Inject constructor(
             }
 
             for (artist in track.artists) {
-                albumArtistDao.delete(AlbumArtistCrossRef(album.id, artist.id))
+                albumArtistDao.delete(AlbumArtistCrossRef(albumId = album.id, artistId = artist.id))
                 albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
                     if (artistAlbums.isEmpty()) {
                         artistDao.delete(artist.id)

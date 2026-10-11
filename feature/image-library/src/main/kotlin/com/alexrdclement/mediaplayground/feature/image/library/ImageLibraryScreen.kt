@@ -77,10 +77,12 @@ fun ImageLibraryScreen(
 fun ImageLibraryScreen(
     uiState: ImageLibraryUiState,
     onImportClick: () -> Unit,
+    modifier: Modifier = Modifier,
     onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
     onNavigateToImageDelete: (imageId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopBar(
                 title = {
@@ -157,7 +159,7 @@ private fun EmptyContent(
             .padding(style.contentPadding),
     ) {
         Button(onClick = onImportClick, style = style.buttonStyle) {
-            Text("Import local images", style = style.buttonTextStyle)
+            Text(text = "Import local images", style = style.buttonTextStyle)
         }
     }
 }

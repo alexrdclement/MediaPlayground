@@ -18,9 +18,12 @@ fun PlayerScreen(viewModel: PlayerViewModel = metroViewModel()) {
 }
 
 @Composable
-fun PlayerScreen(mediaSessionState: MediaSessionState?) {
+fun PlayerScreen(
+    mediaSessionState: MediaSessionState?,
+    modifier: Modifier = Modifier,
+) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .statusBarsPadding()
             .fillMaxSize(),
     ) {

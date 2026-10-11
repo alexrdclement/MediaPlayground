@@ -1,9 +1,11 @@
 package com.alexrdclement.mediaplayground.media.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
 
 @Composable
+@NonRestartableComposable
 fun CameraPreview(
     onReady: () -> Unit,
     onError: (Exception) -> Unit,

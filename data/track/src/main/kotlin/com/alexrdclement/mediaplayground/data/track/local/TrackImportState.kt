@@ -4,9 +4,9 @@ import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportErro
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.embarrasdf.logging.Loggable
 
-sealed class TrackImportState {
-    object InProgress : TrackImportState()
-    data class Completed(val result: TrackImportResult) : TrackImportState()
+sealed interface TrackImportState {
+    object InProgress : TrackImportState
+    data class Completed(val result: TrackImportResult) : TrackImportState
 }
 
 sealed class TrackImportResult : Loggable {

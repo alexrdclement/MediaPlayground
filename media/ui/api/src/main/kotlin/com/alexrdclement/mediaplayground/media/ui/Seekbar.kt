@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.media.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -67,8 +67,9 @@ fun Seekbar(
     var isSeeking by remember { mutableStateOf(false) }
     var seekValue by remember { mutableFloatStateOf(0f) }
 
-    LaunchedEffect(seekCompletionKey) {
+    DisposableEffect(seekCompletionKey) {
         if (!isDragging) isSeeking = false
+        onDispose {}
     }
 
     val sliderValue = when {

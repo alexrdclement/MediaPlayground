@@ -174,9 +174,9 @@ private fun TrackListItem(
     isPlaying: Boolean,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
-    modifier: Modifier,
     style: TrackListItemStyle,
     onLongClick: ((Offset) -> Unit)?,
+    modifier: Modifier = Modifier,
     leadingContent: @Composable BoxScope.() -> Unit,
 ) {
     var touchPosition by remember { mutableStateOf(Offset.Zero) }

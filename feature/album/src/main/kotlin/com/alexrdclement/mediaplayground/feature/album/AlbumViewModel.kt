@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 @AssistedInject
 class AlbumViewModel(
-    @Assisted private val albumIdValue: String,
+    @Assisted albumIdValue: String,
     private val logger: Logger,
     albumRepository: AlbumRepository,
     private val mediaSessionControl: MediaSessionControl,
@@ -162,7 +162,7 @@ class AlbumViewModel(
         }
     }
 
-    fun onTrackPlayPauseClick(trackUi: TrackUi) {
+    fun onTrackPlayPauseClick() {
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
                 transportControl.playPause()
@@ -175,15 +175,14 @@ class AlbumViewModel(
 
         val playlistState = mediaSessionState.playlistState.first()
         val playlist = playlistState.getPlaylist().first()
-        if (playlist.isEmpty()) return false
 
-        val loadedMediaItem = loadedMediaItem.value ?: return false
-        return when (val mediaItem = loadedMediaItem) {
+        return playlist.isNotEmpty() && when (val mediaItem = loadedMediaItem.value) {
             is Album -> mediaItem.id == album.id
             is Track -> playlist.all {
                 val asTrack = it as? Track ?: return@all false
                 asTrack.simpleAlbum.id == album.id
             }
+            null -> false
         }
     }
 }

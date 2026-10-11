@@ -43,7 +43,7 @@ fun TransportControlBar(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-            style.contentSpacing,
+            space = style.contentSpacing,
             alignment = Alignment.CenterHorizontally,
         ),
         modifier = modifier

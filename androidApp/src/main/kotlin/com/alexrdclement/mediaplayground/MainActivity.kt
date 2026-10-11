@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
     private fun Intent.getDeeplink(): String? {
         return data?.let { uri ->
-            uri.path?.removePrefix("/") ?: ""
+            uri.path?.removePrefix("/").orEmpty()
         }
     }
 

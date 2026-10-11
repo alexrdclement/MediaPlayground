@@ -10,59 +10,84 @@ fun Duration.formatShort(minDurationUnit: DurationUnit = DurationUnit.SECONDS): 
     val secondsPart = this.inWholeSeconds % 60
 
     return when {
-        daysPart > 0 -> if (minDurationUnit == DurationUnit.DAYS) {
-            daysPart.formatDays()
-        } else {
-            "${daysPart.formatDays()} ${hoursPart.formatHours()}"
-        }
-        hoursPart > 0 -> if (minDurationUnit == DurationUnit.HOURS) {
-            hoursPart.formatHours()
-        } else {
-            "${hoursPart.formatHours()} ${minutesPart.formatMinutes()}"
-        }
-        minutesPart > 0 -> if (minDurationUnit == DurationUnit.MINUTES) {
-            minutesPart.formatMinutes()
-        } else {
-            "$minutesPart:${secondsPart.toString().padStart(2, '0')}"
-        }
-        secondsPart > 0 -> if (minDurationUnit == DurationUnit.SECONDS) {
-            secondsPart.formatSeconds()
-        } else {
-            when (minDurationUnit) {
-                DurationUnit.MILLISECONDS -> inWholeMilliseconds.formatMilliseconds()
-                DurationUnit.MICROSECONDS -> inWholeMicroseconds.formatMicroseconds()
-                DurationUnit.NANOSECONDS -> inWholeNanoseconds.formatNanoseconds()
-                else -> throw IllegalStateException("Unexpected minDurationUnit: $minDurationUnit")
-            }
-        }
-        else -> with(0L) {
-            when (minDurationUnit) {
-                DurationUnit.DAYS -> formatDays()
-                DurationUnit.HOURS -> formatHours()
-                DurationUnit.MINUTES -> formatMinutes()
-                DurationUnit.SECONDS -> formatSeconds()
-                DurationUnit.MILLISECONDS -> formatMilliseconds()
-                DurationUnit.MICROSECONDS -> formatMicroseconds()
-                DurationUnit.NANOSECONDS -> formatNanoseconds()
-            }
-        }
+        daysPart > 0 -> formatDaysPart(
+            daysPart = daysPart,
+            hoursPart = hoursPart,
+            minDurationUnit = minDurationUnit,
+        )
+        hoursPart > 0 -> formatHoursPart(
+            hoursPart = hoursPart,
+            minutesPart = minutesPart,
+            minDurationUnit = minDurationUnit,
+        )
+        minutesPart > 0 -> formatMinutesPart(
+            minutesPart = minutesPart,
+            secondsPart = secondsPart,
+            minDurationUnit = minDurationUnit,
+        )
+        secondsPart > 0 -> formatSecondsPart(
+            secondsPart = secondsPart,
+            minDurationUnit = minDurationUnit,
+        )
+        else -> formatZero(minDurationUnit)
     }
 }
 
-private const val DaySuffix = "d"
-private const val HourSuffix = "h"
-private const val MinuteSuffix = "m"
-private const val SecondSuffix = "s"
-private const val MilliSuffix = "ms"
-private const val MicroSuffix = "µs"
-private const val NanoSuffix = "ns"
+private fun formatDaysPart(
+    daysPart: Long,
+    hoursPart: Long,
+    minDurationUnit: DurationUnit,
+): String = if (minDurationUnit == DurationUnit.DAYS) {
+    daysPart.withUnit(DurationUnit.DAYS)
+} else {
+    "${daysPart.withUnit(DurationUnit.DAYS)} ${hoursPart.withUnit(DurationUnit.HOURS)}"
+}
 
-private fun Long.formatDays(): String = this.formatWithSuffix(DaySuffix)
-private fun Long.formatHours(): String = this.formatWithSuffix(HourSuffix)
-private fun Long.formatMinutes(): String = this.formatWithSuffix(MinuteSuffix)
-private fun Long.formatSeconds(): String = this.formatWithSuffix(SecondSuffix)
-private fun Long.formatMilliseconds(): String = this.formatWithSuffix(MilliSuffix)
-private fun Long.formatMicroseconds(): String = this.formatWithSuffix(MicroSuffix)
-private fun Long.formatNanoseconds(): String = this.formatWithSuffix(NanoSuffix)
+private fun formatHoursPart(
+    hoursPart: Long,
+    minutesPart: Long,
+    minDurationUnit: DurationUnit,
+): String = if (minDurationUnit == DurationUnit.HOURS) {
+    hoursPart.withUnit(DurationUnit.HOURS)
+} else {
+    "${hoursPart.withUnit(DurationUnit.HOURS)} ${minutesPart.withUnit(DurationUnit.MINUTES)}"
+}
 
-private fun Long.formatWithSuffix(suffix: String) = "$this$suffix"
+private fun formatMinutesPart(
+    minutesPart: Long,
+    secondsPart: Long,
+    minDurationUnit: DurationUnit,
+): String = if (minDurationUnit == DurationUnit.MINUTES) {
+    minutesPart.withUnit(DurationUnit.MINUTES)
+} else {
+    "$minutesPart:${secondsPart.toString().padStart(length = 2, padChar = '0')}"
+}
+
+private fun Duration.formatSecondsPart(
+    secondsPart: Long,
+    minDurationUnit: DurationUnit,
+): String = if (minDurationUnit == DurationUnit.SECONDS) {
+    secondsPart.withUnit(DurationUnit.SECONDS)
+} else {
+    when (minDurationUnit) {
+        DurationUnit.MILLISECONDS -> inWholeMilliseconds.withUnit(DurationUnit.MILLISECONDS)
+        DurationUnit.MICROSECONDS -> inWholeMicroseconds.withUnit(DurationUnit.MICROSECONDS)
+        DurationUnit.NANOSECONDS -> inWholeNanoseconds.withUnit(DurationUnit.NANOSECONDS)
+        else -> error("Unexpected minDurationUnit: $minDurationUnit")
+    }
+}
+
+private fun formatZero(minDurationUnit: DurationUnit): String = 0L.withUnit(minDurationUnit)
+
+private fun Long.withUnit(unit: DurationUnit): String {
+    val suffix = when (unit) {
+        DurationUnit.DAYS -> "d"
+        DurationUnit.HOURS -> "h"
+        DurationUnit.MINUTES -> "m"
+        DurationUnit.SECONDS -> "s"
+        DurationUnit.MILLISECONDS -> "ms"
+        DurationUnit.MICROSECONDS -> "µs"
+        DurationUnit.NANOSECONDS -> "ns"
+    }
+    return "$this$suffix"
+}

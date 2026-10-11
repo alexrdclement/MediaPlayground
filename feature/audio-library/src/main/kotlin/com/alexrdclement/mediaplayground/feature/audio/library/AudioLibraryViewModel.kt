@@ -57,7 +57,10 @@ class AudioLibraryViewModel @Inject constructor(
         )
 
     val uiState: StateFlow<AudioLibraryUiState> = combine(
-        localContentStateProvider.flow(viewModelScope, pagingConfig),
+        localContentStateProvider.flow(
+            coroutineScope = viewModelScope,
+            pagingConfig = pagingConfig,
+        ),
         loadedMediaItem,
     ) { localContentState, loadedMediaItem ->
         AudioLibraryUiState.ContentReady(
@@ -129,7 +132,7 @@ class AudioLibraryViewModel @Inject constructor(
                 val failuresByUri = mapToFailures(resultsByUri)
                 failuresByUri.forEach { (uri, failure) ->
                     logger.error(OnMediaImportItemSelectedTag) {
-                        AudioLibraryUiError.ImportFailure(uri, failure.error)
+                        AudioLibraryUiError.ImportFailure(uri = uri, error = failure.error)
                     }
                 }
                 failuresByUri.isEmpty()

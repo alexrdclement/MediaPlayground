@@ -21,19 +21,19 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-sealed class ImageMetadataUiState {
-    data object Loading : ImageMetadataUiState()
+sealed interface ImageMetadataUiState {
+    data object Loading : ImageMetadataUiState
     data class Loaded(
         val image: Image,
         val isSaving: Boolean = false,
         val isMediaItemLoaded: Boolean = false,
-    ) : ImageMetadataUiState()
-    data object Error : ImageMetadataUiState()
+    ) : ImageMetadataUiState
+    data object Error : ImageMetadataUiState
 }
 
 @AssistedInject
 class ImageMetadataViewModel(
-    @Assisted private val imageIdValue: String,
+    @Assisted imageIdValue: String,
     private val imageRepository: ImageRepository,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
@@ -82,7 +82,7 @@ class ImageMetadataViewModel(
         isSaving.value = true
         viewModelScope.launch {
             try {
-                imageRepository.updateImageNotes(imageId, notes)
+                imageRepository.updateImageNotes(id = imageId, notes = notes)
                 savedEvent.fire()
             } finally {
                 isSaving.value = false

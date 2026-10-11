@@ -1,8 +1,9 @@
 package com.alexrdclement.mediaplayground.feature.image.delete
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.ImageId
 import com.embarrasdf.palette.components.layout.dialog.DeleteConfirmationDialogContent
@@ -21,8 +22,10 @@ fun ImageDeleteScreen(
     ) { create(imageId.value) }
     val deleteState by viewModel.deleteState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(deleteState) {
-        if (deleteState is DeleteState.Deleted) onNavigateBack()
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
+    DisposableEffect(deleteState) {
+        if (deleteState is DeleteState.Deleted) currentOnNavigateBack()
+        onDispose {}
     }
 
     when (deleteState) {

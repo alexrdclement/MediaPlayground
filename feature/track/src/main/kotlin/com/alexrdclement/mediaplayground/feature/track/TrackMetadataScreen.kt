@@ -15,10 +15,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -57,12 +58,13 @@ fun TrackMetadataScreen(
         create(trackId.value)
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(TrackMetadataUiState.Loading)
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
 
     LaunchedEffect(Unit) {
-        viewModel.savedEvent.collect { onNavigateBack() }
+        viewModel.savedEvent.collect { currentOnNavigateBack() }
     }
     LaunchedEffect(Unit) {
-        viewModel.deletedEvent.collect { onNavigateBack() }
+        viewModel.deletedEvent.collect { currentOnNavigateBack() }
     }
     TrackMetadataScreen(
         uiState = uiState,
@@ -79,23 +81,26 @@ fun TrackMetadataScreen(
     uiState: TrackMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (title: String, trackNumber: Int?, notes: String?) -> Unit,
+    modifier: Modifier = Modifier,
     onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
-    val titleState = rememberTextFieldState()
-    val trackNumberState = rememberTextFieldState()
-    val notesState = rememberTextFieldState()
-    LaunchedEffect((uiState as? TrackMetadataUiState.Loaded)?.track?.id) {
-        val loaded = uiState as? TrackMetadataUiState.Loaded ?: return@LaunchedEffect
-        titleState.edit { replace(0, length, loaded.track.title) }
-        trackNumberState.edit { replace(0, length, loaded.track.trackNumber?.toString() ?: "") }
-        notesState.edit { replace(0, length, loaded.track.notes ?: "") }
+    val loadedTrack = (uiState as? TrackMetadataUiState.Loaded)?.track
+    val titleState = remember(loadedTrack?.id) {
+        TextFieldState(initialText = loadedTrack?.title.orEmpty())
+    }
+    val trackNumberState = remember(loadedTrack?.id) {
+        TextFieldState(initialText = loadedTrack?.trackNumber?.toString().orEmpty())
+    }
+    val notesState = remember(loadedTrack?.id) {
+        TextFieldState(initialText = loadedTrack?.notes.orEmpty())
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopBar(
-                title = { Text("Track", style = PaletteTheme.component.core.text.headline) },
+                title = { Text(text = "Track", style = PaletteTheme.component.core.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
                 actions = if (uiState is TrackMetadataUiState.Loaded) {
                     {
@@ -104,7 +109,7 @@ fun TrackMetadataScreen(
                             onClick = { onNavigateToDelete(uiState.track.title) },
                         ) {
                             Text(
-                                "Delete",
+                                text = "Delete",
                                 style = PaletteTheme.component.core.text.labelLarge.copy(
                                     color = PaletteTheme.semantic.color.secondary,
                                 ),
@@ -158,7 +163,7 @@ fun TrackMetadataScreen(
                 style = PaletteTheme.component.core.progressIndicator,
             )
             TrackMetadataUiState.Error -> Text(
-                "Failed to load track.",
+                text = "Failed to load track.",
                 style = PaletteTheme.component.core.text.bodyMedium,
             )
             is TrackMetadataUiState.Loaded -> LoadedContent(
@@ -193,7 +198,7 @@ private fun LoadedContent(
     ) {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text("Title", style = style.labelStyle)
+                Text(text = "Title", style = style.labelStyle)
                 TextField(
                     state = titleState,
                     style = style.textFieldStyle,
@@ -203,7 +208,7 @@ private fun LoadedContent(
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text("Track Number", style = style.labelStyle)
+                Text(text = "Track Number", style = style.labelStyle)
                 TextField(
                     state = trackNumberState,
                     style = style.textFieldStyle,
@@ -214,9 +219,9 @@ private fun LoadedContent(
         }
         if (state.track.artists.isNotEmpty()) {
             item {
-                Text("Artists", style = style.labelStyle)
+                Text(text = "Artists", style = style.labelStyle)
             }
-            items(state.track.artists, key = { it.id }) { artist ->
+            items(items = state.track.artists, key = { it.id }) { artist ->
                 ArtistRow(
                     artist = artist,
                     onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id) },
@@ -225,7 +230,7 @@ private fun LoadedContent(
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text("Notes", style = style.labelStyle)
+                Text(text = "Notes", style = style.labelStyle)
                 TextField(
                     state = notesState,
                     style = style.textFieldStyle,

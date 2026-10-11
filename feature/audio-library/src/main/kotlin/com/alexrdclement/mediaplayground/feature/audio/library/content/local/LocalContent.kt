@@ -122,7 +122,7 @@ private fun EmptyContent(
             onClick = onImportClick,
             style = style.buttonStyle,
         ) {
-            Text("Import local audio", style = style.buttonTextStyle)
+            Text(text = "Import local audio", style = style.buttonTextStyle)
         }
     }
 }

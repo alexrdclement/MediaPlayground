@@ -14,10 +14,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,11 +59,12 @@ fun AlbumMetadataScreen(
             create(albumId.value)
         }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumMetadataUiState.Loading)
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(Unit) {
-        viewModel.savedEvent.collect { onNavigateBack() }
+        viewModel.savedEvent.collect { currentOnNavigateBack() }
     }
     LaunchedEffect(Unit) {
-        viewModel.deletedEvent.collect { onNavigateBack() }
+        viewModel.deletedEvent.collect { currentOnNavigateBack() }
     }
     AlbumMetadataScreen(
         uiState = uiState,
@@ -80,22 +82,24 @@ fun AlbumMetadataScreen(
     uiState: AlbumMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (title: String, notes: String?) -> Unit,
+    modifier: Modifier = Modifier,
     onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
     onNavigateToImageMetadata: (imageIdValue: String) -> Unit = {},
 ) {
-    val titleState = rememberTextFieldState()
-    val notesState = rememberTextFieldState()
-    LaunchedEffect((uiState as? AlbumMetadataUiState.Loaded)?.album?.id) {
-        val loaded = uiState as? AlbumMetadataUiState.Loaded ?: return@LaunchedEffect
-        titleState.edit { replace(0, length, loaded.album.title) }
-        notesState.edit { replace(0, length, loaded.album.notes ?: "") }
+    val loadedAlbum = (uiState as? AlbumMetadataUiState.Loaded)?.album
+    val titleState = remember(loadedAlbum?.id) {
+        TextFieldState(initialText = loadedAlbum?.title.orEmpty())
+    }
+    val notesState = remember(loadedAlbum?.id) {
+        TextFieldState(initialText = loadedAlbum?.notes.orEmpty())
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopBar(
-                title = { Text("Album", style = PaletteTheme.component.core.text.headline) },
+                title = { Text(text = "Album", style = PaletteTheme.component.core.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
                 actions = if (uiState is AlbumMetadataUiState.Loaded) {
                     {
@@ -104,7 +108,7 @@ fun AlbumMetadataScreen(
                             onClick = { onNavigateToDelete(uiState.album.title) },
                         ) {
                             Text(
-                                "Delete",
+                                text = "Delete",
                                 style = PaletteTheme.component.core.text.labelLarge.copy(
                                     color = PaletteTheme.semantic.color.secondary,
                                 ),
@@ -157,7 +161,7 @@ fun AlbumMetadataScreen(
                 style = PaletteTheme.component.core.progressIndicator,
             )
             AlbumMetadataUiState.Error -> Text(
-                "Failed to load album.",
+                text = "Failed to load album.",
                 style = PaletteTheme.component.core.text.bodyMedium,
             )
             is AlbumMetadataUiState.Loaded -> LoadedContent(
@@ -192,7 +196,7 @@ private fun LoadedContent(
     ) {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text("Title", style = style.labelStyle)
+                Text(text = "Title", style = style.labelStyle)
                 TextField(
                     state = titleState,
                     style = style.textFieldStyle,
@@ -202,9 +206,9 @@ private fun LoadedContent(
         }
         if (state.album.artists.isNotEmpty()) {
             item {
-                Text("Artists", style = style.labelStyle)
+                Text(text = "Artists", style = style.labelStyle)
             }
-            items(state.album.artists, key = { it.id }) { artist ->
+            items(items = state.album.artists, key = { it.id }) { artist ->
                 ArtistRow(
                     artist = artist,
                     onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id) },
@@ -213,9 +217,9 @@ private fun LoadedContent(
         }
         if (state.album.images.isNotEmpty()) {
             item {
-                Text("Images", style = style.labelStyle)
+                Text(text = "Images", style = style.labelStyle)
             }
-            items(state.album.images, key = { it.id.value }) { image ->
+            items(items = state.album.images, key = { it.id.value }) { image ->
                 ImageRow(
                     image = image,
                     onNavigateToMetadata = { onNavigateToImageMetadata(image.id.value) },
@@ -224,7 +228,7 @@ private fun LoadedContent(
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text("Notes", style = style.labelStyle)
+                Text(text = "Notes", style = style.labelStyle)
                 TextField(
                     state = notesState,
                     style = style.textFieldStyle,
@@ -255,7 +259,7 @@ private fun ArtistRow(
                 style = PaletteTheme.component.core.text.bodyMedium,
                 modifier = Modifier.weight(1f),
             )
-            Text("Edit \u2192", style = PaletteTheme.component.core.text.bodyMedium)
+            Text(text = "Edit \u2192", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
 }
@@ -280,7 +284,7 @@ private fun ImageRow(
                 maxLines = 1,
                 modifier = Modifier.weight(1f),
             )
-            Text("View \u2192", style = PaletteTheme.component.core.text.bodyMedium)
+            Text(text = "View \u2192", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
 }

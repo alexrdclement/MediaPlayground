@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.ui.CameraPreview
 import com.embarrasdf.palette.components.core.Button
 import com.embarrasdf.palette.components.core.Text
@@ -18,23 +17,14 @@ import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission
 import com.mohamedrejeb.calf.permissions.PermissionStatus
 import com.mohamedrejeb.calf.permissions.rememberPermissionState
-import dev.zacsweers.metrox.viewmodel.metroViewModel
-
-@Composable
-fun CameraScreen(viewModel: CameraViewModel = metroViewModel()) {
-    val mediaSessionState = viewModel.mediaSessionState
-    CameraScreen(
-        mediaSessionState = mediaSessionState,
-    )
-}
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CameraScreen(mediaSessionState: MediaSessionState?) {
+fun CameraScreen(modifier: Modifier = Modifier) {
     val cameraPermissionState = rememberPermissionState(Permission.Camera)
 
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
     ) {
         when (cameraPermissionState.status) {
@@ -52,7 +42,7 @@ fun CameraScreen(mediaSessionState: MediaSessionState?) {
                         style = PaletteTheme.component.core.button.primary,
                     ) {
                         Text(
-                            "Request permission",
+                            text = "Request permission",
                             style = PaletteTheme.component.core.text.bodyMedium.copy(
                                 color = PaletteTheme.semantic.color.onPrimary,
                             ),

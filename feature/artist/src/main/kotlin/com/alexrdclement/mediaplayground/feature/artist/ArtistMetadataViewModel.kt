@@ -20,14 +20,14 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-sealed class ArtistMetadataUiState {
-    data object Loading : ArtistMetadataUiState()
+sealed interface ArtistMetadataUiState {
+    data object Loading : ArtistMetadataUiState
     data class Loaded(
         val artist: SimpleArtist,
         val isSaving: Boolean = false,
         val isMediaItemLoaded: Boolean = false,
-    ) : ArtistMetadataUiState()
-    data object Error : ArtistMetadataUiState()
+    ) : ArtistMetadataUiState
+    data object Error : ArtistMetadataUiState
 }
 
 @AssistedInject
@@ -82,8 +82,8 @@ class ArtistMetadataViewModel(
         isSaving.value = true
         viewModelScope.launch {
             try {
-                artistRepository.updateArtistName(artistId, name.ifBlank { null })
-                artistRepository.updateArtistNotes(artistId, notes)
+                artistRepository.updateArtistName(id = artistId, name = name.ifBlank { null })
+                artistRepository.updateArtistNotes(id = artistId, notes = notes)
                 savedEvent.fire()
             } finally {
                 isSaving.value = false

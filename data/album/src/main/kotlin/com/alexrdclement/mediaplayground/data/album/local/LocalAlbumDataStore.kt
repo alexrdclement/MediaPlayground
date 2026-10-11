@@ -63,10 +63,11 @@ class LocalAlbumDataStore @Inject constructor(
         albumTitle: String,
         artistId: String,
     ): SimpleAlbum? {
-        val simpleAlbumEntity = simpleAlbumDao.getAlbumByTitleAndArtistId(albumTitle, artistId)
-            ?: return null
+        val simpleAlbumEntity = simpleAlbumDao.getAlbumByTitleAndArtistId(
+            title = albumTitle,
+            artistId = artistId,
+        ) ?: return null
         return simpleAlbumEntity.toSimpleAlbum(
-            mediaItemDir = pathProvider.getAlbumDir(simpleAlbumEntity.album.id),
             imagesDir = pathProvider.getImagesDir(),
         )
     }

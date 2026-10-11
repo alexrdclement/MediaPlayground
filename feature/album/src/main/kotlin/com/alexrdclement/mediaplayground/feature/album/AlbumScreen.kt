@@ -15,10 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,11 +64,10 @@ fun AlbumScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(AlbumUiState.Loading)
     AlbumScreen(
         uiState = uiState,
-        albumIdValue = albumId.value,
-        onNavigateBack = onNavigateBack,
         onAlbumPlayPauseClick = viewModel::onAlbumPlayPauseClick,
         onTrackClick = viewModel::onTrackClick,
-        onTrackPlayPauseClick = viewModel::onTrackPlayPauseClick,
+        onTrackPlayPauseClick = { viewModel.onTrackPlayPauseClick() },
+        onNavigateBack = onNavigateBack,
         onNavigateToAlbumMetadata = onNavigateToAlbumMetadata,
         onNavigateToAlbumDelete = onNavigateToAlbumDelete,
         onNavigateToArtistMetadata = onNavigateToArtistMetadata,
@@ -80,11 +80,11 @@ fun AlbumScreen(
 @Composable
 fun AlbumScreen(
     uiState: AlbumUiState,
-    albumIdValue: String = "",
-    onNavigateBack: () -> Unit = {},
     onAlbumPlayPauseClick: () -> Unit,
     onTrackClick: (TrackUi) -> Unit,
     onTrackPlayPauseClick: (TrackUi) -> Unit,
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit = {},
     onNavigateToAlbumMetadata: () -> Unit = {},
     onNavigateToAlbumDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
@@ -92,18 +92,19 @@ fun AlbumScreen(
     onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
-    LaunchedEffect(uiState) {
-        if (uiState is AlbumUiState.NotFound) onNavigateBack()
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
+    DisposableEffect(uiState) {
+        if (uiState is AlbumUiState.NotFound) currentOnNavigateBack()
+        onDispose {}
     }
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
     ) {
         when (uiState) {
             AlbumUiState.Loading, AlbumUiState.NotFound -> {}
             is AlbumUiState.Success -> LoadedContent(
                 state = uiState,
-                albumIdValue = albumIdValue,
                 onAlbumPlayPauseClick = onAlbumPlayPauseClick,
                 onTrackClick = onTrackClick,
                 onTrackPlayPauseClick = onTrackPlayPauseClick,
@@ -121,7 +122,6 @@ fun AlbumScreen(
 @Composable
 private fun LoadedContent(
     state: AlbumUiState.Success,
-    albumIdValue: String,
     onAlbumPlayPauseClick: () -> Unit,
     onTrackClick: (TrackUi) -> Unit,
     onTrackPlayPauseClick: (TrackUi) -> Unit,
@@ -169,7 +169,7 @@ private fun LoadedContent(
                     onArtistsLongClick = { offset ->
                         state.artists.firstOrNull()?.let { artist ->
                             artistOptionsTouchOffset = offset
-                            artistOptionsItem = Pair(artist.id, artist.name ?: "")
+                            artistOptionsItem = Pair(artist.id, artist.name.orEmpty())
                         }
                     },
                     style = PaletteTheme.component.media.titleArtistBlock,
@@ -210,7 +210,7 @@ private fun LoadedContent(
                 )
             }
             items(
-                state.tracks,
+                items = state.tracks,
                 key = { it.track.id.value },
             ) { trackUi ->
                 var trackOptionsExpanded by remember { mutableStateOf(false) }

@@ -9,15 +9,13 @@ import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
-fun PlaybackControlScreen(onDismissRequest: () -> Unit) {
-    val viewModel = metroViewModel<PlaybackControlViewModel>()
+fun PlaybackControlScreen(viewModel: PlaybackControlViewModel = metroViewModel()) {
     val rateControl by viewModel.rateControl.collectAsStateWithLifecycle()
     val pitchControl by viewModel.pitchControl.collectAsStateWithLifecycle()
 
     PlaybackControlDialogContent(
         rateControl = rateControl,
         pitchControl = pitchControl,
-        onDismissRequest = onDismissRequest,
         onRateDecrease = viewModel::onRateDecrease,
         onRateIncrease = viewModel::onRateIncrease,
         onPitchDecrease = viewModel::onPitchDecrease,
@@ -29,7 +27,6 @@ fun PlaybackControlScreen(onDismissRequest: () -> Unit) {
 fun PlaybackControlDialogContent(
     rateControl: PlaybackRateControl,
     pitchControl: PlaybackPitchControl,
-    onDismissRequest: () -> Unit,
     onRateDecrease: () -> Unit,
     onRateIncrease: () -> Unit,
     onPitchDecrease: () -> Unit,

@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,12 +28,14 @@ fun AndroidCameraPreview(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     var surfaceRequest by remember { mutableStateOf<SurfaceRequest?>(null) }
+    val currentOnReady by rememberUpdatedState(onReady)
+    val currentOnError by rememberUpdatedState(onError)
 
     LaunchedEffect(lifecycleOwner) {
         val cameraProvider = ProcessCameraProvider.getInstance(context).await()
 
         preview.setSurfaceProvider { newSurfaceRequest ->
-            onReady()
+            currentOnReady()
             surfaceRequest = newSurfaceRequest
         }
 
@@ -43,8 +46,10 @@ fun AndroidCameraPreview(
                 cameraSelector = cameraSelector,
                 preview,
             )
-        } catch (e: Exception) {
-            onError(e)
+        } catch (e: IllegalStateException) {
+            currentOnError(e)
+        } catch (e: IllegalArgumentException) {
+            currentOnError(e)
         }
     }
 

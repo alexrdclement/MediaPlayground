@@ -19,9 +19,9 @@ interface DatabaseModule {
         @Provides
         @SingleIn(AppScope::class)
         fun provideMediaPlaygroundDatabase(application: Application): MediaPlaygroundDatabase = Room.databaseBuilder(
-            application,
-            MediaPlaygroundDatabase::class.java,
-            "mediaplayground-database",
+            context = application,
+            klass = MediaPlaygroundDatabase::class.java,
+            name = "mediaplayground-database",
         ).addMigrations(
             MIGRATION_1_2,
             MIGRATION_2_3,

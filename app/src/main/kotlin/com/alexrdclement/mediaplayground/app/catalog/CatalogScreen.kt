@@ -22,6 +22,7 @@ import com.embarrasdf.trace.ReportDrawn
 fun <T : CatalogItem> CatalogScreen(
     items: List<T>,
     onItemClick: (T) -> Unit,
+    modifier: Modifier = Modifier,
     title: String? = null,
     onNavigateBack: (() -> Unit)? = null,
     actions: @Composable () -> Unit = {},
@@ -29,10 +30,11 @@ fun <T : CatalogItem> CatalogScreen(
     ReportDrawn()
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopBar(
                 title = title?.let {
-                    { Text(title, style = PaletteTheme.component.core.text.titleMedium) }
+                    { Text(text = title, style = PaletteTheme.component.core.text.titleMedium) }
                 },
                 navButton = onNavigateBack?.let {
                     { BackNavigationButton(onNavigateBack) }

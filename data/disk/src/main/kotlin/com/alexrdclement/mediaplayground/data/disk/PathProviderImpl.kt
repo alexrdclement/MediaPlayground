@@ -15,18 +15,10 @@ class PathProviderImpl @Inject constructor(
         get() = externalFilesDir(Environment.DIRECTORY_PICTURES)
 
     private fun externalFilesDir(type: String): Path {
-        val defaultPath = Path(application.filesDir.absolutePath)
-
-        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
-            return defaultPath
-        }
-
-        val externalFilesDir = application.getExternalFilesDir(type)
-        if (externalFilesDir != null) {
-            return Path(externalFilesDir.absolutePath)
-        }
-
-        return defaultPath
+        val isExternalStorageMounted = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+        val externalFilesDir = if (isExternalStorageMounted) application.getExternalFilesDir(type) else null
+        val dir = externalFilesDir ?: application.filesDir
+        return Path(dir.absolutePath)
     }
 
     override fun getAlbumDir(albumId: String): Path {

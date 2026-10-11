@@ -10,6 +10,7 @@ import com.embarrasdf.palette.components.core.Button
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.core.copy
 import com.embarrasdf.palette.theme.PaletteTheme
+import java.util.Locale
 
 interface NudgeControl {
     val value: Float
@@ -41,20 +42,23 @@ fun NudgeControlRow(
                 style = PaletteTheme.component.core.button.primary,
             ) {
                 Text(
-                    "-",
+                    text = "-",
                     style = PaletteTheme.component.core.text.bodyMedium.copy(
                         color = PaletteTheme.semantic.color.onPrimary,
                     ),
                 )
             }
-            Text("%.1f".format(control.value), style = PaletteTheme.component.core.text.bodyMedium)
+            Text(
+                text = "%.1f".format(Locale.getDefault(), control.value),
+                style = PaletteTheme.component.core.text.bodyMedium,
+            )
             Button(
                 onClick = onIncrease,
                 enabled = control.incrementEnabled,
                 style = PaletteTheme.component.core.button.primary,
             ) {
                 Text(
-                    "+",
+                    text = "+",
                     style = PaletteTheme.component.core.text.bodyMedium.copy(
                         color = PaletteTheme.semantic.color.onPrimary,
                     ),

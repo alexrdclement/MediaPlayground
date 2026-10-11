@@ -23,35 +23,43 @@ fun NavGraphBuilder.albumNavGraph() {
     }
 }
 
+data class AlbumNavigationCallbacks(
+    val onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},
+    val onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    val onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
+    val onNavigateToArtistDelete: (artistId: String, displayName: String) -> Unit = { _, _ -> },
+    val onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
+    val onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
+    val onNavigateToImageMetadata: (imageId: ImageId) -> Unit = {},
+)
+
 fun EntryProviderScope<NavKey>.albumEntryProvider(
     navController: NavController,
-    onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},
-    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
-    onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
-    onNavigateToArtistDelete: (artistId: String, displayName: String) -> Unit = { _, _ -> },
-    onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
-    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
-    onNavigateToImageMetadata: (imageId: ImageId) -> Unit = {},
+    callbacks: AlbumNavigationCallbacks = AlbumNavigationCallbacks(),
 ) {
     entry<AlbumRoute> { route ->
         AlbumScreen(
             albumId = route.albumId,
             onNavigateBack = { navController.goBack() },
-            onNavigateToAlbumMetadata = { onNavigateToAlbumMetadata(route.albumId) },
-            onNavigateToAlbumDelete = { displayName -> onNavigateToAlbumDelete(route.albumId.value, displayName) },
-            onNavigateToArtistMetadata = onNavigateToArtistMetadata,
-            onNavigateToArtistDelete = onNavigateToArtistDelete,
-            onNavigateToTrackMetadata = onNavigateToTrackMetadata,
-            onNavigateToTrackDelete = onNavigateToTrackDelete,
+            onNavigateToAlbumMetadata = { callbacks.onNavigateToAlbumMetadata(route.albumId) },
+            onNavigateToAlbumDelete = { displayName ->
+                callbacks.onNavigateToAlbumDelete(route.albumId.value, displayName)
+            },
+            onNavigateToArtistMetadata = callbacks.onNavigateToArtistMetadata,
+            onNavigateToArtistDelete = callbacks.onNavigateToArtistDelete,
+            onNavigateToTrackMetadata = callbacks.onNavigateToTrackMetadata,
+            onNavigateToTrackDelete = callbacks.onNavigateToTrackDelete,
         )
     }
     entry<AlbumMetadataRoute> { route ->
         AlbumMetadataScreen(
             albumId = route.albumId,
             onNavigateBack = { navController.goBack() },
-            onNavigateToDelete = { displayName -> onNavigateToAlbumDelete(route.albumId.value, displayName) },
-            onNavigateToArtistMetadata = onNavigateToArtistMetadata,
-            onNavigateToImageMetadata = { onNavigateToImageMetadata(ImageId(it)) },
+            onNavigateToDelete = { displayName ->
+                callbacks.onNavigateToAlbumDelete(route.albumId.value, displayName)
+            },
+            onNavigateToArtistMetadata = callbacks.onNavigateToArtistMetadata,
+            onNavigateToImageMetadata = { callbacks.onNavigateToImageMetadata(ImageId(it)) },
         )
     }
     entry<AlbumDeleteRoute>(metadata = DialogSceneStrategy.dialog()) { route ->

@@ -1,8 +1,9 @@
 package com.alexrdclement.mediaplayground.feature.artist.delete
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.embarrasdf.palette.components.layout.dialog.DeleteConfirmationDialogContent
 import com.embarrasdf.palette.components.layout.dialog.IndeterminateProgressDialogContent
@@ -20,8 +21,10 @@ fun ArtistDeleteScreen(
     ) { create(artistIdValue) }
     val deleteState by viewModel.deleteState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(deleteState) {
-        if (deleteState is DeleteState.Deleted) onNavigateBack()
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
+    DisposableEffect(deleteState) {
+        if (deleteState is DeleteState.Deleted) currentOnNavigateBack()
+        onDispose {}
     }
 
     when (deleteState) {
