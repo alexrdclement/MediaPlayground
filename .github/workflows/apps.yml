@@ -1,4 +1,4 @@
-name: "Format"
+name: Apps
 
 on:
   push:
@@ -17,8 +17,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  format:
-    uses: embarrasdf/devops/.github/workflows/format.yml@main
+  app:
+    uses: embarrasdf/devops/.github/workflows/apps.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
-      contents: write
+      contents: read
       pull-requests: write
+    with:
+      android: true
