@@ -4,9 +4,9 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.scene.DialogSceneStrategy
 import com.alexrdclement.mediaplayground.feature.image.ImageMetadataScreen
 import com.alexrdclement.mediaplayground.feature.image.delete.ImageDeleteScreen
-import com.alexrdclement.palette.navigation.NavController
-import com.alexrdclement.palette.navigation.NavGraphBuilder
-import com.alexrdclement.palette.navigation.NavKey
+import com.embarrasdf.palette.navigation.NavController
+import com.embarrasdf.palette.navigation.NavGraphBuilder
+import com.embarrasdf.palette.navigation.NavKey
 
 fun NavGraphBuilder.imageMetadataNavGraph() {
     wildcardRoute<ImageMetadataRoute> { pathSegment ->
