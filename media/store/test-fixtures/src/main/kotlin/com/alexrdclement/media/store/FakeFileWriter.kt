@@ -10,21 +10,21 @@ class FakeFileWriter : FileWriter {
 
     override suspend fun writeBitmapToDisk(
         byteArray: ByteArray,
-        destination: Path
+        destination: Path,
     ): Result<Path, FileWriteError> {
         return Result.Success(value = destination)
     }
 
     override suspend fun writeToDisk(
         contentUri: Uri,
-        destinationDir: Path
+        destinationDir: Path,
     ): Result<Path, FileWriteError> {
         return Result.Success(value = destinationDir)
     }
 
     override suspend fun writeFileToDisk(
         contentUri: Uri,
-        destination: Path
+        destination: Path,
     ): Result<Path, FileWriteError> {
         return Result.Success(value = destination)
     }

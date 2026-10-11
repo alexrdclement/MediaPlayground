@@ -5,15 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.alexrdclement.mediaplayground.data.album.AlbumRepository
 import com.alexrdclement.mediaplayground.media.engine.PlaylistError
 import com.alexrdclement.mediaplayground.media.engine.playPause
+import com.alexrdclement.mediaplayground.media.model.Album
+import com.alexrdclement.mediaplayground.media.model.AlbumId
+import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.largeImageUrl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionControl
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 import com.alexrdclement.mediaplayground.media.session.isPlaying
 import com.alexrdclement.mediaplayground.media.session.loadedMediaItem
 import com.alexrdclement.mediaplayground.media.session.playlistState
-import com.alexrdclement.mediaplayground.media.model.Album
-import com.alexrdclement.mediaplayground.media.model.AlbumId
-import com.alexrdclement.mediaplayground.media.model.Track
-import com.alexrdclement.mediaplayground.media.model.largeImageUrl
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 import com.embarrasdf.logging.Logger
 import com.embarrasdf.logging.error
@@ -46,14 +46,14 @@ class AlbumViewModel(
     private val albumId = AlbumId(albumIdValue)
 
     private companion object {
-        private const val tag = "AlbumViewModel"
-        private fun tag(methodName: String) = "$tag#$methodName"
+        private const val Tag = "AlbumViewModel"
+        private fun tag(methodName: String) = "$Tag#$methodName"
     }
 
-    private val _hasLoadedAlbum = MutableStateFlow(false)
+    private val hasLoadedAlbum = MutableStateFlow(false)
 
     private val album = albumRepository.getAlbumFlow(albumId)
-        .onEach { if (it != null) _hasLoadedAlbum.value = true }
+        .onEach { if (it != null) hasLoadedAlbum.value = true }
         .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5_000L),
@@ -77,7 +77,7 @@ class AlbumViewModel(
         album,
         isPlaying,
         loadedMediaItem,
-        _hasLoadedAlbum,
+        hasLoadedAlbum,
     ) { album, isPlaying, loadedMediaItem, hasLoadedAlbum ->
         if (album == null) {
             return@combine if (hasLoadedAlbum) AlbumUiState.NotFound else AlbumUiState.Loading
@@ -88,7 +88,7 @@ class AlbumViewModel(
                 track = track,
                 isLoaded = track.id == loadedMediaItem?.id,
                 isPlayable = track.uri != null,
-                isPlaying = isPlaying && track.id == loadedMediaItem?.id
+                isPlaying = isPlaying && track.id == loadedMediaItem?.id,
             )
         }
 

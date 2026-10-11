@@ -12,7 +12,7 @@ import dev.zacsweers.metro.Inject
 class PlaylistControlImpl @Inject constructor(
     override val playlistState: PlaylistState,
     private val mediaControllerHolder: MediaControllerHolder,
-): PlaylistControl {
+) : PlaylistControl {
 
     override suspend fun load(mediaItem: MediaItem) {
         return when (mediaItem) {
@@ -60,7 +60,7 @@ class PlaylistControlImpl @Inject constructor(
 
             val mediaItems = album.tracks.map { simpleTrack ->
                 val track = simpleTrack.toTrack(
-                    simpleAlbum = album.toSimpleAlbum()
+                    simpleAlbum = album.toSimpleAlbum(),
                 )
                 track.toMediaItem()
             }

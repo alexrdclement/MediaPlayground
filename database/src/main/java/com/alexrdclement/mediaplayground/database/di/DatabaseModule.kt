@@ -18,9 +18,7 @@ interface DatabaseModule {
     companion object {
         @Provides
         @SingleIn(AppScope::class)
-        fun provideMediaPlaygroundDatabase(
-            application: Application,
-        ): MediaPlaygroundDatabase = Room.databaseBuilder(
+        fun provideMediaPlaygroundDatabase(application: Application): MediaPlaygroundDatabase = Room.databaseBuilder(
             application,
             MediaPlaygroundDatabase::class.java,
             "mediaplayground-database",
@@ -31,8 +29,7 @@ interface DatabaseModule {
         ).build()
 
         @Provides
-        fun provideDatabaseTransactionRunner(
-            database: MediaPlaygroundDatabase,
-        ): DatabaseTransactionRunner = DatabaseTransactionRunnerImpl(database)
+        fun provideDatabaseTransactionRunner(database: MediaPlaygroundDatabase): DatabaseTransactionRunner =
+            DatabaseTransactionRunnerImpl(database)
     }
 }

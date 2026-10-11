@@ -4,8 +4,9 @@ import com.alexrdclement.mediaplayground.data.album.local.LocalAlbumDataStore
 import com.alexrdclement.mediaplayground.data.album.local.LocalAlbumRepositoryImpl
 import com.alexrdclement.mediaplayground.data.artist.local.LocalArtistDataStore
 import com.alexrdclement.mediaplayground.data.artist.local.LocalArtistRepositoryImpl
-import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStore
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
+import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
+import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStore
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumArtistDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumImageDao
@@ -14,7 +15,6 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteTrackDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
-import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
 import com.alexrdclement.mediaplayground.database.fakes.FakeSimpleAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeTrackDao
 import com.alexrdclement.mediaplayground.media.model.Track

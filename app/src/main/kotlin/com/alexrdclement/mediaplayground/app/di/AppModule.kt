@@ -1,9 +1,9 @@
 package com.alexrdclement.mediaplayground.app.di
 
 import androidx.lifecycle.ViewModel
+import com.alexrdclement.mediaplayground.app.AppViewModel
 import com.embarrasdf.logging.Logger
 import com.embarrasdf.logging.LoggerImpl
-import com.alexrdclement.mediaplayground.app.AppViewModel
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
@@ -25,9 +25,7 @@ interface AppModule {
 
         @Provides
         @SingleIn(AppScope::class)
-        fun provideLogger(
-            coroutineScope: CoroutineScope,
-        ): Logger = LoggerImpl(
+        fun provideLogger(coroutineScope: CoroutineScope): Logger = LoggerImpl(
             coroutineScope = coroutineScope,
         )
 

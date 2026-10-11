@@ -59,7 +59,10 @@ class LocalAlbumDataStore @Inject constructor(
         }
     }
 
-    suspend fun getAlbumByTitleAndArtistId(albumTitle: String, artistId: String): SimpleAlbum? {
+    suspend fun getAlbumByTitleAndArtistId(
+        albumTitle: String,
+        artistId: String,
+    ): SimpleAlbum? {
         val simpleAlbumEntity = simpleAlbumDao.getAlbumByTitleAndArtistId(albumTitle, artistId)
             ?: return null
         return simpleAlbumEntity.toSimpleAlbum(
@@ -68,12 +71,18 @@ class LocalAlbumDataStore @Inject constructor(
         )
     }
 
-    suspend fun updateAlbumTitle(id: AlbumId, title: String) {
+    suspend fun updateAlbumTitle(
+        id: AlbumId,
+        title: String,
+    ) {
         val album = albumDao.getAlbum(id.value) ?: return
         albumDao.update(album.copy(title = title))
     }
 
-    suspend fun updateAlbumNotes(id: AlbumId, notes: String?) {
+    suspend fun updateAlbumNotes(
+        id: AlbumId,
+        notes: String?,
+    ) {
         val album = albumDao.getAlbum(id.value) ?: return
         albumDao.update(album.copy(notes = notes))
     }

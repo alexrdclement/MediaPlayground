@@ -27,7 +27,7 @@ class FakeSimpleAlbumDao(
                 album = album,
                 artists = artists.filter { artist ->
                     albumArtists.contains(
-                        AlbumArtistCrossRef(album.id, artist.id)
+                        AlbumArtistCrossRef(album.id, artist.id),
                     )
                 },
                 images = imageDao.images.value.filter { it.id in albumImageIds },
@@ -35,7 +35,10 @@ class FakeSimpleAlbumDao(
         }
     }
 
-    override suspend fun getAlbumByTitleAndArtistId(title: String, artistId: String): SimpleAlbum? {
+    override suspend fun getAlbumByTitleAndArtistId(
+        title: String,
+        artistId: String,
+    ): SimpleAlbum? {
         return albums.firstOrNull()?.find {
             it.album.title == title && it.artists.any { it.id == artistId }
         }

@@ -20,7 +20,7 @@ interface FileWriter {
 
     suspend fun writeToDisk(
         contentUri: Uri,
-        destinationDir: Path
+        destinationDir: Path,
     ): Result<Path, FileWriteError>
 
     suspend fun writeFileToDisk(

@@ -6,7 +6,7 @@ import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporterImpl
 
 class MediaImporterFixture(
     val mediaMetadataRetriever: FakeMediaMetadataRetriever = FakeMediaMetadataRetriever(),
-    val fileWriter: FakeFileWriter = FakeFileWriter()
+    val fileWriter: FakeFileWriter = FakeFileWriter(),
 ) {
     val mediaImporter = MediaImporterImpl(
         mediaMetadataRetriever = mediaMetadataRetriever,

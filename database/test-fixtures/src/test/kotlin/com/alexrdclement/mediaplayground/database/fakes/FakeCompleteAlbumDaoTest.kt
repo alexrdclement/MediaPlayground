@@ -12,12 +12,12 @@ import kotlin.test.assertNotNull
 
 class FakeCompleteAlbumDaoTest {
 
-    private val albumDao =  FakeAlbumDao()
-    private val artistDao =  FakeArtistDao()
-    private val albumArtistDao =  FakeAlbumArtistDao()
+    private val albumDao = FakeAlbumDao()
+    private val artistDao = FakeArtistDao()
+    private val albumArtistDao = FakeAlbumArtistDao()
     private val albumImageDao = FakeAlbumImageDao()
-    private val imageDao =  FakeImageDao()
-    private val trackDao =  FakeTrackDao()
+    private val imageDao = FakeImageDao()
+    private val trackDao = FakeTrackDao()
 
     private fun makeCompleteAlbumDao(coroutineScope: CoroutineScope): FakeCompleteAlbumDao {
         return FakeCompleteAlbumDao(

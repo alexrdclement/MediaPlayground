@@ -5,24 +5,18 @@ sealed class Result<Success, Failure> {
     data class Failure<Success, Failure>(val failure: Failure) : Result<Success, Failure>()
 }
 
-fun <Success, Failure> Result<Success, Failure>.successOrElse(
-    onFailure: (Failure) -> Success
-): Success {
+fun <Success, Failure> Result<Success, Failure>.successOrElse(onFailure: (Failure) -> Success): Success {
     return when (this) {
         is Result.Success -> this.value
         is Result.Failure -> onFailure(this.failure)
     }
 }
 
-fun <Success> Result<Success, *>.successOrDefault(
-    default: Success
-): Success {
+fun <Success> Result<Success, *>.successOrDefault(default: Success): Success {
     return this.successOrElse { default }
 }
 
-inline infix fun <Success, Failure> Result<Success, Failure>.guardSuccess(
-    block: (Failure) -> Nothing
-): Success {
+inline infix fun <Success, Failure> Result<Success, Failure>.guardSuccess(block: (Failure) -> Nothing): Success {
     return when (this) {
         is Result.Success -> this.value
         is Result.Failure -> block(this.failure)
@@ -38,20 +32,20 @@ fun <Success, Failure, R> Result<Success, Failure>.fold(
 }
 
 inline infix fun <Success, Failure, R> Result<Success, Failure>.map(
-    crossinline block: (Success) -> R
+    crossinline block: (Success) -> R,
 ): Result<R, Failure> {
     return fold(
         onSuccess = { Result.Success(block(it)) },
-        onFailure = { Result.Failure(it) }
+        onFailure = { Result.Failure(it) },
     )
 }
 
 inline infix fun <Success, Failure, R> Result<Success, Failure>.mapFailure(
-    crossinline block: (Failure) -> R
+    crossinline block: (Failure) -> R,
 ): Result<Success, R> {
     return fold(
         onSuccess = { Result.Success(it) },
-        onFailure = { Result.Failure(block(it)) }
+        onFailure = { Result.Failure(block(it)) },
     )
 }
 

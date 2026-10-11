@@ -5,9 +5,7 @@ import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.SimpleTrack
 import kotlinx.collections.immutable.PersistentList
 
-fun SimpleAlbum.toAlbum(
-    tracks: PersistentList<SimpleTrack>,
-) = Album(
+fun SimpleAlbum.toAlbum(tracks: PersistentList<SimpleTrack>) = Album(
     id = id,
     title = name,
     artists = artists,

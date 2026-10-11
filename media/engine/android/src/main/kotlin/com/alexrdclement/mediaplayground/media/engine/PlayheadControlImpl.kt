@@ -20,7 +20,10 @@ class PlayheadControlImpl @Inject constructor(
         send(currentPlayheadState(mediaController))
 
         val listener = object : Player.Listener {
-            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+            override fun onPlayWhenReadyChanged(
+                playWhenReady: Boolean,
+                reason: Int,
+            ) {
                 trySend(currentPlayheadState(mediaController))
             }
 

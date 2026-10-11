@@ -16,7 +16,6 @@ import com.alexrdclement.mediaplayground.media.model.FakeTrack3
 import com.alexrdclement.mediaplayground.media.model.FakeTracks1
 import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
 
-
 val PreviewSimpleArtist1 = FakeSimpleArtist1
 
 val PreviewSimpleAlbum1 = FakeSimpleAlbum1
@@ -46,19 +45,19 @@ val PreviewAlbums1 = FakeAlbums1
 val PreviewTrackUi1 = MediaItemUi.from(
     mediaItem = PreviewTrack1,
     loadedMediaItem = null,
-    isPlaying = false
+    isPlaying = false,
 )
 
 val PreviewTrackUi2 = MediaItemUi.from(
     mediaItem = PreviewTrack2,
     loadedMediaItem = null,
-    isPlaying = false
+    isPlaying = false,
 )
 
 val PreviewTrackUi3 = MediaItemUi.from(
     mediaItem = PreviewTrack3,
     loadedMediaItem = null,
-    isPlaying = false
+    isPlaying = false,
 )
 
 val PreviewTracks1 = FakeTracks1

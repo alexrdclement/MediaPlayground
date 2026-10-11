@@ -49,21 +49,20 @@ class FileWriterImpl @Inject constructor(
     }
 }
 
-suspend fun ByteArray.writeToDisk(destination: Path): Result<Path, FileWriteError> =
-    withContext(Dispatchers.IO) {
-        try {
-            SystemFileSystem.sink(destination).buffered().use { sink ->
-                sink.write(this@writeToDisk)
-            }
-            Result.Success(destination)
-        } catch (e: FileNotFoundException) {
-            Result.Failure(FileWriteError.InputFileNotFound(e))
-        } catch (e: IOException) {
-            Result.Failure(FileWriteError.Unknown(e))
-        } catch (e: Throwable) {
-            Result.Failure(FileWriteError.Unknown(e))
+suspend fun ByteArray.writeToDisk(destination: Path): Result<Path, FileWriteError> = withContext(Dispatchers.IO) {
+    try {
+        SystemFileSystem.sink(destination).buffered().use { sink ->
+            sink.write(this@writeToDisk)
         }
+        Result.Success(destination)
+    } catch (e: FileNotFoundException) {
+        Result.Failure(FileWriteError.InputFileNotFound(e))
+    } catch (e: IOException) {
+        Result.Failure(FileWriteError.Unknown(e))
+    } catch (e: Throwable) {
+        Result.Failure(FileWriteError.Unknown(e))
     }
+}
 
 private suspend fun Uri.writeToDisk(
     destination: Path,

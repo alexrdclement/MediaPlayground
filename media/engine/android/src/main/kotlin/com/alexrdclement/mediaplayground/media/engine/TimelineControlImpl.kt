@@ -5,10 +5,10 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import dev.zacsweers.metro.Inject
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlin.time.Duration.Companion.milliseconds
 
 class TimelineControlImpl @Inject constructor(
     private val mediaControllerHolder: MediaControllerHolder,
@@ -20,11 +20,17 @@ class TimelineControlImpl @Inject constructor(
         send(currentTimelineState(mediaController))
 
         val listener = object : Player.Listener {
-            override fun onTimelineChanged(timeline: Timeline, reason: Int) {
+            override fun onTimelineChanged(
+                timeline: Timeline,
+                reason: Int,
+            ) {
                 trySend(currentTimelineState(mediaController))
             }
 
-            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+            override fun onMediaItemTransition(
+                mediaItem: MediaItem?,
+                reason: Int,
+            ) {
                 trySend(currentTimelineState(mediaController))
             }
 

@@ -1,12 +1,13 @@
 package com.alexrdclement.mediaplayground.app.catalog
 
-import com.alexrdclement.palette.components.layout.catalog.CatalogItem
+import com.embarrasdf.palette.components.layout.catalog.CatalogItem
 
 enum class MainCatalogItem : CatalogItem {
     AudioLibrary,
     Camera,
     ImageLibrary,
-    Player;
+    Player,
+    ;
 
     override val title = this.name
 }

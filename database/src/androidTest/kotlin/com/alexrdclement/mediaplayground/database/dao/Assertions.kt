@@ -9,19 +9,28 @@ import com.alexrdclement.mediaplayground.database.model.Track
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-internal fun assertAlbumEquals(expected: Album, actual: Album?) {
+internal fun assertAlbumEquals(
+    expected: Album,
+    actual: Album?,
+) {
     assertNotNull(actual)
     assertEquals(expected.id, actual.id)
     assertEquals(expected.title, actual.title)
     assertEquals(expected.modifiedDate.epochSeconds, actual.modifiedDate.epochSeconds)
 }
 
-internal fun assertArtistEquals(expected: Artist, actual: Artist?) {
+internal fun assertArtistEquals(
+    expected: Artist,
+    actual: Artist?,
+) {
     assertNotNull(actual)
     assertEquals(expected, actual)
 }
 
-internal fun assertTrackEquals(expected: Track, actual: Track?) {
+internal fun assertTrackEquals(
+    expected: Track,
+    actual: Track?,
+) {
     assertNotNull(actual)
     assertEquals(expected.id, actual.id)
     assertEquals(expected.albumId, actual.albumId)
@@ -32,7 +41,10 @@ internal fun assertTrackEquals(expected: Track, actual: Track?) {
     assertEquals(expected.modifiedDate.epochSeconds, actual.modifiedDate.epochSeconds)
 }
 
-internal fun assertSimpleAlbumEquals(expected: SimpleAlbum, actual: SimpleAlbum?) {
+internal fun assertSimpleAlbumEquals(
+    expected: SimpleAlbum,
+    actual: SimpleAlbum?,
+) {
     assertNotNull(actual)
     assertAlbumEquals(expected.album, actual.album)
     for (artist in expected.artists) {
@@ -43,7 +55,10 @@ internal fun assertSimpleAlbumEquals(expected: SimpleAlbum, actual: SimpleAlbum?
     }
 }
 
-internal fun assertCompleteAlbumEquals(expected: CompleteAlbum, actual: CompleteAlbum?) {
+internal fun assertCompleteAlbumEquals(
+    expected: CompleteAlbum,
+    actual: CompleteAlbum?,
+) {
     assertNotNull(actual)
     assertSimpleAlbumEquals(expected.simpleAlbum, actual.simpleAlbum)
     for (track in expected.tracks) {
@@ -51,7 +66,10 @@ internal fun assertCompleteAlbumEquals(expected: CompleteAlbum, actual: Complete
     }
 }
 
-internal fun assertCompleteTrackEquals(expected: CompleteTrack, actual: CompleteTrack?) {
+internal fun assertCompleteTrackEquals(
+    expected: CompleteTrack,
+    actual: CompleteTrack?,
+) {
     assertNotNull(actual)
     assertAlbumEquals(expected.album, actual.album)
     for (artist in expected.artists) {

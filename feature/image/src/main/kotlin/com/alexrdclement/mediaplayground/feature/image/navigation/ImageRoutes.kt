@@ -1,9 +1,9 @@
 package com.alexrdclement.mediaplayground.feature.image.navigation
 
 import com.alexrdclement.mediaplayground.media.model.ImageId
-import com.alexrdclement.palette.navigation.NavKey
-import com.alexrdclement.palette.navigation.PathSegment
-import com.alexrdclement.palette.navigation.toPathSegment
+import com.embarrasdf.palette.navigation.NavKey
+import com.embarrasdf.palette.navigation.PathSegment
+import com.embarrasdf.palette.navigation.toPathSegment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -27,4 +27,3 @@ data class ImageDeleteRoute(
     override val pathSegment: PathSegment = imageIdValue.toPathSegment()
     val imageId: ImageId get() = ImageId(imageIdValue)
 }
-

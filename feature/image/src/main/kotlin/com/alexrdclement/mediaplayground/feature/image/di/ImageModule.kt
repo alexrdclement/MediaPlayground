@@ -21,8 +21,7 @@ interface ImageModule {
         @Provides
         @IntoMap
         @ManualViewModelAssistedFactoryKey(ImageDeleteViewModel.Factory::class)
-        fun provideImageDeleteViewModelFactory(
-            factory: ImageDeleteViewModel.Factory,
-        ): ManualViewModelAssistedFactory = factory
+        fun provideImageDeleteViewModelFactory(factory: ImageDeleteViewModel.Factory): ManualViewModelAssistedFactory =
+            factory
     }
 }

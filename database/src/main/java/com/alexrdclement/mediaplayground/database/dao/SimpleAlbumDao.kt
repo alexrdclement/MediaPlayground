@@ -15,5 +15,8 @@ interface SimpleAlbumDao {
         WHERE albums.title = :title AND album_artists.artist_id = :artistId
         """,
     )
-    suspend fun getAlbumByTitleAndArtistId(title: String, artistId: String): SimpleAlbum?
+    suspend fun getAlbumByTitleAndArtistId(
+        title: String,
+        artistId: String,
+    ): SimpleAlbum?
 }

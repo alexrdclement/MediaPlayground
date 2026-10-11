@@ -48,40 +48,44 @@ class ImageMetadataViewModel(
     val savedEvent = UiEventState<Unit?>()
     val deletedEvent = UiEventState<Unit?>()
 
-    private val _isSaving = MutableStateFlow(false)
+    private val isSaving = MutableStateFlow(false)
     private var hasLoaded = false
 
     val uiState: StateFlow<ImageMetadataUiState> = combine(
         imageRepository.getImageFlow(imageId),
-        _isSaving,
+        isSaving,
         mediaSessionState.loadedMediaItem,
     ) { image, isSaving, loadedMediaItem ->
-        if (image == null) ImageMetadataUiState.Error
-        else ImageMetadataUiState.Loaded(
-            image = image,
-            isSaving = isSaving,
-            isMediaItemLoaded = loadedMediaItem != null,
-        )
+        if (image == null) {
+            ImageMetadataUiState.Error
+        } else {
+            ImageMetadataUiState.Loaded(
+                image = image,
+                isSaving = isSaving,
+                isMediaItemLoaded = loadedMediaItem != null,
+            )
+        }
     }.onEach { state ->
-        if (state is ImageMetadataUiState.Loaded) hasLoaded = true
-        else if (state is ImageMetadataUiState.Error && hasLoaded) deletedEvent.fire()
+        if (state is ImageMetadataUiState.Loaded) {
+            hasLoaded = true
+        } else if (state is ImageMetadataUiState.Error && hasLoaded) {
+            deletedEvent.fire()
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ImageMetadataUiState.Loading,
     )
 
-    fun onSaveClick(
-        notes: String?,
-    ) {
-        if (_isSaving.value) return
-        _isSaving.value = true
+    fun onSaveClick(notes: String?) {
+        if (isSaving.value) return
+        isSaving.value = true
         viewModelScope.launch {
             try {
                 imageRepository.updateImageNotes(imageId, notes)
                 savedEvent.fire()
             } finally {
-                _isSaving.value = false
+                isSaving.value = false
             }
         }
     }

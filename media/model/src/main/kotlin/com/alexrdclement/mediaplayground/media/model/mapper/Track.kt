@@ -5,9 +5,7 @@ import com.alexrdclement.mediaplayground.media.model.SimpleAlbum
 import com.alexrdclement.mediaplayground.media.model.SimpleTrack
 import com.alexrdclement.mediaplayground.media.model.Track
 
-fun SimpleTrack.toTrack(
-    simpleAlbum: SimpleAlbum,
-) = Track(
+fun SimpleTrack.toTrack(simpleAlbum: SimpleAlbum) = Track(
     id = id,
     title = name,
     duration = duration,
@@ -19,9 +17,7 @@ fun SimpleTrack.toTrack(
     notes = null,
 )
 
-fun SimpleTrack.toTrack(
-    album: Album,
-) = Track(
+fun SimpleTrack.toTrack(album: Album) = Track(
     id = id,
     title = name,
     duration = duration,

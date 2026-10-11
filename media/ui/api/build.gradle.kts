@@ -11,6 +11,7 @@ dependencies {
     api(projects.media.session.api)
 
     implementation(libs.palette.components)
+    implementation(libs.palette.theme)
 
     // TODO KMP: Use expect/actual for Android MediaPlayer
     implementation(projects.media.ui.android)

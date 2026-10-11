@@ -7,12 +7,12 @@ val FakeCompleteAlbum1 = CompleteAlbum(
     tracks = listOf(
         FakeTrack1.copy(albumId = FakeSimpleAlbum1.album.id),
         FakeTrack2.copy(albumId = FakeSimpleAlbum1.album.id),
-    )
+    ),
 )
 
 val FakeCompleteAlbum2 = FakeCompleteAlbum1.copy(
     simpleAlbum = FakeSimpleAlbum2,
     tracks = listOf(
         FakeTrack3.copy(albumId = FakeSimpleAlbum2.album.id),
-    )
+    ),
 )

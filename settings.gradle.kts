@@ -1,8 +1,11 @@
 pluginManagement {
-    includeBuild("build-logic")
-    if (file("../gradle-plugins").exists()) {
-        includeBuild("../gradle-plugins")
+    val embarrasdfGradlePluginsVersion = file("gradle/libs.versions.toml").readLines()
+        .first { it.startsWith("embarrasdf-gradle-plugins") }
+        .substringAfter('"').substringBefore('"')
+    plugins {
+        id("com.embarrasdf.gradle.plugin.settings") version embarrasdfGradlePluginsVersion
     }
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -11,6 +14,7 @@ pluginManagement {
 }
 
 plugins {
+    id("com.embarrasdf.gradle.plugin.settings")
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
@@ -19,13 +23,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-    }
-    versionCatalogs {
-        if (file("../gradle-plugins").exists()) {
-            create("embarrasdfPluginLibs") {
-                from(files("../gradle-plugins/gradle/libs.versions.toml"))
-            }
-        }
     }
 }
 
@@ -104,7 +101,9 @@ if (includeTesting && file("../testing").exists()) {
     includeBuild("../testing") {
         dependencySubstitution {
             substitute(module("com.embarrasdf.testing:maindispatcher-rule")).using(project(":maindispatcher-rule"))
-            substitute(module("com.embarrasdf.testing:maindispatcher-extension")).using(project(":maindispatcher-extension"))
+            substitute(
+                module("com.embarrasdf.testing:maindispatcher-extension"),
+            ).using(project(":maindispatcher-extension"))
         }
     }
 }
@@ -122,10 +121,10 @@ val includePalette = localProps.getProperty("includePalette")?.toBoolean() ?: fa
 if (includePalette && file("../palette").exists()) {
     includeBuild("../palette") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.palette:palette-components")).using(project(":components"))
-            substitute(module("com.alexrdclement.palette:palette-modifiers")).using(project(":modifiers"))
-            substitute(module("com.alexrdclement.palette:palette-navigation")).using(project(":navigation"))
-            substitute(module("com.alexrdclement.palette:palette-theme")).using(project(":theme"))
+            substitute(module("com.embarrasdf.palette:palette-components")).using(project(":components"))
+            substitute(module("com.embarrasdf.palette:palette-modifiers")).using(project(":modifiers"))
+            substitute(module("com.embarrasdf.palette:palette-navigation")).using(project(":navigation"))
+            substitute(module("com.embarrasdf.palette:palette-theme")).using(project(":theme"))
         }
     }
 }

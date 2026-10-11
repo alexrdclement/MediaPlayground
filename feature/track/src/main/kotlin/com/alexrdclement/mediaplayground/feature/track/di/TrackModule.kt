@@ -21,8 +21,7 @@ interface TrackModule {
         @Provides
         @IntoMap
         @ManualViewModelAssistedFactoryKey(TrackDeleteViewModel.Factory::class)
-        fun provideTrackDeleteViewModelFactory(
-            factory: TrackDeleteViewModel.Factory,
-        ): ManualViewModelAssistedFactory = factory
+        fun provideTrackDeleteViewModelFactory(factory: TrackDeleteViewModel.Factory): ManualViewModelAssistedFactory =
+            factory
     }
 }

@@ -4,12 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.R
-import com.alexrdclement.palette.components.media.model.Artist
+import com.embarrasdf.palette.components.media.model.Artist
 
 @Composable
 @JvmName("artistNamesOrDefaultArtist")
 fun artistNamesOrDefault(artists: List<Artist>): String {
-    return artistNamesOrDefault(artists.map { it.name})
+    return artistNamesOrDefault(artists.map { it.name })
 }
 
 @Composable

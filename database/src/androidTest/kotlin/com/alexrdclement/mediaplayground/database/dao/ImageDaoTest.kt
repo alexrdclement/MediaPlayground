@@ -44,7 +44,10 @@ class ImageDaoTest {
         db.close()
     }
 
-    private fun assertImageEquals(expected: Image, actual: Image?) {
+    private fun assertImageEquals(
+        expected: Image,
+        actual: Image?,
+    ) {
         assertNotNull(actual)
         assertEquals(expected, actual)
     }

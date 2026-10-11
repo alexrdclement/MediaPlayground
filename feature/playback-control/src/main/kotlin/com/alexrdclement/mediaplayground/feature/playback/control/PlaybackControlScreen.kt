@@ -4,13 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexrdclement.palette.components.layout.dialog.DialogContent
+import com.embarrasdf.palette.components.layout.dialog.DialogContent
+import com.embarrasdf.palette.theme.PaletteTheme
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
-fun PlaybackControlScreen(
-    onDismissRequest: () -> Unit,
-) {
+fun PlaybackControlScreen(onDismissRequest: () -> Unit) {
     val viewModel = metroViewModel<PlaybackControlViewModel>()
     val rateControl by viewModel.rateControl.collectAsStateWithLifecycle()
     val pitchControl by viewModel.pitchControl.collectAsStateWithLifecycle()
@@ -40,6 +39,7 @@ fun PlaybackControlDialogContent(
     DialogContent(
         title = "Playback",
         modifier = modifier,
+        style = PaletteTheme.component.layout.dialogContent,
     ) {
         NudgeControlRow(
             label = "Speed",

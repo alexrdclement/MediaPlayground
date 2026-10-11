@@ -56,7 +56,10 @@ class AudioMetadataRetrieverImpl @Inject constructor(
         }
     }
 
-    private fun <T> useMediaExtractor(contentUri: Uri, block: MediaExtractor.() -> T): T {
+    private fun <T> useMediaExtractor(
+        contentUri: Uri,
+        block: MediaExtractor.() -> T,
+    ): T {
         val mediaExtractor = MediaExtractor()
         try {
             mediaExtractor.setDataSource(application, contentUri, null)
@@ -114,7 +117,13 @@ class AudioMetadataRetrieverImpl @Inject constructor(
             AudioFormat.ENCODING_PCM_16BIT -> 16
             AudioFormat.ENCODING_PCM_32BIT -> 32
             AudioFormat.ENCODING_PCM_FLOAT -> 32
-            else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && encoding == AudioFormat.ENCODING_PCM_24BIT_PACKED) 24 else null
+            else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                encoding == AudioFormat.ENCODING_PCM_24BIT_PACKED
+            ) {
+                24
+            } else {
+                null
+            }
         }
     }
 }

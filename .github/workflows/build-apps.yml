@@ -1,0 +1,27 @@
+name: Build Apps
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    name: MediaPlayground
+    uses: embarrasdf/devops/.github/workflows/build-apps.yml@main
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      android: true

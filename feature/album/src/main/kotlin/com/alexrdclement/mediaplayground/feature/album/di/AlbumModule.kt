@@ -15,9 +15,7 @@ interface AlbumModule {
         @Provides
         @IntoMap
         @ManualViewModelAssistedFactoryKey(AlbumViewModel.Factory::class)
-        fun provideAlbumViewModelFactory(
-            factory: AlbumViewModel.Factory,
-        ): ManualViewModelAssistedFactory = factory
+        fun provideAlbumViewModelFactory(factory: AlbumViewModel.Factory): ManualViewModelAssistedFactory = factory
 
         @Provides
         @IntoMap
@@ -29,8 +27,7 @@ interface AlbumModule {
         @Provides
         @IntoMap
         @ManualViewModelAssistedFactoryKey(AlbumDeleteViewModel.Factory::class)
-        fun provideAlbumDeleteViewModelFactory(
-            factory: AlbumDeleteViewModel.Factory,
-        ): ManualViewModelAssistedFactory = factory
+        fun provideAlbumDeleteViewModelFactory(factory: AlbumDeleteViewModel.Factory): ManualViewModelAssistedFactory =
+            factory
     }
 }
