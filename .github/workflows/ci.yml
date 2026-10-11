@@ -23,5 +23,5 @@ jobs:
       contents: write
       pull-requests: write
     with:
-      test-tasks: testDebug
+      test-tasks: testDebugUnitTest :media:model:test :media:model:test-fixtures:test :model:result:test
       apple-test-tasks: ''
