@@ -1,7 +1,7 @@
 package com.alexrdclement.mediaplayground.feature.artist.delete
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,9 +22,8 @@ fun ArtistDeleteScreen(
     val deleteState by viewModel.deleteState.collectAsStateWithLifecycle()
 
     val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
-    DisposableEffect(deleteState) {
+    SideEffect(deleteState) {
         if (deleteState is DeleteState.Deleted) currentOnNavigateBack()
-        onDispose {}
     }
 
     when (deleteState) {

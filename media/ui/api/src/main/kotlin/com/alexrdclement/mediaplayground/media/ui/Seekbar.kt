@@ -1,7 +1,6 @@
 package com.alexrdclement.mediaplayground.media.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -64,13 +63,11 @@ fun Seekbar(
     style: SeekbarStyle = SeekbarStyle(),
 ) {
     var isDragging by remember { mutableStateOf(false) }
-    var isSeeking by remember { mutableStateOf(false) }
     var seekValue by remember { mutableFloatStateOf(0f) }
-
-    DisposableEffect(seekCompletionKey) {
-        if (!isDragging) isSeeking = false
-        onDispose {}
-    }
+    // The completion key when the last seek was released. Until the player reports a new one, the
+    // seek counts as in progress, so the thumb doesn't jump back to the old position meanwhile.
+    var releasedAtKey by remember { mutableStateOf<Any?>(NoPendingSeek) }
+    val isSeeking = isDragging || releasedAtKey == seekCompletionKey
 
     val sliderValue = when {
         isSeeking -> seekValue
@@ -83,21 +80,23 @@ fun Seekbar(
         value = sliderValue,
         onValueChange = { newValue ->
             isDragging = true
-            isSeeking = true
             seekValue = newValue
         },
         onValueChangeFinished = {
             isDragging = false
             val seekDuration = timelineDuration ?: run {
-                isSeeking = false
+                releasedAtKey = NoPendingSeek
                 return@Slider
             }
+            releasedAtKey = seekCompletionKey
             onSeek(seekDuration * seekValue.toDouble())
         },
         style = style.sliderStyle,
         modifier = modifier,
     )
 }
+
+private object NoPendingSeek
 
 @Preview(showBackground = true)
 @Composable

@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -93,9 +93,8 @@ fun AlbumScreen(
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
 ) {
     val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
-    DisposableEffect(uiState) {
+    SideEffect(uiState) {
         if (uiState is AlbumUiState.NotFound) currentOnNavigateBack()
-        onDispose {}
     }
     Surface(
         modifier = modifier
