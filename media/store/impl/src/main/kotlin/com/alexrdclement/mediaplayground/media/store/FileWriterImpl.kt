@@ -43,15 +43,14 @@ class FileWriterImpl @Inject constructor(
         destinationDir: Path,
     ): Result<Path, FileWriteError> {
         val documentFile = DocumentFile.fromSingleUri(application, contentUri)
-        val documentFileName = documentFile?.name
-        return if (documentFile == null || documentFileName == null) {
-            Result.Failure(FileWriteError.UnknownInputFileError)
-        } else {
-            documentFile.uri.writeToDisk(
-                destination = Path(destinationDir, documentFileName),
-                contentResolver = application.contentResolver,
-            )
-        }
+            ?: return Result.Failure(FileWriteError.UnknownInputFileError)
+        val documentFileName = documentFile.name
+            ?: return Result.Failure(FileWriteError.UnknownInputFileError)
+
+        return documentFile.uri.writeToDisk(
+            destination = Path(destinationDir, documentFileName),
+            contentResolver = application.contentResolver,
+        )
     }
 
     private suspend fun ByteArray.writeToDisk(destination: Path): Result<Path, FileWriteError> =

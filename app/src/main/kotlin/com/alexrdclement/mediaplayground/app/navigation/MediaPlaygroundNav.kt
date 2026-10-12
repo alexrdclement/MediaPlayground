@@ -15,7 +15,6 @@ import com.alexrdclement.mediaplayground.app.catalog.navigation.mainCatalogEntry
 import com.alexrdclement.mediaplayground.app.catalog.navigation.mainCatalogNavGraph
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumDeleteRoute
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumMetadataRoute
-import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumNavigationCallbacks
 import com.alexrdclement.mediaplayground.feature.album.navigation.AlbumRoute
 import com.alexrdclement.mediaplayground.feature.album.navigation.albumEntryProvider
 import com.alexrdclement.mediaplayground.feature.album.navigation.albumNavGraph
@@ -24,7 +23,6 @@ import com.alexrdclement.mediaplayground.feature.artist.navigation.ArtistMetadat
 import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadataEntryProvider
 import com.alexrdclement.mediaplayground.feature.artist.navigation.artistMetadataNavGraph
 import com.alexrdclement.mediaplayground.feature.audio.library.navigation.AudioLibraryGraph
-import com.alexrdclement.mediaplayground.feature.audio.library.navigation.AudioLibraryNavigationCallbacks
 import com.alexrdclement.mediaplayground.feature.audio.library.navigation.audioLibraryEntryProvider
 import com.alexrdclement.mediaplayground.feature.audio.library.navigation.audioLibraryNavGraph
 import com.alexrdclement.mediaplayground.feature.camera.navigation.CameraGraph
@@ -199,57 +197,53 @@ private fun EntryProviderScope<NavKey>.audioLibraryEntries(
     mediaControlSheetState: PeekSheetState,
 ) {
     audioLibraryEntryProvider(
-        callbacks = AudioLibraryNavigationCallbacks(
-            onNavigateToPlayer = { _ ->
-                coroutineScope.launch {
-                    mediaControlSheetState.expand()
-                }
-            },
-            onNavigateToAlbum = { album ->
-                navController.navigate(AlbumRoute(albumIdValue = album.id.value))
-            },
-            onNavigateToTrackMetadata = { trackId ->
-                navController.navigate(TrackMetadataRoute(trackIdValue = trackId.value))
-            },
-            onNavigateToAlbumMetadata = { albumId ->
-                navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
-            },
-            onNavigateToAlbumDelete = { albumId, displayName ->
-                navController.navigate(AlbumDeleteRoute(albumIdValue = albumId, displayName = displayName))
-            },
-            onNavigateToTrackDelete = { trackId, displayName ->
-                navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
-            },
-        ),
+        onNavigateToPlayer = { _ ->
+            coroutineScope.launch {
+                mediaControlSheetState.expand()
+            }
+        },
+        onNavigateToAlbum = { album ->
+            navController.navigate(AlbumRoute(albumIdValue = album.id.value))
+        },
+        onNavigateToTrackMetadata = { trackId ->
+            navController.navigate(TrackMetadataRoute(trackIdValue = trackId.value))
+        },
+        onNavigateToAlbumMetadata = { albumId ->
+            navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
+        },
+        onNavigateToAlbumDelete = { albumId, displayName ->
+            navController.navigate(AlbumDeleteRoute(albumIdValue = albumId, displayName = displayName))
+        },
+        onNavigateToTrackDelete = { trackId, displayName ->
+            navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
+        },
     )
 }
 
 private fun EntryProviderScope<NavKey>.albumEntries(navController: NavController) {
     albumEntryProvider(
         navController = navController,
-        callbacks = AlbumNavigationCallbacks(
-            onNavigateToAlbumMetadata = { albumId ->
-                navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
-            },
-            onNavigateToAlbumDelete = { albumId, displayName ->
-                navController.navigate(AlbumDeleteRoute(albumIdValue = albumId, displayName = displayName))
-            },
-            onNavigateToArtistMetadata = { artistId ->
-                navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
-            },
-            onNavigateToArtistDelete = { artistId, displayName ->
-                navController.navigate(ArtistDeleteRoute(artistIdValue = artistId, displayName = displayName))
-            },
-            onNavigateToTrackMetadata = { trackId ->
-                navController.navigate(TrackMetadataRoute(trackIdValue = trackId))
-            },
-            onNavigateToTrackDelete = { trackId, displayName ->
-                navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
-            },
-            onNavigateToImageMetadata = { imageId ->
-                navController.navigate(ImageMetadataRoute(imageIdValue = imageId.value))
-            },
-        ),
+        onNavigateToAlbumMetadata = { albumId ->
+            navController.navigate(AlbumMetadataRoute(albumIdValue = albumId.value))
+        },
+        onNavigateToAlbumDelete = { albumId, displayName ->
+            navController.navigate(AlbumDeleteRoute(albumIdValue = albumId, displayName = displayName))
+        },
+        onNavigateToArtistMetadata = { artistId ->
+            navController.navigate(ArtistMetadataRoute(artistIdValue = artistId))
+        },
+        onNavigateToArtistDelete = { artistId, displayName ->
+            navController.navigate(ArtistDeleteRoute(artistIdValue = artistId, displayName = displayName))
+        },
+        onNavigateToTrackMetadata = { trackId ->
+            navController.navigate(TrackMetadataRoute(trackIdValue = trackId))
+        },
+        onNavigateToTrackDelete = { trackId, displayName ->
+            navController.navigate(TrackDeleteRoute(trackIdValue = trackId, displayName = displayName))
+        },
+        onNavigateToImageMetadata = { imageId ->
+            navController.navigate(ImageMetadataRoute(imageIdValue = imageId.value))
+        },
     )
 }
 

@@ -27,29 +27,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
-data class LocalTrackDaos @Inject constructor(
-    val artistDao: ArtistDao,
-    val albumDao: AlbumDao,
-    val imageDao: ImageDao,
-    val albumImageDao: AlbumImageDao,
-    val trackDao: TrackDao,
-    val albumArtistDao: AlbumArtistDao,
-    val completeTrackDao: CompleteTrackDao,
-)
-
 class LocalTrackDataStore @Inject constructor(
     private val transactionRunner: DatabaseTransactionRunner,
-    daos: LocalTrackDaos,
+    private val artistDao: ArtistDao,
+    private val albumDao: AlbumDao,
+    private val imageDao: ImageDao,
+    private val albumImageDao: AlbumImageDao,
+    private val trackDao: TrackDao,
+    private val albumArtistDao: AlbumArtistDao,
+    private val completeTrackDao: CompleteTrackDao,
     private val pathProvider: PathProvider,
 ) {
-    private val artistDao = daos.artistDao
-    private val albumDao = daos.albumDao
-    private val imageDao = daos.imageDao
-    private val albumImageDao = daos.albumImageDao
-    private val trackDao = daos.trackDao
-    private val albumArtistDao = daos.albumArtistDao
-    private val completeTrackDao = daos.completeTrackDao
-
     suspend fun putTrack(track: Track) {
         transactionRunner.run {
             track.artists.forEach {

@@ -5,7 +5,6 @@ import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeSimpleAlb
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeSimpleArtist
 import com.alexrdclement.mediaplayground.media.mediaimport.factory.makeTrack
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.mediaimport.model.TrackImportPaths
 import com.alexrdclement.mediaplayground.media.metadata.MediaMetadataRetriever
 import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
 import com.alexrdclement.mediaplayground.media.model.AlbumId
@@ -42,7 +41,8 @@ class MediaImporterImpl @Inject constructor(
 
     override suspend fun importTrackFromDisk(
         uri: Uri,
-        paths: TrackImportPaths,
+        getImportDir: (AlbumId) -> Path,
+        getImagePath: (ImageId, extension: String) -> Path,
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
         saveTrack: suspend (Track) -> Unit,
@@ -50,13 +50,13 @@ class MediaImporterImpl @Inject constructor(
         catchingUnknownImportErrors {
             val importData = getImportData(
                 uri = uri,
-                getImagePath = paths.getImagePath,
+                getImagePath = getImagePath,
                 getArtistByName = getArtistByName,
                 getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
             )
             import(
                 importData = importData,
-                getImportDir = paths.getImportDir,
+                getImportDir = getImportDir,
                 saveTrack = saveTrack,
             )
         }
@@ -64,7 +64,8 @@ class MediaImporterImpl @Inject constructor(
 
     override suspend fun importTracksFromDisk(
         uris: List<Uri>,
-        paths: TrackImportPaths,
+        getImportDir: (AlbumId) -> Path,
+        getImagePath: (ImageId, extension: String) -> Path,
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
         saveTrack: suspend (Track) -> Unit,
@@ -73,13 +74,13 @@ class MediaImporterImpl @Inject constructor(
         return uris.associateWith { uri ->
             val importData = getImportData(
                 uri = uri,
-                getImagePath = paths.getImagePath,
+                getImagePath = getImagePath,
                 getArtistByName = getArtistByName,
                 getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
             )
             import(
                 importData = importData,
-                getImportDir = paths.getImportDir,
+                getImportDir = getImportDir,
                 saveTrack = saveTrack,
             )
         }

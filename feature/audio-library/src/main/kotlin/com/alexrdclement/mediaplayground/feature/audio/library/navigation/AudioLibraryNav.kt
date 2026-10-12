@@ -13,24 +13,22 @@ fun NavGraphBuilder.audioLibraryNavGraph() {
     route(AudioLibraryGraph)
 }
 
-data class AudioLibraryNavigationCallbacks(
-    val onNavigateToPlayer: (MediaItem) -> Unit,
-    val onNavigateToAlbum: (Album) -> Unit,
-    val onNavigateToTrackMetadata: (TrackId) -> Unit = {},
-    val onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},
-    val onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
-    val onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
-)
-
-fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(callbacks: AudioLibraryNavigationCallbacks) {
+fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
+    onNavigateToPlayer: (MediaItem) -> Unit,
+    onNavigateToAlbum: (Album) -> Unit,
+    onNavigateToTrackMetadata: (TrackId) -> Unit = {},
+    onNavigateToAlbumMetadata: (AlbumId) -> Unit = {},
+    onNavigateToAlbumDelete: (albumId: String, displayName: String) -> Unit = { _, _ -> },
+    onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
+) {
     entry<AudioLibraryGraph> {
         AudioLibraryScreen(
-            onNavigateToPlayer = callbacks.onNavigateToPlayer,
-            onNavigateToAlbum = callbacks.onNavigateToAlbum,
-            onNavigateToTrackMetadata = { trackId -> callbacks.onNavigateToTrackMetadata(TrackId(trackId)) },
-            onNavigateToAlbumMetadata = { albumId -> callbacks.onNavigateToAlbumMetadata(AlbumId(albumId)) },
-            onNavigateToAlbumDelete = callbacks.onNavigateToAlbumDelete,
-            onNavigateToTrackDelete = callbacks.onNavigateToTrackDelete,
+            onNavigateToPlayer = onNavigateToPlayer,
+            onNavigateToAlbum = onNavigateToAlbum,
+            onNavigateToTrackMetadata = { trackId -> onNavigateToTrackMetadata(TrackId(trackId)) },
+            onNavigateToAlbumMetadata = { albumId -> onNavigateToAlbumMetadata(AlbumId(albumId)) },
+            onNavigateToAlbumDelete = onNavigateToAlbumDelete,
+            onNavigateToTrackDelete = onNavigateToTrackDelete,
         )
     }
 }

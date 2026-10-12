@@ -22,14 +22,12 @@ class FakeCompleteAlbumDaoTest {
     private fun makeCompleteAlbumDao(coroutineScope: CoroutineScope): FakeCompleteAlbumDao {
         return FakeCompleteAlbumDao(
             coroutineScope = coroutineScope,
-            daos = FakeDaos(
-                albumDao = albumDao,
-                artistDao = artistDao,
-                albumArtistDao = albumArtistDao,
-                albumImageDao = albumImageDao,
-                imageDao = imageDao,
-                trackDao = trackDao,
-            ),
+            albumDao = albumDao,
+            artistDao = artistDao,
+            albumArtistDao = albumArtistDao,
+            albumImageDao = albumImageDao,
+            imageDao = imageDao,
+            trackDao = trackDao,
         )
     }
 

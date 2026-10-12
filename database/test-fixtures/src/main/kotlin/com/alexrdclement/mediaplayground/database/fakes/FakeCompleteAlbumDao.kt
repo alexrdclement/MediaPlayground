@@ -15,17 +15,22 @@ import kotlinx.coroutines.flow.map
 
 class FakeCompleteAlbumDao(
     val coroutineScope: CoroutineScope,
-    val daos: FakeDaos,
+    val albumDao: FakeAlbumDao,
+    val artistDao: FakeArtistDao,
+    val albumArtistDao: FakeAlbumArtistDao,
+    val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
+    val imageDao: FakeImageDao,
+    val trackDao: FakeTrackDao,
 ) : CompleteAlbumDao {
 
     val completeAlbums = combine(
-        daos.albumDao.albums,
-        daos.artistDao.artists,
-        daos.trackDao.tracks,
+        albumDao.albums,
+        artistDao.artists,
+        trackDao.tracks,
     ) { albums, artists, tracks ->
-        val albumArtists = daos.albumArtistDao.albumArtists
+        val albumArtists = albumArtistDao.albumArtists
         albums.map { album ->
-            val albumImageIds = daos.albumImageDao.albumImages
+            val albumImageIds = albumImageDao.albumImages
                 .filter { it.albumId == album.id }
                 .map { it.imageId }
             CompleteAlbum(
@@ -34,7 +39,7 @@ class FakeCompleteAlbumDao(
                     artists = artists.filter { artist ->
                         albumArtists.contains(AlbumArtistCrossRef(albumId = album.id, artistId = artist.id))
                     },
-                    images = daos.imageDao.images.value.filter { it.id in albumImageIds },
+                    images = imageDao.images.value.filter { it.id in albumImageIds },
                 ),
                 tracks = tracks.filter { it.albumId == album.id },
             )

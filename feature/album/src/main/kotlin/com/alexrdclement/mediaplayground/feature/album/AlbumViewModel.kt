@@ -175,14 +175,15 @@ class AlbumViewModel(
 
         val playlistState = mediaSessionState.playlistState.first()
         val playlist = playlistState.getPlaylist().first()
+        if (playlist.isEmpty()) return false
 
-        return playlist.isNotEmpty() && when (val mediaItem = loadedMediaItem.value) {
+        val loadedMediaItem = loadedMediaItem.value ?: return false
+        return when (val mediaItem = loadedMediaItem) {
             is Album -> mediaItem.id == album.id
             is Track -> playlist.all {
                 val asTrack = it as? Track ?: return@all false
                 asTrack.simpleAlbum.id == album.id
             }
-            null -> false
         }
     }
 }

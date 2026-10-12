@@ -91,17 +91,16 @@ fun MediaControlSheetContent(
                 available: Offset,
                 source: NestedScrollSource,
             ): Offset {
-                val state = overlapState
-                var consumed = Offset.Zero
-                if (state != null && available.y < 0f) {
+                val state = overlapState ?: return Offset.Zero
+                if (available.y < 0f) {
                     val canConsume = state.maxOverlapPx - state.overlapPx
                     val toConsume = minOf(-available.y, canConsume)
                     if (toConsume > 0f) {
                         state.overlapPx += toConsume
-                        consumed = Offset(x = 0f, y = -toConsume)
+                        return Offset(x = 0f, y = -toConsume)
                     }
                 }
-                return consumed
+                return Offset.Zero
             }
 
             override fun onPostScroll(
@@ -109,16 +108,15 @@ fun MediaControlSheetContent(
                 available: Offset,
                 source: NestedScrollSource,
             ): Offset {
-                val state = overlapState
-                var postConsumed = Offset.Zero
-                if (state != null && available.y > 0f) {
+                val state = overlapState ?: return Offset.Zero
+                if (available.y > 0f) {
                     val toConsume = minOf(available.y, state.overlapPx)
                     if (toConsume > 0f) {
                         state.overlapPx -= toConsume
-                        postConsumed = Offset(x = 0f, y = toConsume)
+                        return Offset(x = 0f, y = toConsume)
                     }
                 }
-                return postConsumed
+                return Offset.Zero
             }
         }
     }

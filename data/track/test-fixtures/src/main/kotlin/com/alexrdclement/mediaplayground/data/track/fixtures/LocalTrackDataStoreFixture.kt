@@ -6,7 +6,6 @@ import com.alexrdclement.mediaplayground.data.artist.local.LocalArtistDataStore
 import com.alexrdclement.mediaplayground.data.artist.local.LocalArtistRepositoryImpl
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.data.disk.fakes.FakePathProvider
-import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDaos
 import com.alexrdclement.mediaplayground.data.track.local.LocalTrackDataStore
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumArtistDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumDao
@@ -14,7 +13,6 @@ import com.alexrdclement.mediaplayground.database.fakes.FakeAlbumImageDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeArtistDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteAlbumDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeCompleteTrackDao
-import com.alexrdclement.mediaplayground.database.fakes.FakeDaos
 import com.alexrdclement.mediaplayground.database.fakes.FakeDatabaseTransactionRunner
 import com.alexrdclement.mediaplayground.database.fakes.FakeImageDao
 import com.alexrdclement.mediaplayground.database.fakes.FakeSimpleAlbumDao
@@ -25,32 +23,40 @@ import kotlinx.coroutines.Dispatchers
 
 class LocalTrackDataStoreFixture(
     val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
-    val pathProvider: PathProvider = FakePathProvider(),
-) {
-    val transactionRunner: FakeDatabaseTransactionRunner = FakeDatabaseTransactionRunner()
-    val daos: FakeDaos = FakeDaos()
-    val artistDao: FakeArtistDao get() = daos.artistDao
-    val albumDao: FakeAlbumDao get() = daos.albumDao
-    val imageDao: FakeImageDao get() = daos.imageDao
-    val albumImageDao: FakeAlbumImageDao get() = daos.albumImageDao
-    val trackDao: FakeTrackDao get() = daos.trackDao
-    val albumArtistDao: FakeAlbumArtistDao get() = daos.albumArtistDao
+    val transactionRunner: FakeDatabaseTransactionRunner = FakeDatabaseTransactionRunner(),
+    val artistDao: FakeArtistDao = FakeArtistDao(),
+    val albumDao: FakeAlbumDao = FakeAlbumDao(),
+    val imageDao: FakeImageDao = FakeImageDao(),
+    val albumImageDao: FakeAlbumImageDao = FakeAlbumImageDao(),
+    val trackDao: FakeTrackDao = FakeTrackDao(),
+    val albumArtistDao: FakeAlbumArtistDao = FakeAlbumArtistDao(),
     val completeTrackDao: FakeCompleteTrackDao = FakeCompleteTrackDao(
         coroutineScope = coroutineScope,
-        daos = daos,
-    )
+        albumDao = albumDao,
+        artistDao = artistDao,
+        albumArtistDao = albumArtistDao,
+        albumImageDao = albumImageDao,
+        imageDao = imageDao,
+        trackDao = trackDao,
+    ),
     val completeAlbumDao: FakeCompleteAlbumDao = FakeCompleteAlbumDao(
         coroutineScope = coroutineScope,
-        daos = daos,
-    )
+        albumDao = albumDao,
+        artistDao = artistDao,
+        albumArtistDao = albumArtistDao,
+        albumImageDao = albumImageDao,
+        imageDao = imageDao,
+        trackDao = trackDao,
+    ),
     val simpleAlbumDao: FakeSimpleAlbumDao = FakeSimpleAlbumDao(
         albumDao = albumDao,
         artistDao = artistDao,
         imageDao = imageDao,
         albumArtistDao = albumArtistDao,
         albumImageDao = albumImageDao,
-    )
-
+    ),
+    val pathProvider: PathProvider = FakePathProvider(),
+) {
     val localArtistDataStore = LocalArtistDataStore(
         artistDao = artistDao,
     )
@@ -72,15 +78,13 @@ class LocalTrackDataStoreFixture(
 
     val localTrackDataStore = LocalTrackDataStore(
         transactionRunner = transactionRunner,
-        daos = LocalTrackDaos(
-            artistDao = artistDao,
-            albumDao = albumDao,
-            imageDao = imageDao,
-            albumImageDao = albumImageDao,
-            trackDao = trackDao,
-            albumArtistDao = albumArtistDao,
-            completeTrackDao = completeTrackDao,
-        ),
+        artistDao = artistDao,
+        albumDao = albumDao,
+        imageDao = imageDao,
+        albumImageDao = albumImageDao,
+        trackDao = trackDao,
+        albumArtistDao = albumArtistDao,
+        completeTrackDao = completeTrackDao,
         pathProvider = pathProvider,
     )
 

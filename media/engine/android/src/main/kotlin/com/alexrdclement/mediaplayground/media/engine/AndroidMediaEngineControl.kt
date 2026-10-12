@@ -5,11 +5,9 @@ import dev.zacsweers.metro.Inject
 class AndroidMediaEngineControl @Inject constructor(
     override val mediaEngineState: AndroidMediaEngineState,
     override val transportControl: TransportControlImpl,
+    override val playheadControl: PlayheadControl,
+    override val timelineControl: TimelineControl,
     override val playlistControl: PlaylistControl,
-    playbackControls: PlaybackControls,
-) : MediaEngineControl {
-    override val playheadControl: PlayheadControl = playbackControls.playheadControl
-    override val timelineControl: TimelineControl = playbackControls.timelineControl
-    override val playbackRateControl: PlaybackRateControl = playbackControls.playbackRateControl
-    override val playbackPitchControl: PlaybackPitchControl = playbackControls.playbackPitchControl
-}
+    override val playbackRateControl: PlaybackRateControl,
+    override val playbackPitchControl: PlaybackPitchControl,
+) : MediaEngineControl

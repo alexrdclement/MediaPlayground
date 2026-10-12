@@ -6,7 +6,6 @@ import com.alexrdclement.mediaplayground.data.artist.local.LocalArtistRepository
 import com.alexrdclement.mediaplayground.data.disk.PathProvider
 import com.alexrdclement.mediaplayground.media.mediaimport.MediaImporter
 import com.alexrdclement.mediaplayground.media.mediaimport.model.MediaImportError
-import com.alexrdclement.mediaplayground.media.mediaimport.model.TrackImportPaths
 import com.alexrdclement.mediaplayground.media.model.Track
 import com.alexrdclement.mediaplayground.model.result.Result
 import kotlinx.coroutines.CancellationException
@@ -78,12 +77,10 @@ internal class LocalTrackImporterImpl(
         return try {
             mediaImporter.importTracksFromDisk(
                 uris = uris,
-                paths = TrackImportPaths(
-                    getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
-                    getImagePath = { imageId, extension ->
-                        Path(pathProvider.getImagesDir(), "${imageId.value}.$extension")
-                    },
-                ),
+                getImportDir = { albumId -> pathProvider.getAlbumDir(albumId.value) },
+                getImagePath = { imageId, extension ->
+                    Path(pathProvider.getImagesDir(), "${imageId.value}.$extension")
+                },
                 getArtistByName = { artistName ->
                     localArtistRepository.getArtistByName(artistName)
                 },
