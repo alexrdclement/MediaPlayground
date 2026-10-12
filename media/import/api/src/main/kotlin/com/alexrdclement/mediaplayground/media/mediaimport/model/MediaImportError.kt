@@ -3,7 +3,7 @@ package com.alexrdclement.mediaplayground.media.mediaimport.model
 import com.embarrasdf.logging.Loggable
 
 sealed class MediaImportError : Loggable {
-    data object MkdirError : MediaImportError()
+    data class MkdirError(override val throwable: Throwable? = null) : MediaImportError()
     data object InputFileError : MediaImportError()
     sealed class FileWriteError : MediaImportError() {
         data class InputFileNotFound(override val throwable: Throwable) : FileWriteError()
@@ -14,7 +14,7 @@ sealed class MediaImportError : Loggable {
 
     override val message: String
         get() = when (this) {
-            MkdirError -> "Error creating directory for media"
+            is MkdirError -> "Error creating directory for media"
             InputFileError -> "Error with input file"
             is FileWriteError -> when (this) {
                 is FileWriteError.InputFileNotFound -> "Input file not found: ${throwable.message}"

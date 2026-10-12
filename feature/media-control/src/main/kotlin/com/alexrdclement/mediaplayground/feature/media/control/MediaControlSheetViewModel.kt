@@ -46,26 +46,46 @@ class MediaControlSheetViewModel @Inject constructor(
     }
 
     val transportState = mediaSessionState.transportState
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TransportState.Stopped)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = TransportState.Stopped,
+        )
 
     private val isPlaying = transportState
         .map { it == TransportState.Playing }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false,
+        )
 
     val playheadState: StateFlow<PlayheadState?> = mediaSessionState.playheadState
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null,
+        )
 
     val timelineState = mediaSessionState.timelineState
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TimelineState(duration = null))
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = TimelineState(duration = null),
+        )
 
     val playbackRateState = mediaSessionState.playbackRateState
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PlaybackRateState())
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = PlaybackRateState(),
+        )
 
     val loadedMediaItem = mediaSessionState.loadedMediaItem
         .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            null,
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null,
         )
 
     val playlist: StateFlow<PersistentList<MediaItemUi>> = combine(
@@ -82,9 +102,9 @@ class MediaControlSheetViewModel @Inject constructor(
         }.toPersistentList()
     }
         .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            persistentListOf(),
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = persistentListOf(),
         )
 
     val loadedMediaItemIndex: Int?

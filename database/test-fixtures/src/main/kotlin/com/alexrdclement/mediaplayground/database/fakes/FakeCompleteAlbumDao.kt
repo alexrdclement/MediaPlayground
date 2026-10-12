@@ -37,7 +37,7 @@ class FakeCompleteAlbumDao(
                 simpleAlbum = SimpleAlbum(
                     album = album,
                     artists = artists.filter { artist ->
-                        albumArtists.contains(AlbumArtistCrossRef(album.id, artist.id))
+                        albumArtists.contains(AlbumArtistCrossRef(albumId = album.id, artistId = artist.id))
                     },
                     images = imageDao.images.value.filter { it.id in albumImageIds },
                 ),

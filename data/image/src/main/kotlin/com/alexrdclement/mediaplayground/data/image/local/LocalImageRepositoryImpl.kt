@@ -27,7 +27,10 @@ class LocalImageRepositoryImpl @Inject constructor(
     override suspend fun updateImageNotes(
         id: ImageId,
         notes: String?,
-    ) = localImageDataStore.updateImageNotes(id, notes)
+    ) = localImageDataStore.updateImageNotes(
+        imageId = id,
+        notes = notes,
+    )
 
     override suspend fun deleteImage(id: ImageId) = localImageDataStore.deleteImage(id)
 

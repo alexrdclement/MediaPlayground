@@ -76,10 +76,11 @@ class PlaybackControlViewModel @Inject constructor(
     private fun NudgeControl.decrementValue() = (value - STEP).roundTo1Decimal().coerceAtLeast(MinValue)
     private fun NudgeControl.incrementValue() = (value + STEP).roundTo1Decimal()
 
-    private fun Float.roundTo1Decimal(): Float = (this * 10).roundToInt() / 10f
+    private fun Float.roundTo1Decimal(): Float = (this * DecimalScale).roundToInt() / DecimalScale
 
     private companion object {
         private const val MinValue = 0.1f
         private const val STEP = 0.1f
+        private const val DecimalScale = 10f
     }
 }

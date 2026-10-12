@@ -1,8 +1,8 @@
 package com.alexrdclement.mediaplayground.media.metadata.model
 
-sealed class MediaMetadata {
-    abstract val mimeType: String?
-    abstract val extension: String
+sealed interface MediaMetadata {
+    val mimeType: String?
+    val extension: String
 
     data class Audio(
         val title: String?,
@@ -17,28 +17,28 @@ sealed class MediaMetadata {
         val embeddedPicture: ByteArray?,
         override val mimeType: String?,
         override val extension: String,
-    ) : MediaMetadata() {
+    ) : MediaMetadata {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
-            if (javaClass != other?.javaClass) return false
+            if (other !is Audio) return false
 
-            other as Audio
-
-            if (durationUs != other.durationUs) return false
-            if (sampleRate != other.sampleRate) return false
-            if (channelCount != other.channelCount) return false
-            if (bitRate != other.bitRate) return false
-            if (bitDepth != other.bitDepth) return false
-            if (trackNumber != other.trackNumber) return false
-            if (title != other.title) return false
-            if (artistName != other.artistName) return false
-            if (albumTitle != other.albumTitle) return false
-            if (!embeddedPicture.contentEquals(other.embeddedPicture)) return false
-            if (mimeType != other.mimeType) return false
-            if (extension != other.extension) return false
-
-            return true
+            return fieldsWithoutEmbeddedPicture() == other.fieldsWithoutEmbeddedPicture() &&
+                embeddedPicture.contentEquals(other.embeddedPicture)
         }
+
+        private fun fieldsWithoutEmbeddedPicture(): List<Any?> = listOf(
+            durationUs,
+            sampleRate,
+            channelCount,
+            bitRate,
+            bitDepth,
+            trackNumber,
+            title,
+            artistName,
+            albumTitle,
+            mimeType,
+            extension,
+        )
 
         override fun hashCode(): Int {
             var result = durationUs?.hashCode() ?: 0
@@ -67,5 +67,5 @@ sealed class MediaMetadata {
         val cameraModel: String?,
         override val mimeType: String?,
         override val extension: String,
-    ) : MediaMetadata()
+    ) : MediaMetadata
 }

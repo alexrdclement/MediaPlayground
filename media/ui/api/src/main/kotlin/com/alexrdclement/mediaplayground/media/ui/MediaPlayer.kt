@@ -1,10 +1,12 @@
 package com.alexrdclement.mediaplayground.media.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.mediaplayground.media.session.MediaSessionState
 
 @Composable
+@NonRestartableComposable
 fun MediaPlayer(
     mediaSessionState: MediaSessionState,
     modifier: Modifier = Modifier,

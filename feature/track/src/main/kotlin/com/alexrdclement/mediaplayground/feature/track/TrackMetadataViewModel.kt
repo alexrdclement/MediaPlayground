@@ -21,19 +21,19 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-sealed class TrackMetadataUiState {
-    data object Loading : TrackMetadataUiState()
+sealed interface TrackMetadataUiState {
+    data object Loading : TrackMetadataUiState
     data class Loaded(
         val track: Track,
         val isSaving: Boolean = false,
         val isMediaItemLoaded: Boolean = false,
-    ) : TrackMetadataUiState()
-    data object Error : TrackMetadataUiState()
+    ) : TrackMetadataUiState
+    data object Error : TrackMetadataUiState
 }
 
 @AssistedInject
 class TrackMetadataViewModel(
-    @Assisted private val trackIdValue: String,
+    @Assisted trackIdValue: String,
     private val trackRepository: TrackRepository,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
@@ -86,9 +86,9 @@ class TrackMetadataViewModel(
         isSaving.value = true
         viewModelScope.launch {
             try {
-                trackRepository.updateTrackTitle(trackId, title)
-                trackRepository.updateTrackNumber(trackId, trackNumber)
-                trackRepository.updateTrackNotes(trackId, notes)
+                trackRepository.updateTrackTitle(id = trackId, title = title)
+                trackRepository.updateTrackNumber(id = trackId, trackNumber = trackNumber)
+                trackRepository.updateTrackNotes(id = trackId, notes = notes)
                 savedEvent.fire()
             } finally {
                 isSaving.value = false

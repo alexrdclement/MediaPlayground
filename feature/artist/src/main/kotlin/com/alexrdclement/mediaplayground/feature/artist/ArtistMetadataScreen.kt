@@ -12,10 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -49,11 +50,12 @@ fun ArtistMetadataScreen(
             create(artistId)
         }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(ArtistMetadataUiState.Loading)
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(Unit) {
-        viewModel.savedEvent.collect { onNavigateBack() }
+        viewModel.savedEvent.collect { currentOnNavigateBack() }
     }
     LaunchedEffect(Unit) {
-        viewModel.deletedEvent.collect { onNavigateBack() }
+        viewModel.deletedEvent.collect { currentOnNavigateBack() }
     }
     ArtistMetadataScreen(
         uiState = uiState,
@@ -69,29 +71,31 @@ fun ArtistMetadataScreen(
     uiState: ArtistMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (name: String, notes: String?) -> Unit,
+    modifier: Modifier = Modifier,
     onNavigateToDelete: (displayName: String) -> Unit = {},
 ) {
-    val nameState = rememberTextFieldState()
-    val notesState = rememberTextFieldState()
-    LaunchedEffect((uiState as? ArtistMetadataUiState.Loaded)?.artist?.id) {
-        val loaded = uiState as? ArtistMetadataUiState.Loaded ?: return@LaunchedEffect
-        nameState.edit { replace(0, length, loaded.artist.name ?: "") }
-        notesState.edit { replace(0, length, loaded.artist.notes ?: "") }
+    val loadedArtist = (uiState as? ArtistMetadataUiState.Loaded)?.artist
+    val nameState = remember(loadedArtist?.id) {
+        TextFieldState(initialText = loadedArtist?.name.orEmpty())
+    }
+    val notesState = remember(loadedArtist?.id) {
+        TextFieldState(initialText = loadedArtist?.notes.orEmpty())
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopBar(
-                title = { Text("Artist", style = PaletteTheme.component.core.text.headline) },
+                title = { Text(text = "Artist", style = PaletteTheme.component.core.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
                 actions = if (uiState is ArtistMetadataUiState.Loaded) {
                     {
                         Button(
                             style = PaletteTheme.component.core.button.secondary,
-                            onClick = { onNavigateToDelete(uiState.artist.name ?: "") },
+                            onClick = { onNavigateToDelete(uiState.artist.name.orEmpty()) },
                         ) {
                             Text(
-                                "Delete",
+                                text = "Delete",
                                 style = PaletteTheme.component.core.text.labelLarge.copy(
                                     color = PaletteTheme.semantic.color.secondary,
                                 ),
@@ -144,11 +148,10 @@ fun ArtistMetadataScreen(
                 style = PaletteTheme.component.core.progressIndicator,
             )
             ArtistMetadataUiState.Error -> Text(
-                "Failed to load artist.",
+                text = "Failed to load artist.",
                 style = PaletteTheme.component.core.text.bodyMedium,
             )
             is ArtistMetadataUiState.Loaded -> LoadedContent(
-                state = uiState,
                 nameState = nameState,
                 notesState = notesState,
                 style = contentStyle.copy(
@@ -162,7 +165,6 @@ fun ArtistMetadataScreen(
 
 @Composable
 private fun LoadedContent(
-    state: ArtistMetadataUiState.Loaded,
     nameState: TextFieldState,
     notesState: TextFieldState,
     modifier: Modifier = Modifier,
@@ -175,7 +177,7 @@ private fun LoadedContent(
     ) {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text("Name", style = style.labelStyle)
+                Text(text = "Name", style = style.labelStyle)
                 TextField(
                     state = nameState,
                     style = style.textFieldStyle,
@@ -185,7 +187,7 @@ private fun LoadedContent(
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text("Notes", style = style.labelStyle)
+                Text(text = "Notes", style = style.labelStyle)
                 TextField(
                     state = notesState,
                     style = style.textFieldStyle,

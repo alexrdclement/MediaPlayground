@@ -54,10 +54,7 @@ fun AlbumEntity.toAlbum(
     )
 }
 
-fun SimpleAlbumEntity.toSimpleAlbum(
-    mediaItemDir: Path,
-    imagesDir: Path,
-): SimpleAlbum {
+fun SimpleAlbumEntity.toSimpleAlbum(imagesDir: Path): SimpleAlbum {
     return SimpleAlbum(
         id = AlbumId(album.id),
         name = album.title,

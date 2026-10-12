@@ -22,7 +22,7 @@ internal fun TrackContextMenu(
         style = PaletteTheme.component.menu.dropdownMenu,
     ) {
         DropdownMenuItem(
-            text = { Text("Metadata", style = PaletteTheme.component.core.text.bodyMedium) },
+            text = { Text(text = "Metadata", style = PaletteTheme.component.core.text.bodyMedium) },
             onClick = {
                 onDismissRequest()
                 onNavigateToMetadata()
@@ -30,7 +30,7 @@ internal fun TrackContextMenu(
             style = PaletteTheme.component.menu.dropdownMenuItem,
         )
         DropdownMenuItem(
-            text = { Text("Delete", style = PaletteTheme.component.core.text.bodyMedium) },
+            text = { Text(text = "Delete", style = PaletteTheme.component.core.text.bodyMedium) },
             onClick = {
                 onDismissRequest()
                 onNavigateToDelete()

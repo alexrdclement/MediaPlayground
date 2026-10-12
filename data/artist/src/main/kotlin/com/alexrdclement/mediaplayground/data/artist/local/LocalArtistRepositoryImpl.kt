@@ -13,12 +13,18 @@ class LocalArtistRepositoryImpl @Inject constructor(
     override suspend fun updateArtistName(
         id: String,
         name: String?,
-    ) = localArtistDataStore.updateArtistName(id, name)
+    ) = localArtistDataStore.updateArtistName(
+        artistId = id,
+        name = name,
+    )
 
     override suspend fun updateArtistNotes(
         id: String,
         notes: String?,
-    ) = localArtistDataStore.updateArtistNotes(id, notes)
+    ) = localArtistDataStore.updateArtistNotes(
+        artistId = id,
+        notes = notes,
+    )
 
     override suspend fun deleteArtist(id: String) = localArtistDataStore.deleteArtist(id)
 

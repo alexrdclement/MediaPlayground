@@ -1,8 +1,9 @@
 package com.alexrdclement.mediaplayground.feature.track.delete
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.TrackId
 import com.embarrasdf.palette.components.layout.dialog.DeleteConfirmationDialogContent
@@ -21,8 +22,9 @@ fun TrackDeleteScreen(
     ) { create(trackId.value) }
     val deleteState by viewModel.deleteState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(deleteState) {
-        if (deleteState is DeleteState.Deleted) onNavigateBack()
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
+    SideEffect(deleteState) {
+        if (deleteState is DeleteState.Deleted) currentOnNavigateBack()
     }
 
     when (deleteState) {

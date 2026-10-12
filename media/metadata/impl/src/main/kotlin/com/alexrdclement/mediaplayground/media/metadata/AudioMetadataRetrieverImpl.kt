@@ -8,7 +8,13 @@ import android.net.Uri
 import android.os.Build
 import com.alexrdclement.mediaplayground.media.metadata.model.MediaMetadata
 import dev.zacsweers.metro.Inject
+import java.io.IOException
 import android.media.MediaMetadataRetriever as AndroidMediaMetadataRetriever
+
+private const val PcmBitDepth8 = 8
+private const val PcmBitDepth16 = 16
+private const val PcmBitDepth24 = 24
+private const val PcmBitDepth32 = 32
 
 class AudioMetadataRetrieverImpl @Inject constructor(
     private val application: Application,
@@ -64,12 +70,26 @@ class AudioMetadataRetrieverImpl @Inject constructor(
         try {
             mediaExtractor.setDataSource(application, contentUri, null)
             return block(mediaExtractor)
-        } catch (e: Exception) {
-            error("Failed to extract audio metadata for $contentUri: $e")
+        } catch (e: IOException) {
+            failExtraction(contentUri = contentUri, cause = e)
+        } catch (e: IllegalArgumentException) {
+            failExtraction(contentUri = contentUri, cause = e)
+        } catch (e: IllegalStateException) {
+            failExtraction(contentUri = contentUri, cause = e)
+        } catch (e: SecurityException) {
+            failExtraction(contentUri = contentUri, cause = e)
         } finally {
             mediaExtractor.release()
         }
     }
+
+    private fun failExtraction(
+        contentUri: Uri,
+        cause: Exception,
+    ): Nothing = throw IllegalStateException(
+        "Failed to extract audio metadata for $contentUri: $cause",
+        cause,
+    )
 
     private fun MediaExtractor.extractFormat(): MediaFormat {
         return (0 until trackCount)
@@ -113,14 +133,14 @@ class AudioMetadataRetrieverImpl @Inject constructor(
     private fun MediaExtractor.extractBitDepth(format: MediaFormat): Int? {
         if (!format.containsKey(MediaFormat.KEY_PCM_ENCODING)) return null
         return when (val encoding = format.getInteger(MediaFormat.KEY_PCM_ENCODING)) {
-            AudioFormat.ENCODING_PCM_8BIT -> 8
-            AudioFormat.ENCODING_PCM_16BIT -> 16
-            AudioFormat.ENCODING_PCM_32BIT -> 32
-            AudioFormat.ENCODING_PCM_FLOAT -> 32
+            AudioFormat.ENCODING_PCM_8BIT -> PcmBitDepth8
+            AudioFormat.ENCODING_PCM_16BIT -> PcmBitDepth16
+            AudioFormat.ENCODING_PCM_32BIT -> PcmBitDepth32
+            AudioFormat.ENCODING_PCM_FLOAT -> PcmBitDepth32
             else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 encoding == AudioFormat.ENCODING_PCM_24BIT_PACKED
             ) {
-                24
+                PcmBitDepth24
             } else {
                 null
             }

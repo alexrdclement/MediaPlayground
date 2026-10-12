@@ -27,13 +27,14 @@ data class AudioLibraryContentStyle(
 @Composable
 fun AudioLibraryContent(
     headerText: String,
+    modifier: Modifier = Modifier,
     style: AudioLibraryContentStyle = AudioLibraryContentStyle(),
     headerAction: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(style.contentSpacing),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(style.contentPadding),
     ) {

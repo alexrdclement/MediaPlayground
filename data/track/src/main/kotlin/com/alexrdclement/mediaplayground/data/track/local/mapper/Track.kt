@@ -56,7 +56,7 @@ fun CompleteTrackEntity.toTrack(
         artists = simpleArtists,
         duration = track.durationMs.milliseconds,
         trackNumber = track.trackNumber,
-        uri = uriFromFileName(albumDir, track.fileName),
+        uri = uriFromFileName(mediaItemDir = albumDir, fileName = track.fileName),
         simpleAlbum = SimpleAlbum(
             id = AlbumId(album.id),
             name = album.title,

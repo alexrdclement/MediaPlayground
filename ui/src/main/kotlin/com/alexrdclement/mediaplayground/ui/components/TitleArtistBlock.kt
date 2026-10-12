@@ -108,7 +108,7 @@ fun TitleArtistBlock(
 
 @Preview
 @Composable
-fun MediaItemTitleArtistPreview() {
+private fun MediaItemTitleArtistPreview() {
     PaletteTheme {
         TitleArtistBlock(
             title = "Song Title",

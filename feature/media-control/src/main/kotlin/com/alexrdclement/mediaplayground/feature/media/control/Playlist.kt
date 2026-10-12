@@ -116,7 +116,7 @@ fun Playlist(
                     onDismissRequest = { menuExpanded = false },
                     onNavigateToMetadata = { onNavigateToTrackMetadata(item.mediaItem.id.value) },
                     onNavigateToDelete = {
-                        onNavigateToTrackDelete(item.mediaItem.id.value, item.mediaItem.title ?: "")
+                        onNavigateToTrackDelete(item.mediaItem.id.value, item.mediaItem.title)
                     },
                 )
             }

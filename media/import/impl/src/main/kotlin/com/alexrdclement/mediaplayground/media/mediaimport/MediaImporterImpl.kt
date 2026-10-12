@@ -18,6 +18,8 @@ import com.alexrdclement.mediaplayground.media.store.FileWriter
 import com.alexrdclement.mediaplayground.model.result.Result
 import com.alexrdclement.mediaplayground.model.result.mapFailure
 import dev.zacsweers.metro.Inject
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
@@ -28,6 +30,7 @@ import java.util.UUID
 class MediaImporterImpl @Inject constructor(
     private val mediaMetadataRetriever: MediaMetadataRetriever,
     private val fileWriter: FileWriter,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MediaImporter {
 
     private data class ImportData(
@@ -43,11 +46,10 @@ class MediaImporterImpl @Inject constructor(
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
         saveTrack: suspend (Track) -> Unit,
-    ): Result<Track, MediaImportError> = withContext(Dispatchers.IO) {
-        try {
+    ): Result<Track, MediaImportError> = withContext(ioDispatcher) {
+        catchingUnknownImportErrors {
             val importData = getImportData(
                 uri = uri,
-                getImportDir = getImportDir,
                 getImagePath = getImagePath,
                 getArtistByName = getArtistByName,
                 getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
@@ -57,8 +59,6 @@ class MediaImporterImpl @Inject constructor(
                 getImportDir = getImportDir,
                 saveTrack = saveTrack,
             )
-        } catch (e: Throwable) {
-            Result.Failure(MediaImportError.Unknown(throwable = e))
         }
     }
 
@@ -74,7 +74,6 @@ class MediaImporterImpl @Inject constructor(
         return uris.associateWith { uri ->
             val importData = getImportData(
                 uri = uri,
-                getImportDir = getImportDir,
                 getImagePath = getImagePath,
                 getArtistByName = getArtistByName,
                 getAlbumByTitleAndArtistId = getAlbumByTitleAndArtistId,
@@ -105,7 +104,7 @@ class MediaImporterImpl @Inject constructor(
         contentUri: Uri,
         getDestination: (ImageId, extension: String) -> Path,
         saveImage: suspend (imageId: ImageId, fileName: String, mediaMetadata: MediaMetadata.Image) -> Unit,
-    ): Result<ImageId, MediaImportError> = withContext(Dispatchers.IO) {
+    ): Result<ImageId, MediaImportError> = withContext(ioDispatcher) {
         val mediaMetadata = mediaMetadataRetriever.getMediaMetadata(contentUri) as MediaMetadata.Image
         val imageId = ImageId(UUID.randomUUID().toString())
         val fileName = "${imageId.value}.${mediaMetadata.extension}"
@@ -113,7 +112,7 @@ class MediaImporterImpl @Inject constructor(
 
         try {
             destination.parent?.let { SystemFileSystem.createDirectories(it) }
-        } catch (e: IOException) {
+        } catch (ignored: IOException) {
             // Directory may already exist
         }
 
@@ -128,7 +127,6 @@ class MediaImporterImpl @Inject constructor(
 
     private suspend fun getImportData(
         uri: Uri,
-        getImportDir: (AlbumId) -> Path,
         getImagePath: (ImageId, extension: String) -> Path,
         getArtistByName: suspend (String) -> SimpleArtist?,
         getAlbumByTitleAndArtistId: suspend (String, String) -> SimpleAlbum?,
@@ -168,7 +166,6 @@ class MediaImporterImpl @Inject constructor(
                     id = UUID.randomUUID(),
                     filePath = fileWriteResult.value,
                     mediaMetadata = importData.mediaMetadata,
-                    simpleArtists = importData.simpleAlbum.artists,
                     simpleAlbum = importData.simpleAlbum,
                     source = Source.Local,
                 )
@@ -183,33 +180,53 @@ class MediaImporterImpl @Inject constructor(
         embeddedPicture: ByteArray?,
         imagePath: Path?,
         importDir: Path,
-    ): Result<Path, MediaImportError> = withContext(Dispatchers.IO) {
-        try {
+    ): Result<Path, MediaImportError> = withContext(ioDispatcher) {
+        catchingUnknownImportErrors {
             try {
                 SystemFileSystem.createDirectories(importDir)
             } catch (e: IOException) {
-                return@withContext Result.Failure(MediaImportError.MkdirError)
+                return@withContext Result.Failure(MediaImportError.MkdirError(throwable = e))
             }
 
             if (embeddedPicture != null && imagePath != null) {
                 try {
                     imagePath.parent?.let { SystemFileSystem.createDirectories(it) }
-                } catch (e: IOException) {
+                } catch (ignored: IOException) {
                     // Fail silently — image write is best-effort
                 }
-                when (fileWriter.writeBitmapToDisk(embeddedPicture, imagePath)) {
+                val bitmapWriteResult = fileWriter.writeBitmapToDisk(
+                    byteArray = embeddedPicture,
+                    destination = imagePath,
+                )
+                when (bitmapWriteResult) {
                     is Result.Failure -> Unit // Fail silently for now
                     is Result.Success -> Unit
                 }
             }
 
-            return@withContext fileWriter.writeToDisk(
+            fileWriter.writeToDisk(
                 contentUri = uri,
                 destinationDir = importDir,
             ).mapFailure { it.toMediaImportError() }
-        } catch (e: Throwable) {
-            Result.Failure(MediaImportError.Unknown(throwable = e))
         }
+    }
+
+    private inline fun <T> catchingUnknownImportErrors(
+        block: () -> Result<T, MediaImportError>,
+    ): Result<T, MediaImportError> = try {
+        block()
+    } catch (e: IOException) {
+        Result.Failure(MediaImportError.Unknown(throwable = e))
+    } catch (e: SecurityException) {
+        Result.Failure(MediaImportError.Unknown(throwable = e))
+    } catch (e: IllegalArgumentException) {
+        Result.Failure(MediaImportError.Unknown(throwable = e))
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: IllegalStateException) {
+        Result.Failure(MediaImportError.Unknown(throwable = e))
+    } catch (e: ClassCastException) {
+        Result.Failure(MediaImportError.Unknown(throwable = e))
     }
 
     private fun FileWriteError.toMediaImportError() = when (this) {

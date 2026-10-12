@@ -6,7 +6,6 @@ import com.alexrdclement.mediaplayground.media.model.Album
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.TrackId
-import com.embarrasdf.palette.navigation.NavController
 import com.embarrasdf.palette.navigation.NavGraphBuilder
 import com.embarrasdf.palette.navigation.NavKey
 
@@ -15,7 +14,6 @@ fun NavGraphBuilder.audioLibraryNavGraph() {
 }
 
 fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
-    navController: NavController,
     onNavigateToPlayer: (MediaItem) -> Unit,
     onNavigateToAlbum: (Album) -> Unit,
     onNavigateToTrackMetadata: (TrackId) -> Unit = {},
@@ -27,8 +25,8 @@ fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
         AudioLibraryScreen(
             onNavigateToPlayer = onNavigateToPlayer,
             onNavigateToAlbum = onNavigateToAlbum,
-            onNavigateToTrackMetadata = { onNavigateToTrackMetadata(TrackId(it)) },
-            onNavigateToAlbumMetadata = { onNavigateToAlbumMetadata(AlbumId(it)) },
+            onNavigateToTrackMetadata = { trackId -> onNavigateToTrackMetadata(TrackId(trackId)) },
+            onNavigateToAlbumMetadata = { albumId -> onNavigateToAlbumMetadata(AlbumId(albumId)) },
             onNavigateToAlbumDelete = onNavigateToAlbumDelete,
             onNavigateToTrackDelete = onNavigateToTrackDelete,
         )

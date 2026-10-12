@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,7 +46,7 @@ import kotlin.time.Duration
 
 @Stable
 class MediaControlOverlapState(val maxOverlapPx: Float) {
-    var overlapPx by mutableStateOf(0f)
+    var overlapPx by mutableFloatStateOf(0f)
         internal set
     val overlapFraction: Float get() = if (maxOverlapPx > 0f) overlapPx / maxOverlapPx else 0f
 }
@@ -67,21 +67,21 @@ fun MediaControlSheetContent(
     transportState: TransportState,
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
-    playbackRateState: PlaybackRateState? = null,
     onPlayPauseClick: () -> Unit,
-    onPlayPauseLongClick: (() -> Unit)? = null,
     onSkipClick: () -> Unit,
     onSkipBackClick: () -> Unit,
     onSeek: (Duration) -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
+    modifier: Modifier = Modifier,
+    playbackRateState: PlaybackRateState? = null,
+    onPlayPauseLongClick: (() -> Unit)? = null,
     onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToLoadedItemMetadata: () -> Unit = {},
     onNavigateToLoadedItemDelete: () -> Unit = {},
     onNavigateToArtistMetadata: () -> Unit = {},
     onNavigateToArtistDelete: () -> Unit = {},
-    modifier: Modifier = Modifier,
     style: MediaControlSheetContentStyle = MediaControlSheetContentStyle(),
     overlapState: MediaControlOverlapState? = null,
 ) {
@@ -97,7 +97,7 @@ fun MediaControlSheetContent(
                     val toConsume = minOf(-available.y, canConsume)
                     if (toConsume > 0f) {
                         state.overlapPx += toConsume
-                        return Offset(0f, -toConsume)
+                        return Offset(x = 0f, y = -toConsume)
                     }
                 }
                 return Offset.Zero
@@ -113,7 +113,7 @@ fun MediaControlSheetContent(
                     val toConsume = minOf(available.y, state.overlapPx)
                     if (toConsume > 0f) {
                         state.overlapPx -= toConsume
-                        return Offset(0f, toConsume)
+                        return Offset(x = 0f, y = toConsume)
                     }
                 }
                 return Offset.Zero
@@ -146,7 +146,7 @@ fun MediaControlSheetContent(
                     val placeable = measurable.measure(
                         constraints.copy(maxHeight = constraints.maxHeight + extraHeight),
                     )
-                    layout(placeable.width, constraints.maxHeight) {
+                    layout(width = placeable.width, height = constraints.maxHeight) {
                         placeable.place(0, -extraHeight)
                     }
                 },

@@ -44,7 +44,7 @@ data class MediaItemCardStyle(
     val contentSpacing: Dp = 16.dp,
     val textSpacing: Dp = 8.dp,
     val playPauseButtonSize: Dp = 24.dp,
-    val playPauseButtonAlignment: BiasAlignment = BiasAlignment(.8f, .8f),
+    val playPauseButtonAlignment: BiasAlignment = BiasAlignment(horizontalBias = .8f, verticalBias = .8f),
     val titleStyle: TextStyle = TextStyle(),
     val artistStyle: TextStyle = TextStyle(),
     val playPauseButtonStyle: PlayPauseButtonStyle = PlayPauseButtonStyle(),
@@ -79,7 +79,7 @@ fun MediaItemCard(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .aspectRatio(1f, matchHeightConstraintsFirst = false),
+                    .aspectRatio(ratio = 1f, matchHeightConstraintsFirst = false),
             ) {
                 MediaItemArtwork(
                     imageUrl = mediaItem.thumbnailImageUrl,

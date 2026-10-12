@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 @AssistedInject
 class AlbumViewModel(
-    @Assisted private val albumIdValue: String,
+    @Assisted albumIdValue: String,
     private val logger: Logger,
     albumRepository: AlbumRepository,
     private val mediaSessionControl: MediaSessionControl,
@@ -162,7 +162,7 @@ class AlbumViewModel(
         }
     }
 
-    fun onTrackPlayPauseClick(trackUi: TrackUi) {
+    fun onTrackPlayPauseClick() {
         viewModelScope.launch {
             with(mediaSessionControl.getMediaEngineControl()) {
                 transportControl.playPause()

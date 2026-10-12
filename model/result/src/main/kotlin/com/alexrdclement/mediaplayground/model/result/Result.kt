@@ -1,8 +1,8 @@
 package com.alexrdclement.mediaplayground.model.result
 
-sealed class Result<Success, Failure> {
-    data class Success<Success, Failure>(val value: Success) : Result<Success, Failure>()
-    data class Failure<Success, Failure>(val failure: Failure) : Result<Success, Failure>()
+sealed interface Result<Success, Failure> {
+    data class Success<Success, Failure>(val value: Success) : Result<Success, Failure>
+    data class Failure<Success, Failure>(val failure: Failure) : Result<Success, Failure>
 }
 
 fun <Success, Failure> Result<Success, Failure>.successOrElse(onFailure: (Failure) -> Success): Success {
@@ -47,16 +47,4 @@ inline infix fun <Success, Failure, R> Result<Success, Failure>.mapFailure(
         onSuccess = { Result.Success(it) },
         onFailure = { Result.Failure(block(it)) },
     )
-}
-
-suspend inline fun <Success, Failure, reified T : Throwable> runCatchingResult(
-    onException: (T) -> Failure,
-    crossinline block: suspend () -> Result<Success, Failure>,
-): Result<Success, Failure> {
-    return try {
-        block()
-    } catch (t: Throwable) {
-        if (t !is T) throw t
-        Result.Failure(onException(t))
-    }
 }

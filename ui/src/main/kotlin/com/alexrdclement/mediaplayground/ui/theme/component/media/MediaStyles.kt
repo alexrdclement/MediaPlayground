@@ -21,19 +21,19 @@ import com.embarrasdf.palette.theme.component.media.MediaStyles
  * Size of a play/pause button acting as the main playback control on a screen.
  */
 val MediaStyles.playPauseButtonSizePrimary: Dp
-    @Composable get() = 72.dp
+    get() = 72.dp
 
 /**
  * Size of a play/pause button overlaid on artwork within a list or grid item.
  */
 val MediaStyles.playPauseButtonSizeCompact: Dp
-    @Composable get() = 24.dp
+    get() = 24.dp
 
 /**
  * Narrowest a media item tile may be before an adaptive grid drops a column.
  */
 val MediaStyles.mediaItemGridMinItemWidth: Dp
-    @Composable get() = 120.dp
+    get() = 120.dp
 
 val MediaStyles.transportControlBar: TransportControlBarStyle
     @Composable get() = TransportControlBarStyle(

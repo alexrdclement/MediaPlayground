@@ -22,7 +22,10 @@ class TransportControlImpl @Inject constructor(
 
             val listener = object : Player.Listener {
                 override fun onPlaybackStateChanged(playbackState: Int) {
-                    val state = mapPlaybackState(playbackState, playWhenReady = mediaController.playWhenReady)
+                    val state = mapPlaybackState(
+                        state = playbackState,
+                        playWhenReady = mediaController.playWhenReady,
+                    )
                     trySend(state)
                 }
 
@@ -30,7 +33,10 @@ class TransportControlImpl @Inject constructor(
                     playWhenReady: Boolean,
                     reason: Int,
                 ) {
-                    val state = mapPlaybackState(mediaController.playbackState, playWhenReady = playWhenReady)
+                    val state = mapPlaybackState(
+                        state = mediaController.playbackState,
+                        playWhenReady = playWhenReady,
+                    )
                     trySend(state)
                 }
             }

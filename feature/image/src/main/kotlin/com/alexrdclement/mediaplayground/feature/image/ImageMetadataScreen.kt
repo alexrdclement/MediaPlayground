@@ -12,10 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,6 +38,7 @@ import com.embarrasdf.palette.theme.components.layout.Scaffold
 import com.embarrasdf.palette.theme.components.layout.TopBar
 import com.embarrasdf.palette.theme.components.navigation.BackNavigationButton
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
+import java.util.Locale
 
 @Composable
 fun ImageMetadataScreen(
@@ -51,11 +53,12 @@ fun ImageMetadataScreen(
             create(imageId.value)
         }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(ImageMetadataUiState.Loading)
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(Unit) {
-        viewModel.savedEvent.collect { onNavigateBack() }
+        viewModel.savedEvent.collect { currentOnNavigateBack() }
     }
     LaunchedEffect(Unit) {
-        viewModel.deletedEvent.collect { onNavigateBack() }
+        viewModel.deletedEvent.collect { currentOnNavigateBack() }
     }
     ImageMetadataScreen(
         uiState = uiState,
@@ -71,18 +74,19 @@ fun ImageMetadataScreen(
     uiState: ImageMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (notes: String?) -> Unit,
+    modifier: Modifier = Modifier,
     onNavigateToDelete: (displayName: String) -> Unit = {},
 ) {
-    val notesState = rememberTextFieldState()
-    LaunchedEffect((uiState as? ImageMetadataUiState.Loaded)?.image?.id) {
-        val loaded = uiState as? ImageMetadataUiState.Loaded ?: return@LaunchedEffect
-        notesState.edit { replace(0, length, loaded.image.notes ?: "") }
+    val loadedImage = (uiState as? ImageMetadataUiState.Loaded)?.image
+    val notesState = remember(loadedImage?.id) {
+        TextFieldState(initialText = loadedImage?.notes.orEmpty())
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopBar(
-                title = { Text("Image", style = PaletteTheme.component.core.text.headline) },
+                title = { Text(text = "Image", style = PaletteTheme.component.core.text.headline) },
                 navButton = { BackNavigationButton(onClick = onNavigateBack) },
                 actions = if (uiState is ImageMetadataUiState.Loaded) {
                     {
@@ -91,7 +95,7 @@ fun ImageMetadataScreen(
                             onClick = { onNavigateToDelete(uiState.image.uri) },
                         ) {
                             Text(
-                                "Delete",
+                                text = "Delete",
                                 style = PaletteTheme.component.core.text.labelLarge.copy(
                                     color = PaletteTheme.semantic.color.secondary,
                                 ),
@@ -139,7 +143,7 @@ fun ImageMetadataScreen(
                 style = PaletteTheme.component.core.progressIndicator,
             )
             ImageMetadataUiState.Error -> Text(
-                "Failed to load image.",
+                text = "Failed to load image.",
                 style = PaletteTheme.component.core.text.bodyMedium,
             )
             is ImageMetadataUiState.Loaded -> LoadedContent(
@@ -160,8 +164,8 @@ private fun MetadataField(
     value: String?,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small)) {
-        Text(label, style = PaletteTheme.component.core.text.titleMedium)
-        Text(value ?: "Unknown", style = PaletteTheme.component.core.text.bodyMedium)
+        Text(text = label, style = PaletteTheme.component.core.text.titleMedium)
+        Text(text = value ?: "Unknown", style = PaletteTheme.component.core.text.bodyMedium)
     }
 }
 
@@ -216,12 +220,16 @@ private fun LoadedContent(
             val lon = state.image.gpsLongitude
             MetadataField(
                 label = "Location",
-                value = if (lat != null && lon != null) "%.6f, %.6f".format(lat, lon) else null,
+                value = if (lat != null && lon != null) {
+                    "%.6f, %.6f".format(locale = Locale.getDefault(), lat, lon)
+                } else {
+                    null
+                },
             )
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(style.sectionSpacing)) {
-                Text("Notes", style = style.labelStyle)
+                Text(text = "Notes", style = style.labelStyle)
                 TextField(
                     state = notesState,
                     style = style.textFieldStyle,

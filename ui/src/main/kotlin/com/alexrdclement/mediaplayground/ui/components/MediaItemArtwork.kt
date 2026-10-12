@@ -20,6 +20,6 @@ fun MediaItemArtwork(
                 .alpha(if (isEnabled) 1f else PaletteTheme.semantic.color.disabledContentAlpha),
         )
     } else {
-        // TODO: fallback image
+        // No fallback image yet; nothing is drawn when imageUrl is null.
     }
 }

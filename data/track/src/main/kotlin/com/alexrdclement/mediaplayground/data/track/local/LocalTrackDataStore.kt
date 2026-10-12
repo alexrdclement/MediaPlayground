@@ -46,18 +46,21 @@ class LocalTrackDataStore @Inject constructor(
 
             albumDao.insert(track.simpleAlbum.toAlbumEntity(source = track.source))
 
-            val albumArtistCrossRef = track.artists.map { artist ->
-                AlbumArtistCrossRef(albumId = track.simpleAlbum.id.value, artistId = artist.id)
+            track.artists.forEach { artist ->
+                albumArtistDao.insert(
+                    AlbumArtistCrossRef(albumId = track.simpleAlbum.id.value, artistId = artist.id),
+                )
             }
-            albumArtistDao.insert(*albumArtistCrossRef.toTypedArray())
 
-            val images = track.simpleAlbum.images.map { it.toImageEntity() }
-            imageDao.insert(*images.toTypedArray())
-
-            val albumImageCrossRefs = track.simpleAlbum.images.map { image ->
-                AlbumImageCrossRef(albumId = track.simpleAlbum.id.value, imageId = image.id.value)
+            track.simpleAlbum.images.forEach { image ->
+                imageDao.insert(image.toImageEntity())
             }
-            albumImageDao.insert(*albumImageCrossRefs.toTypedArray())
+
+            track.simpleAlbum.images.forEach { image ->
+                albumImageDao.insert(
+                    AlbumImageCrossRef(albumId = track.simpleAlbum.id.value, imageId = image.id.value),
+                )
+            }
 
             trackDao.insert(track.toTrackEntity())
         }
@@ -72,7 +75,7 @@ class LocalTrackDataStore @Inject constructor(
             }
 
             for (artist in track.artists) {
-                albumArtistDao.delete(AlbumArtistCrossRef(album.id, artist.id))
+                albumArtistDao.delete(AlbumArtistCrossRef(albumId = album.id, artistId = artist.id))
                 albumArtistDao.getArtistAlbums(artist.id).let { artistAlbums ->
                     if (artistAlbums.isEmpty()) {
                         artistDao.delete(artist.id)

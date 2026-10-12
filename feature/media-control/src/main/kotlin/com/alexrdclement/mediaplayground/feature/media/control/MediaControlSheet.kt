@@ -51,13 +51,13 @@ import com.embarrasdf.palette.components.media.model.MediaItem as UiMediaItem
 @Composable
 fun MediaControlSheet(
     mediaControlSheetState: PeekSheetState,
+    viewModel: MediaControlSheetViewModel = metroViewModel(),
     onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
     onNavigateToArtistDelete: (artistId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToPlaybackControl: () -> Unit = {},
 ) {
-    val viewModel = metroViewModel<MediaControlSheetViewModel>()
     val loadedMediaItem by viewModel.loadedMediaItem.collectAsStateWithLifecycle()
     val playlist by viewModel.playlist.collectAsStateWithLifecycle()
     val transportState by viewModel.transportState.collectAsStateWithLifecycle()
@@ -95,14 +95,15 @@ fun MediaControlSheet(
     transportState: TransportState,
     playheadState: PlayheadState?,
     timelineState: TimelineState?,
-    playbackRateState: PlaybackRateState? = null,
     onPlayPauseClick: () -> Unit,
-    onPlayPauseLongClick: (() -> Unit)? = null,
     onSkipClick: () -> Unit,
     onSkipBackClick: () -> Unit,
     onSeek: (Duration) -> Unit,
     onItemClick: (MediaItemUi) -> Unit,
     onItemPlayPauseClick: (MediaItemUi) -> Unit,
+    modifier: Modifier = Modifier,
+    playbackRateState: PlaybackRateState? = null,
+    onPlayPauseLongClick: (() -> Unit)? = null,
     onNavigateToTrackMetadata: (trackId: String) -> Unit = {},
     onNavigateToTrackDelete: (trackId: String, displayName: String) -> Unit = { _, _ -> },
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
@@ -115,29 +116,36 @@ fun MediaControlSheet(
         visible = loadedMediaItem != null,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
+        modifier = modifier,
     ) {
         loadedMediaItem?.let { mediaItem ->
             val fallbackArtistName = stringResource(id = UiR.string.artist_name_fallback)
-            val artists by derivedStateOf {
-                mediaItem.artists.map {
-                    Artist(
-                        name = it.name ?: fallbackArtistName,
-                    )
+            val artists by remember(mediaItem, fallbackArtistName) {
+                derivedStateOf {
+                    mediaItem.artists.map {
+                        Artist(
+                            name = it.name ?: fallbackArtistName,
+                        )
+                    }
                 }
             }
-            val uiMediaItem by derivedStateOf {
-                UiMediaItem(
-                    artworkLargeUrl = mediaItem.largeImageUrl,
-                    artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
-                    title = mediaItem.title,
-                    artists = artists,
-                )
+            val uiMediaItem by remember(mediaItem, fallbackArtistName) {
+                derivedStateOf {
+                    UiMediaItem(
+                        artworkLargeUrl = mediaItem.largeImageUrl,
+                        artworkThumbnailUrl = mediaItem.thumbnailImageUrl,
+                        title = mediaItem.title,
+                        artists = artists,
+                    )
+                }
             }
 
             val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
             val navBarBottomPadding = navigationBarsPadding.calculateBottomPadding()
-            val yOffset by derivedStateOf {
-                navBarBottomPadding * (1f - mediaControlSheetState.partialToFullProgress)
+            val yOffset by remember(navBarBottomPadding, mediaControlSheetState) {
+                derivedStateOf {
+                    navBarBottomPadding * (1f - mediaControlSheetState.partialToFullProgress)
+                }
             }
 
             BoxWithConstraints {
@@ -190,7 +198,10 @@ fun MediaControlSheet(
                                     val placeables = measureables.measure(constraints)
                                     val progress = mediaControlSheetState.partialToFullProgress
                                     val topPadding = statusBarTopPadding * progress
-                                    layout(constraints.maxWidth, topPadding.toPx().roundToInt()) {
+                                    layout(
+                                        width = constraints.maxWidth,
+                                        height = topPadding.toPx().roundToInt(),
+                                    ) {
                                         placeables.place(0, 0)
                                     }
                                 },
@@ -236,7 +247,7 @@ fun MediaControlSheet(
                                 mediaItem.artists.firstOrNull()?.let {
                                     onNavigateToArtistDelete(
                                         it.id,
-                                        it.name ?: "",
+                                        it.name.orEmpty(),
                                     )
                                 }
                             },

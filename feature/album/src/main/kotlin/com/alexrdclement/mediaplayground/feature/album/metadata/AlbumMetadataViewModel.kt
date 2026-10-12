@@ -21,19 +21,19 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-sealed class AlbumMetadataUiState {
-    data object Loading : AlbumMetadataUiState()
+sealed interface AlbumMetadataUiState {
+    data object Loading : AlbumMetadataUiState
     data class Loaded(
         val album: Album,
         val isSaving: Boolean = false,
         val isMediaItemLoaded: Boolean = false,
-    ) : AlbumMetadataUiState()
-    data object Error : AlbumMetadataUiState()
+    ) : AlbumMetadataUiState
+    data object Error : AlbumMetadataUiState
 }
 
 @AssistedInject
 class AlbumMetadataViewModel(
-    @Assisted private val albumIdValue: String,
+    @Assisted albumIdValue: String,
     private val albumRepository: AlbumRepository,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {
@@ -85,8 +85,8 @@ class AlbumMetadataViewModel(
         isSaving.value = true
         viewModelScope.launch {
             try {
-                albumRepository.updateAlbumTitle(albumId, title)
-                albumRepository.updateAlbumNotes(albumId, notes)
+                albumRepository.updateAlbumTitle(id = albumId, title = title)
+                albumRepository.updateAlbumNotes(id = albumId, notes = notes)
                 savedEvent.fire()
             } finally {
                 isSaving.value = false

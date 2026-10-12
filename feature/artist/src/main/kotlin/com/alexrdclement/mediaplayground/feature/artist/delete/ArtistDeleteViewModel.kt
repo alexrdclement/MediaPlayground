@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-sealed class DeleteState {
-    data object Confirming : DeleteState()
-    data object Deleting : DeleteState()
-    data object Deleted : DeleteState()
+sealed interface DeleteState {
+    data object Confirming : DeleteState
+    data object Deleting : DeleteState
+    data object Deleted : DeleteState
 }
 
 @AssistedInject

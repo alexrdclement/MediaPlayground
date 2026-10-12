@@ -1,24 +1,28 @@
 package com.alexrdclement.mediaplayground.ui.util
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.res.stringResource
 import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.R
 import com.embarrasdf.palette.components.media.model.Artist
 
 @Composable
+@ReadOnlyComposable
 @JvmName("artistNamesOrDefaultArtist")
 fun artistNamesOrDefault(artists: List<Artist>): String {
     return artistNamesOrDefault(artists.map { it.name })
 }
 
 @Composable
+@ReadOnlyComposable
 @JvmName("artistNamesOrDefaultSimpleArtist")
 fun artistNamesOrDefault(artists: List<SimpleArtist>): String {
     return artistNamesOrDefault(artists.map { it.name })
 }
 
 @Composable
+@ReadOnlyComposable
 fun artistNamesOrDefault(artists: List<String?>): String {
     return when {
         artists.isEmpty() -> stringResource(id = R.string.artist_name_fallback)

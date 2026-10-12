@@ -3,9 +3,9 @@ package com.alexrdclement.mediaplayground.feature.album
 import com.alexrdclement.mediaplayground.media.model.SimpleArtist
 import com.alexrdclement.mediaplayground.ui.model.TrackUi
 
-sealed class AlbumUiState {
-    data object Loading : AlbumUiState()
-    data object NotFound : AlbumUiState()
+sealed interface AlbumUiState {
+    data object Loading : AlbumUiState
+    data object NotFound : AlbumUiState
 
     data class Success(
         val imageUrl: String?,
@@ -15,5 +15,5 @@ sealed class AlbumUiState {
         val isAlbumPlayable: Boolean,
         val isAlbumPlaying: Boolean,
         val isMediaItemLoaded: Boolean,
-    ) : AlbumUiState()
+    ) : AlbumUiState
 }
