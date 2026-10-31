@@ -15,7 +15,7 @@ fun ContentUriReadError.toMediaImportError() = when (this) {
 fun FileWriteError.toMediaImportError() = when (this) {
     is FileWriteError.InputFileNotFound ->
         MediaImportError.FileWriteError.InputFileNotFound(throwable = throwable)
-    is FileWriteError.MkdirError -> MediaImportError.MkdirError
+    is FileWriteError.MkdirError -> MediaImportError.MkdirError(throwable = throwable)
     is FileWriteError.Unknown -> MediaImportError.FileWriteError.Unknown(throwable = throwable)
 }
 

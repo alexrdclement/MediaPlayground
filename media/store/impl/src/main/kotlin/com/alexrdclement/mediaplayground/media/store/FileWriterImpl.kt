@@ -49,11 +49,4 @@ private suspend fun ByteArray.writeToDisk(destination: Path): Result<Path, FileW
         } catch (e: Throwable) {
             Result.Failure(FileWriteError.Unknown(e))
         }
-        Result.Success(destination)
-    } catch (e: FileNotFoundException) {
-        Result.Failure(FileWriteError.InputFileNotFound(e))
-    } catch (e: IOException) {
-        Result.Failure(FileWriteError.Unknown(e))
-    } catch (e: Throwable) {
-        Result.Failure(FileWriteError.Unknown(e))
     }
