@@ -33,7 +33,7 @@ sealed interface AlbumMetadataUiState {
 
 @AssistedInject
 class AlbumMetadataViewModel(
-    @Assisted private val albumIdValue: String,
+    @Assisted albumIdValue: String,
     private val albumRepository: AudioAlbumRepository,
     mediaSessionState: MediaSessionState,
 ) : ViewModel() {

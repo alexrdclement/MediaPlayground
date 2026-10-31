@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexrdclement.mediaplayground.media.model.AlbumId
 import com.alexrdclement.mediaplayground.media.model.Image
 import com.alexrdclement.mediaplayground.media.model.Artist
+import com.alexrdclement.mediaplayground.ui.components.metadata.MetadataContentStyle
 import com.alexrdclement.mediaplayground.ui.constants.mediaControlSheetPadding
 import com.alexrdclement.mediaplayground.ui.theme.component.layout.metadataContent
 import com.alexrdclement.mediaplayground.ui.util.PreviewAlbum1
@@ -207,7 +208,7 @@ private fun LoadedContent(
             item {
                 Text(text = "Artists", style = style.labelStyle)
             }
-            items(state.album.artists, key = { it.id.value }) { artist ->
+            items(items = state.album.artists, key = { it.id.value }) { artist ->
                 ArtistRow(
                     artist = artist,
                     onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id.value) },
@@ -279,7 +280,7 @@ private fun ImageRow(
         ) {
             Text(
                 text = image.uri.toUriString(),
-                style = PaletteTheme.styles.text.bodyMedium,
+                style = PaletteTheme.component.core.text.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier.weight(1f),
             )

@@ -85,8 +85,8 @@ class TrackMetadataViewModel(
         isSaving.value = true
         viewModelScope.launch {
             try {
-                trackRepository.updateTrackTitle(trackId, title)
-                trackRepository.updateTrackNotes(trackId, notes)
+                trackRepository.updateTrackTitle(id = trackId, title = title)
+                trackRepository.updateTrackNotes(id = trackId, notes = notes)
                 savedEvent.fire()
             } finally {
                 isSaving.value = false

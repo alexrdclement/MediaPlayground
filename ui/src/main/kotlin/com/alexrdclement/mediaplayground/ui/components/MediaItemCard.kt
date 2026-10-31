@@ -28,11 +28,27 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
+import com.alexrdclement.mediaplayground.ui.theme.component.media.mediaItemCard
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
-import com.alexrdclement.palette.components.core.Surface
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.media.PlayPauseButton
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Surface
+import com.embarrasdf.palette.components.core.SurfaceStyle
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.core.TextStyle
+import com.embarrasdf.palette.components.media.PlayPauseButton
+import com.embarrasdf.palette.components.media.PlayPauseButtonStyle
+import com.embarrasdf.palette.theme.PaletteTheme
+
+data class MediaItemCardStyle(
+    val contentPadding: PaddingValues = PaddingValues(16.dp),
+    val contentSpacing: Dp = 16.dp,
+    val textSpacing: Dp = 8.dp,
+    val playPauseButtonSize: Dp = 24.dp,
+    val playPauseButtonAlignment: BiasAlignment = BiasAlignment(horizontalBias = .8f, verticalBias = .8f),
+    val titleStyle: TextStyle = TextStyle(),
+    val artistStyle: TextStyle = TextStyle(),
+    val playPauseButtonStyle: PlayPauseButtonStyle = PlayPauseButtonStyle(),
+    val surfaceStyle: SurfaceStyle = SurfaceStyle(),
+)
 
 @Composable
 fun MediaItemCard(
@@ -95,7 +111,7 @@ fun MediaItemCard(
                 )
                 Text(
                     text = subtitle,
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = style.artistStyle,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee(),

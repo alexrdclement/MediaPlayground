@@ -30,8 +30,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.mediaplayground.media.model.MediaItem
 import com.alexrdclement.mediaplayground.media.model.Track
+import com.alexrdclement.mediaplayground.media.model.thumbnailImageUri
 import com.alexrdclement.mediaplayground.media.model.toKotlinDuration
+import com.alexrdclement.mediaplayground.ui.components.MediaItemArtwork
+import com.alexrdclement.mediaplayground.ui.model.MediaItemUi
+import com.alexrdclement.mediaplayground.ui.theme.component.media.trackListItem
 import com.alexrdclement.mediaplayground.ui.util.PreviewTrack1
 import com.alexrdclement.mediaplayground.ui.util.formatShort
 import com.embarrasdf.palette.components.core.Surface
@@ -76,9 +81,9 @@ fun TrackListItem(
     onLongClick: ((Offset) -> Unit)? = null,
 ) {
     TrackListItem(
-        title = track.name,
-        artists = track.artists,
-        duration = track.duration,
+        title = track.title,
+        subtitle = subtitle,
+        duration = track.duration.toKotlinDuration(),
         isLoaded = isLoaded,
         isPlayable = isPlayable,
         isPlaying = isPlaying,
@@ -89,7 +94,7 @@ fun TrackListItem(
         onLongClick = onLongClick,
         leadingContent = {
             Text(
-                text = track.trackNumber.toString(),
+                text = trackNumber?.toString() ?: "",
                 style = style.trackNumberStyle,
             )
         },
@@ -110,6 +115,7 @@ fun TrackListItem(
 ) {
     TrackListItem(
         item = item.mediaItem,
+        subtitle = item.subtitle,
         isLoaded = item.isLoaded,
         isPlayable = item.isPlayable,
         isPlaying = item.isPlaying,
@@ -127,6 +133,7 @@ fun TrackListItem(
 @Composable
 fun TrackListItem(
     item: MediaItem,
+    subtitle: String,
     isLoaded: Boolean,
     isPlayable: Boolean,
     isPlaying: Boolean,
@@ -138,8 +145,8 @@ fun TrackListItem(
 ) {
     TrackListItem(
         title = item.title,
-        artists = item.artists,
-        duration = item.duration,
+        subtitle = subtitle,
+        duration = item.duration.toKotlinDuration(),
         isLoaded = isLoaded,
         isPlayable = isPlayable,
         isPlaying = isPlaying,
@@ -150,7 +157,7 @@ fun TrackListItem(
         onLongClick = onLongClick,
         leadingContent = {
             MediaItemArtwork(
-                imageUrl = item.thumbnailImageUrl,
+                uri = item.thumbnailImageUri,
                 modifier = Modifier
                     .aspectRatio(1f)
                     .fillMaxSize(),
@@ -162,7 +169,7 @@ fun TrackListItem(
 @Composable
 private fun TrackListItem(
     title: String,
-    artists: List<SimpleArtist>,
+    subtitle: String,
     duration: Duration,
     isLoaded: Boolean,
     isPlayable: Boolean,
@@ -212,11 +219,7 @@ private fun TrackListItem(
                         style = style.playPauseButtonStyle,
                     )
                 } else {
-                    Text(
-                        text = trackNumber?.toString() ?: "",
-                        style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
-                        modifier = Modifier,
-                    )
+                    leadingContent()
                 }
             }
 
@@ -227,23 +230,23 @@ private fun TrackListItem(
                     .padding(style.textPadding),
             ) {
                 Text(
-                    text = track.title,
-                    style = PaletteTheme.styles.text.titleMedium,
+                    text = title,
+                    style = style.titleStyle,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee(),
                 )
                 Text(
                     text = subtitle,
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = style.artistStyle,
                     maxLines = 1,
                     modifier = Modifier
                         .basicMarquee(),
                 )
             }
             Text(
-                text = remember { track.duration.toKotlinDuration().formatShort() },
-                style = PaletteTheme.styles.text.bodyMedium.copy(textAlign = TextAlign.Center),
+                text = remember { duration.formatShort() },
+                style = style.durationStyle,
                 modifier = Modifier
                     .height(IntrinsicSize.Max)
                     .width(style.durationWidth),
@@ -276,6 +279,7 @@ private fun MediaItemNotLoadedPreview() {
     PaletteTheme {
         TrackListItem(
             item = PreviewTrack1,
+            subtitle = "",
             isLoaded = false,
             isPlayable = false,
             isPlaying = false,
@@ -292,6 +296,7 @@ private fun MediaItemLoadedPreview() {
     PaletteTheme {
         TrackListItem(
             item = PreviewTrack1,
+            subtitle = "",
             isLoaded = true,
             isPlayable = false,
             isPlaying = false,

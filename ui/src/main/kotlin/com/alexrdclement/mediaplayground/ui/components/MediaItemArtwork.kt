@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import coil3.compose.AsyncImage
 import com.alexrdclement.mediaplayground.media.model.MediaAssetUri
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun MediaItemArtwork(

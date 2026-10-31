@@ -3,9 +3,9 @@ package com.alexrdclement.mediaplayground.media.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class MediaMetadata {
-    abstract val mimeType: String?
-    abstract val extension: String
+sealed interface MediaMetadata {
+    val mimeType: String?
+    val extension: String
 
     @Serializable
     data class Audio(
@@ -22,25 +22,13 @@ sealed class MediaMetadata {
         val albumArtistName: String? = null,
         val albumTitle: String?,
         val embeddedPicture: ByteArray?,
-    ) : MediaMetadata() {
+    ) : MediaMetadata {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-            other as Audio
-            if (sampleRate != other.sampleRate) return false
-            if (durationUs != other.durationUs) return false
-            if (channelCount != other.channelCount) return false
-            if (bitRate != other.bitRate) return false
-            if (bitDepth != other.bitDepth) return false
-            if (trackNumber != other.trackNumber) return false
-            if (title != other.title) return false
-            if (artistName != other.artistName) return false
-            if (albumArtistName != other.albumArtistName) return false
-            if (albumTitle != other.albumTitle) return false
-            if (!embeddedPicture.contentEquals(other.embeddedPicture)) return false
-            if (mimeType != other.mimeType) return false
-            if (extension != other.extension) return false
-            return true
+            if (other !is Audio) return false
+
+            return fieldsWithoutEmbeddedPicture() == other.fieldsWithoutEmbeddedPicture() &&
+                embeddedPicture.contentEquals(other.embeddedPicture)
         }
 
         private fun fieldsWithoutEmbeddedPicture(): List<Any?> = listOf(
@@ -52,6 +40,7 @@ sealed class MediaMetadata {
             trackNumber,
             title,
             artistName,
+            albumArtistName,
             albumTitle,
             mimeType,
             extension,
@@ -86,5 +75,5 @@ sealed class MediaMetadata {
         val gpsLongitude: Double?,
         val cameraMake: String?,
         val cameraModel: String?,
-    ) : MediaMetadata()
+    ) : MediaMetadata
 }

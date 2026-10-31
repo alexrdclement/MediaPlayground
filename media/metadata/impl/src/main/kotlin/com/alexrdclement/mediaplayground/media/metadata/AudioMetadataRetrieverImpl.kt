@@ -9,6 +9,7 @@ import android.os.Build
 import com.alexrdclement.mediaplayground.media.model.MediaMetadata
 import dev.zacsweers.metro.Inject
 import kotlinx.io.files.Path
+import java.io.IOException
 import android.media.MediaMetadataRetriever as AndroidMediaMetadataRetriever
 
 private const val PcmBitDepth8 = 8
@@ -128,10 +129,10 @@ class AudioMetadataRetrieverImpl @Inject constructor(
 
     private fun MediaFormat.getBitDepthOrNull(): Int? {
         return when (val encoding = this.getIntOrNull(MediaFormat.KEY_PCM_ENCODING)) {
-            AudioFormat.ENCODING_PCM_8BIT -> 8
-            AudioFormat.ENCODING_PCM_16BIT -> 16
-            AudioFormat.ENCODING_PCM_32BIT -> 32
-            AudioFormat.ENCODING_PCM_FLOAT -> 32
+            AudioFormat.ENCODING_PCM_8BIT -> PcmBitDepth8
+            AudioFormat.ENCODING_PCM_16BIT -> PcmBitDepth16
+            AudioFormat.ENCODING_PCM_32BIT -> PcmBitDepth32
+            AudioFormat.ENCODING_PCM_FLOAT -> PcmBitDepth32
             else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 encoding == AudioFormat.ENCODING_PCM_24BIT_PACKED
             ) {

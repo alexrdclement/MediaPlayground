@@ -54,7 +54,6 @@ android {
 dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
-    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.metrox.viewmodel.compose)
     implementation(libs.palette.navigation)
 

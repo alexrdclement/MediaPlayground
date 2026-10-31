@@ -80,15 +80,16 @@ fun TrackMetadataScreen(
     uiState: TrackMetadataUiState,
     onNavigateBack: () -> Unit,
     onSaveClick: (title: String, notes: String?) -> Unit,
+    modifier: Modifier = Modifier,
     onNavigateToDelete: (displayName: String) -> Unit = {},
     onNavigateToArtistMetadata: (artistId: String) -> Unit = {},
 ) {
-    val titleState = rememberTextFieldState()
-    val notesState = rememberTextFieldState()
-    LaunchedEffect((uiState as? TrackMetadataUiState.Loaded)?.track?.id) {
-        val loaded = uiState as? TrackMetadataUiState.Loaded ?: return@LaunchedEffect
-        titleState.edit { replace(0, length, loaded.track.title) }
-        notesState.edit { replace(0, length, loaded.track.notes ?: "") }
+    val loadedTrack = (uiState as? TrackMetadataUiState.Loaded)?.track
+    val titleState = remember(loadedTrack?.id) {
+        TextFieldState(initialText = loadedTrack?.title.orEmpty())
+    }
+    val notesState = remember(loadedTrack?.id) {
+        TextFieldState(initialText = loadedTrack?.notes.orEmpty())
     }
 
     Scaffold(
@@ -203,7 +204,7 @@ private fun LoadedContent(
             item {
                 Text(text = "Artists", style = style.labelStyle)
             }
-            items(trackArtists, key = { it.id.value }) { artist ->
+            items(items = trackArtists, key = { it.id.value }) { artist ->
                 ArtistRow(
                     artist = artist,
                     onNavigateToMetadata = { onNavigateToArtistMetadata(artist.id.value) },

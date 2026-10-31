@@ -57,7 +57,7 @@ class FakeSimpleAlbumDao(
         artistId: String,
     ): SimpleAlbum? {
         return albums.firstOrNull()?.find {
-            it.mediaItem.title == title && it.artists.any { it.id == artistId }
+            it.mediaItem.title == title && it.artists.any { artist -> artist.id == artistId }
         }
     }
 }

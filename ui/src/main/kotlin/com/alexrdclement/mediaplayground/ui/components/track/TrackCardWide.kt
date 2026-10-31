@@ -50,7 +50,8 @@ fun TrackCardWide(
     track: AudioItem,
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isEnabled: Boolean = remember(track) { track.isPlayable }
+    style: TrackCardWideStyle = TrackCardWideStyle(),
+    isEnabled: Boolean = remember(track) { track.isPlayable },
 ) {
     Surface(
         modifier = modifier,
@@ -84,10 +85,10 @@ fun TrackCardWide(
                 verticalArrangement = Arrangement.spacedBy(style.textSpacing),
                 horizontalAlignment = Alignment.Start,
             ) {
-                Text(text = track.title)
+                Text(text = track.title, style = style.titleStyle)
                 val artistText = artistNamesOrDefault(track.artists)
                 if (artistText.isNotEmpty()) {
-                    Text(text = artistText)
+                    Text(text = artistText, style = style.artistStyle)
                 }
             }
         }

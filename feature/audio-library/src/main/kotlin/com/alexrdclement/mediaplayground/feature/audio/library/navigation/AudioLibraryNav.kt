@@ -15,7 +15,6 @@ fun NavGraphBuilder.audioLibraryNavGraph() {
 }
 
 fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
-    navController: NavController,
     onNavigateToPlayer: (MediaItem) -> Unit,
     onNavigateToAlbum: (AudioAlbum) -> Unit,
     onNavigateToTrackMetadata: (TrackId) -> Unit = {},
@@ -27,8 +26,8 @@ fun EntryProviderScope<NavKey>.audioLibraryEntryProvider(
         AudioLibraryScreen(
             onNavigateToPlayer = onNavigateToPlayer,
             onNavigateToAlbum = onNavigateToAlbum,
-            onNavigateToTrackMetadata = { onNavigateToTrackMetadata(TrackId(it)) },
-            onNavigateToAlbumMetadata = { onNavigateToAlbumMetadata(AudioAlbumId(it)) },
+            onNavigateToTrackMetadata = { trackId -> onNavigateToTrackMetadata(TrackId(trackId)) },
+            onNavigateToAlbumMetadata = { albumId -> onNavigateToAlbumMetadata(AudioAlbumId(albumId)) },
             onNavigateToAlbumDelete = onNavigateToAlbumDelete,
             onNavigateToTrackDelete = onNavigateToTrackDelete,
         )

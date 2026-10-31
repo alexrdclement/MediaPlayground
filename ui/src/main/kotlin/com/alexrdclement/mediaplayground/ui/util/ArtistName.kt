@@ -5,7 +5,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.res.stringResource
 import com.alexrdclement.mediaplayground.media.model.Artist
 import com.alexrdclement.mediaplayground.ui.R
-import com.alexrdclement.palette.components.media.model.Artist as UiArtist
+import com.embarrasdf.palette.components.media.model.Artist as UiArtist
 
 @Composable
 @ReadOnlyComposable
@@ -15,6 +15,7 @@ fun artistNamesOrDefault(artists: List<Artist>): String {
 }
 
 @Composable
+@ReadOnlyComposable
 @JvmName("componentArtistNamesOrDefaultArtist")
 fun artistNamesOrDefault(artists: List<UiArtist>): String {
     return artistNamesOrDefault(artists.map { it.name })
